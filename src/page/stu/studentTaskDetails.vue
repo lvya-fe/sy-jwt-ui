@@ -299,6 +299,13 @@
                     <input type="text" v-model="geographic" readonly="readonly">
                 </div>
 
+                <!-- 视频上传 -->
+                <div class="taskdetails_child" v-if="item.type==29">
+                    <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
+                    <div class="addVideo">
+                       <img @click="upDataVideo" src="@/assets/img/addVideo.png" alt=""> 
+                    </div>
+                </div>
 
             </template>
 
@@ -380,6 +387,17 @@
                 <div @click="propShowtime">数据提交历史</div>
             </div>
         </div>
+        <div class="viedoPropParent" v-show="upDataShow">
+            <div class="ts_prop" @click="upDataShow=false"></div>
+            <div class="viedoProp">
+                <p class="videoP1"><img src="@/assets/img/videoRrefresh.png" alt=""></p>
+                <p class="videoP2">请在PC端访问此链接上传文件</p>
+                <p class="videoP3">（上传成功前，请勿关闭此页面，两小时内有效）</p>
+                <p class="videoP4">{{ upDataUrl }}</p>
+                <div class="videoP5">上传成功后，点击获取文件（<span>120</span>S）</div>
+            </div>
+        </div>
+        
 
 
         <showcycle v-if="show2" v-bind:conData="taskCycles" v-bind:indexCycle="indexCycle" @closeSelect="closeSelect" @selectCycle="selectCycle" v-bind:jointimetype="jointimetype" v-bind:cycle="cycle" v-bind:formZt="formZt"></showcycle>
@@ -473,6 +491,10 @@ export default {
             // 验证码
             obtainText:'获取验证码',
             obtainVal:'',
+
+            //音视频上传URL
+            upDataUrl:'',
+            upDataShow:false,
         }
     },
     computed: mapState({
@@ -494,6 +516,21 @@ export default {
         }
     },
     methods:{
+        upDataVideo(){
+            this.upDataShow=!this.upDataShow
+            var _self = this;
+            this.$axios.get( process.env.API_ROOT+"oss/2/get/code",
+                qs.stringify({
+                })
+            ).then(function(res){
+                if(res.isSuccess){
+                    console.log(res,'验证码')
+                    _self.upDataUrl=process.env.API_ROOT+'views/tea/upVideo/'+res.data
+                }
+            }).catch(function(err){
+                _self.errorUtil(err);
+            })
+        },
         removeStr(val,leng){
             if(val){
                 return val.substring(0, val.length - leng);
@@ -1097,6 +1134,18 @@ export default {
     -webkit-appearance: none;}
     textarea {-webkit-appearance: none;} 
     select {background: url("../../assets/img/select_down.png") no-repeat right 10px center transparent;}
+
+    /* 视频 */
+    .addVideo img{width:215px;height:215px;}
+    .viedoPropParent{position: fixed;background: rgba(0,0,0,0.5);top: 0;left: 0;right: 0;bottom: 0;z-index: 100000;}
+    .viedoProp{width: 85%;padding:10px 10px 30px;background: #fff;position: fixed;margin: 0 auto;top: 30%;left: 0px;right: 0px;box-shadow: 0 0 5px #ccc;/*no*/border-radius: 3px;/*no*/}
+    .viedoProp > p,.viedoProp > div{text-align:center;font-size:26px;margin-bottom:10px;}
+    .viedoProp .videoP1 {text-align:right;}
+    .videoP1 img{width:28px;}
+    .videoP2 {color:#696969;}
+    .videoP3 {color:#bcbbbb;}
+    .viedoProp .videoP4 {color:#16c775;}
+    .videoP5 {color:#ffffff;background:#56ca99;width:85%;margin:0 auto;padding:15px 0;border-radius:3px;/*no*/}
 
     /* 数据引用 */
     .referenceDiv{padding:10px 20px 0;overflow: hidden;}
