@@ -11,8 +11,7 @@ axios.interceptors.request.use((config) => {
     // config.headers['Access-Control-Allow-Origin'] = '*';
 
    var url = config.data;
-
-   if (url.indexOf("=") != -1) {
+  if (url != undefined && url.indexOf("=") != -1) {
       var str = url;
       var strs = str.split("&");
       for(var i = 0; i < strs.length; i ++) {
