@@ -390,11 +390,11 @@
         <div class="viedoPropParent" v-show="upDataShow">
             <div class="ts_prop" @click="upDataShow=false"></div>
             <div class="viedoProp">
-                <p class="videoP1"><img src="@/assets/img/videoRrefresh.png" alt=""></p>
+                <p class="videoP1"><img @click="upDataVideo" src="@/assets/img/videoRrefresh.png" alt=""></p>
                 <p class="videoP2">请在PC端访问此链接上传文件</p>
                 <p class="videoP3">（上传成功前，请勿关闭此页面，两小时内有效）</p>
                 <p class="videoP4">{{ upDataUrl }}</p>
-                <div class="videoP5">上传成功后，点击获取文件（<span>120</span>S）</div>
+                <div class="videoP5">上传成功后，点击获取文件（<span>{{ si }}</span>S）</div>
             </div>
         </div>
         
@@ -495,6 +495,7 @@ export default {
             //音视频上传URL
             upDataUrl:'',
             upDataShow:false,
+            si:120,
         }
     },
     computed: mapState({
@@ -516,8 +517,21 @@ export default {
         }
     },
     methods:{
+        //倒计时
+        countdown() {
+            var _self = this;
+            _self.si=2;
+            var time = window.setInterval(function () {
+                if (_self.si === 0) {
+                    _self.si = 0;
+                    window.clearInterval(time)
+                } else {
+                    _self.si -= 1;
+                }
+            }, 1000)
+        },
         upDataVideo(){
-            this.upDataShow=!this.upDataShow
+            this.upDataShow=true;
             var _self = this;
             this.$axios.get( process.env.API_ROOT+"oss/2/get/code",
                 qs.stringify({
@@ -526,6 +540,7 @@ export default {
                 if(res.isSuccess){
                     console.log(res,'验证码')
                     _self.upDataUrl=process.env.API_ROOT+'views/tea/upVideo/'+res.data
+                    _self.countdown();
                 }
             }).catch(function(err){
                 _self.errorUtil(err);
