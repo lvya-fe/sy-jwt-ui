@@ -15,7 +15,7 @@
               </cell-box>
 
               <template v-for="item in itmes">
-                    <cell-box class="con-child" v-if="item.type!=6&&item.citeDataType!=1">
+                    <cell-box class="con-child" v-if="item.type!=6&&item.type!=29&&item.citeDataType!=1">
                         <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{item.name}}:</span>
                         <div class="hs_div">{{ item.valex==''||item.valex==null||item.valex==undefined?'--':(item.type==5||item.type==10||item.type==17||item.type==25)?item.valex.replace(/,/g,' | '):item.valex }}</div>
                         
@@ -41,6 +41,16 @@
                           --
                         </div>
                     </cell-box>
+
+                    <cell-box class="con-child" v-if="item.type==29&&item.citeDataType!=1"> 
+                        <span>{{ item.name }}</span>
+                        <div class="seeVideo" v-if="item.valex!=null&&item.valex!=''&&item.valex!=undefined">
+                            <img class ="seeImg" @click="ckSee(item.valex)" src="@/assets/img/videoImgMo.png" alt="">
+                        </div>
+                        <div class="hs_div" v-if="item.valex==''||item.valex==null||item==undefined">
+                          --
+                        </div>
+                    </cell-box>
                </template>
 
                 <cell-box class="con-child" v-if="info.state=='N'">
@@ -55,6 +65,12 @@
         </div>
       </div>
         <reviewRejected v-show="!show1" @add="add" @closeSelect = "closeSelect"></reviewRejected>
+        
+        <div class="videoParent" @click.prevent.stop="videoPropShow=false" v-if="videoPropShow">
+            <div @click.prevent.stop="playVideo()">
+                <video :src="videoSrc" id="videoPlay" :sht="shoqq" class="video" controls="controls">您的浏览器不支持 video 视屏播放。</video>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -83,7 +99,13 @@ export default {
             itmes:[],
             info:[],
             isRuleApproval:false,
-            name:''
+            name:'',
+
+            // 视频
+            videoPropShow:false,
+            videoSrc: '',
+            shoqq:true,
+
         }
     },
     filters: {
@@ -158,7 +180,23 @@ export default {
           }).catch(function(err){
             _self.errorUtil(err);
           })
-        }
+        },
+        //点击播放视频
+        playVideo(){
+            var vdo = document.getElementById("videoPlay");
+            if(this.shoqq){
+                vdo.play();
+                this.shoqq=false
+            }else{
+                vdo.pause();
+                this.shoqq=true
+            }
+        },
+        //查看类型表单 查看视频
+        ckSee(value){
+            this.videoPropShow=true;
+            this.videoSrc=value;
+        },
     }
 }
 </script>
@@ -196,6 +234,15 @@ export default {
 
 
 .auditStyle{padding: 10px 25px!important;}
+
+
+/* 视频 */
+.videoParent{position: fixed;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:#000;z-index: 100000000;display: flex;align-items: center;}
+.videoParent > div video{width:100%;max-width:100%;}
+.seeVideo {position:relative;width:215px!important;height:215px;margin-top:20px;}
+.seeVideo .seeImg {width:215px;height:215px;}
+.seeVideo .removeSmlieImg {position: absolute;right:0;top:0;width: 22px;height: 22px;}
+
 /* 数据引用 */
 .referenceDiv{padding:10px 25px;overflow: hidden;}
 .referenceDiv > span{float:left;width: 100%;text-align: left;font-size:28px;}

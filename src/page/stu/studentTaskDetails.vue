@@ -380,6 +380,9 @@
                         <div class="seeVideo" v-if="item.valex!=null&&item.valex!=''&&item.valex!=undefined">
                             <img class ="seeImg" @click="ckSee(item.valex)" src="@/assets/img/videoImgMo.png" alt="">
                         </div>
+                        <div class="hs_div" v-if="item.valex==''||item.valex==null||item==undefined">
+                          --
+                        </div>
                     </div>
                 </template>
             </div>
@@ -1239,6 +1242,8 @@ export default {
     .seeVideo {position:relative;width:215px!important;height:215px;}
     .seeVideo .seeImg {width:215px;height:215px;}
     .seeVideo .removeSmlieImg {position: absolute;right:0;top:0;width: 22px;height: 22px;}
+    .hs_div{margin-top:20px;color:#706f6f;}
+
 
     /* 数据引用 */
     .referenceDiv{padding:10px 20px 0;overflow: hidden;}
