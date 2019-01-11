@@ -20,7 +20,7 @@
                         <div class="hs_div">{{ item.valex==''||item.valex==null||item.valex==undefined?'--':(item.type==5||item.type==10||item.type==17||item.type==25)?item.valex.replace(/,/g,' | '):item.valex }}</div>
                         
                     </cell-box>
-                    <div class="referenceDiv referenceDivZs auditStyle" v-if="item.citeDataType==1&&item.type!=6">
+                    <div class="referenceDiv referenceDivZs auditStyle" v-if="item.citeDataType==1&&item.type!=6&&item.type!=29">
                         <span>"{{ item.name }}"</span>
                         <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
                             <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
@@ -51,6 +51,16 @@
                           --
                         </div>
                     </cell-box>
+                     <div class="referenceDiv referenceDivZs auditStyle" v-if="item.citeDataType==1&&item.type==29">
+                        <span>"{{ item.name }}"</span>
+                        <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
+                            <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
+                            <div class="seeVideo" v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined">
+                                <img class ="seeImg" @click="ckSee(itemRefer.val)" src="@/assets/img/videoImgMo.png" alt="">
+                            </div>
+                        </div>
+                        <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
+                    </div>
                </template>
 
                 <cell-box class="con-child" v-if="info.state=='N'">
@@ -239,7 +249,7 @@ export default {
 /* 视频 */
 .videoParent{position: fixed;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:#000;z-index: 100000000;display: flex;align-items: center;}
 .videoParent > div video{width:100%;max-width:100%;}
-.seeVideo {position:relative;width:215px!important;height:215px;margin-top:20px;}
+.seeVideo {position:relative;width:215px!important;height:215px;margin-top:10px;}
 .seeVideo .seeImg {width:215px;height:215px;}
 .seeVideo .removeSmlieImg {position: absolute;right:0;top:0;width: 22px;height: 22px;}
 

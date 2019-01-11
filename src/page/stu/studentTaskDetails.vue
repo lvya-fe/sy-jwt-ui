@@ -300,7 +300,7 @@
                 </div>
 
                 <!-- 视频上传 -->
-                <div class="taskdetails_child" v-if="item.type==29">
+                <div class="taskdetails_child" v-if="item.citeDataType!=1&&item.type==29">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
                     <div class="addVideo" v-if="item.val==null||item.val==''||item.val==undefined">
                        <img @click="upDataVideo(item.id)" src="@/assets/img/addVideo.png" alt=""> 
@@ -309,6 +309,16 @@
                         <img class="removeSmlieImg" @click="item.val=null" src="@/assets/img/shanchub.png" alt="">
                         <img class ="seeImg" @click="videoPropShow=true" src="@/assets/img/videoImgMo.png" alt="">
                     </div>
+                </div>
+                <div class="referenceDiv" v-if="item.citeDataType==1&&item.type==29">
+                    <span>"{{ item.name }}"</span>
+                    <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
+                        <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
+                        <div class="seeVideo" v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined">
+                            <img class ="seeImg" @click="ckSee(itemRefer.val)" src="@/assets/img/videoImgMo.png" alt="">
+                        </div>
+                    </div>
+                    <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
                 </div>
 
             </template>
@@ -352,7 +362,7 @@
                         {{ item.valex==''||item.valex==null||item.valex==undefined?'--':item.type==22?removeStr(item.valex,8):item.type==21?item.valex+'%':item.type==3?removeStr(item.valex,3):(item.type==5||item.type==10||item.type==17||item.type==25)?item.valex.replace(/,/g,' | '):item.valex }}
                     </div>
                 </template>
-                <div class="referenceDiv referenceDivZs" v-if="item.citeDataType==1&&item.type!=6">
+                <div class="referenceDiv referenceDivZs" v-if="item.citeDataType==1&&item.type!=6&&item.type!=29">
                     <span>"{{ item.name }}"</span>
                     <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData" :key="index">
                         <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
@@ -385,6 +395,17 @@
                         </div>
                     </div>
                 </template>
+
+                <div class="referenceDiv referenceDivZs" v-if="item.citeDataType==1&&item.type==29">
+                    <span>"{{ item.name }}"</span>
+                    <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData" :key="index">
+                        <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
+                        <div class="seeVideo" v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined">
+                            <img class ="seeImg" @click="ckSee(itemRefer.val)" src="@/assets/img/videoImgMo.png" alt="">
+                        </div>
+                    </div>
+                    <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
+                </div>
             </div>
             <!-- <div class="taskdetails_ts">
                 <span>图片上传 :</span>
@@ -1252,4 +1273,5 @@ export default {
     .referChildDiv p:first-child{margin-top:10px;}
     .referChildDiv p{font-size:26px;color:#706f6f;}
     .referenceDivZs {padding:10px 1px;}
+    .referChildDiv .seeVideo{margin-top:10px;}
 </style>

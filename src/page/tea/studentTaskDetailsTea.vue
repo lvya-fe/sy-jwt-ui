@@ -312,6 +312,18 @@
                     <input type="text" v-model="geographic" readonly="readonly">
                 </div>
 
+                <!-- 视频上传 -->
+                <div class="taskdetails_child" v-if="item.type==29">
+                    <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
+                    <div class="addVideo" v-if="item.val==null||item.val==''||item.val==undefined">
+                       <img @click="upDataVideo(item.id)" src="@/assets/img/addVideo.png" alt=""> 
+                    </div>
+                    <div class="seeVideo" v-if="item.val!=null&&item.val!=''&&item.val!=undefined">
+                        <img class="removeSmlieImg" @click="item.val=null" src="@/assets/img/shanchub.png" alt="">
+                        <img class ="seeImg" @click="videoPropShow=true" src="@/assets/img/videoImgMo.png" alt="">
+                    </div>
+                </div>
+
 
             </template>
 
@@ -348,7 +360,7 @@
                 </div>
             </div>
             <div class="taskdetails_ts" v-for="item in itmes">
-                <template v-if="item.type!=6&&item.citeDataType!=1">
+                <template v-if="item.type!=6&&item.type!=29&&item.citeDataType!=1">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
                     <div class="checkbox_div">
                         {{ item.valex==''||item.valex==null||item.valex==undefined?'--':item.type==22?removeStr(item.valex,8):item.type==21?item.valex+'%':item.type==3?removeStr(item.valex,3):(item.type==5||item.type==10||item.type==17||item.type==25)?item.valex.replace(/,/g,' | '):item.valex }}
@@ -387,7 +399,20 @@
                     </div>
                     <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
                 </div>
+                <template v-if="item.type==29&&item.citeDataType!=1">
+                    <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
+                    <div class="checkbox_div">
+                        <div class="seeVideo" v-if="item.valex!=null&&item.valex!=''&&item.valex!=undefined">
+                            <img class ="seeImg" @click="ckSee(item.valex)" src="@/assets/img/videoImgMo.png" alt="">
+                        </div>
+                        <div class="hs_div" v-if="item.valex==''||item.valex==null||item==undefined">
+                            --
+                        </div>
+                    </div>
+                </template>
             </div>
+
+            
             <!-- <div class="taskdetails_ts">
                 <span>图片上传 :</span>
                 <div class="picture_div">
@@ -409,6 +434,23 @@
             <div class="prop_history_content">
                 <!-- <div @click="propShow2">任务周期</div> -->
                 <div @click="propShowtime">数据提交历史</div>
+            </div>
+        </div>
+
+        <div class="viedoPropParent" v-show="upDataShow">
+            <div class="ts_prop" @click="upDataShow=false"></div>
+            <div class="viedoProp">
+                <p class="videoP1"><img @click="upDataVideo" src="@/assets/img/videoRrefresh.png" alt=""></p>
+                <p class="videoP2">请在PC端访问此链接上传文件</p>
+                <p class="videoP3">（上传成功前，请勿关闭此页面，一小时内有效）</p>
+                <p class="videoP4">{{ upDataUrl }}</p>
+                <div class="videoP5" v-if="btnGc">上传成功后，点击获取文件（<span>{{ si }}</span>S）</div>
+                <div class="videoP5" v-if="!btnGc" @click="obtainVideo">点击获取文件</div>
+            </div>
+        </div>
+        <div class="videoParent" @click.prevent.stop="videoPropShow=false" v-if="videoPropShow">
+            <div @click.prevent.stop="playVideo()">
+                <video :src="videoSrc" id="videoPlay" :sht="shoqq" class="video" controls="controls">您的浏览器不支持 video 视屏播放。</video>
             </div>
         </div>
 
@@ -511,6 +553,17 @@ export default {
             
             // 数据引用
             itmesRe:[],
+
+            //音视频上传URL
+            upDataUrl:'',
+            upDataShow:false,
+            si:120,
+            btnGc:true,
+            authorizationCode:'',
+            videoSrc: '',
+            shoqq:true,
+            videoPropShow:false,
+            propId:null,
         }
     },
     computed: mapState({
@@ -532,6 +585,81 @@ export default {
         }
     },
     methods:{
+        //查看类型表单 查看视频
+        ckSee(value){
+            this.videoPropShow=true;
+            this.videoSrc=value;
+        },
+        //点击播放视频
+        playVideo(){
+            var vdo = document.getElementById("videoPlay");
+            if(this.shoqq){
+                vdo.play();
+                this.shoqq=false
+            }else{
+                vdo.pause();
+                this.shoqq=true
+            }
+        },
+        //获取视频地址
+        obtainVideo(){
+            this.upDataShow=false;
+            var _self = this;
+            this.$axios.get( process.env.API_ROOT+"oss/2/get/code/"+_self.authorizationCode,
+                qs.stringify({
+                })
+            ).then(function(res){
+                if(res.isSuccess){
+                    console.log(res,'获取视频')
+                    if(res.data.path!='ok'){
+                        _self.videoSrc=res.data.domain+res.data.path
+                        _self.itmes.forEach(function(el){
+                            if(el.id==_self.propId){
+                                el.val=res.data.domain+res.data.path;
+                            }
+                        })
+                    }else{
+                        _self.$vux.toast.show({type: 'warn',text:'暂无视频' });
+                    }
+                }
+            }).catch(function(err){
+                _self.errorUtil(err);
+            })
+        },
+        //倒计时
+        countdown() {
+            var _self = this;
+            _self.si=2;
+            _self.btnGc=true;
+            var time = window.setInterval(function () {
+                if (_self.si === 0) {
+                    _self.si = 0;
+                    _self.btnGc=false;
+                    window.clearInterval(time)
+                } else {
+                    _self.si -= 1;
+                }
+            }, 1000)
+        },
+        //上传视频弹窗
+        upDataVideo(id){
+            var _self = this;
+            _self.upDataShow=true;
+            _self.propId=id;
+            this.$axios.get( process.env.API_ROOT+"oss/2/get/code",
+                qs.stringify({
+                })
+            ).then(function(res){
+                if(res.isSuccess){
+                    console.log(res,'验证码')
+                    _self.authorizationCode=res.data
+                    _self.upDataUrl=process.env.API_ROOT+'t/#/views/tea/upVideo/'+_self.authorizationCode
+                    _self.countdown();
+                }
+            }).catch(function(err){
+                _self.errorUtil(err);
+            })
+        },
         removeStr(val,leng){
             if(val){
                 return val.substring(0, val.length - leng);
@@ -1109,6 +1237,28 @@ export default {
     -webkit-appearance: none;}
     textarea {-webkit-appearance: none;} 
     select {background: url("../../assets/img/select_down.png") no-repeat right 10px center transparent;}
+
+    
+    /* 视频 */
+    .addVideo{width:215px!important;height:215px;}
+    .addVideo img{width:215px;height:215px;}
+    .viedoPropParent{position: fixed;background: rgba(0,0,0,0.5);top: 0;left: 0;right: 0;bottom: 0;z-index: 100000;}
+    .viedoProp{width: 85%;padding:10px 10px 30px;background: #fff;position: fixed;margin: 0 auto;top: 30%;left: 0px;right: 0px;box-shadow: 0 0 5px #ccc;/*no*/border-radius: 3px;/*no*/}
+    .viedoProp > p,.viedoProp > div{text-align:center;font-size:26px;margin-bottom:10px;}
+    .viedoProp .videoP1 {text-align:right;}
+    .videoP1 img{width:28px;}
+    .videoP2 {color:#696969;}
+    .videoP3 {color:#bcbbbb;}
+    .viedoProp .videoP4 {color:#16c775;}
+    .videoP5 {color:#ffffff;background:#56ca99;width:85%;margin:0 auto;padding:15px 0;border-radius:3px;/*no*/}
+
+    .videoParent{position: fixed;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:#000;z-index: 100000000; display: flex;align-items: center;}
+    .videoParent > div video{width:100%;max-width:100%;}
+    .seeVideo {position:relative;width:215px!important;height:215px;}
+    .seeVideo .seeImg {width:215px;height:215px;}
+    .seeVideo .removeSmlieImg {position: absolute;right:0;top:0;width: 22px;height: 22px;}
+    .hs_div{margin-top:20px;color:#706f6f;}
+
 
     /* 数据引用 */
     .referenceDiv{padding:10px 20px 0;overflow: hidden;}
