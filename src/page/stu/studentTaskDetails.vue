@@ -1273,13 +1273,13 @@ export default {
     .viedoProp .videoP4 {color:#16c775;word-wrap:break-word;word-break:break-all;}
     .videoP5 {color:#ffffff;background:#56ca99;width:85%;margin:0 auto;padding:15px 0;border-radius:3px;/*no*/}
 
-    .videoParent{position: fixed;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:#000;z-index: 100000000;}
+    .videoParent{position: fixed;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:#999;z-index: 100000000;}
     /* .videoParent > div video{width:100%;max-width:100%;} */
     .seeVideo {position:relative;width:215px!important;height:215px;}
     .seeVideo .seeImg {width:215px;height:215px;}
     .seeVideo .removeSmlieImg {position: absolute;right:0;top:0;width: 22px;height: 22px;}
     .hs_div{margin-top:20px;color:#706f6f;}
-    .video-player.video-player.vjs-custom-skin{margin-top:60%;}
+    .video-player.video-player.vjs-custom-skin{margin-top:50%;}
 
 
     /* 数据引用 */

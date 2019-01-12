@@ -313,7 +313,7 @@
                 </div>
 
                 <!-- 视频上传 -->
-                <div class="taskdetails_child" v-if="item.type==29">
+                <div class="taskdetails_child" v-if="item.citeDataType!=1&&item.type==29">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
                     <div class="addVideo" v-if="item.val==null||item.val==''||item.val==undefined">
                        <img @click="upDataVideo(item.id)" src="@/assets/img/addVideo.png" alt=""> 
@@ -322,6 +322,16 @@
                         <img class="removeSmlieImg" @click="item.val=null" src="@/assets/img/shanchub.png" alt="">
                         <img class ="seeImg" @click="videoPropShow=true" src="@/assets/img/videoImgMo.png" alt="">
                     </div>
+                </div>
+                <div class="referenceDiv" v-if="item.citeDataType==1&&item.type==29">
+                    <span>"{{ item.name }}"</span>
+                    <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
+                        <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
+                        <div class="seeVideo" v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined">
+                            <img class ="seeImg" @click="ckSee(itemRefer.val)" src="@/assets/img/videoImgMo.png" alt="">
+                        </div>
+                    </div>
+                    <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
                 </div>
 
 
@@ -1266,13 +1276,13 @@ export default {
     .viedoProp .videoP4 {color:#16c775;}
     .videoP5 {color:#ffffff;background:#56ca99;width:85%;margin:0 auto;padding:15px 0;border-radius:3px;/*no*/}
 
-    .videoParent{position: fixed;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:#999;z-index: 100000000; display: flex;align-items: center;}
-    .videoParent > div video{width:100%;max-width:100%;}
+    .videoParent{position: fixed;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:#999;z-index: 100000000;}
+    /* .videoParent > div video{width:100%;max-width:100%;} */
     .seeVideo {position:relative;width:215px!important;height:215px;}
     .seeVideo .seeImg {width:215px;height:215px;}
     .seeVideo .removeSmlieImg {position: absolute;right:0;top:0;width: 22px;height: 22px;}
     .hs_div{margin-top:20px;color:#706f6f;}
-    .video-player.video-player.vjs-custom-skin{margin-top:60%;}
+    .video-player.video-player.vjs-custom-skin{margin-top:50%;}
 
 
 
