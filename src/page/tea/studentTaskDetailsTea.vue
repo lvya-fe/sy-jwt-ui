@@ -1273,7 +1273,7 @@ export default {
     .videoP1 img{width:28px;}
     .videoP2 {color:#696969;}
     .videoP3 {color:#bcbbbb;}
-    .viedoProp .videoP4 {color:#16c775;}
+    .viedoProp .videoP4 {color:#16c775;word-wrap:break-word;word-break:break-all;}
     .videoP5 {color:#ffffff;background:#56ca99;width:85%;margin:0 auto;padding:15px 0;border-radius:3px;/*no*/}
 
     .videoParent{position: fixed;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:#999;z-index: 100000000;}
