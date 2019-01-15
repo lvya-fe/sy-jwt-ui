@@ -376,9 +376,9 @@
                         {{ item.valex==''||item.valex==null||item.valex==undefined?'--':item.type==22?removeStr(item.valex,8):item.type==21?item.valex+'%':item.type==3?removeStr(item.valex,3):(item.type==5||item.type==10||item.type==17||item.type==25)?item.valex.replace(/,/g,' | '):item.valex }}
                     </div>
                 </template>
-                <div class="referenceDiv referenceDivZs" v-if="item.citeDataType==1&&item.type!=6">
+                <div class="referenceDiv referenceDivZs" v-if="item.citeDataType==1&&item.type!=6&&item.type!=29">
                     <span>"{{ item.name }}"</span>
-                    <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
+                    <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData" :key="index">
                         <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
                         <p>
                             {{ itemRefer.val==''||itemRefer.val==null||itemRefer.val==undefined?'--':itemRefer.type==22?removeStr(itemRefer.val,8):itemRefer.type==21?itemRefer.val+'%':itemRefer.type==3?removeStr(itemRefer.val,3):(itemRefer.type==5||itemRefer.type==10||itemRefer.type==17||itemRefer.type==25)?itemRefer.val.replace(/,/g,' | '):itemRefer.val }}
@@ -397,18 +397,7 @@
                         --
                     </div>
                 </template>
-                <div class="referenceDiv referenceDivZs" style="margin-top:0;" v-if="item.citeDataType==1&&item.type==6">
-                    <span>"{{ item.name }}"</span>
-                    <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
-                        <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
-                        <div class="picture_div" v-if="itemRefer.val!=''&&itemRefer.val!=null&&itemRefer.val!=undefined">
-                            <div class="img_div" v-for="(pictures,index) in itemRefer.val.split(',')" :key="index">
-                                <img  :src="pictures" alt="" :preview="item.id">
-                            </div>
-                        </div>
-                    </div>
-                    <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
-                </div>
+
                 <template v-if="item.type==29&&item.citeDataType!=1">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
                     <div class="checkbox_div">
@@ -416,10 +405,21 @@
                             <img class ="seeImg" @click="ckSee(item.valex)" src="@/assets/img/videoImgMo.png" alt="">
                         </div>
                         <div class="hs_div" v-if="item.valex==''||item.valex==null||item==undefined">
-                            --
+                          --
                         </div>
                     </div>
                 </template>
+
+                <div class="referenceDiv referenceDivZs" v-if="item.citeDataType==1&&item.type==29">
+                    <span>"{{ item.name }}"</span>
+                    <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData" :key="index">
+                        <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
+                        <div class="seeVideo" v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined">
+                            <img class ="seeImg" @click="ckSee(itemRefer.val)" src="@/assets/img/videoImgMo.png" alt="">
+                        </div>
+                    </div>
+                    <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
+                </div>
             </div>
 
             
@@ -448,9 +448,11 @@
         </div>
 
         <div class="viedoPropParent" v-show="upDataShow">
-            <div class="ts_prop" @click="upDataShow=false"></div>
             <div class="viedoProp">
-                <p class="videoP1"><img @click="upDataVideo" src="@/assets/img/videoRrefresh.png" alt=""></p>
+                <p class="videoP1">
+                    <img @click="upDataShow=false" src="@/assets/img/videoX.png" alt="">
+                    <img @click="upDataVideo" src="@/assets/img/videoRrefresh.png" alt="">
+                </p>
                 <p class="videoP2">请在PC端访问此链接上传文件</p>
                 <p class="videoP3">（上传成功前，请勿关闭此页面，一小时内有效）</p>
                 <p class="videoP4">{{ upDataUrl }}</p>
@@ -593,7 +595,7 @@ export default {
             //音视频上传URL
             upDataUrl:'',
             upDataShow:false,
-            si:120,
+            si:0,
             btnGc:true,
             authorizationCode:'',
             shoqq:true,
@@ -655,6 +657,7 @@ export default {
             var _self = this;
             _self.si=2;
             _self.btnGc=true;
+            window.clearInterval()
             var time = window.setInterval(function () {
                 if (_self.si === 0) {
                     _self.si = 0;
@@ -670,19 +673,24 @@ export default {
             var _self = this;
             _self.upDataShow=true;
             _self.propId=id;
-            this.$axios.get( process.env.API_ROOT+"oss/2/get/code",
-                qs.stringify({
+            if(_self.si==0){
+                this.$axios.get( process.env.API_ROOT+"oss/2/get/code",
+                    qs.stringify({
+                    })
+                ).then(function(res){
+                    if(res.isSuccess){
+                        console.log(res,'验证码')
+                        _self.authorizationCode=res.data
+                        _self.upDataUrl='http://'+window.location.host+'/t/#/views/tea/upVideo/'+_self.authorizationCode
+                        _self.countdown();
+                    }
+                }).catch(function(err){
+                    _self.errorUtil(err);
                 })
-            ).then(function(res){
-                if(res.isSuccess){
-                    console.log(res,'验证码')
-                    _self.authorizationCode=res.data
-                    _self.upDataUrl='http://'+window.location.host+'/t/#/views/tea/upVideo/'+_self.authorizationCode
-                    _self.countdown();
-                }
-            }).catch(function(err){
-                _self.errorUtil(err);
-            })
+            }else{
+
+            }
+            
         },
         removeStr(val,leng){
             if(val){
@@ -1269,8 +1277,9 @@ export default {
     .viedoPropParent{position: fixed;background: rgba(0,0,0,0.5);top: 0;left: 0;right: 0;bottom: 0;z-index: 100000;}
     .viedoProp{width: 85%;padding:10px 10px 30px;background: #fff;position: fixed;margin: 0 auto;top: 30%;left: 0px;right: 0px;box-shadow: 0 0 5px #ccc;/*no*/border-radius: 3px;/*no*/}
     .viedoProp > p,.viedoProp > div{text-align:center;font-size:26px;margin-bottom:10px;}
-    .viedoProp .videoP1 {text-align:right;}
-    .videoP1 img{width:28px;}
+    .videoP1 {overflow: hidden;}
+    .videoP1 img:first-child{width:22px;float: left;}
+    .videoP1 img:last-child{width:28px;float: right;}
     .videoP2 {color:#696969;}
     .videoP3 {color:#bcbbbb;}
     .viedoProp .videoP4 {color:#16c775;word-wrap:break-word;word-break:break-all;}

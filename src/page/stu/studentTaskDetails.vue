@@ -427,7 +427,10 @@
         <div class="viedoPropParent" v-show="upDataShow">
             <div class="ts_prop" @click="upDataShow=false"></div>
             <div class="viedoProp">
-                <p class="videoP1"><img @click="upDataVideo" src="@/assets/img/videoRrefresh.png" alt=""></p>
+                <p class="videoP1">
+                    <img @click="upDataShow=false" src="@/assets/img/videoX.png" alt="">
+                    <img @click="upDataVideo" src="@/assets/img/videoRrefresh.png" alt="">
+                </p>
                 <p class="videoP2">请在PC端访问此链接上传文件</p>
                 <p class="videoP3">（上传成功前，请勿关闭此页面，一小时内有效）</p>
                 <p class="videoP4">{{ upDataUrl }}</p>
@@ -564,7 +567,7 @@ export default {
             //音视频上传URL
             upDataUrl:'',
             upDataShow:false,
-            si:120,
+            si:0,
             btnGc:true,
             authorizationCode:'',
             shoqq:true,
@@ -641,20 +644,23 @@ export default {
             var _self = this;
             _self.upDataShow=true;
             _self.propId=id;
-            this.$axios.get( process.env.API_ROOT+"oss/2/get/code",
-                qs.stringify({
+            if(_self.si==0){
+                this.$axios.get( process.env.API_ROOT+"oss/2/get/code",
+                    qs.stringify({
+                    })
+                ).then(function(res){
+                    if(res.isSuccess){
+                        console.log(res,'验证码')
+                        _self.authorizationCode=res.data
+                        _self.upDataUrl='http://'+window.location.host+'/t/#/views/tea/upVideo/'+_self.authorizationCode
+                        _self.countdown();
+                    }
+                }).catch(function(err){
+                    _self.errorUtil(err);
                 })
-            ).then(function(res){
-                if(res.isSuccess){
-                    console.log(res,'验证码')
-                    _self.authorizationCode=res.data
-                    console.log(process.env.API_ROOT,'aaaaaaaaaaaa')
-                    _self.upDataUrl='http://'+window.location.host+'/t/#/views/tea/upVideo/'+_self.authorizationCode
-                    _self.countdown();
-                }
-            }).catch(function(err){
-                _self.errorUtil(err);
-            })
+            }else{
+                
+            }
         },
         removeStr(val,leng){
             if(val){
@@ -1266,8 +1272,9 @@ export default {
     .viedoPropParent{position: fixed;background: rgba(0,0,0,0.5);top: 0;left: 0;right: 0;bottom: 0;z-index: 100000;}
     .viedoProp{width: 85%;padding:10px 10px 30px;background: #fff;position: fixed;margin: 0 auto;top: 30%;left: 0px;right: 0px;box-shadow: 0 0 5px #ccc;/*no*/border-radius: 3px;/*no*/}
     .viedoProp > p,.viedoProp > div{text-align:center;font-size:26px;margin-bottom:10px;}
-    .viedoProp .videoP1 {text-align:right;}
-    .videoP1 img{width:28px;}
+    .videoP1 {overflow: hidden;}
+    .videoP1 img:first-child{width:22px;float: left;}
+    .videoP1 img:last-child{width:28px;float: right;}
     .videoP2 {color:#696969;}
     .videoP3 {color:#bcbbbb;}
     .viedoProp .videoP4 {color:#16c775;word-wrap:break-word;word-break:break-all;}

@@ -48,6 +48,10 @@
                             <img class="back-a" src="../../assets/img/you.png" alt="">
                         </div>
                     </div>
+                    <div class="no-msg-div" v-if="conData.length<=0">
+                        <img src="@/assets/img/zanwushuju.png" alt="">
+                        <span>暂无数据</span>
+                    </div>
                 </dir>
                 <load-more v-show="loadshow" :show-loading="loadStatus" :tip="loadStatus?'正在加载':'暂无数据'"></load-more>
             </div>
