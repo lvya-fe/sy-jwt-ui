@@ -58,6 +58,20 @@
               }
             })
         }
+        if($(".vjs-icon-placeholder")){
+            $(".vjs-icon-placeholder").each(function () {
+              if(!$(this).hasClass('needsclick')){
+                  $(this).addClass('needsclick')
+              }
+          })
+        }
+        if ($(".vjs-button")) {
+          $(".vjs-button").each(function () {
+            if (!$(this).hasClass('needsclick')) {
+              $(this).addClass('needsclick')
+            }
+          })
+        }
       }, 100)
     </script>
   </body>
