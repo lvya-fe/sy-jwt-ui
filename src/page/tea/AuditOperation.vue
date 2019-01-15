@@ -77,9 +77,11 @@
         <reviewRejected v-show="!show1" @add="add" @closeSelect = "closeSelect"></reviewRejected>
         
         <div class="videoParent" @click.prevent.stop="videoPropShow=false" v-if="videoPropShow">
-            <div @click.prevent.stop="playVideo()">
-                <video :src="videoSrc" id="videoPlay" :sht="shoqq" class="video" controls="controls">您的浏览器不支持 video 视屏播放。</video>
-            </div>
+            <video-player class="video-player vjs-custom-skin"
+                ref="videoPlayer"
+                :playsinline="true"
+                :options="playerOptions"
+            ></video-player>
         </div>
     </div>
 </template>
@@ -103,6 +105,29 @@ export default {
     },
     data(){
         return{
+            playerOptions : {
+                playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
+                autoplay: false, //如果true,浏览器准备好时开始回放。
+                muted: false, // 默认情况下将会消除任何音频。
+                loop: false, // 导致视频一结束就重新开始。
+                preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+                language: 'zh-CN',
+                aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+                fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+                sources: [{
+                type: "",
+                src: '' //url地址
+                }],
+                // poster: "../../static/images/test.jpg", //你的封面地址
+                // width: document.documentElement.clientWidth,
+                notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
+                controlBar: {
+                timeDivider: true,
+                durationDisplay: true,
+                remainingTimeDisplay: false,
+                fullscreenToggle: true  //全屏按钮
+                }
+            },
             uid:this.$route.params.uid,
             show:false,
             show1:true,
@@ -205,7 +230,7 @@ export default {
         //查看类型表单 查看视频
         ckSee(value){
             this.videoPropShow=true;
-            this.videoSrc=value;
+            this.playerOptions.sources[0].src=value
         },
     }
 }
@@ -247,11 +272,13 @@ export default {
 
 
 /* 视频 */
-.videoParent{position: fixed;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:#000;z-index: 100000000;display: flex;align-items: center;}
-.videoParent > div video{width:100%;max-width:100%;}
-.seeVideo {position:relative;width:215px!important;height:215px;margin-top:10px;}
+.videoParent{position: fixed;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:#999;z-index: 100000000;}
+/* .videoParent > div video{width:100%;max-width:100%;} */
+.seeVideo {position:relative;width:215px!important;height:215px;}
 .seeVideo .seeImg {width:215px;height:215px;}
 .seeVideo .removeSmlieImg {position: absolute;right:0;top:0;width: 22px;height: 22px;}
+.hs_div{margin-top:20px;color:#706f6f;}
+.video-player.video-player.vjs-custom-skin{margin-top:50%;}
 
 /* 数据引用 */
 .referenceDiv{padding:10px 25px;overflow: hidden;}
