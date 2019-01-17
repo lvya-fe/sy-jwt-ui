@@ -2,7 +2,7 @@
     <div>
         <div class="top-back" v-show="show3">
             <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
-            <div class="n_title">{{ task.title }}</div>
+            <div class="n_title">{{ (stuName!=''&&stuName!=null&&stuName!=undefined)?stuName:task.title }}</div>
             <router-link to="" class="img-2">
                 <i class="icon iconfont icon-shiyongcishu ripple" @click="propShow"></i>
             </router-link>
@@ -543,6 +543,7 @@ export default {
             strTime:this.$route.params.strtime,
             endTime:this.$route.params.endtime,
             formid:this.$route.params.formid,
+            stuName:this.$route.params.stuname,
             task:[],
             itmes:[],
             valList:[],

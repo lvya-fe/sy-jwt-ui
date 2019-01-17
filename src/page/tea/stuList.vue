@@ -14,7 +14,7 @@
         <div class="list-con-div bscroll"  ref="bscroll" v-show="show3">
             <div class="bscroll-container">
                 <dir class="stuListPar">
-                    <div class="ripple" v-for="(item,index) in conData" :key="index" @click="link(item.task.id,item.stu.id,item.task.joinstarttime,item.task.joinendtime)">
+                    <div class="ripple" v-for="(item,index) in conData" :key="index" @click="link(item.task.id,item.stu.id,item.task.joinstarttime,item.task.joinendtime,item.stu.name)">
                         <img class="first-img" src="../../assets/img/yiwancheng.png" v-if="item.task.statusName=='已完成'">
                         <img class="first-img" src="../../assets/img/jinxingzhong.png" v-if="item.task.statusName=='未完成'">
                         <img class="first-img" src="../../assets/img/daishenhe_t.png" v-if="item.task.statusName=='待审核'">
@@ -270,9 +270,9 @@ export default {
             con=array[indexC]+' 00:00:00'
             return con
         },
-        link(id,stuid,str,end){
+        link(id,stuid,str,end,stuname){
             var _self = this;
-            this.$router.push({path: '/studentTaskDetailsTea/'+_self.uid+'/'+id+'/'+stuid+'/'+str+'/'+end+'/'+0});
+            this.$router.push({path: '/studentTaskDetailsTea/'+_self.uid+'/'+id+'/'+stuid+'/'+str+'/'+end+'/'+0+'/'+stuname});
         },
         propShow2(){
             this.show2=true
