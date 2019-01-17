@@ -629,7 +629,6 @@ export default {
         },
         //获取视频地址
         obtainVideo(){
-            this.upDataShow=false;
             var _self = this;
             this.$axios.get( process.env.API_ROOT+"oss/2/get/code/"+_self.authorizationCode,
                 qs.stringify({
@@ -644,6 +643,7 @@ export default {
                                 el.val=res.data.domain+res.data.path;
                             }
                         })
+                        _self.upDataShow=false;
                     }else{
                         _self.$vux.toast.show({type: 'warn',text:'暂无视频' });
                     }
@@ -1274,7 +1274,7 @@ export default {
     /* 视频 */
     .addVideo{width:215px!important;height:215px;}
     .addVideo img{width:215px;height:215px;}
-    .viedoPropParent{position: fixed;background: rgba(0,0,0,0.5);top: 0;left: 0;right: 0;bottom: 0;z-index: 100000;}
+    .viedoPropParent{position: fixed;background: rgba(0,0,0,0.5);top: 0;left: 0;right: 0;bottom: 0;z-index: 999;}
     .viedoProp{width: 85%;padding:10px 10px 30px;background: #fff;position: fixed;margin: 0 auto;top: 30%;left: 0px;right: 0px;box-shadow: 0 0 5px #ccc;/*no*/border-radius: 3px;/*no*/}
     .viedoProp > p,.viedoProp > div{text-align:center;font-size:26px;margin-bottom:10px;}
     .videoP1 {overflow: hidden;}
