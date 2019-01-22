@@ -15,12 +15,12 @@
               </cell-box>
 
               <template v-for="item in itmes">
-                    <cell-box class="con-child" v-if="item.type!=6&&item.type!=29&&item.citeDataType!=1">
+                    <cell-box class="con-child" v-if="item.type!=6&&item.type!=29&&item.type!=28&&item.citeDataType!=1">
                         <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{item.name}}:</span>
                         <div class="hs_div">{{ item.valex==''||item.valex==null||item.valex==undefined?'--':(item.type==5||item.type==10||item.type==17||item.type==25)?item.valex.replace(/,/g,' | '):item.valex }}</div>
                         
                     </cell-box>
-                    <div class="referenceDiv referenceDivZs auditStyle" v-if="item.citeDataType==1&&item.type!=6&&item.type!=29">
+                    <div class="referenceDiv referenceDivZs auditStyle" v-if="item.citeDataType==1&&item.type!=6&&item.type!=29&&item.type!=28">
                         <span>"{{ item.name }}"</span>
                         <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
                             <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
@@ -61,6 +61,40 @@
                         </div>
                         <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
                     </div>
+
+                    <cell-box class="con-child" v-if="item.type==28&&item.citeDataType!=1"> 
+                        <span>{{ item.name }}</span>
+                        <div class="mp3Div">
+                            <aplayer v-if="item.valex!=null&&item.valex!=''&&item.valex!=undefined" :autoplay="null" :music="{
+                                title: '数据来源自',
+                                author: '绿芽',
+                                url: item.valex,
+                                pic: '',
+                                lrc: '[00:00.00]lrc here\n[00:01.00]aplayer'
+                            }">
+                            </aplayer>
+                        </div>
+                        <div class="hs_div" v-if="item.valex==''||item.valex==null||item==undefined">
+                          --
+                        </div>
+                    </cell-box>
+                     <div class="referenceDiv referenceDivZs auditStyle" v-if="item.citeDataType==1&&item.type==28">
+                        <span>"{{ item.name }}"</span>
+                        <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
+                            <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
+                            <div class="mp3Div">
+                                <aplayer v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined" :autoplay="null" :music="{
+                                    title: '数据来源自',
+                                    author: '绿芽',
+                                    url: itemRefer.val,
+                                    pic: '',
+                                    lrc: '[00:00.00]lrc here\n[00:01.00]aplayer'
+                                }">
+                                </aplayer>
+                            </div>
+                        </div>
+                        <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
+                    </div>
                </template>
 
                 <cell-box class="con-child" v-if="info.state=='N'">
@@ -92,13 +126,16 @@
   import reviewRejected from "@/components/tea/ReviewRejected";
 
 import { CellBox, Group, Flexbox, FlexboxItem } from "vux";
+import aplayer from "vue-aplayer";
+
 export default {
     components: {
         CellBox,
         Group,
         Flexbox,
         reviewRejected,
-        FlexboxItem
+        FlexboxItem,
+        aplayer: aplayer
     },
     created(){
       this.loadData();
@@ -279,6 +316,13 @@ export default {
 .seeVideo .removeSmlieImg {position: absolute;right:0;top:0;width: 22px;height: 22px;}
 .hs_div{margin-top:20px;color:#706f6f;}
 .video-player.video-player.vjs-custom-skin{margin-top:50%;}
+
+/* 音频 */
+.addMp3 strong{color:#01c269;font-weight:400;}
+.addMp3Img{width:30px;margin-right:10px;vertical-align: middle;margin-top:-10px;}
+.mp3Div{position: relative;}
+.mp3Div .removeSmlieImg{position: absolute;right:10px;top:10px;width: 28px;height: 28px;z-index: 10;}
+.mp3Div .aplayer{margin-left:0;}
 
 /* 数据引用 */
 .referenceDiv{padding:10px 25px;overflow: hidden;}
