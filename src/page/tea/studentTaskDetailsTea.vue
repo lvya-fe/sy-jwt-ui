@@ -526,7 +526,7 @@
             <div class="viedoProp">
                 <p class="videoP1">
                     <img @click="upDataShow=false" src="@/assets/img/videoX.png" alt="">
-                    <img @click="upDataVideo" src="@/assets/img/videoRrefresh.png" alt="">
+                    <img @click="upDataVideo(propId,propsta)" src="@/assets/img/videoRrefresh.png" alt="">
                 </p>
                 <p class="videoP2">请在PC端访问此链接上传文件</p>
                 <p class="videoP3">（上传成功前，请勿关闭此页面，一小时内有效）</p>
