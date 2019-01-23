@@ -283,11 +283,11 @@ export default {
             this.show2=false;
             console.log('aaaaaaaaaaa')
         },
-        selectCycle(v){
+        selectCycle(v,indexv){
             this.show3 =true;
             this.show2=false;
-            this.indexCycle=v
-            this.cycleid=v+1
+            this.indexCycle=indexv
+            this.cycleid=v
             console.log(this.cycleid)
             this.query()
         },

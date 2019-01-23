@@ -5,7 +5,7 @@
       任务周期
     </div>
     <div class="class-con">
-      <div v-for="(item,index) in conData" :key="index" @click="select(item.id)" :style="index==0?'color:#2ed184':''" :class="indexCycle==index?'selected':''">{{ item.stime + ' ~ '}} {{ (jointimetype==0&&cycle==0)?'进行中':item.etime  }}</div>
+      <div v-for="(item,index) in conData" :key="index" @click="select(item.id,index)" :style="index==0?'color:#2ed184':''" :class="indexCycle==index?'selected':''">{{ item.stime + ' ~ '}} {{ (jointimetype==0&&cycle==0)?'进行中':item.etime  }}</div>
     </div>
   </div>
 </template>
@@ -45,8 +45,8 @@
       goback(){
         this.$emit('closeSelect');
       },
-      select(index){
-        this.$emit('selectCycle',index);
+      select(id,index){
+        this.$emit('selectCycle',id,index);
       }
     }
   }
