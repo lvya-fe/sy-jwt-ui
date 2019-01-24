@@ -949,7 +949,10 @@ export default {
           }
           if(_self.strTime==null){
               stt.stime=''
-              stt.endTime=''
+              stt.etime=''
+          }else{
+              stt.stime=_self.strTime
+              stt.etime=_self.endTime
           }
           if(_self.formid==0){
             stt.formid = ''
