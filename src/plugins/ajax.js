@@ -7,25 +7,25 @@ import axios from 'axios'
 
 // 拦截request,设置全局请求为ajax请求
 axios.interceptors.request.use((config) => {
-     config.headers['X-Requested-With'] = 'XMLHttpRequest';
+   // config.headers['X-Requested-With'] = 'XMLHttpRequest';
     // config.headers['Access-Control-Allow-Origin'] = '*';
 
    var url = config.data;
-  if (url != undefined && url.indexOf("=") != -1) {
-      var str = url;
-      var strs = str.split("&");
-      for(var i = 0; i < strs.length; i ++) {
-        if(strs[i].split("=")[0]=="uid"){
-          var uid = unescape(strs[i].split("=")[1]);
-          localStorage.setItem("uid",uid);
-        }
-        // theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
-      }
-   }
-
+    try {
+        if (url != undefined && url.indexOf("=") != -1) {
+          var str = url;
+          var strs = str.split("&");
+          for(var i = 0; i < strs.length; i ++) {
+            if(strs[i].split("=")[0]=="uid"){
+              var uid = unescape(strs[i].split("=")[1]);
+              localStorage.setItem("uid",uid);
+            }
+          }
+       }
+    } catch(err){
+    }
 
    if (localStorage.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-
       config.headers.Authorization = 'Bearer '+localStorage.token;
    }
 

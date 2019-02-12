@@ -63,8 +63,8 @@
                 </div>
                 <!-- 日期时间 -->
                 <group v-if="item.type==3&&item.citeDataType!=1" class="datetimeCon">
-                    <datetime 
-                        v-model="item.val" 
+                    <datetime
+                        v-model="item.val"
                         :title="(item.notnull=='Y')?'<strong style='+'color:#ff0000;vertical-align:middle;'+'>*</strong>'+item.name:item.name"
                         format="YYYY-MM-DD HH:mm"
                         placeholder="请选择日期时间">
@@ -82,7 +82,7 @@
                 <div class="taskdetails_child" v-if="item.type==19&&item.citeDataType!=1">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
                     <input type="tel" v-model="item.val" :maxlength="item.charnumber" @input="number(item.val,item.id)"/>
-                </div>  
+                </div>
                 <div class="referenceDiv" v-if="item.citeDataType==1&&item.type==19">
                     <span>"{{ item.name }}"</span>
                     <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
@@ -91,7 +91,7 @@
                     </div>
                     <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
                 </div>
-                
+
                 <!-- 小数 -->
                 <div class="taskdetails_child" v-if="item.type==20&&item.citeDataType!=1">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
@@ -291,7 +291,7 @@
 
                 <!-- 图片上传 -->
                 <p v-if="item.type==6" class="pic_p"><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</p>
-                <uploadImg v-if="item.type==6" v-bind:imgs.sync="item.val" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg> 
+                <uploadImg v-if="item.type==6" v-bind:imgs.sync="item.val" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
 
                 <!-- 地理位置 -->
                 <div class="taskdetails_child" v-if="item.type==9">
@@ -302,14 +302,19 @@
                 <!-- 视频上传 -->
                 <div class="taskdetails_child" v-if="item.citeDataType!=1&&item.type==29">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
-                    <div class="addVideo" v-if="item.val==null||item.val==''||item.val==undefined">
-                       <img @click="upDataVideo(item.id,'mp4')" src="@/assets/img/addVideo.png" alt=""> 
+                    <div class="addVideo weui-uploader__input-box" v-if="item.val==null||item.val==''||item.val==undefined">
+                       <!--<img @click="upDataVideo(item.id,'mp4')" src="@/assets/img/addVideo.png" alt="">-->
+                        <input  class="weui-uploader__input"  @change="uploadVideo(item.id,$event,'mp4' )" type="file" accept="video/*" multiple="">
+                        <!--class="weui-uploader__input"-->
+                        <img src="@/assets/img/addVideo.png"  alt="">
                     </div>
+                    <div  style="text-align:right;color:#ccc;" @click="upDataVideo(item.id,'mp4')" v-if="item.val==null||item.val==''||item.val==undefined">大文件请点击(电脑上传)</div>
                     <div class="seeVideo" v-if="item.val!=null&&item.val!=''&&item.val!=undefined">
                         <img class="removeSmlieImg" @click="item.val=null" src="@/assets/img/shanchub.png" alt="">
                         <img class ="seeImg" @click="videoPropShow=true" src="@/assets/img/videoImgMo.png" alt="">
                     </div>
                 </div>
+
                 <div class="referenceDiv" v-if="item.citeDataType==1&&item.type==29">
                     <span>"{{ item.name }}"</span>
                     <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
@@ -324,11 +329,19 @@
                 <!-- 音频上传 -->
                 <div class="taskdetails_child" v-if="item.citeDataType!=1&&item.type==28">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
-                    <div class="addMp3" v-if="item.val==null||item.val==''||item.val==undefined">
-                       <strong @click="upDataVideo(item.id,'mp3')"  v-if="item.val==null||item.val==''||item.val==undefined">
-                           <img class="addMp3Img" src="@/assets/img/addMP3.png" alt="">添加音频 
-                       </strong>
+                    <div class="addMp3 weui-uploader__input-box"     v-if="item.val==null||item.val==''||item.val==undefined">
+                       <!--<strong @click="upDataVideo(item.id,'mp3')"  v-if="item.val==null||item.val==''||item.val==undefined">-->
+                           <!--<img class="addMp3Img" src="@/assets/img/addMP3.png" alt="">添加音频-->
+                       <!--</strong>-->
+
+                        <!--style="position:absolute; clip:rect(0 0 0 0);"-->
+                        <input class="weui-uploader__input"  @change="uploadVideo(item.id,$event,'mp3')" type="file" accept="audio/mpeg" multiple="">
+
+                        <strong v-if="item.val==null||item.val==''||item.val==undefined">
+                            <img class="addMp3Img" src="@/assets/img/addMP3.png" alt="">添加音频
+                        </strong>
                     </div>
+                    <div style="text-align:right;color:#ccc;" @click="upDataVideo(item.id,'mp3')" v-if="item.val==null||item.val==''||item.val==undefined">大文件请点击(电脑上传)</div>
                     <div class="mp3Div">
                         <img class="removeSmlieImg" @click="item.val=null" src="@/assets/img/shanchub.png" alt="">
                         <aplayer v-if="item.val!=null&&item.val!=''&&item.val!=undefined" :autoplay="null" :music="{
@@ -369,7 +382,7 @@
                     北京市朝阳区惠中北路
                 </div>
             </div> -->
-           
+
             <!-- <div class="taskdetails_child">
                 <span>图片上传 :</span>
                 <div class="picture_div">
@@ -392,7 +405,7 @@
                 <div class="checkbox_div">
                     {{ bhBz }}
                 </div>
-            </div> 
+            </div>
             <div class="taskdetails_ts" v-for="item in itmes">
                 <template v-if="item.type!=6&&item.type!=29&&item.type!=28&&item.citeDataType!=1">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
@@ -493,7 +506,7 @@
                 </div>
             </div> -->
         </div>
-        
+
         <div class="prop_history" v-show="show">
             <div class="ts_prop" @click="tsPropshow"></div>
             <div class="prop_history_content">
@@ -501,17 +514,26 @@
                 <div @click="propShowtime">数据提交历史</div>
             </div>
         </div>
+
+        <!---->
         <div class="viedoPropParent" v-show="upDataShow">
             <div class="viedoProp">
                 <p class="videoP1">
                     <img @click="upDataShow=false" src="@/assets/img/videoX.png" alt="">
                     <img @click="upDataVideo(propId,propsta)" src="@/assets/img/videoRrefresh.png" alt="">
                 </p>
-                <p class="videoP2">请在PC端访问此链接上传文件</p>
+                <p class="videoP2">请使用电脑访问此链接上传文件</p>
                 <p class="videoP3">（上传成功前，请勿关闭此页面，一小时内有效）</p>
                 <p class="videoP4">{{ upDataUrl }}</p>
                 <div class="videoP5" v-if="btnGc">上传成功后，点击获取文件（<span>{{ si }}</span>S）</div>
                 <div class="videoP5" v-if="!btnGc" @click="obtainVideo">点击获取文件</div>
+
+                <div v-show="inlineDescList.length>0">
+                    <checklist title="最近上传文件" :max="1" :options="inlineDescList" v-model="inlineDescListValue" @on-change="changeFile"></checklist>
+                </div>
+                <div v-show="inlineDescList.length<=0">
+                    最近无新上传文件
+                </div>
             </div>
         </div>
         <div class="videoParent" @click.prevent.stop="videoPropShow=false" v-if="videoPropShow">
@@ -522,8 +544,8 @@
             ></video-player>
         </div>
 
-        
-        
+
+
 
 
         <showcycle v-if="show2" v-bind:conData="taskCycles" v-bind:indexCycle="indexCycle" @closeSelect="closeSelect" @selectCycle="selectCycle" v-bind:jointimetype="jointimetype" v-bind:cycle="cycle" v-bind:formZt="formZt"></showcycle>
@@ -534,13 +556,13 @@
 
 
     </div>
-     
+
 </template>
 
 <script>
 import qs from 'qs';
 import {formatDate} from '../../plugins/formatDate.js';
-import { Group, Cell, XTextarea, Datetime  } from "vux";
+import { Group, Cell, XTextarea, Datetime,Checklist  } from "vux";
 import VDistpicker from 'v-distpicker'
 import showcycle from '@/page/stu/SelectionPeriod'
 import showhistime from '@/page/stu/SubmissionTime'
@@ -560,8 +582,9 @@ import aplayer from "vue-aplayer";
 
 export default {
     components:{
-        Group, 
-        Cell, 
+        Group,
+        Cell,
+        Checklist,
         XTextarea,
         Datetime,
         VDistpicker,
@@ -598,7 +621,8 @@ export default {
                 }
             },
 
-
+            inlineDescList: [],
+            inlineDescListValue: [],
             uid:this.$route.params.uid,
             id:this.$route.params.id,
             strTime:this.$route.params.strtime,
@@ -615,7 +639,7 @@ export default {
             conJsSelect:[],
 
 
-            
+
             taskCycles:[],
             indexCycle:0,
             indexCycle1:0,
@@ -630,7 +654,7 @@ export default {
             dataModel: [],
             // selectZd:[],
 
-            
+
             data:[],
             xr:'',
             orgId:'',
@@ -661,7 +685,7 @@ export default {
     },
     computed: mapState({
       _url_: state => state._url_
-      
+
     }),
     created(){
         wechatconfigInit(this,qs,this.uid,this._url_);
@@ -680,12 +704,14 @@ export default {
     methods:{
         //查看类型表单 查看视频
         ckSee(value){
+            console.log(value)
             this.videoPropShow=true;
             this.playerOptions.sources[0].src=value
         },
         //获取视频地址
         obtainVideo(){
             var _self = this;
+
             this.$axios.get( process.env.API_ROOT+"oss/2/get/code/"+_self.authorizationCode,
                 qs.stringify({
                 })
@@ -693,10 +719,10 @@ export default {
                 if(res.isSuccess){
                     console.log(res,'获取视频')
                     if(res.data.path!='ok'){
-                        _self.playerOptions.sources[0].src=res.data.domain+res.data.path
+                        _self.playerOptions.sources[0].src=res.data.path
                         _self.itmes.forEach(function(el){
                             if(el.id==_self.propId){
-                                el.val=res.data.domain+res.data.path;
+                                el.val=res.data.path;
                             }
                         })
                         _self.upDataShow=false;
@@ -728,23 +754,33 @@ export default {
             var _self = this;
             _self.upDataShow=true;
             _self.propId=id;
-            _self.propsta=cad
+            _self.propsta=cad;
             if(_self.si==0){
-                this.$axios.get( process.env.API_ROOT+"oss/2/get/code",
+                this.$axios.get( process.env.API_ROOT+"oss/2/"+cad+"/get/code",
                     qs.stringify({
                     })
                 ).then(function(res){
                     if(res.isSuccess){
-                        console.log(res,'验证码')
-                        _self.authorizationCode=res.data
+                        console.log(res,'验证码');
+                        _self.authorizationCode=res.data.code
                         _self.upDataUrl='http://'+window.location.host+'/t/#/views/tea/upVideo/'+_self.propsta+'/'+_self.authorizationCode
                         _self.countdown();
+
+                        _self.inlineDescList = [];
+
+                        res.data.list.forEach(v=>{
+                           var obj = {};
+                            obj.key = v.url;
+                            obj.value = v.url;
+                            obj.inlineDesc = "上传于:"+v.time;
+                            _self.inlineDescList.push(obj);
+                        });
+                    }else{
+                        _self.$vux.toast.show({type: 'warn',text:res.errorDesc });
                     }
                 }).catch(function(err){
                     _self.errorUtil(err);
                 })
-            }else{
-                
             }
         },
         removeStr(val,leng){
@@ -752,6 +788,19 @@ export default {
                 return val.substring(0, val.length - leng);
             }else{
                 return val
+            }
+        },
+        changeFile (val, label) {
+            if(val!=""&&val!=undefined) {
+
+                var _self = this;
+                _self.playerOptions.sources[0].src =val[0];
+                _self.itmes.forEach(function (el) {
+                    if (el.id == _self.propId) {
+                        el.val = val[0];
+                    }
+                })
+                _self.upDataShow = false;
             }
         },
         qx(){
@@ -878,7 +927,7 @@ export default {
                     _self.isshow1=false
                     _self.isshow2=true
                 }
-                
+
             }).catch(function(err){
                 _self.errorUtil(err);
             })
@@ -945,6 +994,72 @@ export default {
             this.show3=false
             this.showtime=false
         },
+        uploadVideo(id,e,type) {
+            //e.target.value文件名
+
+            try {
+
+
+                this.propId = id;
+                var file = e.target.files[0];
+                var formdata = new FormData();
+                formdata.append('file', file);
+                this.ossconfig(id, formdata, type);
+            }catch (e) {
+                this.$vux.loading.hide();
+                this.$vux.toast.show({type: 'warn',text:'当前设备不支持,请在电脑端上传' });
+            }
+        },
+        ossconfig(id,formdata,type) {
+            var _self = this;
+            //process.env.API_ROOT + 'oss/2/get/config'
+            this.$axios.get(process.env.API_ROOT + 'oss/2/get/config').then(res => {
+                if (res.isSuccess) {
+                    formdata.append('authorization', res.data.authorization);
+                    formdata.append('bucket', res.data.bucket);
+                    formdata.append('x-date', res.data.date);
+                    formdata.append('expiration', res.data.expiration);
+                    formdata.append('policy', res.data.policy);
+                    formdata.append('save-key', res.data.save_key);
+
+                    _self.doUpload(id, formdata, type,res.data.domain,res.data.url);
+
+                }
+            });
+        },
+        doUpload(id,formdata,type,domain,url) {
+            this.$vux.loading.show({
+                text: '上传中...'
+            })
+            var _self = this;
+            this.$axios.post(url, formdata,{
+                headers:{
+                    "Content-Type":"multipart/form-data"
+                }
+            }).then(res => {
+                _self.$vux.loading.hide();
+                console.log(res);
+                if(res.code=='200'){
+
+                    if(type=="mp4"){//视频
+                        _self.playerOptions.sources[0].src=domain+res.url
+                    }
+
+                    _self.itmes.forEach(function(el){
+                        if(el.id==id){
+                            el.val=domain+res.url;
+                        }
+                    })
+                    _self.upDataShow=false;
+
+                }else{
+                    _self.$vux.toast.show({type: 'warn',text:'暂无文件' });
+                }
+
+            }).catch(err => {
+                console.log(err);
+            })
+        },
         loadData(){
           var _self = this;
           console.log(_self.strTime)
@@ -1010,11 +1125,10 @@ export default {
                 _self.isshow1=false
                 _self.isshow2=true
             }
-            
+
             _self.$previewRefresh()
+
             console.log(res,'看新返回值')
-            
-            
           }).catch(function(err){
             _self.errorUtil(err);
           })
@@ -1073,7 +1187,7 @@ export default {
                 }).catch(function(err){
                     _self.errorUtil(err);
                 })
-                
+
             }
         },
         add(){
@@ -1163,7 +1277,7 @@ export default {
                             age='请输入正确的电子邮箱'
                         }
                     }
-                    
+
                 }
                 if(el.type==27){
                     if(el.notnull!='Y'&&el.val!=''&&el.val!=null){
@@ -1214,7 +1328,7 @@ export default {
                             time:2000,
                             text: '提交成功,请填写下一个任务~',
                             onShow () {
-                                
+
                             },
                             onHide () {
                                 wechatconfigInit(_self,qs,_self.uid,_self._url_);
@@ -1236,7 +1350,7 @@ export default {
             }else{
                 _self.$vux.toast.show({type: 'warn',text:age });
             }
-            
+
         },
         getMap() {
             var  self_ = this;
@@ -1308,7 +1422,7 @@ export default {
     .taskdetails_child > div{float: left;width:100%;}
     .taskdetails_child > div input[type='text']{width:95%;height:65px;line-height:65px;margin-bottom:20px;border:1px solid #c4c5c6;/*no*/border-radius:5px;/*no*/padding-left:5%;outline:none;font-size:28px;}
     .pic_p{padding:20px 30px 0;font-size:28px;color:#444;overflow: hidden;}
-    
+
     .taskdetails_ts{padding:10px 20px 0;font-size:28px;color:#444;overflow: hidden;}
     .taskdetails_ts > span {float:left;width: 100%;text-align: left;padding:10px 0;font-size:28px;}
     .taskdetails_ts select{float:left;width:100%;height:67px;line-height:67px;border:1px solid #e2e2e2;/*no*/border-radius:5px;/*no*/padding-left:3%;outline:none;font-size:28px;}
@@ -1337,7 +1451,7 @@ export default {
     .prop_history_content > div{text-align: center;font-size: 28px;color:#444;padding: 40px 0;margin: 0 20px;}
     .prop_history_content > div:first-child{border-bottom:1px solid #f4f3f3;/*no*/}
     .ts_prop{width:100%;height:100%;}
-    
+
 
     .select_peo{float:left;width:95%!important;min-height:65px;line-height:65px;border:1px solid #e2e2e2;/*no*/border-radius:5px;/*no*/padding:0 2.5%;overflow: hidden;}
     .select_peo strong{font-weight:400;float:left;margin: 5px 10px;border:1px solid #e2e2e2;/*no*/padding:0 5px;/*no*/border-radius:5px;/*no*/position:relative;}
@@ -1346,7 +1460,7 @@ export default {
     /* 新增电话样式 */
     .phone_div > .sr_input{width:60%;}
     .phone_div > .js_input{margin-top:20px;}
-    
+
     .phone_div .dick_yz{float: left;width:35%;font-size:28px;height:65px;line-height:65px;text-align:center;color:#01c267;cursor: pointer;border:1px solid #fff;background:#fff;outline:none;}
 
     input[type="text"],input[type="button"],input[type="tel"],input[type="number"], input[type="submit"], input[type="reset"],select {
@@ -1392,4 +1506,26 @@ export default {
     .referChildDiv p{font-size:26px;color:#706f6f;}
     .referenceDivZs {padding:10px 1px;}
     .referChildDiv .seeVideo{margin-top:10px;}
+
+
+    .weui-uploader__input{
+       position:absolute;
+        z-index:1;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        opacity:0;
+        -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+    }
+
+    .weui-uploader__input-box{
+        float:left;
+        position:relative;
+        /*margin-right:9px;*/
+        /*margin-bottom:9px;*/
+        /*width:77px;*/
+        /*height:77px;*/
+        /*border:1px solid #D9D9D9;*/
+    }
 </style>

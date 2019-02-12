@@ -15,6 +15,7 @@ import VueCookie from 'vue-cookie'
 
 import 'lib-flexible/flexible'
 
+
 import VueScroller from 'vue-scroller'
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
@@ -22,11 +23,16 @@ import 'vue-photo-preview/dist/skin.css'
 import VideoPlayer from 'vue-video-player'
 require('video.js/dist/video-js.css')
 require('vue-video-player/src/custom-theme.css')
+
+
+
 Vue.use(VideoPlayer)
 
 Vue.use(preview)
 
-
+// import weui from 'weui.js'
+// import 'weui'
+// Vue.prototype.$weui = weui
 
 
 
@@ -578,7 +584,7 @@ router.afterEach(function (to) {
 })
 
 
-FastClick.attach(document.body)
+// FastClick.attach(document.body)
 
 Vue.config.productionTip = false
 
