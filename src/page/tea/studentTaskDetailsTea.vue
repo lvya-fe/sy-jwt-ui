@@ -315,14 +315,19 @@
                 <!-- 视频上传 -->
                 <div class="taskdetails_child" v-if="item.citeDataType!=1&&item.type==29">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
-                    <div class="addVideo" v-if="item.val==null||item.val==''||item.val==undefined">
-                       <img @click="upDataVideo(item.id,'mp4')" src="@/assets/img/addVideo.png" alt=""> 
+                    <div class="addVideo weui-uploader__input-box" v-if="item.val==null||item.val==''||item.val==undefined">
+                        <!--<img @click="upDataVideo(item.id,'mp4')" src="@/assets/img/addVideo.png" alt="">-->
+                        <input  class="weui-uploader__input"  @change="uploadVideo(item.id,$event,'mp4' )" type="file" accept="video/*" multiple="">
+                        <!--class="weui-uploader__input"-->
+                        <img src="@/assets/img/addVideo.png"  alt="">
                     </div>
+                    <div  style="text-align:right;color:#ccc;" @click="upDataVideo(item.id,'mp4')" v-if="item.val==null||item.val==''||item.val==undefined">大文件请点击(电脑上传)</div>
                     <div class="seeVideo" v-if="item.val!=null&&item.val!=''&&item.val!=undefined">
                         <img class="removeSmlieImg" @click="item.val=null" src="@/assets/img/shanchub.png" alt="">
                         <img class ="seeImg" @click="videoPropShow=true" src="@/assets/img/videoImgMo.png" alt="">
                     </div>
                 </div>
+
                 <div class="referenceDiv" v-if="item.citeDataType==1&&item.type==29">
                     <span>"{{ item.name }}"</span>
                     <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
@@ -337,11 +342,19 @@
                 <!-- 音频上传 -->
                 <div class="taskdetails_child" v-if="item.citeDataType!=1&&item.type==28">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
-                    <div class="addMp3" v-if="item.val==null||item.val==''||item.val==undefined">
-                       <strong @click="upDataVideo(item.id,'mp3')"  v-if="item.val==null||item.val==''||item.val==undefined">
-                           <img class="addMp3Img" src="@/assets/img/addMP3.png" alt="">添加音频 
-                       </strong>
+                    <div class="addMp3 weui-uploader__input-box"     v-if="item.val==null||item.val==''||item.val==undefined">
+                        <!--<strong @click="upDataVideo(item.id,'mp3')"  v-if="item.val==null||item.val==''||item.val==undefined">-->
+                        <!--<img class="addMp3Img" src="@/assets/img/addMP3.png" alt="">添加音频-->
+                        <!--</strong>-->
+
+                        <!--style="position:absolute; clip:rect(0 0 0 0);"-->
+                        <input class="weui-uploader__input"  @change="uploadVideo(item.id,$event,'mp3')" type="file" accept="audio/mpeg" multiple="">
+
+                        <strong v-if="item.val==null||item.val==''||item.val==undefined">
+                            <img class="addMp3Img" src="@/assets/img/addMP3.png" alt="">添加音频
+                        </strong>
                     </div>
+                    <div style="text-align:right;color:#ccc;" @click="upDataVideo(item.id,'mp3')" v-if="item.val==null||item.val==''||item.val==undefined">大文件请点击(电脑上传)</div>
                     <div class="mp3Div">
                         <img class="removeSmlieImg" @click="item.val=null" src="@/assets/img/shanchub.png" alt="">
                         <aplayer v-if="item.val!=null&&item.val!=''&&item.val!=undefined" :autoplay="null" :music="{
@@ -371,7 +384,6 @@
                     </div>
                     <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
                 </div>
-
 
             </template>
 
@@ -705,12 +717,14 @@ export default {
     methods:{
         //查看类型表单 查看视频
         ckSee(value){
+            console.log(value)
             this.videoPropShow=true;
             this.playerOptions.sources[0].src=value
         },
         //获取视频地址
         obtainVideo(){
             var _self = this;
+
             this.$axios.get( process.env.API_ROOT+"oss/2/get/code/"+_self.authorizationCode,
                 qs.stringify({
                 })
@@ -718,10 +732,10 @@ export default {
                 if(res.isSuccess){
                     console.log(res,'获取视频')
                     if(res.data.path!='ok'){
-                        _self.playerOptions.sources[0].src=res.data.domain+res.data.path
+                        _self.playerOptions.sources[0].src=res.data.path
                         _self.itmes.forEach(function(el){
                             if(el.id==_self.propId){
-                                el.val=res.data.domain+res.data.path;
+                                el.val=res.data.path;
                             }
                         })
                         _self.upDataShow=false;
@@ -738,7 +752,6 @@ export default {
             var _self = this;
             _self.si=2;
             _self.btnGc=true;
-            window.clearInterval()
             var time = window.setInterval(function () {
                 if (_self.si === 0) {
                     _self.si = 0;
@@ -754,31 +767,53 @@ export default {
             var _self = this;
             _self.upDataShow=true;
             _self.propId=id;
-            _self.propsta=cad
+            _self.propsta=cad;
             if(_self.si==0){
-                this.$axios.get( process.env.API_ROOT+"oss/2/get/code",
+                this.$axios.get( process.env.API_ROOT+"oss/2/"+cad+"/get/code",
                     qs.stringify({
                     })
                 ).then(function(res){
                     if(res.isSuccess){
-                        console.log(res,'验证码')
-                        _self.authorizationCode=res.data
+                        console.log(res,'验证码');
+                        _self.authorizationCode=res.data.code
                         _self.upDataUrl='http://'+window.location.host+'/t/#/views/tea/upVideo/'+_self.propsta+'/'+_self.authorizationCode
                         _self.countdown();
+
+                        _self.inlineDescList = [];
+
+                        res.data.list.forEach(v=>{
+                            var obj = {};
+                            obj.key = v.url;
+                            obj.value = v.url;
+                            obj.inlineDesc = "上传于:"+v.time;
+                            _self.inlineDescList.push(obj);
+                        });
+                    }else{
+                        _self.$vux.toast.show({type: 'warn',text:res.errorDesc });
                     }
                 }).catch(function(err){
                     _self.errorUtil(err);
                 })
-            }else{
-
             }
-            
         },
         removeStr(val,leng){
             if(val){
                 return val.substring(0, val.length - leng);
             }else{
                 return val
+            }
+        },
+        changeFile (val, label) {
+            if(val!=""&&val!=undefined) {
+
+                var _self = this;
+                _self.playerOptions.sources[0].src =val[0];
+                _self.itmes.forEach(function (el) {
+                    if (el.id == _self.propId) {
+                        el.val = val[0];
+                    }
+                })
+                _self.upDataShow = false;
             }
         },
         qx(){
@@ -932,6 +967,72 @@ export default {
             this.show2=false
             this.show3=false
             this.showtime=false
+        },
+        uploadVideo(id,e,type) {
+            //e.target.value文件名
+
+            try {
+
+
+                this.propId = id;
+                var file = e.target.files[0];
+                var formdata = new FormData();
+                formdata.append('file', file);
+                this.ossconfig(id, formdata, type);
+            }catch (e) {
+                this.$vux.loading.hide();
+                this.$vux.toast.show({type: 'warn',text:'当前设备不支持,请在电脑端上传' });
+            }
+        },
+        ossconfig(id,formdata,type) {
+            var _self = this;
+            //process.env.API_ROOT + 'oss/2/get/config'
+            this.$axios.get(process.env.API_ROOT + 'oss/2/get/config').then(res => {
+                if (res.isSuccess) {
+                    formdata.append('authorization', res.data.authorization);
+                    formdata.append('bucket', res.data.bucket);
+                    formdata.append('x-date', res.data.date);
+                    formdata.append('expiration', res.data.expiration);
+                    formdata.append('policy', res.data.policy);
+                    formdata.append('save-key', res.data.save_key);
+
+                    _self.doUpload(id, formdata, type,res.data.domain,res.data.url);
+
+                }
+            });
+        },
+        doUpload(id,formdata,type,domain,url) {
+            this.$vux.loading.show({
+                text: '上传中...'
+            })
+            var _self = this;
+            this.$axios.post(url, formdata,{
+                headers:{
+                    "Content-Type":"multipart/form-data"
+                }
+            }).then(res => {
+                _self.$vux.loading.hide();
+                console.log(res);
+                if(res.code=='200'){
+
+                    if(type=="mp4"){//视频
+                        _self.playerOptions.sources[0].src=domain+res.url
+                    }
+
+                    _self.itmes.forEach(function(el){
+                        if(el.id==id){
+                            el.val=domain+res.url;
+                        }
+                    })
+                    _self.upDataShow=false;
+
+                }else{
+                    _self.$vux.toast.show({type: 'warn',text:'暂无文件' });
+                }
+
+            }).catch(err => {
+                console.log(err);
+            })
         },
         loadData(){
           var _self = this;
@@ -1394,4 +1495,25 @@ export default {
     .referChildDiv p:first-child{margin-top:10px;}
     .referChildDiv p{font-size:26px;color:#706f6f;}
     .referenceDivZs {padding:10px 1px;}
+
+    .weui-uploader__input{
+        position:absolute;
+        z-index:1;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        opacity:0;
+        -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+    }
+
+    .weui-uploader__input-box{
+        float:left;
+        position:relative;
+        /*margin-right:9px;*/
+        /*margin-bottom:9px;*/
+        /*width:77px;*/
+        /*height:77px;*/
+        /*border:1px solid #D9D9D9;*/
+    }
 </style>
