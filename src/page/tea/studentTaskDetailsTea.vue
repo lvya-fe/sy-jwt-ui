@@ -313,7 +313,7 @@
                 </div>
 
                 <!-- 视频上传 -->
-                <div class="taskdetails_child" v-if="item.citeDataType!=1&&item.type==29">
+                <div class="taskdetails_child" v-if="item.citeDataType!=1&&item.type==29" style="position:relative;">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
                     <div class="addVideo weui-uploader__input-box" v-if="item.val==null||item.val==''||item.val==undefined">
                         <!--<img @click="upDataVideo(item.id,'mp4')" src="@/assets/img/addVideo.png" alt="">-->
@@ -321,7 +321,7 @@
                         <!--class="weui-uploader__input"-->
                         <img src="@/assets/img/addVideo.png"  alt="">
                     </div>
-                    <div  style="text-align:right;color:#ccc;" @click="upDataVideo(item.id,'mp4')" v-if="item.val==null||item.val==''||item.val==undefined">大文件请点击(电脑上传)</div>
+                    <div class="mgTopCss" style="text-align:right;color:#ccc;" @click="upDataVideo(item.id,'mp4')" v-if="item.val==null||item.val==''||item.val==undefined">大文件请点击(电脑上传)</div>
                     <div class="seeVideo" v-if="item.val!=null&&item.val!=''&&item.val!=undefined">
                         <img class="removeSmlieImg" @click="item.val=null" src="@/assets/img/shanchub.png" alt="">
                         <img class ="seeImg" @click="videoPropShow=true" src="@/assets/img/videoImgMo.png" alt="">
@@ -340,7 +340,7 @@
                 </div>
 
                 <!-- 音频上传 -->
-                <div class="taskdetails_child" v-if="item.citeDataType!=1&&item.type==28">
+                <div class="taskdetails_child" v-if="item.citeDataType!=1&&item.type==28" style="position:relative;">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
                     <div class="addMp3 weui-uploader__input-box"     v-if="item.val==null||item.val==''||item.val==undefined">
                         <!--<strong @click="upDataVideo(item.id,'mp3')"  v-if="item.val==null||item.val==''||item.val==undefined">-->
@@ -354,7 +354,7 @@
                             <img class="addMp3Img" src="@/assets/img/addMP3.png" alt="">添加音频
                         </strong>
                     </div>
-                    <div style="text-align:right;color:#ccc;" @click="upDataVideo(item.id,'mp3')" v-if="item.val==null||item.val==''||item.val==undefined">大文件请点击(电脑上传)</div>
+                    <div class="mgTopCss" style="text-align:right;color:#ccc;" @click="upDataVideo(item.id,'mp3')" v-if="item.val==null||item.val==''||item.val==undefined">大文件请点击(电脑上传)</div>
                     <div class="mp3Div">
                         <img class="removeSmlieImg" @click="item.val=null" src="@/assets/img/shanchub.png" alt="">
                         <aplayer v-if="item.val!=null&&item.val!=''&&item.val!=undefined" :autoplay="null" :music="{
@@ -1520,4 +1520,5 @@ export default {
     }
     .weui-uploader__input-box:after{content:none!important;}
     .weui-uploader__input-box:before{content:none!important;}
+    .mgTopCss{position:absolute;bottom:20px;right:20px;width:auto!important;z-index: 2;}
 </style>
