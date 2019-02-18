@@ -1491,6 +1491,7 @@ export default {
     .video-player.video-player.vjs-custom-skin{margin-top:50%;}
 
     /* 音频 */
+    .addMp3 {height:auto;}
     .addMp3 strong{color:#01c269;font-weight:400;}
     .addMp3Img{width:30px;margin-right:10px;vertical-align: middle;margin-top:-10px;}
     .mp3Div{position: relative;}
@@ -1526,6 +1527,9 @@ export default {
         /*margin-bottom:9px;*/
         /*width:77px;*/
         /*height:77px;*/
-        /*border:1px solid #D9D9D9;*/
+        background-color:#fff;
+        border:none;
     }
+    .weui-uploader__input-box:after{content:none!important;}
+    .weui-uploader__input-box:before{content:none!important;}
 </style>
