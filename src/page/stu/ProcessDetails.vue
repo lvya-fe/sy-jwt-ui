@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="top-back" v-show="show1">
-            <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
+            <img class="img-1" v-show="!noback" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title"><i class="icon iconfont ripple" v-if="(taskOpen==2)" :class="(taskIcon==0)?'icon-xiaoxikaiqi':(taskOpen==1)?'icon-xiaoxiguanbi':'icon-xiaoxi-weishezhiqian'" @click="qhWei"></i>{{ title }}</div>
             <router-link :to="'/pocessLiteracy/'+uid+'/'+id+'/'+'gc'">
                 <span class="top_right_span ripple">
@@ -254,6 +254,7 @@ export default {
         return{
             uid:this.$route.params.uid,
             id:this.$route.params.id,
+            back:this.$route.params.back,
             index:0,
             lastId:0,
             isaction:true,
@@ -296,6 +297,11 @@ export default {
         formatDate(time) {
             var date = new Date(time);
             return  formatDate(date, "yyyy-MM-dd hh:mm");
+        }
+    },
+    computed: {
+        noback:function(){
+            return this.back == 1 ? true : false;
         }
     },
     methods:{

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="top-back" v-show="show3">
-            <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
+            <img class="img-1" v-show="!noback" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ task.title }}</div>
             <router-link to="" class="img-2">
                 <i class="icon iconfont icon-shiyongcishu ripple" @click="propShow"></i>
@@ -627,6 +627,7 @@ export default {
             id:this.$route.params.id,
             strTime:this.$route.params.strtime,
             endTime:this.$route.params.endtime,
+            back:this.$route.params.back,
             task:[],
             itmes:[],
             valList:[],
@@ -687,6 +688,11 @@ export default {
       _url_: state => state._url_
 
     }),
+    computed: {
+        noback:function(){
+            return this.back == 1 ? true : false;
+        }
+    },
     created(){
         wechatconfigInit(this,qs,this.uid,this._url_);
         if(this.strTime=='1970-01-01 08:00:00'||this.strTime==null){

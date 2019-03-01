@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="top-back">
-            <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
+            <img class="img-1" v-show="!noback" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ info.title }}</div>
 
             <router-link :to="'/pocessLiteracy/'+uid+'/'+id+'/'+'cj'">
@@ -106,6 +106,7 @@ export default {
         return{
             uid:this.$route.params.uid,
             id:this.$route.params.id,
+            back:this.$route.params.back,
             info:[],
             type:'',
             childId:'',
@@ -132,6 +133,9 @@ export default {
     computed: {
         top() {
             return - this.activeIndex * 0.666667 + 'rem';
+        },
+        noback:function(){
+            return this.back == 1 ? true : false;
         }
     },
     methods:{

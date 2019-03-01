@@ -2,7 +2,7 @@
   <div>
     <div v-show="isshow">
         <div class="top-back">
-            <img class="img-1" src="@/assets/img/back_left_green.png" alt="" @click="goback">
+            <img class="img-1" v-show="!noback" src="@/assets/img/back_left_green.png" alt="" @click="goback">
 
             <img  src="@/assets/img/cishu.png"  @click="isshow=!isshow" class="img-2" v-if="taskinfo.cycle!=0">
 
@@ -100,6 +100,7 @@ export default {
           uid:this.$route.params.uid,
           id:this.$route.params.id,
           taskid:this.$route.params.taskid,
+          back:this.$route.params.back,
           lastid_write:0,
           lastid_nowrite:0,
           taskinfo:[],
@@ -163,6 +164,11 @@ export default {
     created(){
       this.loadData();
 
+    },
+    computed:{
+      noback:function(){
+        return this.back == 1 ? true : false;
+      }
     },
     methods:{
         closeSelect(){

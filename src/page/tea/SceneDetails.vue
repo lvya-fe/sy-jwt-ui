@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <div class="top-back">
-            <img class="img-1" src="@/assets/img/back_left_green.png" alt="" @click="goback">
+            <img class="img-1" v-show="!noback" src="@/assets/img/back_left_green.png" alt="" @click="goback">
             <router-link :to="'/EventDetails/'+this.uid+'/'+this.id" class="img-2">
                 <img  src="@/assets/img/morezhankai.png" alt="">
             </router-link>
@@ -254,6 +254,9 @@ export default {
           count =  count +1;
       }
       return count;
+    },
+    noback:function(){
+      return this.back == 1 ? true : false;
     }
   },
     data(){
@@ -262,6 +265,8 @@ export default {
             isaction2:true,
             uid:this.$route.params.uid,
             id:this.$route.params.id,
+            back:this.$route.params.back,
+            defCourseId:undefined,
             discuss:null,
             discussId:0,
             count2:0,
@@ -287,6 +292,8 @@ export default {
     },
   created(){
     var _this = this;
+    this.defCourseId = this.$route.params.courseId;
+    console.log(this.defCourseId)
     var  operation_sceneid = this.$cookie.get('operation_sceneid');
     if(operation_sceneid!=undefined){
        operation_sceneid = this.id+","+operation_sceneid;
@@ -388,11 +395,12 @@ export default {
           ).then(function(res) {
             console.log(res)
             _self.info = res.data.scene;
-            _self.items = res.data.infos;
+            // _self.items = res.data.infos;
+            _self.items = _self.defCourseId == undefined ? res.data.infos : res.data.infos.filter((e) => { return e.id == _self.defCourseId; });
             _self.count = res.data.count;
             _self.count2 = res.data.count2;
             if (_self.items!="") {
-              _self.nowsceneitem = _self.items[localStorage.indexB];
+              _self.nowsceneitem = _self.defCourseId == undefined ? _self.items[localStorage.indexB] :_self.items[0];
               _self.sceneItemView(localStorage.indexB);
               _self.$previewRefresh()
               _self.$nextTick(function(){

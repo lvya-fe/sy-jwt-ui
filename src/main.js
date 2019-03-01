@@ -93,7 +93,7 @@ const routes = [
   },
   {
     name: 'StudentSceneDetails',
-    path: '/StudentSceneDetails/:uid/:id',
+    path: '/StudentSceneDetails/:uid/:id/:back?',
     meta: {
       // title: '场景详情'
     },
@@ -103,7 +103,7 @@ const routes = [
   },
   {
     name: 'ProcessDetails',
-    path: '/ProcessDetails/:uid/:id',
+    path: '/ProcessDetails/:uid/:id/:back?',
     meta: {
       // title: '过程详情'
     },
@@ -154,7 +154,7 @@ const routes = [
   // },
   {
     name: 'studentTaskDetails',
-    path: '/studentTaskDetails/:uid/:id/:strtime/:endtime/:formid',
+    path: '/studentTaskDetails/:uid/:id/:strtime/:endtime/:formid/:back?',
     meta: {
       // title: '任务详情填写'
       // title: '任务详情'
@@ -307,7 +307,8 @@ const routes = [
   },
   {
     name:'sceneDetails',
-    path: '/sceneDetails/:uid/:id',
+    path: '/sceneDetails/:uid/:id/:courseId?/:back?',
+    // path: '/sceneDetails/:uid/:id/:back?',
     meta: {
       // title: '素养'
     },
@@ -317,7 +318,7 @@ const routes = [
   },
   {
     name:'taskList',
-    path: '/taskList/:uid/:taskid/:id',
+    path: '/taskList/:uid/:taskid/:id/:back?',
     meta: {
       // title: '素养'
     },
