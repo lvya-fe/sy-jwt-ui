@@ -293,7 +293,6 @@ export default {
   created(){
     var _this = this;
     this.defCourseId = this.$route.params.courseId;
-    console.log(this.defCourseId)
     var  operation_sceneid = this.$cookie.get('operation_sceneid');
     if(operation_sceneid!=undefined){
        operation_sceneid = this.id+","+operation_sceneid;
@@ -395,12 +394,11 @@ export default {
           ).then(function(res) {
             console.log(res)
             _self.info = res.data.scene;
-            // _self.items = res.data.infos;
-            _self.items = _self.defCourseId == undefined ? res.data.infos : res.data.infos.filter((e) => { return e.id == _self.defCourseId; });
+            _self.items = (_self.defCourseId == undefined || _self.defCourseId == 'null')? res.data.infos : res.data.infos.filter((e) => { return e.id == _self.defCourseId; });
             _self.count = res.data.count;
             _self.count2 = res.data.count2;
             if (_self.items!="") {
-              _self.nowsceneitem = _self.defCourseId == undefined ? _self.items[localStorage.indexB] :_self.items[0];
+              _self.nowsceneitem = (_self.defCourseId == undefined || _self.defCourseId == 'null') ? _self.items[localStorage.indexB] :_self.items[0];
               _self.sceneItemView(localStorage.indexB);
               _self.$previewRefresh()
               _self.$nextTick(function(){
@@ -525,8 +523,9 @@ export default {
           }else if(task.teaDoType==2){
             this.$router.push({path:'/stuList/'+this.uid+'/'+task.id+'/'+null});
           }else if(task.teaDoType==3){
-            this.$router.push({path: '/studentTaskDetailsTea/'+_self.$route.params.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
-            // alert(222)
+            //可选参数：stuid，stuname 添加到path中，  目的：为了在单独url中添加去除返回按钮的参数
+            this.$router.push({path: '/studentTaskDetailsTea/'+_self.$route.params.uid+'/'+task.id+'/'+'null/'+task.joinstarttime+'/'+task.joinendtime+'/'+0+'/null'});
+            // this.$router.push({path: '/studentTaskDetailsTea/'+_self.$route.params.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
           }
 
         },

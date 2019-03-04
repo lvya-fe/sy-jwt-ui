@@ -548,7 +548,7 @@ const routes = [
   },
   {
     name: 'studentTaskDetailsTea',
-    path: '/studentTaskDetailsTea/:uid/:id/:stuid?/:strtime/:endtime/:formid/:stuname?',
+    path: '/studentTaskDetailsTea/:uid/:id/:stuid?/:strtime/:endtime/:formid/:stuname?/:back?',
     meta: {
       // title: '填写表单'
     },

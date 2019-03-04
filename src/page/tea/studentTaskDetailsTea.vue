@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="top-back" v-show="show3">
-            <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
-            <div class="n_title">{{ (stuName!=''&&stuName!=null&&stuName!=undefined)?stuName:task.title }}</div>
+            <img class="img-1" v-show="!noback" src="../../assets/img/back_left_green.png" alt="" @click="goback">
+            <div class="n_title">{{ (stuName!=''&&stuName!='null'&&stuName!=undefined)?stuName:task.title }}</div>
             <router-link to="" class="img-2">
                 <i class="icon iconfont icon-shiyongcishu ripple" @click="propShow"></i>
             </router-link>
@@ -635,6 +635,7 @@ export default {
             endTime:this.$route.params.endtime,
             formid:this.$route.params.formid,
             stuName:this.$route.params.stuname,
+            back:this.$route.params.back,
             task:[],
             itmes:[],
             valList:[],
@@ -700,6 +701,11 @@ export default {
       _url_: state => state._url_
       
     }),
+    computed: {
+        noback:function(){
+        return this.back == 1 ? true : false;
+        }
+    },
     created(){
         wechatconfigInit(this,qs,this.uid,this._url_);
         if(this.strTime=='1970-01-01 08:00:00'||this.strTime==null){
@@ -909,7 +915,7 @@ export default {
             stt.uid=Number(_self.uid);
             stt.taskid=Number(_self.id);
             stt.formid=id
-            if(_self.stuid!=null&&_self.stuid!=undefined&&_self.stuid!=''){
+            if(_self.stuid!='null'&&_self.stuid!=undefined&&_self.stuid!=''){
                 stt.stuId = Number(_self.stuid);
                 urlName='taskView';
             }else{
@@ -1042,7 +1048,7 @@ export default {
           var urlName='';
           stt.uid=Number(_self.uid);
           stt.taskid=Number(_self.id);
-          if(_self.stuid!=null&&_self.stuid!=undefined&&_self.stuid!=''){
+          if(_self.stuid!='null'&&_self.stuid!=undefined&&_self.stuid!=''){
             stt.stuId = Number(_self.stuid);
             urlName='taskView';
           }else{
@@ -1182,7 +1188,7 @@ export default {
             var zm = true;
             obj.uid=_self.uid;
             obj.taskid = _self.id;
-            if(_self.stuid!=null&&_self.stuid!=undefined&&_self.stuid!=''){
+            if(_self.stuid!='null'&&_self.stuid!=undefined&&_self.stuid!=''){
                 obj.stuId = Number(_self.stuid);
             }
             _self.itmes.forEach(function (el) {
