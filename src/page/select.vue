@@ -34,7 +34,7 @@
   export default {
     data(){
       return{
-        title:'',
+        title:'选择账号',
         active:-1,
         show:false,
         conData:[]
@@ -89,7 +89,7 @@
           ).then(function(res){
             _self.conData = res.data;
 
-            _self.title= "选择账号";
+
 
           }).catch(function(err){
             _self.errorUtil(err);

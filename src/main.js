@@ -61,6 +61,17 @@ const store = new Vuex.Store({
 
 const routes = [
 
+
+    {
+        name:'del',
+        path: '/del',
+        meta: {
+            // title: '素养'
+        },
+        component: function (resolve) {
+            require(['./page/del.vue'], resolve)
+        }
+    },
   {
     name:'Error404',
     path: '/Error404/:msg',
