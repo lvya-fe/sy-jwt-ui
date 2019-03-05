@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="top-back" v-show="show3">
-            <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
+            <img class="img-1" v-show="!noback" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ title }}</div>
             <span class="img-2" @click="propShow2" v-if="!(jointimetype==0&&cycle==0)">
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
@@ -81,6 +81,7 @@ export default {
             uid:this.$route.params.uid,
             id:this.$route.params.id,
             cycleid:this.$route.params.cycleid,
+            back:this.$route.params.back,
             title:'',
             conData:[],
             pageNo:1,
@@ -109,6 +110,11 @@ export default {
     },
     mounted(){
         
+    },
+    computed: {
+        noback:function(){
+        return this.back == 1 ? true : false;
+        }
     },
     methods:{
         goback(){

@@ -538,7 +538,7 @@ const routes = [
   },
   {
     name: 'stuList',
-    path: '/stuList/:uid/:id/:cycleid',
+    path: '/stuList/:uid/:id/:cycleid/:back?',
     meta: {
       // title: '学生列表'
     },
