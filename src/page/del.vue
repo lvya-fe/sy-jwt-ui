@@ -6,8 +6,9 @@
 </template>
 
 <script>
-    import Cookies from 'js-cookie'
+
   import qs from 'qs';
+  import Cookies from 'js-cookie';
   import { Loading } from 'vux'
   export default {
     data(){
@@ -22,15 +23,8 @@
     },
     methods:{
         loadData(){
-          this.$vux.loading.show({
-           text: '微信登陆中..'
-          });
-            var token = Cookies.get('wxtoken');
-
-          setTimeout(function goto() {
-            location.replace("/app/auth/wx?uid="+localStorage.uid+"&code="+token);
-          },2000);
-           
+            Cookies.set('wxtoken',"12");
+            localStorage.clear();
         }
     }
   }

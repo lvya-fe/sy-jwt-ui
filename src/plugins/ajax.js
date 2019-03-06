@@ -2,7 +2,7 @@
  * Created by duanhong on 2018/1/9.
  */
 import axios from 'axios'
-
+import Cookies from 'js-cookie'
 
 
 // 拦截request,设置全局请求为ajax请求
@@ -24,9 +24,12 @@ axios.interceptors.request.use((config) => {
        }
     } catch(err){
     }
+    var token = Cookies.get('wxtoken');
+    // if (localStorage.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+    if (token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
+       config.headers.Authorization = 'Bearer '+token;
+    //  config.headers.Authorization = 'Bearer '+localStorage.token;
 
-   if (localStorage.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-      config.headers.Authorization = 'Bearer '+localStorage.token;
    }
 
   return config
@@ -40,7 +43,8 @@ axios.interceptors.response.use((response) => {
          return data;
     }
     if(data.token){
-      localStorage.setItem("token",data.token);
+        Cookies.set('wxtoken',data.token);
+       // localStorage.setItem("token",data.token);
     }
     // 根据返回的code值来做不同的处理（和后端约定）
     switch (data.errorCode) {

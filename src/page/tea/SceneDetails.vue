@@ -222,7 +222,7 @@ import qs from 'qs';
 import {formatDate} from '@/plugins/formatDate.js';
 import Infinite from "@/components/vue-scroll";
 import { Scroller } from 'vux'
-
+import Cookies from 'js-cookie';
 export default {
     directives: {
         TransferDom
@@ -268,6 +268,8 @@ export default {
             back:this.$route.params.back,
             defCourseId:undefined,
             discuss:null,
+            indexB:0,
+            indexC:0,
             discussId:0,
             count2:0,
             count:0,
@@ -291,6 +293,19 @@ export default {
         }
     },
   created(){
+
+
+      this.indexB  = Cookies.get('indexB');
+      this.indexC = Cookies.get('indexC');
+      if(this.indexB==null){
+          this.indexB=0;
+      }
+
+      if(this.indexC==null){
+          this.indexC=0;
+      }
+
+
     var _this = this;
     this.defCourseId = this.$route.params.courseId;
     var  operation_sceneid = this.$cookie.get('operation_sceneid');
@@ -317,8 +332,11 @@ export default {
     this.$cookie.set('operation_sceneid', operation_sceneid, {expires: 7});
 
 
-    _this.active=localStorage.indexB
-    _this.index=localStorage.indexC
+    // _this.active=localStorage.indexB
+    // _this.index=localStorage.indexC
+
+       _this.active=0;
+       _this.index=0;
     this.loadData();
   },
   filters: {
@@ -398,8 +416,10 @@ export default {
             _self.count = res.data.count;
             _self.count2 = res.data.count2;
             if (_self.items!="") {
-              _self.nowsceneitem = (_self.defCourseId == undefined || _self.defCourseId == 'null') ? _self.items[localStorage.indexB] :_self.items[0];
-              _self.sceneItemView(localStorage.indexB);
+             // _self.nowsceneitem = (_self.defCourseId == undefined || _self.defCourseId == 'null') ? _self.items[localStorage.indexB] :_self.items[0];
+                _self.nowsceneitem = (_self.defCourseId == undefined || _self.defCourseId == 'null') ? _self.items[_self.indexB] :_self.items[0];
+              _self.sceneItemView(_self.indexB);
+              //    _self.sceneItemView(localStorage.indexB);
               _self.$previewRefresh()
               _self.$nextTick(function(){
                 _self.percentage=Number(parseInt(_self.participateNum)/parseInt(_self.total)*100).toFixed(0);
@@ -530,7 +550,11 @@ export default {
 
         },
         toggle(index){
-          localStorage.setItem('indexB',index);
+         // localStorage.setItem('indexB',index);
+
+            Cookies.set('indexB',index);
+
+
           var _self = this;
           _self.active=index;
           _self.index=0;
@@ -577,7 +601,8 @@ export default {
 
         },
         onItemClick (index) {
-            localStorage.setItem('indexC',index);
+           // localStorage.setItem('indexC',index);
+            Cookies.set('indexC',index);
             this.index=index
             this.$cookie.set('s_'+this.id, index, 1);
         },
