@@ -104,7 +104,7 @@ const routes = [
   },
   {
     name: 'StudentSceneDetails',
-    path: '/StudentSceneDetails/:uid/:id/:back?',
+    path: '/StudentSceneDetails/:uid/:id/:back?/:roles?',
     meta: {
       // title: '场景详情'
     },
@@ -114,7 +114,7 @@ const routes = [
   },
   {
     name: 'ProcessDetails',
-    path: '/ProcessDetails/:uid/:id/:back?',
+    path: '/ProcessDetails/:uid/:id/:back?/:roles?',
     meta: {
       // title: '过程详情'
     },
@@ -165,7 +165,7 @@ const routes = [
   // },
   {
     name: 'studentTaskDetails',
-    path: '/studentTaskDetails/:uid/:id/:strtime/:endtime/:formid/:back?',
+    path: '/studentTaskDetails/:uid/:id/:strtime/:endtime/:formid/:back?/:roles?',
     meta: {
       // title: '任务详情填写'
       // title: '任务详情'
@@ -318,7 +318,7 @@ const routes = [
   },
   {
     name:'sceneDetails',
-    path: '/sceneDetails/:uid/:id/:courseId?/:back?',
+    path: '/sceneDetails/:uid/:id/:courseId?/:back?/:roles?',
     // path: '/sceneDetails/:uid/:id/:back?',
     meta: {
       // title: '素养'
@@ -329,7 +329,7 @@ const routes = [
   },
   {
     name:'taskList',
-    path: '/taskList/:uid/:taskid/:id/:back?',
+    path: '/taskList/:uid/:taskid/:id/:back?/:roles?',
     meta: {
       // title: '素养'
     },
@@ -559,7 +559,7 @@ const routes = [
   },
   {
     name: 'stuList',
-    path: '/stuList/:uid/:id/:cycleid/:back?',
+    path: '/stuList/:uid/:id/:cycleid/:back?/:roles?',
     meta: {
       // title: '学生列表'
     },
@@ -569,7 +569,7 @@ const routes = [
   },
   {
     name: 'studentTaskDetailsTea',
-    path: '/studentTaskDetailsTea/:uid/:id/:stuid?/:strtime/:endtime/:formid/:stuname?/:back?',
+    path: '/studentTaskDetailsTea/:uid/:id/:stuid?/:strtime/:endtime/:formid/:stuname?/:back?/:roles?',
     meta: {
       // title: '填写表单'
     },
