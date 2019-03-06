@@ -287,7 +287,6 @@ export default {
         closeSelect(){
             this.show3 =true;
             this.show2=false;
-            console.log('aaaaaaaaaaa')
         },
         selectCycle(v,indexv){
             this.show3 =true;

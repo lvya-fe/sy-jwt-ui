@@ -1311,13 +1311,12 @@ export default {
             if(zm){
                 this.$axios.post( process.env.API_ROOT+"app/tea/task/addtask",
                     qs.stringify(obj)
-                ).then(function(res){
-                    console.log(res)
+                ).then((res) =>{
                     if(res.data.id&&res.data.id!=''&&res.data.id!=null&&res.data.id!=undefined){
-                        _self.id=res.data.id
-                        _self.strTime=res.data.stime
-                        _self.endTime=res.data.etime
-                        _self.$vux.toast.show({
+                        this.id=res.data.id
+                        this.strTime=res.data.stime
+                        this.endTime=res.data.etime
+                        this.$vux.toast.show({
                             type:'success',
                             time:2000,
                             text: '提交成功,请填写下一个任务~',
@@ -1325,30 +1324,31 @@ export default {
                                 
                             },
                             onHide () {
-                                wechatconfigInit(_self,qs,_self.uid,_self._url_);
-                                if(_self.strTime=='1970-01-01 08:00:00'||_self.strTime==null){
-                                    _self.strTime=null
-                                    _self.endTime=null
+                                wechatconfigInit(this,qs,this.uid,this._url_);
+                                if(this.strTime=='1970-01-01 08:00:00'||this.strTime==null){
+                                    this.strTime=null
+                                    this.endTime=null
                                 }
                             }
                         })
-                        _self.loadData()
+                        this.loadData()
                     }else{
-                        _self.$vux.toast.show({type: 'success',text:"成功" });
-                        _self.goback();
+                        // this.$vux.toast.show({type: 'success',text:"成功" });
+                        // _self.goback();
+                        this.$router.push({path: '/InputNuts/'+this.uid+'/'+this.id + '/'+res.data});
                     }
-                }).catch(function(err){
+                }).catch((err) =>{
                     console.log(err)
-                    _self.errorUtil(err);
+                    this.errorUtil(err);
                 })
             }else{
-                _self.$vux.toast.show({type: 'warn',text:age });
+                this.$vux.toast.show({type: 'warn',text:age });
             }
             
         },
         getMap() {
             var  self_ = this;
-            this.$wechat.ready(function(){
+            self_.$wechat.ready(function(){
                 self_.$wechat.getLocation({
                     success: function (res) {
                         var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90

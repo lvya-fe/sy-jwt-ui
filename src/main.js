@@ -386,6 +386,16 @@ const routes = [
       require(['./page/tea/InputNutrients.vue'], resolve)
     }
   },
+  {//老师手动加分 -- 选择指标
+    name: 'InputNuts',
+    path: '/InputNuts/:uid/:id/:resId',
+    meta: {
+      // title: '素养'
+    },
+    component: function (resolve) {
+      require(['./page/tea/InputNuts.vue'], resolve)
+    }
+  },
   {
     name:'AuditOperation',
     path: '/AuditOperation/:uid/:id',
