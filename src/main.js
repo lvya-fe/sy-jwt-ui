@@ -619,6 +619,24 @@ Vue.prototype.errorUtil = function (err,uid){
       this.$router.replace({  path: '/error/'+uid+"/"+err.message});
     }else if(err.data!=undefined&&err.data.errorCode=="MISTOKEN"){
           if (localStorage.uid) {
+            //保存当前url
+
+              var u = navigator.userAgent;
+              var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+              var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+              var httpUrl = this._url_;
+              if (!isiOS) {
+                  httpUrl = window.location.href;
+              }
+
+              var httpUrl2 =  localStorage.getItem("lasturl");
+              if(httpUrl2!=httpUrl){
+                  localStorage.setItem("lasturl",httpUrl);
+              }else{
+                  localStorage.removeItem("lasturl");
+              }
+
+
               this.$router.replace({  path: '/start/'+localStorage.uid});
               //location.replace("/app/auth/wx?uid="+localStorage.uid+"&code="+localStorage.token);
           }

@@ -59,11 +59,18 @@
           })
         ).then(function(res){
 
-            if(item.type=='s'){
-              _self.$router.push({path: '/stuIndex/'+_self.$route.params.uid});
+            var httpUrl =  localStorage.getItem("lasturl");
+            if(httpUrl!=null&&httpUrl!=""){
+                location.replace(httpUrl);
             }else{
-              _self.$router.push({path: '/index/'+_self.$route.params.uid});
+                if(item.type=='s'){
+                    _self.$router.push({path: '/stuIndex/'+_self.$route.params.uid});
+                }else{
+                    _self.$router.push({path: '/index/'+_self.$route.params.uid});
+                }
             }
+
+
 
         }).catch(function(err){
           _self.errorUtil(err);
