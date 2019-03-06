@@ -621,15 +621,17 @@ Vue.prototype.errorUtil = function (err,uid){
           if (localStorage.uid) {
             //保存当前url
 
-              var u = navigator.userAgent;
-              var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-              var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-              var httpUrl = this._url_;
-              if (!isiOS) {
-                  httpUrl = window.location.href;
-              }
+              // var u = navigator.userAgent;
+              // var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+              // var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+              // var httpUrl = this._url_;
+              // if (!isiOS) {
+              //
+              // }
+              // alert(httpUrl);
 
-              var httpUrl2 =  localStorage.getItem("lasturl");
+              var  httpUrl = window.location.href;
+              var  httpUrl2 =  localStorage.lasturl;
               if(httpUrl2!=httpUrl){
                   localStorage.setItem("lasturl",httpUrl);
               }else{

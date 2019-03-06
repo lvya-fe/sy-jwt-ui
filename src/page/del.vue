@@ -8,6 +8,7 @@
 <script>
 
   import qs from 'qs';
+  import Cookies from 'js-cookie';
   import { Loading } from 'vux'
   export default {
     data(){
@@ -22,6 +23,7 @@
     },
     methods:{
         loadData(){
+            Cookies.set('wxtoken',"12");
             localStorage.clear();
         }
     }

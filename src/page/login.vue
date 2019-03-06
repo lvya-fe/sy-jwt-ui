@@ -8,7 +8,7 @@
 import qs from 'qs';
 import { Group, Cell, Flexbox, FlexboxItem } from 'vux'
 
-
+import Cookies from 'js-cookie';
 
 export default {
   name:'index',
@@ -38,7 +38,9 @@ export default {
         })
       ).then(function(res){
           alert(res.errorDesc);
-          localStorage.setItem("token",res.data);
+         // localStorage.setItem("token",res.data);
+
+          Cookies.set("wxtoken",res.data);
           alert("登陆成功重新返回主页");
 
           if(_self.type=="stu"){
