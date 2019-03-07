@@ -52,7 +52,9 @@
             //     this.$router.go(-1);
             // },
             toggle(index, item) {
-                var httpUrl = localStorage.lasturl;
+              //  var httpUrl = localStorage.lasturl;
+                var  httpUrl =  Cookies.get('lasturl');
+                alert(httpUrl);
                 if (httpUrl != null && httpUrl != "") {
                     //学生
                     if(httpUrl.indexOf("stu777")!=-1){
@@ -79,6 +81,9 @@
                         code: _self.token
                     })
                 ).then(function (res) {
+
+                    Cookies.set('lasturl',"");
+                    localStorage.removeItem("lasturl");
 
                     Cookies.set('indexB',0);
                     Cookies.set('indexC',0);

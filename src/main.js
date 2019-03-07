@@ -23,8 +23,7 @@ import 'vue-photo-preview/dist/skin.css'
 import VideoPlayer from 'vue-video-player'
 require('video.js/dist/video-js.css')
 require('vue-video-player/src/custom-theme.css')
-
-
+import Cookies from 'js-cookie'
 
 Vue.use(VideoPlayer)
 
@@ -641,12 +640,19 @@ Vue.prototype.errorUtil = function (err,uid){
               // alert(httpUrl);
 
               var  httpUrl = window.location.href;
-              var  httpUrl2 =  localStorage.lasturl;
-              if(httpUrl2!=httpUrl){
-                  localStorage.setItem("lasturl",httpUrl);
-              }else{
-                  localStorage.removeItem("lasturl");
-              }
+             // var  httpUrl2 =  localStorage.lasturl;
+              var  httpUrl2 =  Cookies.get('lasturl');
+
+              Cookies.set('lasturl',httpUrl);
+              localStorage.setItem("lasturl",httpUrl);
+
+              // if(httpUrl2==httpUrl){
+              //     Cookies.set('lasturl',"");
+              //     localStorage.removeItem("lasturl");
+              // }else{
+              //     Cookies.set('lasturl',httpUrl);
+              //     localStorage.setItem("lasturl",httpUrl);
+              // }
 
 
               this.$router.replace({  path: '/start/'+localStorage.uid});

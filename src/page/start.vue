@@ -26,7 +26,8 @@
            text: '微信登陆中..'
           });
             var token = Cookies.get('wxtoken');
-           var lasturl = localStorage.getItem("lasturl");
+            var lasturl = Cookies.get('lasturl');
+          // var lasturl = localStorage.getItem("lasturl");
           setTimeout(function goto() {
             location.replace("/app/auth/wx?uid="+localStorage.uid+"&code="+token+"&url="+encodeURIComponent(lasturl));
           },2000);
