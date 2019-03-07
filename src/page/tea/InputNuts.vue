@@ -31,7 +31,7 @@
   import qs from 'qs';
   import selecttag from "@/components/tea/selecttag";
   import {ToastPlugin,AlertPlugin,LoadingPlugin,Group, CellBox } from 'vux'
-
+  import Bus from '@/plugins/eventBus.js'
   export default {
     components: {
       selecttag,
@@ -48,8 +48,14 @@
               id:this.$route.params.id,
               show:true,
               title:'手动赋分',
-              data:[]
+              data:[],
+              commitParams:{}
           }
+      },
+      created() {
+        Bus.$on('commitData',(data)=>{
+          this.commitParams = data;
+        });
       },
       methods:{
           goback(){
@@ -59,26 +65,40 @@
                this.show =true;
           },
           qd(infos){
-               this.data = infos;
+               if(infos.length > 0) {
+                 infos.forEach(element => {
+                   element.score = null;
+                   this.data.push(element);
+                 });
+               }
+                this.data = infos;
                this.show =true;
           },
           remove(index){
               this.data.splice(index, 1);
           },
         add(){
-          var st = JSON.stringify(this.data);
-          this.$axios.post( process.env.API_ROOT+"app/tea/task/"+this.$route.params.resId+"/joinTeaAddScore",
-            qs.stringify({
-              uid:this.$route.params.uid,
-              scorejson:st
+          console.log(this.data);
+          if(this.data.length == 0){
+            this.$vux.toast.show({type: 'warn',text:"请选择指标" });
+            return;
+          }
+          else{
+            this.data.forEach(element =>{
+              element.score = element.score == null ? 0 :element.score;
             })
-          ).then(res =>{
+          }
+          this.commitParams.scorejson = JSON.stringify(this.data);
+          this.$axios.post(process.env.API_ROOT+"app/tea/task/joinTeaAddScore",qs.stringify(this.commitParams))
+          .then((res) =>{
             this.$vux.toast.show({type: 'success',text:"成功" });
             this.$router.go(-2);
-
           }).catch((err) =>{
-            this.errorUtil(err);
+              console.log(err)
+              this.errorUtil(err);
           })
+          
+          
         }
 
       }

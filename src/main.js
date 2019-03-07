@@ -398,7 +398,7 @@ const routes = [
   },
   {//老师手动加分 -- 选择指标
     name: 'InputNuts',
-    path: '/InputNuts/:uid/:id/:resId',
+    path: '/InputNuts/:uid/:id',
     meta: {
       // title: '素养'
     },
@@ -566,6 +566,16 @@ const routes = [
       require(['./page/tea/stuList.vue'], resolve)
     }
   },
+  {//学生帮学生填写时候的列表
+      name: 'stuList2',
+      path: '/stuList2/:uid/:id/:formId/:schoolid/:cycleid/:back?/:roles?',
+      meta: {
+        // title: '学生列表'
+      },
+      component: function (resolve) {
+        require(['./page/stu/stuList.vue'], resolve)
+      }
+    },
   {
     name: 'studentTaskDetailsTea',
     path: '/studentTaskDetailsTea/:uid/:id/:stuid?/:strtime/:endtime/:formid/:stuname?/:back?/:roles?',

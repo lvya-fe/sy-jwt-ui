@@ -582,7 +582,7 @@ import showorg from '@/components/stu/selecttag'
 
 import aplayer from "vue-aplayer";
 
-
+  import Bus from '@/plugins/eventBus.js'
 
 
 
@@ -1186,8 +1186,8 @@ export default {
             var age='';
             var obj = {};
             var zm = true;
-            obj.uid=_self.uid;
-            obj.taskid = _self.id;
+            obj.uid=Number(_self.uid);
+            obj.taskid =Number(_self.id);
             if(_self.stuid!='null'&&_self.stuid!=undefined&&_self.stuid!=''){
                 obj.stuId = Number(_self.stuid);
             }
@@ -1309,38 +1309,44 @@ export default {
             console.log(obj)
             console.log(zm)
             if(zm){
-                this.$axios.post( process.env.API_ROOT+"app/tea/task/addtask",
-                    qs.stringify(obj)
-                ).then((res) =>{
-                    if(res.data.id&&res.data.id!=''&&res.data.id!=null&&res.data.id!=undefined){
-                        this.id=res.data.id
-                        this.strTime=res.data.stime
-                        this.endTime=res.data.etime
-                        this.$vux.toast.show({
-                            type:'success',
-                            time:2000,
-                            text: '提交成功,请填写下一个任务~',
-                            onShow () {
+                setTimeout(() => {
+                    Bus.$emit('commitData', obj)
+                }, 500)
+                this.$router.push({path: '/InputNuts/'+this.uid+'/'+this.id});
+                
+                
+                // this.$axios.post( process.env.API_ROOT+"app/tea/task/addtask",
+                //     qs.stringify(obj)
+                // ).then((res) =>{
+                //     if(res.data.id&&res.data.id!=''&&res.data.id!=null&&res.data.id!=undefined){
+                //         this.id=res.data.id
+                //         this.strTime=res.data.stime
+                //         this.endTime=res.data.etime
+                //         this.$vux.toast.show({
+                //             type:'success',
+                //             time:2000,
+                //             text: '提交成功,请填写下一个任务~',
+                //             onShow () {
                                 
-                            },
-                            onHide () {
-                                wechatconfigInit(this,qs,this.uid,this._url_);
-                                if(this.strTime=='1970-01-01 08:00:00'||this.strTime==null){
-                                    this.strTime=null
-                                    this.endTime=null
-                                }
-                            }
-                        })
-                        this.loadData()
-                    }else{
-                        // this.$vux.toast.show({type: 'success',text:"成功" });
-                        // _self.goback();
-                        this.$router.push({path: '/InputNuts/'+this.uid+'/'+this.id + '/'+res.data});
-                    }
-                }).catch((err) =>{
-                    console.log(err)
-                    this.errorUtil(err);
-                })
+                //             },
+                //             onHide () {
+                //                 wechatconfigInit(this,qs,this.uid,this._url_);
+                //                 if(this.strTime=='1970-01-01 08:00:00'||this.strTime==null){
+                //                     this.strTime=null
+                //                     this.endTime=null
+                //                 }
+                //             }
+                //         })
+                //         this.loadData()
+                //     }else{
+                //         // this.$vux.toast.show({type: 'success',text:"成功" });
+                //         // _self.goback();
+                //         this.$router.push({path: '/InputNuts/'+this.uid+'/'+this.id + '/'+res.data});
+                //     }
+                // }).catch((err) =>{
+                //     console.log(err)
+                //     this.errorUtil(err);
+                // })
             }else{
                 this.$vux.toast.show({type: 'warn',text:age });
             }
