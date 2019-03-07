@@ -54,7 +54,7 @@
             toggle(index, item) {
               //  var httpUrl = localStorage.lasturl;
                 var  httpUrl =  Cookies.get('lasturl');
-                alert(httpUrl);
+                //alert(httpUrl);
                 if (httpUrl != null && httpUrl != "") {
                     //学生
                     if(httpUrl.indexOf("stu777")!=-1){
@@ -88,14 +88,18 @@
                     Cookies.set('indexB',0);
                     Cookies.set('indexC',0);
 
+                    //如果带后缀直接请分享页面
                     if (httpUrl != null && httpUrl != "") {
-                        location.replace(httpUrl);
-                    } else {
-                        if (item.type == 's') {
-                            _self.$router.push({path: '/stuIndex/' + _self.$route.params.uid});
-                        } else {
-                            _self.$router.push({path: '/index/' + _self.$route.params.uid});
+                        if(httpUrl.indexOf("stu777")!=-1||httpUrl.indexOf("tea777")!=-1){
+                            location.replace(httpUrl);
+                            return false;
                         }
+                    }
+
+                    if (item.type == 's') {
+                        _self.$router.push({path: '/stuIndex/' + _self.$route.params.uid});
+                    } else {
+                        _self.$router.push({path: '/index/' + _self.$route.params.uid});
                     }
 
 

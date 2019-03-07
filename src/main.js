@@ -566,16 +566,16 @@ const routes = [
       require(['./page/tea/stuList.vue'], resolve)
     }
   },
-  {//学生帮学生填写时候的列表
-      name: 'stuList2',
-      path: '/stuList2/:uid/:id/:formId/:schoolid/:cycleid/:back?/:roles?',
-      meta: {
-        // title: '学生列表'
-      },
-      component: function (resolve) {
-        require(['./page/stu/stuList.vue'], resolve)
-      }
-    },
+  // {//学生帮学生填写时候的列表
+  //     name: 'stuList2',
+  //     path: '/stuList2/:uid/:id/:formId/:schoolid/:cycleid/:back?/:roles?',
+  //     meta: {
+  //       // title: '学生列表'
+  //     },
+  //     component: function (resolve) {
+  //       require(['./page/stu/stuList.vue'], resolve)
+  //     }
+  //   },
   {
     name: 'studentTaskDetailsTea',
     path: '/studentTaskDetailsTea/:uid/:id/:stuid?/:strtime/:endtime/:formid/:stuname?/:back?/:roles?',
@@ -639,34 +639,12 @@ Vue.prototype.errorUtil = function (err,uid){
     }else if(err.data!=undefined&&err.data.errorCode=="MISTOKEN"){
           if (localStorage.uid) {
             //保存当前url
-
-              // var u = navigator.userAgent;
-              // var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-              // var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-              // var httpUrl = this._url_;
-              // if (!isiOS) {
-              //
-              // }
-              // alert(httpUrl);
-
               var  httpUrl = window.location.href;
-             // var  httpUrl2 =  localStorage.lasturl;
-              var  httpUrl2 =  Cookies.get('lasturl');
 
               Cookies.set('lasturl',httpUrl);
               localStorage.setItem("lasturl",httpUrl);
 
-              // if(httpUrl2==httpUrl){
-              //     Cookies.set('lasturl',"");
-              //     localStorage.removeItem("lasturl");
-              // }else{
-              //     Cookies.set('lasturl',httpUrl);
-              //     localStorage.setItem("lasturl",httpUrl);
-              // }
-
-
               this.$router.replace({  path: '/start/'+localStorage.uid});
-              //location.replace("/app/auth/wx?uid="+localStorage.uid+"&code="+localStorage.token);
           }
       return;
     }else{
