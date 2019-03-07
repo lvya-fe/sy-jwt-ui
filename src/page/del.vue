@@ -23,8 +23,8 @@
     },
     methods:{
         loadData(){
-            Cookies.set('wxtoken',"12");
             localStorage.clear();
+            Cookies.set('wxtoken',"0");
         }
     }
   }

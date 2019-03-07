@@ -52,6 +52,23 @@
             //     this.$router.go(-1);
             // },
             toggle(index, item) {
+                var httpUrl = localStorage.lasturl;
+                if (httpUrl != null && httpUrl != "") {
+                    //学生
+                    if(httpUrl.indexOf("stu777")!=-1){
+                        if (item.type != 's') {
+                            this.$vux.toast.show({type: 'warn', text: "无权限"});
+                            return false;
+                        }
+                    }
+                    //老师
+                    if(httpUrl.indexOf("tea777")!=-1){
+                        if (item.type != 't') {
+                            this.$vux.toast.show({type: 'warn', text: "无权限"});
+                            return false;
+                        }
+                    }
+                }
                 this.active = index;
                 var _self = this;
                 this.$axios.post(process.env.API_ROOT + "app/auth/selectuser",
@@ -65,10 +82,7 @@
 
                     Cookies.set('indexB',0);
                     Cookies.set('indexC',0);
-                    // localStorage.setItem('indexB',0);
-                    // localStorage.setItem('indexC',0);
 
-                    var httpUrl = localStorage.lasturl;
                     if (httpUrl != null && httpUrl != "") {
                         location.replace(httpUrl);
                     } else {
