@@ -383,7 +383,7 @@ export default {
                     this.stuLits = resData;
                     if(this.stuLits.length>0){
                         this.stuLits.forEach(element => {
-                            if([5,17].includes(element.formItemType)){
+                            if(['5','17'].includes(element.formItemType)){
                                 element = Object.assign(element,{
                                     itemValArr: (element.formItemValue != '' && element.formItemValue != null) ? element.formItemValue.split(',') : []
                                 })
@@ -547,7 +547,7 @@ export default {
                                 }
                                 &.addVideo{
                                     position: relative;
-                                    height: 216px;
+                                    height: 246px;
                                     img{
                                         position: absolute;
                                         left: 0;
@@ -558,7 +558,7 @@ export default {
                                     span{
                                         position: absolute;
                                         right: 0;
-                                        bottom: 0;
+                                        bottom: 30px;
                                         padding-right: 42px;
                                         background: url('../../assets/img/ico_addMedia.jpg') no-repeat right center;
                                         background-size: 40px 46px;

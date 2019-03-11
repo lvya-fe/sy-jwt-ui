@@ -534,7 +534,6 @@ export default {
 
         },
         toview(task){
-          console.log(task)
           var _self = this;
           if(task.teaDoType==0){
             this.$router.push({path:'/taskList/'+this.uid+'/'+task.id+'/'+this.id});
@@ -542,8 +541,7 @@ export default {
             this.$router.push({path:'/taskListApproval/'+this.uid+'/'+task.id+'/'+this.id});
           }else if(task.teaDoType==2){
             if(task.showFlag == 1){
-              // this.$router.push({path:'/stuList/'+this.uid+'/'+task.id+'/'+null});
-              this.$router.push({path: '/stuListCard/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
+              this.$router.push({path:'/stuList/'+this.uid+'/'+task.id+'/'+null});
             }
             if(task.showFlag == 2){
               this.$router.push({path: '/stuListCard/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
