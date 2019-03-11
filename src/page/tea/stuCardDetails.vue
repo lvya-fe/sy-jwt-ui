@@ -251,7 +251,7 @@ export default {
                 formValueJson.push({
                     formItemType: ele.formItemType,
                     formItemValue: ele.formItemValue,
-                    formItemName: ele.formItemName
+                    formItemDbName: ele.formItemDbName
                 })
             })
             this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTeaTaskFormList",

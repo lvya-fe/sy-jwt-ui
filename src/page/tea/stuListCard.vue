@@ -325,7 +325,7 @@ export default {
             // back:this.$route.params.back,
             formId:this.$route.params.formId,
             schooId:this.$route.params.schoolid,
-            title:'',
+            title:'任务1',
             // pageNo:2,
             stuLits:[],//学生列表
             statusTime:'',
