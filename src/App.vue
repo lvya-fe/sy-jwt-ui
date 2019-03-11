@@ -25,5 +25,6 @@ export default {
 
 <style lang="less">
 @import '~vux/src/styles/reset.less';
+@import '~vux/src/styles/1px.less';
 // @import 'http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css';
 </style>

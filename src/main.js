@@ -577,6 +577,37 @@ const routes = [
         require(['./page/stu/stuList.vue'], resolve)
       }
     },
+   { //学生帮学生填写--卡片式列表
+     name: 'stuList2Card',
+     path: '/stuList2Card/:uid/:id/:formId/:schoolid',
+     meta: {
+       // title: '学生卡片式列表'
+     },
+     component: function (resolve) {
+       require(['./page/stu/stuListCard.vue'], resolve)
+     }
+   },
+  { //老师帮学生填写--卡片式列表
+    name: 'stuListCard',
+    // path: '/stuListCard/:uid/:id/:cycleid',
+    path: '/stuListCard/:uid/:id/:formId/:schoolid',
+    meta: {
+      // title: '老师填写卡片式列表'
+    },
+    component: function (resolve) {
+      require(['./page/tea/stuListCard.vue'], resolve)
+    }
+  },
+  { //卡片式列表学生详情stuCardDetails
+    name: 'cardDetails',
+    path: '/stuCardDetails/:uid/:id/:stuid/:schoolid',
+    meta: {
+      // title: '老师填写卡片式列表'
+    },
+    component: function (resolve) {
+      require(['./page/tea/stuCardDetails.vue'], resolve)
+    }
+  },
   {
     name: 'studentTaskDetailsTea',
     path: '/studentTaskDetailsTea/:uid/:id/:stuid?/:strtime/:endtime/:formid/:stuname?/:back?/:roles?',
