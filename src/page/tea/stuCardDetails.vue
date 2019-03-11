@@ -44,7 +44,7 @@
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == 14">
                         <img src="../../assets/img/ico_email.png" alt="">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" placeholder="请输入">
+                        <input type="email" v-model="item.formItemValue" placeholder="请输入">
                     </div>
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == 15">
                         <img src="../../assets/img/ico_phone.png" alt="">
@@ -262,12 +262,17 @@ export default {
             //app/stu/v1/addStuTaskFormList
             if(this.curFieldsLists.length == 0) return;
             let formValueJson = [];
+            let formItemValues = [];
             this.curFieldsLists.forEach( ele => {
-                formValueJson.push({
+                formItemValues.push({
                     formItemType: ele.formItemType,
                     formItemValue: ele.formItemValue,
                     formItemDbName: ele.formItemDbName
                 })
+            })
+            formValueJson.push({
+                formItemValues:formItemValues,
+                stuId:this.stuid
             })
             this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTeaTaskFormList",
             qs.stringify({
