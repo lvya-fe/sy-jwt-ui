@@ -42,10 +42,12 @@
                         <cell :title="item.formItemName" :value="item.formItemValue"></cell>
                     </group>
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == 14">
+                        <img src="../../assets/img/ico_email.png" alt="">
                         <span>{{item.formItemName}}</span>
                         <input type="text" v-model="item.formItemValue" placeholder="请输入">
                     </div>
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == 15">
+                        <img src="../../assets/img/ico_phone.png" alt="">
                         <span>{{item.formItemName}}</span>
                         <input type="text" v-model="item.formItemValue" placeholder="请输入">
                     </div>
@@ -58,6 +60,7 @@
                         <input type="text" v-model="item.formItemValue" placeholder="请输入">
                     </div>
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == 27">
+                        <img src="../../assets/img/ico_idcard.png" alt="">
                         <span>{{item.formItemName}}</span>
                         <input type="text" v-model="item.formItemValue" placeholder="请输入">
                     </div>
@@ -119,9 +122,9 @@
                 </li>
             </ul>
             <div class="btnsWrap">
-                <x-button type="primary" @click.native="submit">提交</x-button>
-                <x-button type="primary">提交并切换学生</x-button>
-                <x-button>返回</x-button>
+                <x-button type="primary" action-type="button" @click.native="submit">提交</x-button>
+                <x-button type="primary" action-type="button">提交并切换学生</x-button>
+                <x-button action-type="button">返回</x-button>
             </div>
             <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'80%','background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" class="dialog-demo vux-1px" hide-on-blur>
                 <group :title="popData.formItemName" v-if="popType == 0">
@@ -130,6 +133,14 @@
                 <div v-if="popType == 1">
                     <checklist :title="popData.formItemName"  label-position="left" :options="popData.formSelectItemResps" v-model="popData.formItemValue" @on-change="change"></checklist>
                 </div>
+                <flexbox>
+                    <flexbox-item>
+                        <x-button type="default cancel" action-type="button"  @click.native="showHideOnBlur = false">取消</x-button>
+                    </flexbox-item>
+                    <flexbox-item>
+                        <x-button class="vux-1px-l confirm" action-type="button" type="default" @click.native="showHideOnBlur = false">确定</x-button>
+                    </flexbox-item>
+                </flexbox>
             </x-dialog>
         </form>
         
@@ -243,6 +254,10 @@ export default {
                 console.log(res,"11111111111111111111111111111111")
             })
         },
+        //手动关闭遮罩层x-dialog弹框
+        closeMask(){
+
+        },
         submit(){
             //app/stu/v1/addStuTaskFormList
             if(this.curFieldsLists.length == 0) return;
@@ -260,6 +275,7 @@ export default {
                     schoolId:Number(this.schoolId),
                     formId:Number(this.formId),
                     taskId:Number(this.id),
+                    stuId:Number(this.stuid),
                     formValueJson:JSON.stringify(formValueJson)
                 }))
             .then( res =>{
@@ -278,6 +294,20 @@ export default {
 .weui-check__label:active{background-color: #fff !important;}
     .stuCardDetails{
         background-color: #ebebeb;
+        .vux-flexbox .vux-flexbox-item{
+            margin-left: 0 !important;
+            
+            .weui-btn{
+                font-size: 30px;
+                color: rgb(105, 105, 105);
+                &.confirm{
+                    color: #01c269;
+                }
+            }
+            .weui-btn_default:not(.weui-btn_disabled):active{
+                background-color: #F8F8F8;
+            }
+        }
         .top-back {
             padding:20px;
             text-align: center;

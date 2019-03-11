@@ -176,7 +176,15 @@
                             <template v-if="field.formItemType == 17">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
-                                    <p :class="{'hasVal':field.formItemValue !=''}">{{field.formItemValue}}</p>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
                                 </dt>
                             </template>
                             <template v-if="field.formItemType == 19">
@@ -449,9 +457,8 @@ export default {
         .stuLists{
             .stulist-item{
                 margin-top: 40px;
-                // min-height: 600px;
-                max-height: 820px;
-                overflow: hidden;
+                // max-height: 820px;
+                // overflow: hidden;
                 .stuInfo{
                     position: relative;
                     padding: 30px;
