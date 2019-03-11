@@ -220,7 +220,7 @@ export default {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }
             // 添加请求头
-            this.$axios.post(this.defaultUrl + 'v1/uploadFile?uid='+this.uid, param,{'uid':this.uid}, config)
+            this.$axios.post(this.defaultUrl + 'v1/uploadFile', param,qs.stringify({'uid':this.uid}), config)
                 .then(res => {
                 console.log(res,"11111111111111111111111111111111")
             })

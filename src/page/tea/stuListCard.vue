@@ -353,7 +353,7 @@ export default {
             console.log(this.uid,this.id,this.formId,this.schooId)
             let pams = {
                 uid:this.uid,
-                schooId :this.schooId,
+                schoolId :this.schooId,
                 formId : this.formId,
                 taskId:this.id,
                 type:1
@@ -367,6 +367,13 @@ export default {
                 //     type:1,
                 // })
             // this.$axios.get( process.env.API_ROOT+"app/stu/v1/showStuCardTaskList-test",
+            // qs.stringify({
+            //         uid:this.uid,
+            //         schooId:Number(this.schooId),
+            //         formId:Number(this.formId),
+            //         taskId:Number(this.id),
+            //         type:1,
+            //     }))
             this.$axios.get( process.env.API_ROOT+"app/stu/v1/showStuTeaCardTaskList",{params:pams})
             .then( res =>{
                 // if(res.success){
