@@ -58,7 +58,7 @@
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                 </dt>
-                                <dd v-if="field.formSelectItemResps.length>0">
+                                <dd v-if="field.formSelectItemResps != null && field.formSelectItemResps.length>0">
                                     <group >
                                         <radio :options="field.formSelectItemResps" v-model="field.formItemValue" disabled ></radio>
                                     </group>
@@ -69,7 +69,7 @@
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                 </dt>
-                                <dd v-if="field.formSelectItemResps.length>0">
+                                <dd v-if="field.formSelectItemResps != null && field.formSelectItemResps.length>0">
                                     <checklist disabled label-position="left" :options="field.formSelectItemResps" v-model="field.itemValArr" ></checklist>
                                 </dd>
                             </template>
@@ -359,13 +359,6 @@ export default {
                 type:1
             }
             console.log(pams);
-            // qs.stringify({
-                //     uid:this.uid,
-                //     schooId:Number(this.schooId),
-                //     formId:Number(this.formId),
-                //     taskId:Number(this.id),
-                //     type:1,
-                // })
             // this.$axios.get( process.env.API_ROOT+"app/stu/v1/showStuCardTaskList-test",
             // qs.stringify({
             //         uid:this.uid,
@@ -382,10 +375,9 @@ export default {
                     this.stuLits = resData;
                     if(this.stuLits.length>0){
                         this.stuLits.forEach(element => {
-                            // let fields = element.formSelectItemResps;
                             if([5,17].includes(element.formItemType)){
                                 element = Object.assign(element,{
-                                    itemValArr: element.formItemValue != ''? element.formItemValue.split(',') : []
+                                    itemValArr: (element.formItemValue != '' && element.formItemValue != null) ? element.formItemValue.split(',') : []
                                 })
                             }
                         });
@@ -457,9 +449,9 @@ export default {
         .stuLists{
             .stulist-item{
                 margin-top: 40px;
-                min-height: 600px;
-                // max-height: 820px;
-                // overflow: hidden;
+                // min-height: 600px;
+                max-height: 820px;
+                overflow: hidden;
                 .stuInfo{
                     position: relative;
                     padding: 30px;
@@ -609,15 +601,27 @@ export default {
                                     .weui-cell_radio{
                                         padding-top: 0;
                                         padding-bottom: 0;
+                                        padding-right: 0;
                                         p{
                                             padding: 30px 0;
                                             font-size: 30px;
                                         }
                                         .weui-cell__ft{
-                                            width: 26px;
-                                            height: 26px;
-                                            background: url('../../assets/img/radio.png') no-repeat center center;
-                                            background-size: 26px 26px;
+                                            width: 40px;
+                                            height: 40px;
+                                            background: url('../../assets/img/radio1.png') no-repeat center center;
+                                            background-size: 40px 40px;
+                                        }
+                                        .weui-check:checked + .weui-icon-checked{
+                                            margin-top: 0px;
+                                            margin-left: -10px;
+                                            height: 40px;
+                                            width: 40px;
+                                            background: url('../../assets/img/radio_check1.png') no-repeat center center;
+                                            background-size: 40px 40px;
+                                            &:before{
+                                                content: '';
+                                            }
                                         }
                                     }
                                     &.weui-cells_checkbox{

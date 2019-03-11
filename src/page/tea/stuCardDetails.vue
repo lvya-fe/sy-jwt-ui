@@ -49,8 +49,8 @@
                         <span>{{item.formItemName}}</span>
                         <input type="text" v-model="item.formItemValue" placeholder="请输入">
                     </div>
-                    <group class="fieldsWrap selectList" v-if="item.formItemType == 16">
-                        <cell :title="item.formItemName"></cell>
+                    <group class="fieldsWrap selectList" v-if="item.formItemType == 16" @click.native="showCheckList(item)">
+                        <cell :title="item.formItemName" ></cell>
                         <span class="ico-right">请选择</span>
                     </group>
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == 26">
@@ -119,16 +119,24 @@
                 </li>
             </ul>
             <div class="btnsWrap">
-                <x-button type="primary">提交</x-button>
+                <x-button type="primary" @click.native="submit">提交</x-button>
                 <x-button type="primary">提交并切换学生</x-button>
                 <x-button>返回</x-button>
             </div>
+            <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'80%','background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" class="dialog-demo vux-1px" hide-on-blur>
+                <group :title="popData.formItemName" v-if="popType == 0">
+                    <radio :options="popData.formSelectItemResps" v-model="popData.formItemValue" @on-change="change"></radio>
+                </group>
+                <div v-if="popType == 1">
+                    <checklist :title="popData.formItemName"  label-position="left" :options="popData.formSelectItemResps" v-model="popData.formItemValue" @on-change="change"></checklist>
+                </div>
+            </x-dialog>
         </form>
         
     </div>
 </template>
 <script>
-import { LoadMore,Group,XDialog,Cell,XInput,XTextarea,Datetime,XAddress,ChinaAddressV4Data,Calendar,Radio,Checklist,XButton} from "vux";
+import { LoadMore,Group,XDialog,Cell,XInput,XTextarea,Datetime,XAddress,ChinaAddressV4Data,Calendar,Radio,Checklist,XButton,Flexbox,FlexboxItem} from "vux";
 import qs from 'qs';
 import aplayer from "vue-aplayer";
 // import {formatDate} from '@/plugins/formatDate.js';
@@ -143,13 +151,15 @@ export default {
             // cycleid:this.$route.params.cycleid,
             // back:this.$route.params.back,
             stuid:this.$route.params.stuid,
-            schooId:this.$route.params.schoolid,
+            schoolId:this.$route.params.schoolid,
             title:'刘同学',
             stuLits:[],//学生列表
             curFieldsLists:[],//当前学生字段合集
             addressData: ChinaAddressV4Data, //省市区组件需要
             // statusTime:'',
-            // showHideOnBlur:false,//状态时间弹框是否显示
+            showHideOnBlur:false,//选择列表，多选择列表弹框是否显示
+            popType:null,//选择列表，多选择列表弹框类型   0：选择列表 1：多选择
+            popData:{},//弹框显示数据
 
         }
     },
@@ -166,7 +176,9 @@ export default {
         Calendar,
         Radio,
         Checklist,
-        XButton
+        XButton,
+        Flexbox,
+        FlexboxItem,
     },
     created(){
         this.getStuInfos();
@@ -176,13 +188,12 @@ export default {
             this.$router.go(-1);
         },
         getStuInfos(){
-            this.$axios.get( process.env.API_ROOT+"app/stu/v1/showStuTaskDetail-test",
-                qs.stringify({
+            this.$axios.get( process.env.API_ROOT+"app/stu/v1/showTeaTaskDetail",{params:{
                     uid:this.uid,
-                    schooId:Number(this.schooId),
+                    schoolId:Number(this.schoolId),
                     stuId:Number(this.stuid),
                     taskId:Number(this.id),
-                })
+                }}
             ).then( res =>{
                 // if(res.success){
                     let resData = res.data;
@@ -207,6 +218,13 @@ export default {
         change (value) {
             console.log('change', value)
         },
+        //点击显示对应状态的时间
+        showCheckList(item){
+            this.popType = item.formItemType == 16 ? 0 : 1;
+            this.popData = item;
+            // this.statusTime = txt;
+            this.showHideOnBlur = !this.showHideOnBlur;
+        },
         //上传视频 的方法
         tirggerFile(event){
             let file = event.target.files[0];
@@ -223,6 +241,33 @@ export default {
             this.$axios.post(this.defaultUrl + 'v1/uploadFile', param,qs.stringify({'uid':this.uid}), config)
                 .then(res => {
                 console.log(res,"11111111111111111111111111111111")
+            })
+        },
+        submit(){
+            //app/stu/v1/addStuTaskFormList
+            if(this.curFieldsLists.length == 0) return;
+            let formValueJson = [];
+            this.curFieldsLists.forEach( ele => {
+                formValueJson.push({
+                    formItemType: ele.formItemType,
+                    formItemValue: ele.formItemValue,
+                    formItemName: ele.formItemName
+                })
+            })
+            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTeaTaskFormList",
+            qs.stringify({
+                    uid:this.uid,
+                    schoolId:Number(this.schoolId),
+                    formId:Number(this.formId),
+                    taskId:Number(this.id),
+                    formValueJson:JSON.stringify(formValueJson)
+                }))
+            .then( res =>{
+                // if(res.success){
+                    console.log(res,"789789")
+                // }
+            }).catch( err =>{
+                this.errorUtil(err);
             })
         }
     },
@@ -428,19 +473,19 @@ export default {
                             .weui-cell__ft{
                                 // margin-top: 4px;
                                 padding: 0;
-                                height: 26px;
-                                width: 26px;
-                                background: url('../../assets/img/radio.png') no-repeat center center;
-                                background-size: 26px 26px;
+                                height: 40px;
+                                width: 40px;
+                                background: url('../../assets/img/radio1.png') no-repeat center center;
+                                background-size: 40px 40px;
                             }
                             
                             .weui-check:checked + .weui-icon-checked{
-                                margin-top: -10px;
+                                margin-top: 0px;
                                 margin-left: -10px;
-                                height: 26px;
-                                width: 26px;
-                                background: url('../../assets/img/radio_check.png') no-repeat center center;
-                                background-size: 26px 26px;
+                                height: 40px;
+                                width: 40px;
+                                background: url('../../assets/img/radio_check1.png') no-repeat center center;
+                                background-size: 40px 40px;
                                 &:before{
                                     content: '';
                                 }
@@ -490,7 +535,21 @@ export default {
                 }
             }
         }
-        
+        .weui-dialog{
+            .weui-cells__title{
+                margin: 0;
+                font-size: 30px;
+                padding: 30px;
+            }
+            .weui-cell{
+                padding:30px;
+                p{
+                    font-size: 30px;
+                    line-height: 1;
+                    text-align: left;
+                }
+            }
+        }
         // .stuLists{
         //     .stulist-item{
         //         margin-top: 40px;
