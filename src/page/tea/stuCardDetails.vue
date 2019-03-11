@@ -34,7 +34,7 @@
                     <div class="fieldsWrap radios" v-if="item.formItemType == 5">
                         <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
                         <group v-if="item.formSelectItemResps.length >0 ">
-                            <checklist label-position="left" :options="item.formSelectItemResps" v-model="item.itemValArr" ></checklist>
+                            <checklist label-position="left" :options="item.formSelectItemResps" v-model="item.itemValArr" @on-change="change"></checklist>
                         </group>
                     </div>
                     <group class="positionWrap hasIco" v-if="item.formItemType == 9">
@@ -226,8 +226,8 @@ export default {
             })
         },
         //日期时间 变更函数
-        change (value) {
-            console.log('change', value)
+        change (key,value) {
+            console.log('change',key, value)
         },
         //点击显示对应状态的时间
         showCheckList(item){
@@ -267,7 +267,7 @@ export default {
                 formItemValues.push({
                     formItemType: ele.formItemType,
                     formItemValue: ele.formItemValue,
-                    formItemDbName: ele.formItemDbName
+                    formItemName: ele.formItemDbName
                 })
             })
             formValueJson.push({
