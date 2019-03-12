@@ -9,10 +9,11 @@
             <img class="img-3" src="../../assets/img/ico_search.png" alt="">
             <span class="img-4" @click="checkAll" alt="">全选</span>
         </div>
-        
-        <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'65%','background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" class="dialog-demo vux-1px" hide-on-blur>
-            <p>{{statusTime}}</p>
-        </x-dialog>
+        <ul>
+            <li v-for="item in stuLits" :key="item.stuId">
+                <span></span>
+            </li>
+        </ul>
     </div>
 </template>
 <script>
@@ -21,19 +22,20 @@ import qs from 'qs';
 export default {
     data(){
         return{
-            defaultUrl:process.env.API_ROOT,
             uid:this.$route.params.uid,
             id:this.$route.params.id,
             formId:this.$route.params.formId,
             schooId:this.$route.params.schoolid,
             title:'任务1',
             stuLits:[],//学生列表
+            // commonList:[],
+            isCheckAll:false,
+            checkedids:[],//选中学生id合集
 
         }
     },
     components:{
         LoadMore,
-        XDialog,
         Cell,
         Group,
         Checklist 
@@ -46,7 +48,9 @@ export default {
             this.$router.go(-1);
         },
         getStuLists(){
-            console.log(this.uid,this.id,this.formId,this.schooId)
+            this.$vux.loading.show({
+                text: '加载中...'
+            });
             let pams = {
                 uid:this.uid,
                 schoolId :this.schooId,
@@ -54,14 +58,24 @@ export default {
                 taskId:this.id,
                 type:1
             }
-            console.log(pams);
             this.$axios.get( process.env.API_ROOT+"app/stu/v1/showStuTeaCardTaskList",{params:pams})
             .then( res =>{
-                // if(res.success){
+                if(res.success){
+                    this.$vux.loading.hide();
                     let resData = res.data;
                     this.title = resData[0].taskName;
                     this.stuLits = resData;
-                // }
+                    if(this.stuLits != null && this.stuLits.length>0){
+                        this.stuLits.forEach( ele => {
+                            //暂时无用
+                            if([1,3].includes(ele.taskState)){
+                                ele = Object.assign(ele,{
+                                    checked:false
+                                })
+                            }
+                        })
+                    }
+                }
             }).catch( err =>{
                 this.errorUtil(err);
             })
@@ -71,16 +85,26 @@ export default {
         toStuDetail(stuid){
             this.$router.push({path: '/stuCardDetails/'+this.uid+'/'+this.id+'/'+stuid+'/'+this.schooId});
         },
+        //复选框选择事件
+        checkedChange(val){
+
+        },
         //批量操作学生表单
         checkAll(){
-            
+            console.log('11111111111')
+            console.log(this.stuLits)
+            this.isCheckAll = !this.isCheckAll;
+            this.stuLits.forEach(ele => {
+                if(ele.checked == undefined) return;
+                ele.checked = this.checkAll ? true : false;
+            })
         }
     },
     
 }
 </script>
 <style lang="less">
-    .stuListCard{
+    .stuListBatch{
         background-color: #ebebeb;
         .top-back {
             padding:20px;
@@ -108,13 +132,14 @@ export default {
             }
             .img-3{
                 position: absolute;
-                right: 80px;
+                right: 110px;
                 top: 25px;
             }
             .img-4{
                 position: absolute;
                 right: 20px;
-                top: 25px;
+                top: 14px;
+                font-size: 34px;
             }
             .n_title{
                 width:55%;

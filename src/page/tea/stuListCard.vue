@@ -405,7 +405,7 @@ export default {
         },
         //批量操作学生表单
         batch(){
-
+            this.$router.push({path: '/stuListBatch/'+this.uid+'/'+this.id+'/'+this.formId+'/'+this.schooId})
         }
     },
     

@@ -1,38 +1,419 @@
 <template>
     <div class="stuListCard">
         <div class="top-back">
-            <img class="img-1" v-show="!noback" src="../../assets/img/back_left_green.png" alt="" @click="goback">
+            <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ title }}</div>
             <span class="img-2">
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
             </span>
-            <img class="img-3" src="../../assets/img/batch.png" alt="">
-            <img class="img-4" src="../../assets/img/batch.png" alt="">
+            <img class="img-3" src="../../assets/img/ico_search.png" alt="">
+            <img class="img-4" src="../../assets/img/batch.png" @click="batch" alt="">
         </div>
+        <ul class="stuLists">
+            <li class="stulist-item" v-for="item in stuLits" :key="item.stuId" @click="toStuDetail(item.stuId)">
+                <div class="stuInfo">
+                    <img src="../../assets/img/img_avatar.png" class="avatar" alt="">
+                    <span class="name">{{item.stuName}}</span>
+                    <span class="status" @click.stop="showTime(item.updateTimeStr)">{{item.taskStateName}}</span>
+                </div>
+                <ul class="fieldLists vux-1px-t">
+                    <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  7 平分  8  描述文本 9 地理位置  10 选人插件,11 显示项 12 学生信息 
+                    13 系统信息 14 邮箱 15 电话 16选择列表 17 多选列表 18自动编号  19 整数 20 小数  
+                    21 百分数 22 日期  23 公式   24 引用   25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
+                    <li class="fieldlist-item" v-for="(field,index) in item.formItemResps" :key="index">
+                        <dl>
+                            <template v-if="field.formItemType == 1">
+                                <dt>
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">{{field.formItemValue == ''? '请输入':field.formItemValue}}</p>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 2">
+                                <dt :class="{'vux-1px-b':field.formItemValue ==''}">
+                                    <span>{{field.formItemName}}</span>
+                                </dt>
+                                <dd>
+                                    <p>{{field.formItemValue == ''? '请输入':field.formItemValue}}</p>
+                                </dd>
+                            </template>
+                            <template v-if="field.formItemType == 3">
+                                <dt>
+                                    <img src="../../assets/img/ico_datetime.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                            
+                                        </template>
+                                    </p>
+                                </dt>
+                            </template>
+                            <!-- 单选，多选未完成 -->
+                            <template v-if="field.formItemType == 4">
+                                <dt>
+                                    <span>{{field.formItemName}}</span>
+                                </dt>
+                                <dd v-if="field.formSelectItemResps != null && field.formSelectItemResps.length>0">
+                                    <group >
+                                        <radio :options="field.formSelectItemResps" v-model="field.formItemValue" disabled ></radio>
+                                    </group>
+                                </dd>
+                                
+                            </template>
+                            <template v-if="field.formItemType == 5">
+                                <dt>
+                                    <span>{{field.formItemName}}</span>
+                                </dt>
+                                <dd v-if="field.formSelectItemResps != null && field.formSelectItemResps.length>0">
+                                    <checklist disabled label-position="left" :options="field.formSelectItemResps" v-model="field.itemValArr" ></checklist>
+                                </dd>
+                            </template>
+                            <!-- 图片上传未完成 -->
+                            <template v-if="field.formItemType == 6">
+                                <dt>
+                                    <img src="../../assets/img/ico_pic.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                </dt>
+                                <dd class="fieldImg">
+                                    <div class="imgWrapper">
+                                    </div>
+                                    <img src="../../assets/img/tj_big.png" alt="">
+                                </dd>
+                            </template>
+                            <template v-if="field.formItemType == 7">
+                                <dt>
+                                    <span>{{field.formItemName}}</span>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 8">
+                                <dt>
+                                    <span>{{field.formItemName}}</span>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 9">
+                                <dt>
+                                    <img src="../../assets/img/ico_position.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                            </template>
+                            <!-- 选人插件未完成 -->
+                            <template v-if="field.formItemType == 10">
+                                <dt>
+                                    <img src="../../assets/img/ico_people.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                    <p>
+                                        <template>
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                                <dd v-if="field.formItemValue !=''">
+
+                                </dd>
+                            </template>
+                            <template v-if="field.formItemType == 14">
+                                <dt>
+                                    <img src="../../assets/img/ico_email.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 15">
+                                <dt>
+                                    <img src="../../assets/img/ico_phone.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                            </template>
+                            <!-- 单选列表，多选列表未完成 -->
+                            <template v-if="field.formItemType == 16">
+                                <dt>
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 17">
+                                <dt>
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                                <!-- 多选列表显示样式 -->
+                                <!-- <dd v-if="item.itemValArr.length >0">
+                                    <ul class="itemsWrap" >
+                                        <li class="vux-1px" v-for="val in item.itemValArr" :key="val">{{val}}</li>
+                                    </ul>
+                                </dd> -->
+                            </template>
+                            <template v-if="field.formItemType == 19">
+                                <dt>
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 20">
+                                <dt>
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 21">
+                                <dt>
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue == ''?'请输入百分数(例如：62.23)':field.formItemValue}}
+                                        <span class="percent">%</span>
+                                    </p>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 22">
+                                <dt>
+                                    <img src="../../assets/img/ico_date.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 25">
+                                <dt>
+                                    <img src="../../assets/img/ico_address.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 26">
+                                <dt>
+                                    <img src="../../assets/img/ico_postcode.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 27">
+                                <dt>
+                                    <img src="../../assets/img/ico_idcard.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                    <p :class="{'hasVal':field.formItemValue !=''}">
+                                        {{field.formItemValue}}
+                                        <template v-if="field.formItemValue ==''">
+                                            <div class="noData">
+                                                <span>请选择</span>
+                                                <img src="../../assets/img/ico_right.png" alt="">
+                                            </div>
+                                        </template>
+                                    </p>
+                                </dt>
+                            </template>
+                            <template v-if="field.formItemType == 28">
+                                <dt :class="{'vux-1px-b':field.formItemValue ==''}">
+                                    <img src="../../assets/img/ico_audio.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                </dt>
+                                <dd class="addAudio">
+                                    <span>添加音频</span>
+                                    <span>大文件请点击</span>
+                                </dd>
+                            </template>
+                            <template v-if="field.formItemType == 29">
+                                <dt>
+                                    <img src="../../assets/img/ico_video.png" alt="">
+                                    <span>{{field.formItemName}}</span>
+                                </dt>
+                                <dd v-if="field.formItemValue !=''">
+                                   <img src="../../assets/img/img_video.jpg" alt="">
+                                </dd>
+                                <dd class="addVideo" v-else>
+                                    <img src="../../assets/img/addVideo.png" alt="">
+                                    <span>大文件请点击</span>
+                                </dd>
+                            </template>
+                        </dl>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'65%','background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" class="dialog-demo vux-1px" hide-on-blur>
+            <p>{{statusTime}}</p>
+        </x-dialog>
     </div>
 </template>
 <script>
+import { LoadMore,XDialog,Cell,Group,Radio,Checklist  } from "vux";
+import qs from 'qs';
+import Bus from '@/plugins/eventBus.js'
+// import {formatDate} from '@/plugins/formatDate.js';
+// import BScroll from "better-scroll";
+// import showcycle from '@/page/tea/SelectionPeriod'
 export default {
     data(){
         return{
             uid:this.$route.params.uid,
             id:this.$route.params.id,
-            back:this.$route.params.back,
+            // cycleid:this.$route.params.cycleid,
+            // back:this.$route.params.back,
             formId:this.$route.params.formId,
             schooId:this.$route.params.schoolid,
-            title:'测试的任务名称',
+            title:'任务1',
+            // pageNo:2,
+            stuLits:[],//学生列表
+            statusTime:'',
+            showHideOnBlur:false,//状态时间弹框是否显示
+
         }
     },
+    components:{
+        LoadMore,
+        XDialog,
+        Cell,
+        Group,
+        Radio,
+        Checklist 
+    },
     created(){
-
+        this.getStuLists();
     },
     methods:{
-
-    }
+        goback(){
+            this.$router.go(-1);
+        },
+        getStuLists(){
+            console.log(this.uid,this.id,this.formId,this.schooId)
+            this.$vux.loading.show({
+                text: '加载中...'
+            });
+            let pams = {
+                uid:this.uid,
+                schoolId :this.schooId,
+                formId : this.formId,
+                taskId:this.id,
+                type:1
+            }
+            this.$axios.get( process.env.API_ROOT+"app/stu/v1/showStuTeaCardTaskList",{params:pams})
+            .then( res =>{
+                if(res.success){
+                    this.$vux.loading.hide();
+                    let resData = res.data;
+                    this.title = resData[0].taskName;
+                    this.stuLits = resData;
+                    if(this.stuLits.length>0){
+                        this.stuLits.forEach(element => {
+                            if(['5','17'].includes(element.formItemType)){
+                                element = Object.assign(element,{
+                                    itemValArr: (element.formItemValue != '' && element.formItemValue != null) ? element.formItemValue.split(',') : []
+                                })
+                            }
+                        });
+                    }
+                }
+            }).catch( err =>{
+                this.errorUtil(err);
+            })
+        },
+        //点击显示对应状态的时间
+        showTime(txt){
+            this.statusTime = txt;
+            this.showHideOnBlur = !this.showHideOnBlur;
+        },
+        //跳转至学生任务详情 - 需要区分-任务状态   展示，填写
+        toStuDetail(stuid){
+            Bus.$emit('stuCardListsData',this.stuLits);
+            this.$router.push({path: '/stuCardDetails/'+this.uid+'/'+this.id+'/'+stuid+'/'+this.schooId});
+        },
+        //批量操作学生表单
+        batch(){
+            // this.$router.push({path: '/stuListBatch/'+this.uid+'/'+this.id+'/'+this.formId+'/'+this.schooId})
+        }
+    },
+    
 }
 </script>
 <style lang="less">
     .stuListCard{
+        background-color: #ebebeb;
         .top-back {
             padding:20px;
             text-align: center;
@@ -73,6 +454,223 @@ export default {
                 overflow: hidden;
                 text-overflow:ellipsis;
                 white-space: nowrap;
+            }
+        }
+        .stuLists{
+            .stulist-item{
+                margin-top: 40px;
+                // max-height: 820px;
+                // overflow: hidden;
+                .stuInfo{
+                    position: relative;
+                    padding: 30px;
+                    box-sizing: border-box;
+                    height: 120px;
+                    background-color: #fff;
+                    .avatar{
+                        margin-right: 24px;
+                        width: 60px;
+                        height: 60px;
+                        border-radius: 50%;
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                    .name{
+                        display: inline-block;
+                        vertical-align: middle;
+                        font-size: 30px;
+                        color: #333;
+                    }
+                    .status{
+                        position: absolute;
+                        right: 30px;
+                        top: 45px;
+                        display: inline-block;
+                        height: 30px;
+                        line-height: 30px;
+                        padding: 4px 12px;
+                        border-radius: 15px;
+                        border: 1px solid #000;
+                        font-size: 14px;
+                        color: #cfcfcf;
+                    }
+                }
+                .fieldLists{
+                    .fieldlist-item{
+                        background-color: #fff;
+                        dl{
+                            padding: 0 30px;
+                            font-size: 30px;
+                            dt{
+                                position: relative;
+                                padding: 27px 0;
+                                color: #333;
+                                p{
+                                    position: absolute;
+                                    right: 0;
+                                    top: 27px;
+                                    width: 460px;
+                                    color: #c9c7c7;
+                                    text-align: left;
+                                    &.hasVal{
+                                        text-align: right;
+                                        color:#656565;
+                                    }
+                                    img{
+                                        margin-left: 30px;
+                                        height: 26px;
+                                        width: 18px;
+                                    }
+                                    .noData{
+                                        float: right;
+                                    }
+                                    .percent{
+                                        float: right;
+                                    }
+                                }
+                                img{
+                                    height: 36px;
+                                    width: 36px;
+                                }
+                                img,span{
+                                    display: inline-block;
+                                    vertical-align: middle;
+                                }
+                            }
+                            dd{
+                                // background-color: #fafafa;
+                                color: #696969;
+                                border-radius: 6px;
+                                img{
+                                    max-width: 100%;
+                                }
+                                p{
+                                    padding: 30px;
+                                }
+                                &.addVideo{
+                                    position: relative;
+                                    height: 246px;
+                                    img{
+                                        position: absolute;
+                                        left: 0;
+                                        top: 0;
+                                        width: 216px;
+                                        height: 216px;
+                                    }
+                                    span{
+                                        position: absolute;
+                                        right: 0;
+                                        bottom: 30px;
+                                        padding-right: 42px;
+                                        background: url('../../assets/img/ico_addMedia.jpg') no-repeat right center;
+                                        background-size: 40px 46px;
+                                        color: #c9c7c8;
+                                    }
+                                }
+                                &.addAudio{
+                                    padding: 30px 0;
+                                    span:nth-child(1){
+                                        color: #1abe7f;
+                                    }
+                                    span:nth-child(2){
+                                        float: right;
+                                        padding-right: 42px;
+                                        background: url('../../assets/img/ico_addMedia.jpg') no-repeat right center;
+                                        background-size: 40px 46px;
+                                        color: #c9c7c8;
+                                    }
+                                }
+                                &.fieldImg{
+                                    font-size: 0;
+                                    // position: relative;
+                                    div{
+                                        display: inline-block;
+                                        img{
+                                            margin-right: 20px;
+                                            &:nth-child(3n+3){
+                                                margin-right: 0;
+                                            }
+                                        }
+                                    }
+                                    img{
+                                        height: 216px;
+                                        width: 216px;
+                                        border-radius: 6px;
+                                    }
+                                }
+                                .weui-cells:before,.weui-cells:after{
+                                    border: none;
+                                }
+                                .weui-cells{
+                                    margin-top: 0;
+                                    background-color: #fafafa;
+                                    .weui-cells_radio{
+                                        padding: 0 30px;
+                                    }
+                                    .weui-check__label:active{background-color: transparent;}
+                                    .weui-cell_radio{
+                                        padding-top: 0;
+                                        padding-bottom: 0;
+                                        padding-right: 0;
+                                        p{
+                                            padding: 30px 0;
+                                            font-size: 30px;
+                                        }
+                                        .weui-cell__ft{
+                                            width: 40px;
+                                            height: 40px;
+                                            background: url('../../assets/img/radio1.png') no-repeat center center;
+                                            background-size: 40px 40px;
+                                        }
+                                        .weui-check:checked + .weui-icon-checked{
+                                            margin-top: 0px;
+                                            margin-left: -10px;
+                                            height: 40px;
+                                            width: 40px;
+                                            background: url('../../assets/img/radio_check1.png') no-repeat center center;
+                                            background-size: 40px 40px;
+                                            &:before{
+                                                content: '';
+                                            }
+                                        }
+                                    }
+                                    &.weui-cells_checkbox{
+                                        padding: 0 30px;
+                                        .weui-check_label{
+                                            padding: 0;
+                                            p{
+                                                padding: 30px 16px;
+                                                font-size: 30px;
+                                            }
+                                            .weui-icon-checked{
+                                                height: 40px;
+                                                width: 40px;
+                                                background: url('../../assets/img/checkbox.png') no-repeat center center;
+                                                background-size: 40px 40px;
+                                                &::before{
+                                                    content: ''
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                // .weui-cell_radio{
+                                //     padding: 0 30px;
+                                // }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+        .dialog-demo{
+            .weui-mask{
+                background: transparent;
+            }
+            p{
+                margin: 85px 0;
+                font-size: 26px;
             }
         }
     }

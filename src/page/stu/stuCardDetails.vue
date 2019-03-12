@@ -268,7 +268,7 @@ export default {
             this.$vux.loading.show({
                 text: '加载中...'
             });
-            this.$axios.get( process.env.API_ROOT+"app/stu/v1/showTeaTaskDetail",{params:{
+            this.$axios.get( process.env.API_ROOT+"app/stu/v1/showStuTaskDetail",{params:{
                     uid:this.uid,
                     schoolId:Number(this.schoolId),
                     stuId:Number(this.stuid),
@@ -298,7 +298,7 @@ export default {
         },
         //获取学生填写记录
         getHistoryList(){
-            this.$axios.get( process.env.API_ROOT+"app/stu/v1/getTaskSubmitHistory",{params:{
+            this.$axios.get( process.env.API_ROOT+"app/stu/v1/getStuToStuTaskSubmitHistory",{params:{
                     uid:this.uid,
                     schoolId:Number(this.schoolId),
                     stuId:Number(this.stuid),

@@ -587,6 +587,16 @@ const routes = [
        require(['./page/stu/stuListCard.vue'], resolve)
      }
    },
+    { //学生帮学生填写表单详情stuCardDetails
+      name: 'stuCardDetails',
+      path: '/stuCardDetails2/:uid/:id/:stuid/:schoolid',
+      meta: {
+        // title: '学生帮学生填写表单详情'
+      },
+      component: function (resolve) {
+        require(['./page/stu/stuCardDetails.vue'], resolve)
+      }
+    },
   { //老师帮学生填写--卡片式列表
     name: 'stuListCard',
     // path: '/stuListCard/:uid/:id/:cycleid',
@@ -596,6 +606,17 @@ const routes = [
     },
     component: function (resolve) {
       require(['./page/tea/stuListCard.vue'], resolve)
+    }
+  },
+  { //老师帮学生填写--批量操作
+    name: 'stuListBatch',
+    // path: '/stuListCard/:uid/:id/:cycleid',
+    path: '/stuListBatch/:uid/:id/:formId/:schoolid',
+    meta: {
+      // title: '老师填写卡片式列表批量操作'
+    },
+    component: function (resolve) {
+      require(['./page/tea/stuListBatch.vue'], resolve)
     }
   },
   { //卡片式列表学生详情stuCardDetails

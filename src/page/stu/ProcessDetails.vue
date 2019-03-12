@@ -26,7 +26,7 @@
             <div class="task" v-show="index == 0">
                 <template v-for="item in rw">
                     <!-- <router-link :to="(item.statusName=='未通过'||item.statusName=='未完成'||item.statusName=='进行中')||item.statusName=='尚未开始'?'/studentTaskDetails/'+uid+'/'+item.id+'/'+fmtDate(item.joinstarttime)+'/'+fmtDate(item.joinendtime)+'/'+item.formsid:'/studentTaskDetailsCompleted/'+uid+'/'+item.id+'/'+fmtDate(item.joinstarttime)+'/'+fmtDate(item.joinendtime)+'/'+item.formsid"> -->
-                    <div @click="newlink(item.isRelateStu,item.id,item.formsid,item.schoolid,item.joinstarttime,item.joinendtime)"  class="ripple">
+                    <div @click="newlink(item)"  class="ripple">
                     <!-- <div @click="newlink(item.isRelateStu,item.id,item.joinstarttime,item.joinendtime)"  class="ripple"> -->
                         <img class="first-img" src="../../assets/img/ico_task.png" alt="" v-if="item.isRelateStu">
                         <img class="first-img" src="../../assets/img/yiwancheng.png" v-else-if="item.statusName=='已完成'">
@@ -496,17 +496,16 @@ export default {
         //     }
         // },
         // 任务跳转至学生列表
-        newlink(bool,id,formsid,schoolid,str,end){
-            console.log(this.isControl,bool,id);
-            
+        // newlink(bool,id,formsid,schoolid,str,end){
+        newlink(task){
             if(this.isControl){
-                if(!bool){
-                    this.$router.push({path: '/studentTaskDetails/'+this.uid+'/'+id+'/'+str+'/'+end+'/'+0});
+                if(!task.isRelateStu){
+                    this.$router.push({path: '/studentTaskDetails/'+this.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
                 }else{
                     //列表式
-                    // this.$router.push({path: '/stuList2/'+this.uid+'/'+id+'/'+formsid+'/'+schoolid+'/'+null});
+                    this.$router.push({path: '/stuList2/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid+'/'+null});
                     //此处需要添加showflag的判断-卡片式 -列表式
-                     this.$router.push({path: '/stuList2Card/'+this.uid+'/'+id+'/'+formsid+'/'+schoolid});
+                    // this.$router.push({path: '/stuList2Card/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
                 }
                 
             }else{
