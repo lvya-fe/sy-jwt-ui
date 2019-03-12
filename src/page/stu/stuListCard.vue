@@ -372,7 +372,7 @@ export default {
                 taskId:this.id,
                 type:1
             }
-            this.$axios.get( process.env.API_ROOT+"app/stu/v1/showStuTeaCardTaskList",{params:pams})
+            this.$axios.get( process.env.API_ROOT+"app/stu/v1/showStuCardTaskList",{params:pams})
             .then( res =>{
                 if(res.success){
                     this.$vux.loading.hide();
