@@ -21,8 +21,7 @@
                         <span>{{ item.stuName }}</span>
                         <span>{{ item.orgName }}</span>
                     </p>
-                    <p>
-                        {{item.taskStateName}}<span>{{item.updateTimeStr}}</span></p>
+                    <p><span>{{item.updateTimeStr}}</span></p>
                     <img class="back-a" src="../../assets/img/you.png" alt="">
                 </div>
             </div>

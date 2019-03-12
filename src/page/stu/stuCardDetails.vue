@@ -24,7 +24,7 @@
                         <x-textarea :max="200" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true"  placeholder="请输入" :show-counter="false"></x-textarea>
                     </div>
                     <!-- 日期时间 -->
-                    <group class="fieldsDatetime hasIco" v-if="item.formItemType == '3'">
+                    <group class="fieldsDatetime hasIco" :class="{'readonly': ![1,3].includes(formState)}" v-if="item.formItemType == '3'">
                         <img src="../../assets/img/ico_datetime.png" alt="">
                         <datetime v-model="item.formItemValue" format="YYYY-MM-DD HH:mm" :readonly="[1,3].includes(formState) ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
                     </group>
@@ -76,11 +76,12 @@
                         </ul>
                     </group>
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '26'">
+                        <img class="ico_postcode" src="../../assets/img/ico_postcode.png" alt="">
                         <span>{{item.formItemName}}</span>
                         <input type="text" :disabled="[1,3].includes(formState) ? false :true" v-model="item.formItemValue" placeholder="请输入">
                     </div>
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '27'">
-                        <img src="../../assets/img/ico_idcard.png" alt="">
+                        <img class="ico_idcard" src="../../assets/img/ico_idcard.png" alt="">
                         <span>{{item.formItemName}}</span>
                         <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true" placeholder="请输入">
                     </div>
@@ -102,7 +103,7 @@
                         <calendar :title="item.formItemName" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true" placeholder="请选择"></calendar>
                     </group>
                     <group  class="hasIco" v-if="item.formItemType == '25'">
-                        <img src="../../assets/img/ico_address.png" alt="">
+                        <img class="ico_address" src="../../assets/img/ico_address.png" alt="">
                         <x-address :title="item.formItemName" v-model="item.itemValArr" :disabled="[1,3].includes(formState) ? false :true" :list="addressData" placeholder="请选择"></x-address>
                     </group>
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '28'">
@@ -330,7 +331,7 @@ export default {
             this.curFieldsLists[index].formItemValue = value.length>0 ? value.join(',') : '';
             console.log(value,index)
         },
-        //点击显示对应状态的事件
+        //点击显示对应状态的时间
         showCheckList(item,index,state){
             if( ![1,3].includes(state)) return;
             this.popType = item.formItemType == 16 ? 0 : 1;
@@ -415,7 +416,12 @@ export default {
 textarea:disabled, input:disabled{background-color: #fff;}
     .stuCardDetails{
         background-color: #ebebeb;
-        
+        margin-top: 76px;
+        padding-top: 20px;
+         input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
+             color: #c6c6c6;
+             font-size: 30px;
+         }
         .vux-flexbox .vux-flexbox-item{
             margin-left: 0 !important;
             
@@ -431,11 +437,16 @@ textarea:disabled, input:disabled{background-color: #fff;}
             }
         }
         .top-back {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
             padding:20px;
             text-align: center;
             font-size: 36px;
             color: #444;
             background-color: #fff;
+            z-index: 1000;
             img{
                 width: 38px;
                 height: 38px;
@@ -447,7 +458,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
             }
             .img-2{
                 position: absolute;
-                right: 20px;
+                right: 30px;
                 top: 25px;
                 i{
                     color: #01c269;
@@ -474,6 +485,18 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         top: 36px;
                         height: 36px;
                         width: 36px;
+                        &.ico_idcard{
+                            top: 40px;
+                            height: 27px;
+                        }
+                        &.ico_address{
+                            left: 35px;
+                            width: 25px;
+                        }
+                        &.ico_postcode{
+                            height: 30px;
+                            top: 39px;
+                        }
                     }
                     .weui-cell{
                         left: 54px;
@@ -506,12 +529,16 @@ textarea:disabled, input:disabled{background-color: #fff;}
                 }
                 .fieldsDatetime{
                     .vux-datetime{
-                        
                         p{
                             font-size: 30px;
                         }
                         .vux-cell-value{
                             font-size: 30px;
+                        }
+                    }
+                    &.readonly{
+                        .weui-cell .weui-cell__ft:after{
+                            right: 0;
                         }
                     }
                 }
@@ -538,6 +565,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         color: #656565;
                         text-align: left;
                         &.padr30{
+                            width: 446px;
                             padding-right: 30px;
                         }
                     }
@@ -546,7 +574,15 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         padding-right: 0;
                     }
                     &.txtarea,&.radios{
-                        p{padding-bottom: 30px;}
+                        padding: 0;
+                        p{padding: 30px;}
+                        .weui-cell,.weui-cells_radio,.weui-cells_checkbox{
+                            padding: 0 30px;
+                        }
+                        .weui-cells_checkbox{
+                            p{padding-left: 0;}
+                            .weui-cell__hd{padding:0;}
+                        }
                     }
                     &.txtarea{
                         .weui-cell:before{
@@ -688,7 +724,8 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             position: absolute;
                             right: 60px;
                             top: 0;
-                            color: #999;
+                            color: #c6c6c6;
+                            font-size: 30px;
                             &.hides{
                                 color: transparent;
                             }

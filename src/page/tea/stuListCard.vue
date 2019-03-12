@@ -186,11 +186,11 @@
                                     </p>
                                 </dt>
                                 <!-- 多选列表显示样式 -->
-                                <!-- <dd v-if="item.itemValArr.length >0">
+                                <dd v-if="field.itemValArr.length >0">
                                     <ul class="itemsWrap" >
-                                        <li class="vux-1px" v-for="val in item.itemValArr" :key="val">{{val}}</li>
+                                        <li class="vux-1px" v-for="val in field.itemValArr" :key="val">{{val}}</li>
                                     </ul>
-                                </dd> -->
+                                </dd>
                             </template>
                             <template v-if="field.formItemType == 19">
                                 <dt>
@@ -323,7 +323,7 @@
     </div>
 </template>
 <script>
-import { LoadMore,XDialog,Cell,Group,Radio,Checklist  } from "vux";
+import { XDialog,Cell,Group,Radio,Checklist,Loading } from "vux";
 import qs from 'qs';
 import Bus from '@/plugins/eventBus.js'
 // import {formatDate} from '@/plugins/formatDate.js';
@@ -347,12 +347,12 @@ export default {
         }
     },
     components:{
-        LoadMore,
         XDialog,
         Cell,
         Group,
         Radio,
-        Checklist 
+        Checklist,
+        Loading
     },
     created(){
         this.getStuLists();
@@ -384,11 +384,15 @@ export default {
                     this.stuLits = resData;
                     if(this.stuLits.length>0){
                         this.stuLits.forEach(element => {
-                            if(['5','17'].includes(element.formItemType)){
-                                element = Object.assign(element,{
-                                    itemValArr: (element.formItemValue != '' && element.formItemValue != null) ? element.formItemValue.split(',') : []
-                                })
-                            }
+                            if(element.formItemResps.length == 0) return;
+                            element.formItemResps.forEach(ele =>{
+                                if(['5','17'].includes(ele.formItemType)){
+                                    ele = Object.assign(ele,{
+                                        itemValArr: (ele.formItemValue != '' && ele.formItemValue != null) ? ele.formItemValue.split(',') : []
+                                    })
+                                }
+                            })
+                            
                         });
                     }
                 }
@@ -398,9 +402,6 @@ export default {
         },
         //获取周期列表
         getCycleLists(){
-            this.$vux.loading.show({
-                text: '加载中...'
-            });
             let pams = {
                 uid:this.uid,
                 schoolId :this.schooId,
@@ -409,7 +410,6 @@ export default {
             this.$axios.get( process.env.API_ROOT+"app/stu/v1/getTaskCycleState",{params:pams})
             .then( res =>{
                 if(res.success){
-                    this.$vux.loading.hide();
                     this.cycleLists = res.data;
                     console.log(this.cycleLists);
                     
@@ -707,6 +707,22 @@ export default {
                                 // .weui-cell_radio{
                                 //     padding: 0 30px;
                                 // }
+                                .itemsWrap{
+                                    box-sizing: border-box;
+                                    font-size: 0;
+                                    li{
+                                        margin-top: 30px;
+                                        margin-bottom: 2px;
+                                        margin-left: 30px;
+                                        display: inline-block;
+                                        padding: 20px;
+                                        font-size: 28px;
+                                        color: #999;
+                                        &:first-child{
+                                            margin-left: 0;
+                                        }
+                                    }
+                                }
                             }
                         }
                         

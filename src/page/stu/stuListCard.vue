@@ -16,7 +16,7 @@
                     <span class="name">{{item.stuName}}</span>
                     <span class="status" @click.stop="showTime(item.updateTimeStr)">{{item.taskStateName}}</span>
                 </div>
-                <ul class="fieldLists vux-1px-t">
+                <ul class="fieldLists">
                     <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  7 平分  8  描述文本 9 地理位置  10 选人插件,11 显示项 12 学生信息 
                     13 系统信息 14 邮箱 15 电话 16选择列表 17 多选列表 18自动编号  19 整数 20 小数  
                     21 百分数 22 日期  23 公式   24 引用   25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
@@ -32,7 +32,7 @@
                                 <dt :class="{'vux-1px-b':field.formItemValue ==''}">
                                     <span>{{field.formItemName}}</span>
                                 </dt>
-                                <dd>
+                                <dd class="hasbgColor">
                                     <p>{{field.formItemValue == ''? '请输入':field.formItemValue}}</p>
                                 </dd>
                             </template>
@@ -185,11 +185,11 @@
                                     </p>
                                 </dt>
                                 <!-- 多选列表显示样式 -->
-                                <!-- <dd v-if="item.itemValArr.length >0">
+                                <dd v-if="field.itemValArr.length >0">
                                     <ul class="itemsWrap" >
-                                        <li class="vux-1px" v-for="val in item.itemValArr" :key="val">{{val}}</li>
+                                        <li class="vux-1px" v-for="val in field.itemValArr" :key="val">{{val}}</li>
                                     </ul>
-                                </dd> -->
+                                </dd>
                             </template>
                             <template v-if="field.formItemType == 19">
                                 <dt>
@@ -245,7 +245,7 @@
                             </template>
                             <template v-if="field.formItemType == 25">
                                 <dt>
-                                    <img src="../../assets/img/ico_address.png" alt="">
+                                    <img class="ico_address" src="../../assets/img/ico_address.png" alt="">
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
                                         {{field.formItemValue}}
@@ -260,7 +260,7 @@
                             </template>
                             <template v-if="field.formItemType == 26">
                                 <dt>
-                                    <img src="../../assets/img/ico_postcode.png" alt="">
+                                    <img class="ico_postcode" src="../../assets/img/ico_postcode.png" alt="">
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
                                         {{field.formItemValue}}
@@ -275,7 +275,7 @@
                             </template>
                             <template v-if="field.formItemType == 27">
                                 <dt>
-                                    <img src="../../assets/img/ico_idcard.png" alt="">
+                                    <img class="ico_idcard" src="../../assets/img/ico_idcard.png" alt="">
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
                                         {{field.formItemValue}}
@@ -322,7 +322,7 @@
     </div>
 </template>
 <script>
-import { LoadMore,XDialog,Cell,Group,Radio,Checklist  } from "vux";
+import { XDialog,Cell,Group,Radio,Checklist,Loading } from "vux";
 import qs from 'qs';
 import Bus from '@/plugins/eventBus.js'
 // import {formatDate} from '@/plugins/formatDate.js';
@@ -342,16 +342,16 @@ export default {
             stuLits:[],//学生列表
             statusTime:'',
             showHideOnBlur:false,//状态时间弹框是否显示
-
+            cycleLists:[], //任务周期列表
         }
     },
     components:{
-        LoadMore,
         XDialog,
         Cell,
         Group,
         Radio,
-        Checklist 
+        Checklist,
+        Loading
     },
     created(){
         this.getStuLists();
@@ -381,13 +381,34 @@ export default {
                     this.stuLits = resData;
                     if(this.stuLits.length>0){
                         this.stuLits.forEach(element => {
-                            if(['5','17'].includes(element.formItemType)){
-                                element = Object.assign(element,{
-                                    itemValArr: (element.formItemValue != '' && element.formItemValue != null) ? element.formItemValue.split(',') : []
-                                })
-                            }
+                            if(element.formItemResps.length == 0) return;
+                            element.formItemResps.forEach(ele =>{
+                                if(['5','17'].includes(ele.formItemType)){
+                                    ele = Object.assign(ele,{
+                                        itemValArr: (ele.formItemValue != '' && ele.formItemValue != null) ? ele.formItemValue.split(',') : []
+                                    })
+                                }
+                            })
                         });
                     }
+                }
+            }).catch( err =>{
+                this.errorUtil(err);
+            })
+        },
+        //获取周期列表
+        getCycleLists(){
+            let pams = {
+                uid:this.uid,
+                schoolId :this.schooId,
+                taskId:this.id,
+            }
+            this.$axios.get( process.env.API_ROOT+"app/stu/v1/getTaskCycleState",{params:pams})
+            .then( res =>{
+                if(res.success){
+                    this.cycleLists = res.data;
+                    console.log(this.cycleLists);
+                    
                 }
             }).catch( err =>{
                 this.errorUtil(err);
@@ -414,12 +435,19 @@ export default {
 <style lang="less">
     .stuListCard{
         background-color: #ebebeb;
+        margin-top: 76px;
+        padding-top: 20px;
         .top-back {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
             padding:20px;
             text-align: center;
             font-size: 36px;
             color: #444;
             background-color: #fff;
+            z-index: 1000;
             img{
                 width: 38px;
                 height: 38px;
@@ -440,12 +468,12 @@ export default {
             }
             .img-3{
                 position: absolute;
-                right: 80px;
+                right: 90px;
                 top: 25px;
             }
             .img-4{
                 position: absolute;
-                right: 20px;
+                right: 30px;
                 top: 25px;
             }
             .n_title{
@@ -457,6 +485,7 @@ export default {
             }
         }
         .stuLists{
+            margin-top: 40px;
             .stulist-item{
                 margin-top: 40px;
                 // max-height: 820px;
@@ -467,6 +496,7 @@ export default {
                     box-sizing: border-box;
                     height: 120px;
                     background-color: #fff;
+                    box-shadow: 0 1px 2px #ccc;
                     .avatar{
                         margin-right: 24px;
                         width: 60px;
@@ -531,6 +561,15 @@ export default {
                                 img{
                                     height: 36px;
                                     width: 36px;
+                                    &.ico_idcard{
+                                        height: 27px;
+                                    }
+                                    &.ico_address{
+                                        width: 25px;
+                                    }
+                                    &.ico_postcode{
+                                        height: 30px;
+                                    }
                                 }
                                 img,span{
                                     display: inline-block;
@@ -541,6 +580,13 @@ export default {
                                 // background-color: #fafafa;
                                 color: #696969;
                                 border-radius: 6px;
+                                &.hasbgColor{
+                                    background-color: #fafafa;
+                                    p{
+                                        min-height: 120px;
+                                        color: #c6c6c6;
+                                    }
+                                }
                                 img{
                                     max-width: 100%;
                                 }
@@ -657,6 +703,22 @@ export default {
                                 // .weui-cell_radio{
                                 //     padding: 0 30px;
                                 // }
+                                .itemsWrap{
+                                    box-sizing: border-box;
+                                    font-size: 0;
+                                    li{
+                                        margin-top: 30px;
+                                        margin-bottom: 2px;
+                                        margin-left: 30px;
+                                        display: inline-block;
+                                        padding: 20px;
+                                        font-size: 28px;
+                                        color: #999;
+                                        &:first-child{
+                                            margin-left: 0;
+                                        }
+                                    }
+                                }
                             }
                         }
                         

@@ -24,7 +24,7 @@
                         <x-textarea :max="200" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true"  placeholder="请输入" :show-counter="false"></x-textarea>
                     </div>
                     <!-- 日期时间 -->
-                    <group class="fieldsDatetime hasIco" :class="{'fill':[1,3].includes(formState)}" v-if="item.formItemType == '3'">
+                    <group class="fieldsDatetime hasIco" :class="{'readonly': ![1,3].includes(formState)}" v-if="item.formItemType == '3'">
                         <img src="../../assets/img/ico_datetime.png" alt="">
                         <datetime v-model="item.formItemValue" format="YYYY-MM-DD HH:mm" :readonly="[1,3].includes(formState) ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
                     </group>
@@ -418,6 +418,10 @@ textarea:disabled, input:disabled{background-color: #fff;}
         background-color: #ebebeb;
         margin-top: 76px;
         padding-top: 20px;
+         input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
+             color: #c6c6c6;
+             font-size: 30px;
+         }
         .vux-flexbox .vux-flexbox-item{
             margin-left: 0 !important;
             
@@ -532,9 +536,12 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             font-size: 30px;
                         }
                     }
-                    .weui-cell .weui-cell__ft:after{
-                        right: 0;
+                    &.readonly{
+                        .weui-cell .weui-cell__ft:after{
+                            right: 0;
+                        }
                     }
+                    
                 }
                 
                 .fieldsWrap{
@@ -718,7 +725,8 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             position: absolute;
                             right: 60px;
                             top: 0;
-                            color: #999;
+                            color: #c6c6c6;
+                            font-size: 30px;
                             &.hides{
                                 color: transparent;
                             }

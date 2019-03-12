@@ -503,9 +503,12 @@ export default {
                     this.$router.push({path: '/studentTaskDetails/'+this.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
                 }else{
                     //列表式
-                    this.$router.push({path: '/stuList2/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid+'/'+null});
-                    //此处需要添加showflag的判断-卡片式 -列表式
-                    // this.$router.push({path: '/stuList2Card/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
+                    if(task.showFlag == 1){
+                        this.$router.push({path: '/stuList2/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid+'/'+null});
+                    }
+                    else if(task.showFlag == 2){
+                        this.$router.push({path: '/stuList2Card/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
+                    }
                 }
                 
             }else{
