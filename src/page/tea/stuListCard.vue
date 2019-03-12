@@ -7,15 +7,14 @@
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
             </span>
             <img class="img-3" src="../../assets/img/ico_search.png" alt="">
-            <img class="img-4" src="../../assets/img/batch.png" alt="">
+            <img class="img-4" src="../../assets/img/batch.png" @click="batch" alt="">
         </div>
         <ul class="stuLists">
             <li class="stulist-item" v-for="item in stuLits" :key="item.stuId" @click="toStuDetail(item.stuId)">
                 <div class="stuInfo">
-                    <!-- <img :src="defaultUrl + item.stuImgUrl" class="avatar" alt=""> -->
                     <img src="../../assets/img/img_avatar.png" class="avatar" alt="">
                     <span class="name">{{item.stuName}}</span>
-                    <span class="status" @click.stop="showTime(item.taskStateName)">{{item.taskStateName}}</span>
+                    <span class="status" @click.stop="showTime(item.updateTimeStr)">{{item.taskStateName}}</span>
                 </div>
                 <ul class="fieldLists vux-1px-t">
                     <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  7 平分  8  描述文本 9 地理位置  10 选人插件,11 显示项 12 学生信息 
@@ -177,7 +176,6 @@
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
-                                        {{field.formItemValue}}
                                         <template v-if="field.formItemValue ==''">
                                             <div class="noData">
                                                 <span>请选择</span>
@@ -186,6 +184,12 @@
                                         </template>
                                     </p>
                                 </dt>
+                                <!-- 多选列表显示样式 -->
+                                <!-- <dd v-if="item.itemValArr.length >0">
+                                    <ul class="itemsWrap" >
+                                        <li class="vux-1px" v-for="val in item.itemValArr" :key="val">{{val}}</li>
+                                    </ul>
+                                </dd> -->
                             </template>
                             <template v-if="field.formItemType == 19">
                                 <dt>
@@ -320,13 +324,13 @@
 <script>
 import { LoadMore,XDialog,Cell,Group,Radio,Checklist  } from "vux";
 import qs from 'qs';
+import Bus from '@/plugins/eventBus.js'
 // import {formatDate} from '@/plugins/formatDate.js';
 // import BScroll from "better-scroll";
 // import showcycle from '@/page/tea/SelectionPeriod'
 export default {
     data(){
         return{
-            defaultUrl:process.env.API_ROOT,
             uid:this.$route.params.uid,
             id:this.$route.params.id,
             // cycleid:this.$route.params.cycleid,
@@ -343,7 +347,6 @@ export default {
     },
     components:{
         LoadMore,
-        // showcycle,
         XDialog,
         Cell,
         Group,
@@ -359,6 +362,9 @@ export default {
         },
         getStuLists(){
             console.log(this.uid,this.id,this.formId,this.schooId)
+            this.$vux.loading.show({
+                text: '加载中...'
+            });
             let pams = {
                 uid:this.uid,
                 schoolId :this.schooId,
@@ -366,18 +372,10 @@ export default {
                 taskId:this.id,
                 type:1
             }
-            console.log(pams);
-            // this.$axios.get( process.env.API_ROOT+"app/stu/v1/showStuCardTaskList-test",
-            // qs.stringify({
-            //         uid:this.uid,
-            //         schooId:Number(this.schooId),
-            //         formId:Number(this.formId),
-            //         taskId:Number(this.id),
-            //         type:1,
-            //     }))
             this.$axios.get( process.env.API_ROOT+"app/stu/v1/showStuTeaCardTaskList",{params:pams})
             .then( res =>{
-                // if(res.success){
+                if(res.success){
+                    this.$vux.loading.hide();
                     let resData = res.data;
                     this.title = resData[0].taskName;
                     this.stuLits = resData;
@@ -390,7 +388,7 @@ export default {
                             }
                         });
                     }
-                // }
+                }
             }).catch( err =>{
                 this.errorUtil(err);
             })
@@ -400,9 +398,13 @@ export default {
             this.statusTime = txt;
             this.showHideOnBlur = !this.showHideOnBlur;
         },
+        //跳转至学生任务详情 - 需要区分-任务状态   展示，填写
         toStuDetail(stuid){
-            // this.$router.push({path: '/studentTaskDetails/'+_self.uid+'/'+id+'/'+str+'/'+end+'/'+0});
+            Bus.$emit('stuCardListsData',this.stuLits);
             this.$router.push({path: '/stuCardDetails/'+this.uid+'/'+this.id+'/'+stuid+'/'+this.schooId});
+        },
+        //批量操作学生表单
+        batch(){
 
         }
     },
@@ -605,6 +607,7 @@ export default {
                                     .weui-cells_radio{
                                         padding: 0 30px;
                                     }
+                                    .weui-check__label:active{background-color: transparent;}
                                     .weui-cell_radio{
                                         padding-top: 0;
                                         padding-bottom: 0;

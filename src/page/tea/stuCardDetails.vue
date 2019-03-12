@@ -16,30 +16,30 @@
                     <!-- 单行 -->
                     <div class="fieldsWrap" v-if="item.formItemType == '1'">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" placeholder="请输入">
+                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true" placeholder="请输入">
                     </div>
                     <!-- 多行 -->
                     <div class="fieldsWrap txtarea" v-if="item.formItemType == '2'">
                         <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
-                        <x-textarea :max="200" v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
+                        <x-textarea :max="200" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true"  placeholder="请输入" :show-counter="false"></x-textarea>
                     </div>
                     <!-- 日期时间 -->
                     <group class="fieldsDatetime hasIco" v-if="item.formItemType == '3'">
                         <img src="../../assets/img/ico_datetime.png" alt="">
-                        <datetime v-model="item.formItemValue" format="YYYY-MM-DD HH:mm"  @on-change="change" :title="item.formItemName"></datetime>
+                        <datetime v-model="item.formItemValue" format="YYYY-MM-DD HH:mm" :readonly="[1,3].includes(formState) ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
                     </group>
                     <!-- 单项选择 -->
                     <div class="fieldsWrap radios" v-if="item.formItemType == '4'">
                         <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
                         <group v-if="item.formSelectItemResps.length >0 ">
-                            <radio :options="item.formSelectItemResps" @on-change="change"></radio>
+                            <radio :options="item.formSelectItemResps" :disabled="[1,3].includes(formState) ? false :true" v-model="item.formItemValue" @on-change="change"></radio>
                         </group>
                     </div>
                     <!-- 多项选择 -->
                     <div class="fieldsWrap radios" v-if="item.formItemType == '5'">
                         <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
                         <group v-if="item.formSelectItemResps.length >0 ">
-                            <checklist label-position="left" :options="item.formSelectItemResps" v-model="item.itemValArr" @on-change="change"></checklist>
+                            <checklist label-position="left" :options="item.formSelectItemResps" :disabled="[1,3].includes(formState) ? false :true" v-model="item.itemValArr" @on-change="checkListChange(item.itemValArr,index)"></checklist>
                         </group>
                     </div>
                     <!-- 地理位置 -->
@@ -51,21 +51,21 @@
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '14'">
                         <img src="../../assets/img/ico_email.png" alt="">
                         <span>{{item.formItemName}}</span>
-                        <input type="email" v-model="item.formItemValue" placeholder="请输入">
+                        <input type="email" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true" placeholder="请输入">
                     </div>
                     <!-- 电话 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '15'">
                         <img src="../../assets/img/ico_phone.png" alt="">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" placeholder="请输入">
+                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true" placeholder="请输入">
                     </div>
                     <!-- 选择列表 -->
-                    <group class="fieldsWrap selectList" v-if="item.formItemType == '16'" @click.native="showCheckList(item,index)">
+                    <group class="fieldsWrap selectList" v-if="item.formItemType == '16'" @click.native="showCheckList(item,index,formState)">
                         <cell :title="item.formItemName" ></cell>
                         <span class="ico-right">{{item.formItemValue == '' || item.formItemValue == null ? '请选择' :item.formItemValue}}</span> 
                     </group>
                     <!-- 多选择列表 -->
-                    <group class="fieldsWrap selectList" v-if="item.formItemType == '17'" @click.native="showCheckList(item,index)">
+                    <group class="fieldsWrap selectList" v-if="item.formItemType == '17'" @click.native="showCheckList(item,index,formState)">
                         <cell :title="item.formItemName" ></cell>
                         <span class="ico-right" :class="{'hides': (item.formItemValue != '' && item.formItemValue != null) }">请选择</span> 
                         <!-- <div class="itemsWrap" v-if="item.formItemValue != '' && item.formItemValue != null">
@@ -77,51 +77,51 @@
                     </group>
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '26'">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" placeholder="请输入">
+                        <input type="text" :disabled="[1,3].includes(formState) ? false :true" v-model="item.formItemValue" placeholder="请输入">
                     </div>
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '27'">
                         <img src="../../assets/img/ico_idcard.png" alt="">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" placeholder="请输入">
+                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true" placeholder="请输入">
                     </div>
                     <div class="fieldsWrap" v-if="item.formItemType == '19'">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" placeholder="请输入">
+                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true" placeholder="请输入">
                     </div>
                     <div class="fieldsWrap" v-if="item.formItemType == '20'">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" placeholder="请输入">
+                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true" placeholder="请输入">
                     </div>
                     <div class="fieldsWrap" v-if="item.formItemType == '21'">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" class="padr30" v-model="item.formItemValue" placeholder="请输入百分数(如：60.23)">
+                        <input type="text" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true" placeholder="请输入百分数(如：60.23)">
                         <span class="percent">%</span>
                     </div>
                     <group  class="hasIco" v-if="item.formItemType == '22'">
                         <img src="../../assets/img/ico_date.png" alt="">
-                        <calendar :title="item.formItemName" v-model="item.formItemValue" placeholder="请选择"></calendar>
+                        <calendar :title="item.formItemName" v-model="item.formItemValue" :disabled="[1,3].includes(formState) ? false :true" placeholder="请选择"></calendar>
                     </group>
                     <group  class="hasIco" v-if="item.formItemType == '25'">
                         <img src="../../assets/img/ico_address.png" alt="">
-                        <x-address :title="item.formItemName" v-model="item.itemValArr" :list="addressData" placeholder="请选择"></x-address>
+                        <x-address :title="item.formItemName" v-model="item.itemValArr" :disabled="[1,3].includes(formState) ? false :true" :list="addressData" placeholder="请选择"></x-address>
                     </group>
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '28'">
-                        <template>
-                            <div>
-                                <img src="../../assets/img/ico_audio.png" alt="">
-                                <span>{{item.formItemName}}</span>
-                                <div class="addAudio vux-1px-t">
-                                    <span>添加音频</span>
-                                    <span>大文件请点击</span>
-                                </div>
+                        <img src="../../assets/img/ico_audio.png" alt="">
+                        <span>{{item.formItemName}}</span>
+                        <div class="addAudio vux-1px-t">
+                            <!-- <span></span> -->
+                            <div class="addAudioInput">
+                                添加音频
+                                <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)">
                             </div>
-                        </template>
-                        <template style="display:none;">
-                            <div>
-                                <aplayer v-if="item.valex!=null&&item.valex!=''&&item.valex!=undefined" :autoplay="null" :music="{
+                            <span>大文件请点击</span>
+                        </div>
+                        <template v-if="(item.formItemValue !='' && item.formItemValue != 'null'&& item.formItemValue != null)">
+                            <div class="showAudio">
+                                <aplayer :autoplay="null" :music="{
                                     title: '数据来源自',
                                     author: '绿芽',
-                                    url: item.valex,
+                                    url: item.formItemValue,
                                     pic: '',
                                     lrc: '[00:00.00]lrc here\n[00:01.00]aplayer'
                                     }">
@@ -129,20 +129,17 @@
                             </div>
                         </template>
                     </div>
-                    <div class="fieldsWrap hasIco" :class="{'hasUrl':hasUrlFlag}" v-if="item.formItemType == '29'">
-                        <template v-if="!hasUrlFlag">
-                            <div>
-                                <img src="../../assets/img/ico_video.png" alt="">
-                                <span>{{item.formItemName}}</span>
-                                <div class="addVideo">
-                                    <div class="inputFile">
-                                        <input type="file" name="" @change="tirggerFile($event,index)">
-                                    </div>
-                                    <span>大文件请点击</span>
-                                </div>
+                    <div class="fieldsWrap hasIco" :class="{'hasUrl':hasUrlFlag || (item.formItemValue !='' && item.formItemValue != null)}" v-if="item.formItemType == '29'">
+
+                        <img src="../../assets/img/ico_video.png" alt="">
+                        <span>{{item.formItemName}}</span>
+                        <div class="addVideo" v-if="!hasUrlFlag || item.formItemValue =='' || item.formItemValue == null">
+                            <div class="inputFile">
+                                <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)">
                             </div>
-                        </template>
-                        <template v-if="hasUrlFlag">
+                            <span>大文件请点击</span>
+                        </div>
+                        <template v-if="hasUrlFlag || (item.formItemValue !='' && item.formItemValue != 'null'&& item.formItemValue != null)">
                             <div class="showVideo">
                                 <img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">
                             </div>
@@ -151,10 +148,10 @@
                     </div>
                 </li>
             </ul>
-            <div class="btnsWrap">
+            <div class="btnsWrap" v-if="[1,3].includes(formState)">
                 <x-button type="primary" action-type="button" @click.native="submit">提交</x-button>
-                <x-button type="primary" action-type="button">提交并切换学生</x-button>
-                <x-button action-type="button">返回</x-button>
+                <!-- <x-button type="primary" action-type="button">提交并切换学生</x-button> -->
+                <x-button action-type="button" @click.native="goback">返回</x-button>
             </div>
             <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'80%','background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" class="dialog-demo vux-1px" hide-on-blur>
                 <group :title="popData.formItemName" v-if="popType == 0">
@@ -183,23 +180,25 @@
     </div>
 </template>
 <script>
-import { LoadMore,Group,XDialog,Cell,XInput,XTextarea,Datetime,XAddress,ChinaAddressV4Data,Calendar,Radio,Checklist,XButton,Flexbox,FlexboxItem} from "vux";
+import { LoadMore,Loading,Group,XDialog,Cell,XInput,XTextarea,Datetime,XAddress,ChinaAddressV4Data,Calendar,Radio,Checklist,XButton,Flexbox,FlexboxItem} from "vux";
 import qs from 'qs';
 import aplayer from "vue-aplayer";
 // import {formatDate} from '@/plugins/formatDate.js';
 // import BScroll from "better-scroll";
+import Bus from '@/plugins/eventBus.js'
 import showcycle from '@/page/tea/SelectionPeriod'
 export default {
     data(){
         return{
-            defaultUrl:process.env.API_ROOT,
             uid:this.$route.params.uid,
             id:this.$route.params.id,
             // cycleid:this.$route.params.cycleid,
             // back:this.$route.params.back,
             stuid:this.$route.params.stuid,
             schoolId:this.$route.params.schoolid,
-            title:'刘同学',
+            title:'同学',
+            formState:null,//表单状态
+            historyList:[],//提交历史记录
             stuLits:[],//学生列表
             curFieldsLists:[],//当前学生字段合集
             addressData: ChinaAddressV4Data, //省市区组件需要
@@ -240,6 +239,7 @@ export default {
         Group,
         aplayer,
         LoadMore,
+        Loading,
         XDialog,
         Cell,
         XInput,
@@ -255,12 +255,20 @@ export default {
     },
     created(){
         this.getStuInfos();
+        // this.getHistoryList();
+        Bus.$on('stuCardListsData',(data)=>{
+          this.stuListsData = data;
+        });
     },
     methods:{
         goback(){
             this.$router.go(-1);
         },
+        //获取学生表单信息
         getStuInfos(){
+            this.$vux.loading.show({
+                text: '加载中...'
+            });
             this.$axios.get( process.env.API_ROOT+"app/stu/v1/showTeaTaskDetail",{params:{
                     uid:this.uid,
                     schoolId:Number(this.schoolId),
@@ -268,9 +276,11 @@ export default {
                     taskId:Number(this.id),
                 }}
             ).then( res =>{
-                // if(res.success){
+                if(res.success){
+                    this.$vux.loading.hide();
                     let resData = res.data;
-                    this.title = resData.stuName != undefined ? resData.stuName : '同学1';
+                    this.title = resData.name;
+                    this.formState = resData.taskState;
                     this.curFieldsLists = resData.formItemResps;
                     //省市区，需要一个数组信息
                     if(this.curFieldsLists.length >0){
@@ -282,7 +292,24 @@ export default {
                             }
                         })
                     }
-                // }
+                }
+            }).catch( err =>{
+                this.errorUtil(err);
+            })
+        },
+        //获取学生填写记录
+        getHistoryList(){
+            this.$axios.get( process.env.API_ROOT+"app/stu/v1/getTaskSubmitHistory",{params:{
+                    uid:this.uid,
+                    schoolId:Number(this.schoolId),
+                    stuId:Number(this.stuid),
+                    taskId:Number(this.id),
+                }}
+            ).then( res =>{
+                if(res.success){
+                    this.historyList = res.data;
+                    console.log(this.historyList);
+                }
             }).catch( err =>{
                 this.errorUtil(err);
             })
@@ -300,16 +327,23 @@ export default {
         change (value) {
             console.log('change',value)
         },
+        checkListChange(value,index){
+            this.curFieldsLists[index].formItemValue = value.length>0 ? value.join(',') : '';
+            console.log(value,index)
+        },
         //点击显示对应状态的时间
-        showCheckList(item,index){
+        showCheckList(item,index,state){
+            if( ![1,3].includes(state)) return;
             this.popType = item.formItemType == 16 ? 0 : 1;
             this.popData = Object.assign({},item);
             this.curIndex = index;
             this.showHideOnBlur = !this.showHideOnBlur;
-            console.log(this.popData);
         },
         //上传视频 的方法
         tirggerFile(event,index){
+            this.$vux.loading.show({
+                text: '上传中...'
+            });
             let file = event.target.files[0];
             let param = new FormData(); // 创建form对象
             param.append('file', file, file.name); // 通过append向form对象添加数据
@@ -321,20 +355,26 @@ export default {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }
             // 添加请求头
-            this.$axios.post(this.defaultUrl + '/app/stu/v1/uploadFile', param,qs.stringify({'uid':this.uid}), config)
+            this.$axios.post(process.env.API_ROOT + 'app/stu/v1/uploadFile', param,qs.stringify({'uid':this.uid}), config)
                 .then(res => {
                 if(res.isSuccess){
                     this.curFieldsLists[index].formItemValue = res.data;
                     this.hasUrlFlag = true;
+                    this.$vux.loading.hide();
                 }
             })
         },
         playMP4(index){
-            this.playerOptions.src = this.curFieldsLists[index].formItemValue;
+            console.log(this.curFieldsLists[index].formItemValue);
+            this.playerOptions.sources[0].src = this.curFieldsLists[index].formItemValue;
+            this.videoPropShow = true;
         },
         submit(){
             //app/stu/v1/addStuTaskFormList
             if(this.curFieldsLists.length == 0) return;
+            this.$vux.loading.show({
+                text: '提交中...'
+            });
             let formValueJson = [];
             let formItemValues = [];
             this.curFieldsLists.forEach( ele => {
@@ -358,9 +398,10 @@ export default {
                     formValueJson:JSON.stringify(formValueJson)
                 }))
             .then( res =>{
-                // if(res.success){
-                    console.log(res,"789789")
-                // }
+                if(res.success){
+                    this.$vux.loading.hide();
+                    this.goback();
+                }
             }).catch( err =>{
                 this.errorUtil(err);
             })
@@ -371,8 +412,10 @@ export default {
 </script>
 <style lang="less">
 .weui-check__label:active{background-color: #fff !important;}
+textarea:disabled, input:disabled{background-color: #fff;}
     .stuCardDetails{
         background-color: #ebebeb;
+        
         .vux-flexbox .vux-flexbox-item{
             margin-left: 0 !important;
             
@@ -511,7 +554,7 @@ export default {
                         }
                     }
                     &.hasUrl{
-                        height: 306px;
+                        // height: 306px;
                     }
                     .addVideo{
                         position: relative;
@@ -545,22 +588,39 @@ export default {
                         }
                     }
                     .showVideo{
-                        position: absolute;
-                        top: 90px;
-                        left: 0;
-                        width: 100%;
+                        // width: calc(~'100% - 60px');
+                        width: calc(~'100% + 60px');
+                        margin-left: -60px;
+                        margin-top: 30px;
+                        height: auto;
                         img{
-                            width: calc(~'100% - 30px');
+                            width: 100%;
+                            position: static;
+                            // width: calc(~'100% - 30px');
                             height: auto;
+                            right: 60px;
                         }
                     }
                     .addAudio{
                         margin: 30px -30px 0 -90px;
                         padding: 30px 30px 0;
-                        span:nth-child(1){
+                        // span:nth-child(1){
+                        //     color: #1abe7f;
+                        // }
+                        .addAudioInput{
+                            position: relative;
+                            display: inline-block;
+                            width: auto;
                             color: #1abe7f;
+                            overflow: hidden;
+                            input{
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                opacity: 0;
+                            }
                         }
-                        span:nth-child(2){
+                        span{
                             float: right;
                             padding-right: 42px;
                             background: url('../../assets/img/ico_addMedia.jpg') no-repeat right center;
@@ -691,6 +751,27 @@ export default {
                 }
             }
         }
+        .weui-cells.weui-cells_checkbox .weui-check_label .weui-icon-checked{
+            height: 40px;
+            width: 40px;
+            background: url('../../assets/img/checkbox.png') no-repeat center center;
+            background-size: 40px 40px;
+            &::before{
+                content: '';
+            }
+        }
+        .weui-cells_checkbox .weui-check:checked + .vux-checklist-icon-checked{
+            height: 40px;
+            width: 40px;
+            background: url('../../assets/img/checkbox_ed.png') no-repeat center center;
+            background-size: 40px 40px;
+            &::before{
+                content: '';
+            }
+        }
+        .weui-cells_checkbox .weui-icon-checked:before{
+            font-size: 40px;
+        }
         .videoParent{
             position: fixed;
             top:0;
@@ -702,6 +783,8 @@ export default {
             background:#999;
             z-index: 100000000;
         }
+        .video-player.video-player.vjs-custom-skin{margin-top:50%;}
+        .vjs-button > .vjs-icon-placeholder:before{line-height: 2.67;}
     }
 </style>
 
