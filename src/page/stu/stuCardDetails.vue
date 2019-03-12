@@ -330,7 +330,7 @@ export default {
             this.curFieldsLists[index].formItemValue = value.length>0 ? value.join(',') : '';
             console.log(value,index)
         },
-        //点击显示对应状态的时间
+        //点击显示对应状态的事件
         showCheckList(item,index,state){
             if( ![1,3].includes(state)) return;
             this.popType = item.formItemType == 16 ? 0 : 1;
@@ -388,7 +388,7 @@ export default {
                 formItemValues:formItemValues,
                 stuId:this.stuid
             })
-            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTeaTaskFormList",
+            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTaskFormList",
             qs.stringify({
                     uid:this.uid,
                     schoolId:Number(this.schoolId),
