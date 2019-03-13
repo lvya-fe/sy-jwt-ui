@@ -113,7 +113,8 @@
                             <!-- <span></span> -->
                             <div class="addAudioInput">
                                 添加音频
-                                <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="audio/mpeg">
+                                <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="audio/mpeg"> -->
+                                <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="uploadVideo(item.id,$event,'mp3',index)" accept="audio/mpeg">
                             </div>
                             <span>大文件请点击</span>
                         </div>
@@ -136,7 +137,8 @@
                         <span>{{item.formItemName}}</span>
                         <div class="addVideo" v-if="item.formItemValue =='' || item.formItemValue == null">
                             <div class="inputFile">
-                                <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="video/*">
+                                <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="video/*"> -->
+                                <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="uploadVideo(item.id,$event,'mp4',index)" accept="video/*">
                             </div>
                             <span>大文件请点击</span>
                         </div>
@@ -207,8 +209,9 @@ export default {
             showHideOnBlur:false,//选择列表，多选择列表弹框是否显示
             popType:null,//选择列表，多选择列表弹框类型   0：选择列表 1：多选择
             popData:{},//弹框显示数据
-            curIndex:null, //选择，多选择使用用
+            curIndex:null, //选择，多选择使用用 视频 音频 图片
             videoPropShow:false,
+            authorizationCode:'',
             playerOptions : {
                 playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
                 autoplay: false, //如果true,浏览器准备好时开始回放。
@@ -339,30 +342,88 @@ export default {
             this.curIndex = index;
             this.showHideOnBlur = !this.showHideOnBlur;
         },
-        //上传视频 的方法
-        tirggerFile(event,index){
+        //获取视频地址----------
+        obtainVideo(index){
+            var _self = this;
+
+            this.$axios.get( process.env.API_ROOT+"oss/2/get/code/"+_self.authorizationCode,
+                qs.stringify({
+                })
+            ).then(function(res){
+                if(res.isSuccess){
+                    console.log(res,'获取视频')
+                    if(res.data.path!='ok'){
+                        _self.playerOptions.sources[0].src=res.data.path
+                        // _self.itmes.forEach(function(el){
+                        //     if(el.id==_self.propId){
+                        //         el.val=res.data.path;
+                        //     }
+                        // })
+                        _self.curFieldsLists[index].formItemValue = res.data.path;
+                    }else{
+                        _self.$vux.toast.show({type: 'warn',text:'暂无文件' });
+                    }
+                }
+            }).catch(function(err){
+                _self.errorUtil(err);
+            })
+        },
+        uploadVideo(id,e,type,index) {
+            //e.target.value文件名
+            try {
+                this.curIndex = index;
+                var file = e.target.files[0];
+                var formdata = new FormData();
+                formdata.append('file', file);
+                this.ossconfig(id, formdata, type);
+            }catch (e) {
+                this.$vux.loading.hide();
+                this.$vux.toast.show({type: 'warn',text:'当前设备不支持,请在电脑端上传' });
+            }
+        },
+        ossconfig(id,formdata,type) {
+            var _self = this;
+            //process.env.API_ROOT + 'oss/2/get/config'
+            this.$axios.get(process.env.API_ROOT + 'oss/2/get/config').then(res => {
+                if (res.isSuccess) {
+                    formdata.append('authorization', res.data.authorization);
+                    formdata.append('bucket', res.data.bucket);
+                    formdata.append('x-date', res.data.date);
+                    formdata.append('expiration', res.data.expiration);
+                    formdata.append('policy', res.data.policy);
+                    formdata.append('save-key', res.data.save_key);
+
+                    _self.doUpload(id, formdata, type,res.data.domain,res.data.url);
+
+                }
+            });
+        },
+        doUpload(id,formdata,type,domain,url) {
             this.$vux.loading.show({
                 text: '上传中...'
-            });
-            let file = event.target.files[0];
-            let param = new FormData(); // 创建form对象
-            param.append('file', file, file.name); // 通过append向form对象添加数据
-            // param.append('type', '1'); // 添加form表单中其他数据
-            // param.append('uid',this.uid);
-            console.log(param.get('file')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
-            let config = {
-                // headers: {'Content-Type': 'multipart/form-data'}
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }
-            // 添加请求头
-            this.$axios.post(process.env.API_ROOT + 'app/stu/v1/uploadFile', param,qs.stringify({'uid':this.uid}), config)
-                .then(res => {
-                if(res.isSuccess){
-                    this.curFieldsLists[index].formItemValue = res.data;
-                    console.log(this.curFieldsLists[index]);
-                    // this.hasUrlFlag = true;
-                    this.$vux.loading.hide();
+            })
+            var _self = this;
+            this.$axios.post(url, formdata,{
+                headers:{
+                    "Content-Type":"multipart/form-data"
                 }
+            }).then(res => {
+                _self.$vux.loading.hide();
+                console.log(res);
+                if(res.code=='200'){
+
+                    if(type=="mp4"){//视频
+                        _self.playerOptions.sources[0].src=domain+res.url
+                    }
+                    _self.curFieldsLists[_self.curIndex].formItemValue = domain+res.url;
+                    // _self.upDataShow=false;
+
+                }else{
+                    _self.$vux.toast.show({type: 'warn',text:'暂无文件' });
+                }
+
+            }).catch(err => {
+                console.log(err);
             })
         },
         playMP4(index){

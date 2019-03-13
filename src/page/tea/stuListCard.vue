@@ -30,7 +30,8 @@
                                 </dt>
                             </template>
                             <template v-if="field.formItemType == 2">
-                                <dt :class="{'vux-1px-b':field.formItemValue ==''}">
+                                <!-- <dt :class="{'vux-1px-b':field.formItemValue ==''}"> -->
+                                <dt>
                                     <span>{{field.formItemName}}</span>
                                 </dt>
                                 <dd class="hasbgColor">
@@ -290,7 +291,7 @@
                                 </dt>
                             </template>
                             <template v-if="field.formItemType == 28">
-                                <dt :class="{'vux-1px-b':field.formItemValue ==''}">
+                                <dt>
                                     <img src="../../assets/img/ico_audio.png" alt="">
                                     <span>{{field.formItemName}}</span>
                                 </dt>
@@ -544,7 +545,7 @@ export default {
                                     right: 0;
                                     top: 27px;
                                     width: 460px;
-                                    color: #c9c7c7;
+                                    color: #c6c6c6;
                                     text-align: left;
                                     &.hasVal{
                                         text-align: right;
@@ -618,7 +619,8 @@ export default {
                                     }
                                 }
                                 &.addAudio{
-                                    padding: 30px 0;
+                                    padding: 30px;
+                                    background-color: #fafafa;
                                     span:nth-child(1){
                                         color: #1abe7f;
                                     }

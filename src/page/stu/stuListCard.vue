@@ -422,7 +422,7 @@ export default {
         //跳转至学生任务详情 - 需要区分-任务状态   展示，填写
         toStuDetail(stuid){
             Bus.$emit('stuCardListsData',this.stuLits);
-            this.$router.push({path: '/stuCardDetails/'+this.uid+'/'+this.id+'/'+stuid+'/'+this.schooId});
+            this.$router.push({path: '/stuCardDetails2/'+this.uid+'/'+this.id+'/'+stuid+'/'+this.schooId});
         },
         //批量操作学生表单
         batch(){
@@ -663,6 +663,7 @@ export default {
                                             font-size: 30px;
                                         }
                                         .weui-cell__ft{
+                                            padding: 0;
                                             width: 40px;
                                             height: 40px;
                                             background: url('../../assets/img/radio1.png') no-repeat center center;
