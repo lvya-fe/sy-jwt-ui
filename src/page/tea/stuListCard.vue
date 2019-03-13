@@ -16,8 +16,7 @@
                     <span class="name">{{item.stuName}}</span>
                     <span class="status" @click.stop="showTime(item.updateTimeStr)">{{item.taskStateName}}</span>
                 </div>
-                <ul class="fieldLists"> 
-                    <!-- vux-1px-t -->
+                <ul class="fieldLists">
                     <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  7 平分  8  描述文本 9 地理位置  10 选人插件,11 显示项 12 学生信息 
                     13 系统信息 14 邮箱 15 电话 16选择列表 17 多选列表 18自动编号  19 整数 20 小数  
                     21 百分数 22 日期  23 公式   24 引用   25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
@@ -357,7 +356,7 @@ export default {
     },
     created(){
         this.getStuLists();
-        this.getCycleLists();
+        //this.getCycleLists();
     },
     methods:{
         goback(){
@@ -393,7 +392,6 @@ export default {
                                     })
                                 }
                             })
-                            
                         });
                     }
                 }
@@ -431,7 +429,7 @@ export default {
         },
         //批量操作学生表单
         batch(){
-            this.$router.push({path: '/stuListBatch/'+this.uid+'/'+this.id+'/'+this.formId+'/'+this.schooId})
+            // this.$router.push({path: '/stuListBatch/'+this.uid+'/'+this.id+'/'+this.formId+'/'+this.schooId})
         }
     },
     

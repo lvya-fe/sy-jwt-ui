@@ -45,7 +45,9 @@
                     <!-- 地理位置 -->
                     <group class="positionWrap hasIco" v-if="item.formItemType == '9'">
                         <img src="../../assets/img/ico_position.png" alt="">
-                        <cell :title="item.formItemName" :value="item.formItemValue"></cell>
+                        <span>{{item.formItemName}}</span>
+                        <!-- <cell :title="item.formItemName" :value="item.formItemValue"></cell> -->
+                        <input type="text" readonly v-model="geographic">
                     </group>
                     <!-- 邮箱 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '14'">
@@ -235,6 +237,7 @@ export default {
                 fullscreenToggle: true  //全屏按钮
                 }
             },
+            geographic:'',//地理位置 桥接使用
 
         }
     },
@@ -293,6 +296,9 @@ export default {
                                     itemValArr: element.formItemValue != '' && element.formItemValue != null ? element.formItemValue.split(',') : []
                                 })
                             }
+                            if(element.formItemType == '9'){
+                                this.getMap();
+                            }
                         })
                     }
                 }
@@ -345,7 +351,6 @@ export default {
         //获取视频地址----------
         obtainVideo(index){
             var _self = this;
-
             this.$axios.get( process.env.API_ROOT+"oss/2/get/code/"+_self.authorizationCode,
                 qs.stringify({
                 })
@@ -431,6 +436,31 @@ export default {
             this.playerOptions.sources[0].src = this.curFieldsLists[index].formItemValue;
             this.videoPropShow = true;
         },
+        //获取地理位置
+        getMap() {
+            this.$wechat.ready(() => {
+                this.$wechat.getLocation({
+                    success: (res) => {
+                        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                        var longitude = res.longitude ; // 经度，浮点数，范围为180 ~ -180。
+                        this.addressDetail(latitude,longitude);
+
+                    },
+                    cancel: (res) => {
+                        alert('用户拒绝授权获取地理位置');
+                    }
+                });
+            });
+        },
+        addressDetail(lat,lng){
+            var geolocation = new BMap.Geolocation();
+            var myGeo = new BMap.Geocoder();
+            myGeo.getLocation(new BMap.Point(lng,lat),(result)=> {
+                if(result){
+                    this.geographic=result.address
+                }
+            })
+        },
         submit(){
             //app/stu/v1/addStuTaskFormList
             if(this.curFieldsLists.length == 0) return;
@@ -440,6 +470,7 @@ export default {
             let formValueJson = [];
             let formItemValues = [];
             this.curFieldsLists.forEach( ele => {
+                ele.formItemValue = ele.formItemType == '9' ? this.geographic : ele.formItemValue;
                 formItemValues.push({
                     formItemType: ele.formItemType,
                     formItemValue: ele.formItemValue,
@@ -540,6 +571,33 @@ textarea:disabled, input:disabled{background-color: #fff;}
                 background-color: #fff;
                 .hasIco{
                     position: relative;
+                    &.positionWrap{
+                        padding: 30px;
+                        font-size: 30px;
+                        img{
+                            top: 3px;
+                            left: 0;
+                        }
+                        input{
+                            position: absolute;
+                            right: 0;
+                            top: 0;
+                            border: none;
+                            outline: none;
+                            width: 476px;
+                            color: #c6c6c6;
+                            text-align: right;
+                            font-size: 30px;
+                        }
+                        .weui-cells{
+                            padding-left: 60px;
+                            margin: 0;
+                            font-size: 30px;
+                            &:before,&:after{
+                                border: none;
+                            }
+                        }
+                    }
                     img{
                         position: absolute;
                         left: 30px;
@@ -580,11 +638,6 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             margin-top: -10px;
                             right: -20px;
                             // left: 30px;
-                        }
-                    }
-                    &.positionWrap{
-                        .weui-cell__ft:after{
-                            right: 4px;
                         }
                     }
                 }
@@ -633,6 +686,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     .weui-cell.vux-x-textarea{
                         padding-left: 0;
                         padding-right: 0;
+                        .weui-textarea{padding: 30px 0;}
                     }
                     &.txtarea,&.radios{
                         padding: 0;
@@ -831,10 +885,14 @@ textarea:disabled, input:disabled{background-color: #fff;}
                 background-color: #ebebeb;
                 .weui-btn{
                     font-size: 30px;
+                    padding: 10px;
                 }
                 .weui-btn_primary{
                     background-color: #1bb876;
                     color: #fff;
+                }
+                .weui-btn + .weui-btn{
+                    margin-top: 40px;
                 }
             }
         }

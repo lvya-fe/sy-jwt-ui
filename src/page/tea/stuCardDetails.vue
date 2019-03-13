@@ -351,8 +351,7 @@ export default {
         //获取视频地址----------
         obtainVideo(index){
             var _self = this;
-            // this.$axios.get( process.env.API_ROOT+"oss/2/get/code/"+_self.authorizationCode,
-            this.$axios.get( process.env.API_ROOT+"oss/2/get/code/",
+            this.$axios.get( process.env.API_ROOT+"oss/2/get/code/"+_self.authorizationCode,
                 qs.stringify({
                 })
             ).then(function(res){
@@ -574,14 +573,26 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     position: relative;
                     &.positionWrap{
                         padding: 30px;
+                        font-size: 30px;
                         img{
-                            top: 0;
-                            left: 30px;
+                            top: 3px;
+                            left: 0;
                         }
-                        input{margin-left: 90px;}
+                        input{
+                            position: absolute;
+                            right: 0;
+                            top: 0;
+                            border: none;
+                            outline: none;
+                            width: 476px;
+                            color: #c6c6c6;
+                            text-align: right;
+                            font-size: 30px;
+                        }
                         .weui-cells{
                             padding-left: 60px;
                             margin: 0;
+                            font-size: 30px;
                             &:before,&:after{
                                 border: none;
                             }
