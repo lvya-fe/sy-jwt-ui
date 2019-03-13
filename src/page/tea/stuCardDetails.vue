@@ -438,26 +438,28 @@ export default {
         },
         //获取地理位置
         getMap() {
-            this.$wechat.ready(() => {
-                this.$wechat.getLocation({
-                    success: (res) => {
+            var  self_ = this;
+            this.$wechat.ready(function(){
+                self_.$wechat.getLocation({
+                    success: function (res) {
                         var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                         var longitude = res.longitude ; // 经度，浮点数，范围为180 ~ -180。
-                        this.addressDetail(latitude,longitude);
+                        self_.addressDetail(latitude,longitude);
 
                     },
-                    cancel: (res) => {
+                    cancel: function (res) {
                         alert('用户拒绝授权获取地理位置');
                     }
                 });
             });
         },
         addressDetail(lat,lng){
+            var self=this;
             var geolocation = new BMap.Geolocation();
             var myGeo = new BMap.Geocoder();
-            myGeo.getLocation(new BMap.Point(lng,lat),(result)=> {
+            myGeo.getLocation(new BMap.Point(lng,lat),function (result) {
                 if(result){
-                    this.geographic=result.address
+                    self.geographic=result.address
                 }
             })
         },
