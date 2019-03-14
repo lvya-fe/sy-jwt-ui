@@ -566,16 +566,69 @@ const routes = [
       require(['./page/tea/stuList.vue'], resolve)
     }
   },
-  // {//学生帮学生填写时候的列表
-  //     name: 'stuList2',
-  //     path: '/stuList2/:uid/:id/:formId/:schoolid/:cycleid/:back?/:roles?',
-  //     meta: {
-  //       // title: '学生列表'
-  //     },
-  //     component: function (resolve) {
-  //       require(['./page/stu/stuList.vue'], resolve)
-  //     }
-  //   },
+  {//学生帮学生填写时候的列表
+      name: 'stuList2',
+      path: '/stuList2/:uid/:id/:formId/:schoolid/:cycleid/:back?/:roles?',
+      meta: {
+        // title: '学生列表'
+      },
+      component: function (resolve) {
+        require(['./page/stu/stuList.vue'], resolve)
+      }
+    },
+   { //学生帮学生填写--卡片式列表
+     name: 'stuList2Card',
+     path: '/stuList2Card/:uid/:id/:formId/:schoolid',
+     meta: {
+       // title: '学生卡片式列表'
+     },
+     component: function (resolve) {
+       require(['./page/stu/stuListCard.vue'], resolve)
+     }
+   },
+    { //学生帮学生填写表单详情stuCardDetails
+      name: 'stuCardDetails',
+      path: '/stuCardDetails2/:uid/:id/:stuid/:schoolid',
+      meta: {
+        // title: '学生帮学生填写表单详情'
+      },
+      component: function (resolve) {
+        require(['./page/stu/stuCardDetails.vue'], resolve)
+      }
+    },
+  { //老师帮学生填写--卡片式列表
+    name: 'stuListCard',
+    // path: '/stuListCard/:uid/:id/:cycleid',
+    path: '/stuListCard/:uid/:id/:formId/:schoolid',
+    meta: {
+      // title: '老师填写卡片式列表'
+    },
+    component: function (resolve) {
+      require(['./page/tea/stuListCard.vue'], resolve)
+    }
+  },
+  { //老师帮学生填写--批量操作
+    name: 'stuListBatch',
+    // path: '/stuListCard/:uid/:id/:cycleid',
+    path: '/stuListBatch/:uid/:id/:formId/:schoolid',
+    meta: {
+      // title: '老师填写卡片式列表批量操作'
+    },
+    component: function (resolve) {
+      require(['./page/tea/stuListBatch.vue'], resolve)
+    }
+  },
+  { //卡片式列表学生详情stuCardDetails
+    name: 'cardDetails',
+    path: '/stuCardDetails/:uid/:id/:stuid/:schoolid',
+    meta: {
+      // title: '老师填写卡片式列表'
+    },
+    component: function (resolve) {
+      require(['./page/tea/stuCardDetails.vue'], resolve)
+    }
+  },
+
   {
     name: 'studentTaskDetailsTea',
     path: '/studentTaskDetailsTea/:uid/:id/:stuid?/:strtime/:endtime/:formid/:stuname?/:back?/:roles?',

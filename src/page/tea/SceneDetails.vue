@@ -534,14 +534,18 @@ export default {
 
         },
         toview(task){
-          console.log(task)
           var _self = this;
           if(task.teaDoType==0){
             this.$router.push({path:'/taskList/'+this.uid+'/'+task.id+'/'+this.id});
           }else if(task.teaDoType==1){
             this.$router.push({path:'/taskListApproval/'+this.uid+'/'+task.id+'/'+this.id});
           }else if(task.teaDoType==2){
-            this.$router.push({path:'/stuList/'+this.uid+'/'+task.id+'/'+null});
+            if(task.showFlag == 1){
+              this.$router.push({path:'/stuList/'+this.uid+'/'+task.id+'/'+null});
+            }
+            if(task.showFlag == 2){
+              this.$router.push({path: '/stuListCard/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
+            }
           }else if(task.teaDoType==3){
             //可选参数：stuid，stuname 添加到path中，  目的：为了在单独url中添加去除返回按钮的参数
             this.$router.push({path: '/studentTaskDetailsTea/'+_self.$route.params.uid+'/'+task.id+'/'+'null/'+task.joinstarttime+'/'+task.joinendtime+'/'+0+'/null'});

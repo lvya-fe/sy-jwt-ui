@@ -695,6 +695,7 @@ export default {
             videoPropShow:false,
             propId:null,
             propsta:'',
+            isRuleApproval:false,//是否设置规则引擎
         }
     },
     computed: mapState({
@@ -1117,7 +1118,7 @@ export default {
             
             _self.$previewRefresh()
             console.log(res,'看新返回值')
-            
+            _self.isRuleApproval = res.data.isRuleApproval;
             
           }).catch(function(err){
             _self.errorUtil(err);
@@ -1309,46 +1310,24 @@ export default {
             console.log(obj)
             console.log(zm)
             if(zm){
-                setTimeout(() => {
-                    Bus.$emit('commitData', obj)
-                }, 500)
-                this.$router.push({path: '/InputNuts/'+this.uid+'/'+this.id});
-                
-                
-                // this.$axios.post( process.env.API_ROOT+"app/tea/task/addtask",
-                //     qs.stringify(obj)
-                // ).then((res) =>{
-                //     if(res.data.id&&res.data.id!=''&&res.data.id!=null&&res.data.id!=undefined){
-                //         this.id=res.data.id
-                //         this.strTime=res.data.stime
-                //         this.endTime=res.data.etime
-                //         this.$vux.toast.show({
-                //             type:'success',
-                //             time:2000,
-                //             text: '提交成功,请填写下一个任务~',
-                //             onShow () {
-                                
-                //             },
-                //             onHide () {
-                //                 wechatconfigInit(this,qs,this.uid,this._url_);
-                //                 if(this.strTime=='1970-01-01 08:00:00'||this.strTime==null){
-                //                     this.strTime=null
-                //                     this.endTime=null
-                //                 }
-                //             }
-                //         })
-                //         this.loadData()
-                //     }else{
-                //         // this.$vux.toast.show({type: 'success',text:"成功" });
-                //         // _self.goback();
-                //         this.$router.push({path: '/InputNuts/'+this.uid+'/'+this.id + '/'+res.data});
-                //     }
-                // }).catch((err) =>{
-                //     console.log(err)
-                //     this.errorUtil(err);
-                // })
+                if(_self.isRuleApproval){
+                    setTimeout(() => {
+                        Bus.$emit('commitData', obj)
+                    }, 500)
+                    _self.$router.push({path: '/InputNuts/'+this.uid+'/'+this.id});
+                }else{
+                    _self.$axios.post( process.env.API_ROOT+"app/tea/task/addtask",
+                        qs.stringify(obj)
+                    ).then((res) =>{
+                        _self.$vux.toast.show({type: 'success',text:"成功" });
+                        _self.goback();
+                    }).catch((err) =>{
+                        console.log(err)
+                        _self.errorUtil(err);
+                    })
+                }   
             }else{
-                this.$vux.toast.show({type: 'warn',text:age });
+                _self.$vux.toast.show({type: 'warn',text:age });
             }
             
         },

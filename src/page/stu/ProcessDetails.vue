@@ -26,14 +26,17 @@
             <div class="task" v-show="index == 0">
                 <template v-for="item in rw">
                     <!-- <router-link :to="(item.statusName=='未通过'||item.statusName=='未完成'||item.statusName=='进行中')||item.statusName=='尚未开始'?'/studentTaskDetails/'+uid+'/'+item.id+'/'+fmtDate(item.joinstarttime)+'/'+fmtDate(item.joinendtime)+'/'+item.formsid:'/studentTaskDetailsCompleted/'+uid+'/'+item.id+'/'+fmtDate(item.joinstarttime)+'/'+fmtDate(item.joinendtime)+'/'+item.formsid"> -->
-                    <div @click="link(item.id,item.joinstarttime,item.joinendtime)"  class="ripple">
-                        <img class="first-img" src="../../assets/img/yiwancheng.png" v-if="item.statusName=='已完成'">
-                        <img class="first-img" src="../../assets/img/jinxingzhong.png" v-if="item.statusName=='未完成'">
-                        <img class="first-img" src="../../assets/img/daishenhe_t.png" v-if="item.statusName=='待审核'">
-                        <img class="first-img" src="../../assets/img/yibohui_t.png" v-if="item.statusName=='未通过'">
-                        <img class="first-img" src="../../assets/img/yijieshu.png" v-if="item.statusName=='已经结束'">
-                        <img class="first-img" src="../../assets/img/weikaiqi.png" v-if="item.statusName=='尚未开始'">
-                        <img class="first-img" src="../../assets/img/jinxingzhong.png" v-if="item.statusName=='进行中'">
+                    <div @click="newlink(item)"  class="ripple">
+                    <!-- <div @click="newlink(item.isRelateStu,item.id,item.joinstarttime,item.joinendtime)"  class="ripple"> -->
+                        <img class="first-img" src="../../assets/img/ico_task.png" alt="" v-if="item.isRelateStu">
+                        <img class="first-img" src="../../assets/img/yiwancheng.png" v-else-if="item.statusName=='已完成'">
+                        <img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.statusName=='未完成'">
+                        <img class="first-img" src="../../assets/img/daishenhe_t.png" v-else-if="item.statusName=='待审核'">
+                        <img class="first-img" src="../../assets/img/yibohui_t.png" v-else-if="item.statusName=='未通过'">
+                        <img class="first-img" src="../../assets/img/yijieshu.png" v-else-if="item.statusName=='已经结束'">
+                        <img class="first-img" src="../../assets/img/weikaiqi.png" v-else-if="item.statusName=='尚未开始'">
+                        <img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.statusName=='进行中'">
+                        
                         <div class="ne-div">
                             <p>{{ item.title }}</p>
                             <p>
@@ -392,13 +395,13 @@ export default {
               id:_self.$route.params.id
             })
           ).then(function(res){
-              console.log(res)
+            //   console.log(res)
             _self.taskOpen = res.data.sceneItemInfo.taskupdatenoticetype;
             _self.taskIcon = res.data.accepttype;
             _self.title = res.data.sceneItemInfo.title;
             _self.score = res.data.sceneItemInfo.scorecount;
             _self.rw = res.data.listTask;
-            console.log(_self.rw)
+            // console.log(_self.rw)
             _self.zs = res.data.listCer;
             _self.book = res.data.listNote;
             _self.isControl = res.data.sceneItemInfo.isCanyu;
@@ -484,10 +487,31 @@ export default {
             this.propTile='确定要删除该条记录吗?'
         },
         // 任务详情跳转
-        link(id,str,end){
-            var _self = this;
-            if(_self.isControl){
-                this.$router.push({path: '/studentTaskDetails/'+_self.uid+'/'+id+'/'+str+'/'+end+'/'+0});
+        // link(id,str,end){
+        //     var _self = this;
+        //     if(_self.isControl){
+        //         this.$router.push({path: '/studentTaskDetails/'+_self.uid+'/'+id+'/'+str+'/'+end+'/'+0});
+        //     }else{
+        //         this.showProp=!this.showProp
+        //     }
+        // },
+        // 任务跳转至学生列表
+        // newlink(bool,id,formsid,schoolid,str,end){
+        newlink(task){
+            if(this.isControl){
+                console.log(task.isRelateStu,"565656")
+                if(!task.isRelateStu){
+                    this.$router.push({path: '/studentTaskDetails/'+this.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
+                }else{
+                    //列表式
+                    if(task.showFlag == 1){
+                        this.$router.push({path: '/stuList2/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid+'/'+null});
+                    }
+                    else if(task.showFlag == 2){
+                        this.$router.push({path: '/stuList2Card/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
+                    }
+                }
+                
             }else{
                 this.showProp=!this.showProp
             }
