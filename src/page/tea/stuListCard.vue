@@ -3,11 +3,11 @@
         <div class="top-back">
             <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ title }}</div>
-            <span class="img-2">
+            <span class="img-2" style="display:none;">
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
             </span>
-            <img class="img-3" src="../../assets/img/ico_search.png" alt="">
-            <img class="img-4" src="../../assets/img/batch.png" @click="batch" alt="">
+            <img class="img-3" style="display:none;" src="../../assets/img/ico_search.png" alt="">
+            <img class="img-4" style="display:none;" src="../../assets/img/batch.png" @click="batch" alt="">
         </div>
         <ul class="stuLists">
             <li class="stulist-item" v-for="item in stuLits" :key="item.stuId" @click="toStuDetail(item.stuId)">
@@ -17,27 +17,39 @@
                     <span class="status" @click.stop="showTime(item.updateTimeStr)">{{item.taskStateName}}</span>
                 </div>
                 <ul class="fieldLists">
-                    <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  7 平分  8  描述文本 9 地理位置  10 选人插件,11 显示项 12 学生信息 
-                    13 系统信息 14 邮箱 15 电话 16选择列表 17 多选列表 18自动编号  19 整数 20 小数  
-                    21 百分数 22 日期  23 公式   24 引用   25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
+                    <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传   8 描述文本 9 地理位置  10 选人插件, 14 邮箱 15 电话 16选择列表 17 多选列表 19 整数 20 小数  
+                    21 百分数 22 日期   25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
                     <li class="fieldlist-item" v-for="(field,index) in item.formItemResps" :key="index">
                         <dl>
-                            <template v-if="field.formItemType == 1">
+                            <template v-if="field.formItemType == '1'">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">{{field.formItemValue == ''? '请输入':field.formItemValue}}</p>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 2">
+                            <template v-if="field.formItemType =='2'">
                                 <!-- <dt :class="{'vux-1px-b':field.formItemValue ==''}"> -->
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                 </dt>
-                                <dd class="hasbgColor">
-                                    <p>{{field.formItemValue == ''? '请输入':field.formItemValue}}</p>
-                                </dd>
+                                <template v-if="field.formItemDbName != ''">
+                                    <dd class="hasbgColor" v-if="[1,-1,3].includes(item.taskState)">
+                                        <p>{{field.formItemValue == ''? '请输入':field.formItemValue}}</p>
+                                    </dd>
+                                    <dd class="textarea" :class="{'hasbgColor':field.formItemValue != '' && field.formItemValue != null}" v-else>
+                                        <p v-if="field.formItemValue != '' && field.formItemValue != null">{{field.formItemValue}}</p>
+                                        <img v-else src="../../assets/img/noData.png" alt="">
+                                    </dd>
+                                </template>
+                                <template v-if="field.formItemDbName == ''">
+                                    <dd class="textarea" :class="{'hasbgColor':field.formItemValue != '' && field.formItemValue != null}">
+                                        <p v-if="field.formItemValue != '' && field.formItemValue != null">{{field.formItemValue}}</p>
+                                        <img v-else src="../../assets/img/noData.png" alt="">
+                                    </dd>
+                                </template>
+                                
                             </template>
-                            <template v-if="field.formItemType == 3">
+                            <template v-if="field.formItemType == '3'">
                                 <dt>
                                     <img src="../../assets/img/ico_datetime.png" alt="">
                                     <span>{{field.formItemName}}</span>
@@ -54,7 +66,7 @@
                                 </dt>
                             </template>
                             <!-- 单选，多选未完成 -->
-                            <template v-if="field.formItemType == 4">
+                            <template v-if="field.formItemType == '4'">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                 </dt>
@@ -65,7 +77,7 @@
                                 </dd>
                                 
                             </template>
-                            <template v-if="field.formItemType == 5">
+                            <template v-if="field.formItemType == '5'">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                 </dt>
@@ -74,7 +86,7 @@
                                 </dd>
                             </template>
                             <!-- 图片上传未完成 -->
-                            <template v-if="field.formItemType == 6">
+                            <template v-if="field.formItemType == '6'">
                                 <dt>
                                     <img src="../../assets/img/ico_pic.png" alt="">
                                     <span>{{field.formItemName}}</span>
@@ -85,17 +97,17 @@
                                     <img src="../../assets/img/tj_big.png" alt="">
                                 </dd>
                             </template>
-                            <template v-if="field.formItemType == 7">
+                            <template v-if="field.formItemType == '7'">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 8">
+                            <template v-if="field.formItemType == '8'">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 9">
+                            <template v-if="field.formItemType == '9'">
                                 <dt>
                                     <img src="../../assets/img/ico_position.png" alt="">
                                     <span>{{field.formItemName}}</span>
@@ -111,7 +123,7 @@
                                 </dt>
                             </template>
                             <!-- 选人插件未完成 -->
-                            <template v-if="field.formItemType == 10">
+                            <template v-if="field.formItemType == '10'">
                                 <dt>
                                     <img src="../../assets/img/ico_people.png" alt="">
                                     <span>{{field.formItemName}}</span>
@@ -128,7 +140,7 @@
 
                                 </dd>
                             </template>
-                            <template v-if="field.formItemType == 14">
+                            <template v-if="field.formItemType == '14'">
                                 <dt>
                                     <img src="../../assets/img/ico_email.png" alt="">
                                     <span>{{field.formItemName}}</span>
@@ -143,7 +155,7 @@
                                     </p>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 15">
+                            <template v-if="field.formItemType == '15'">
                                 <dt>
                                     <img src="../../assets/img/ico_phone.png" alt="">
                                     <span>{{field.formItemName}}</span>
@@ -159,7 +171,7 @@
                                 </dt>
                             </template>
                             <!-- 单选列表，多选列表未完成 -->
-                            <template v-if="field.formItemType == 16">
+                            <template v-if="field.formItemType == '16'">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
@@ -173,11 +185,11 @@
                                     </p>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 17">
+                            <template v-if="field.formItemType == '17'">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
-                                        <template v-if="field.formItemValue ==''">
+                                        <template v-if="field.formItemValue =='' &&  [1,-1,3].includes(item.taskState)">
                                             <div class="noData">
                                                 <span>请选择</span>
                                                 <img src="../../assets/img/ico_right.png" alt="">
@@ -185,14 +197,29 @@
                                         </template>
                                     </p>
                                 </dt>
-                                <!-- 多选列表显示样式 -->
-                                <dd v-if="field.itemValArr.length >0">
-                                    <ul class="itemsWrap" >
-                                        <li class="vux-1px" v-for="val in field.itemValArr" :key="val">{{val}}</li>
-                                    </ul>
-                                </dd>
+                                <!-- 多选列表显示样式 ===field.formItemDbName=='' 为数据引用-->  
+                                <template v-if="field.formItemDbName != ''">
+                                    <dd v-if="field.itemValArr.length >0 &&  [1,-1,3].includes(item.taskState)">
+                                        <ul class="itemsWrap" >
+                                            <li class="vux-1px" v-for="val in field.itemValArr" :key="val">{{val}}</li>
+                                        </ul>
+                                    </dd>
+                                    <dd class="multiple" v-if="field.itemValArr.length ==0 &&  ![1,-1,3].includes(item.taskState)">
+                                        <img src="../../assets/img/noData.png" alt="">
+                                    </dd>
+                                </template>
+                                <template v-else>
+                                    <dd v-if="field.itemValArr.length >0 ">
+                                        <ul class="itemsWrap" >
+                                            <li class="vux-1px" v-for="val in field.itemValArr" :key="val">{{val}}</li>
+                                        </ul>
+                                    </dd>
+                                    <dd class="multiple" v-if="field.itemValArr.length ==0 ">
+                                        <img src="../../assets/img/noData.png" alt="">
+                                    </dd>
+                                </template>
                             </template>
-                            <template v-if="field.formItemType == 19">
+                            <template v-if="field.formItemType == '19'">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
@@ -206,7 +233,7 @@
                                     </p>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 20">
+                            <template v-if="field.formItemType == '20'">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
@@ -220,7 +247,7 @@
                                     </p>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 21">
+                            <template v-if="field.formItemType == '21'">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
@@ -229,7 +256,7 @@
                                     </p>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 22">
+                            <template v-if="field.formItemType == '22'">
                                 <dt>
                                     <img src="../../assets/img/ico_date.png" alt="">
                                     <span>{{field.formItemName}}</span>
@@ -244,7 +271,7 @@
                                     </p>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 25">
+                            <template v-if="field.formItemType == '25'">
                                 <dt>
                                     <img class="ico_address" src="../../assets/img/ico_address.png" alt="">
                                     <span>{{field.formItemName}}</span>
@@ -259,7 +286,7 @@
                                     </p>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 26">
+                            <template v-if="field.formItemType == '26'">
                                 <dt>
                                     <img class="ico_postcode" src="../../assets/img/ico_postcode.png" alt="">
                                     <span>{{field.formItemName}}</span>
@@ -274,7 +301,7 @@
                                     </p>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 27">
+                            <template v-if="field.formItemType == '27'">
                                 <dt>
                                     <img class="ico_idcard" src="../../assets/img/ico_idcard.png" alt="">
                                     <span>{{field.formItemName}}</span>
@@ -289,28 +316,53 @@
                                     </p>
                                 </dt>
                             </template>
-                            <template v-if="field.formItemType == 28">
+                            <template v-if="field.formItemType == '28'">
                                 <dt>
                                     <img src="../../assets/img/ico_audio.png" alt="">
                                     <span>{{field.formItemName}}</span>
                                 </dt>
-                                <dd class="addAudio">
-                                    <span>添加音频</span>
-                                    <span>大文件请点击</span>
-                                </dd>
+                                <!-- 数据引用 -->
+                                <template v-if="field.formItemDbName != ''">
+                                    <dd class="addAudio" v-if="[1,-1,3].includes(item.taskState) && field.formItemValue ==''">
+                                        <span>添加音频</span>
+                                        <span>大文件请点击</span>
+                                    </dd>
+                                    <dd v-else class="audioWrap">
+                                        <img class="audio" v-if="field.formItemValue != '' && field.formItemValue != null" src="../../assets/img/img_audio.png" alt="">
+                                        <img v-else class="noData" src="../../assets/img/noData.png" alt="">
+                                    </dd>
+                                </template>
+                                <template v-else>
+                                    <dd class="audioWrap">
+                                        <img class="audio" v-if="field.formItemValue != '' && field.formItemValue != null" src="../../assets/img/img_audio.png" alt="">
+                                        <img v-else class="noData" src="../../assets/img/noData.png" alt="">
+                                    </dd>
+                                </template>
+                                
                             </template>
                             <template v-if="field.formItemType == 29">
                                 <dt>
                                     <img src="../../assets/img/ico_video.png" alt="">
                                     <span>{{field.formItemName}}</span>
                                 </dt>
-                                <dd v-if="field.formItemValue !=''">
-                                   <img src="../../assets/img/img_video.jpg" alt="">
-                                </dd>
-                                <dd class="addVideo" v-else>
-                                    <img src="../../assets/img/addVideo.png" alt="">
-                                    <span>大文件请点击</span>
-                                </dd>
+                                <!-- 数据引用 -->
+                                <template v-if="field.formItemDbName != ''">
+                                    <dd class="addVideo" v-if="[1,-1,3].includes(item.taskState) && field.formItemValue ==''">
+                                        <img src="../../assets/img/addVideo.png" alt="">
+                                        <span>大文件请点击</span>
+                                    </dd>
+                                    <dd v-else class="audioWrap">
+                                        <img v-if="field.formItemValue != '' && field.formItemValue != null" src="../../assets/img/img_video.jpg" alt="">
+                                        <img v-else class="noData" src="../../assets/img/noData.png" alt="">
+                                    </dd>
+                                </template>
+                                <template v-else>
+                                    <dd class="audioWrap">
+                                        <img v-if="field.formItemValue != '' && field.formItemValue != null" src="../../assets/img/img_video.jpg" alt="">
+                                        <img v-else class="noData" src="../../assets/img/noData.png" alt="">
+                                    </dd>
+                                </template>
+                                
                             </template>
                         </dl>
                     </li>
@@ -338,7 +390,7 @@ export default {
             // back:this.$route.params.back,
             formId:this.$route.params.formId,
             schooId:this.$route.params.schoolid,
-            title:'任务1',
+            title:'',
             // pageNo:2,
             stuLits:[],//学生列表
             statusTime:'',
@@ -491,8 +543,8 @@ export default {
             margin-top: 40px;
             .stulist-item{
                 margin-top: 40px;
-                // max-height: 820px;
-                // overflow: hidden;
+                max-height: 820px;
+                overflow: hidden;
                 .stuInfo{
                     position: relative;
                     padding: 30px;
@@ -523,7 +575,7 @@ export default {
                         line-height: 30px;
                         padding: 4px 12px;
                         border-radius: 15px;
-                        border: 1px solid #000;
+                        border: 1px solid #ccc;
                         font-size: 14px;
                         color: #cfcfcf;
                     }
@@ -590,6 +642,23 @@ export default {
                                         color: #c6c6c6;
                                     }
                                 }
+                                &.textarea,&.multiple{
+                                    text-align: center;
+                                    p{
+                                        text-align: left;
+                                    }
+                                    img{
+                                        width: 230px;
+                                        height: 76px;
+                                    }
+                                }
+                                &.audioWrap{
+                                    text-align: center;
+                                    .noData{
+                                        width: 230px;
+                                        height: 76px;
+                                    }
+                                }
                                 img{
                                     max-width: 100%;
                                 }
@@ -611,8 +680,8 @@ export default {
                                         right: 0;
                                         bottom: 30px;
                                         padding-right: 42px;
-                                        background: url('../../assets/img/ico_addMedia.jpg') no-repeat right center;
-                                        background-size: 40px 46px;
+                                        background: url('../../assets/img/ico_addMedia.png') no-repeat right center;
+                                        background-size: 32px 41px;
                                         color: #c9c7c8;
                                     }
                                 }
@@ -625,8 +694,8 @@ export default {
                                     span:nth-child(2){
                                         float: right;
                                         padding-right: 42px;
-                                        background: url('../../assets/img/ico_addMedia.jpg') no-repeat right center;
-                                        background-size: 40px 46px;
+                                        background: url('../../assets/img/ico_addMedia.png') no-repeat right center;
+                                        background-size: 32px 41px;
                                         color: #c9c7c8;
                                     }
                                 }

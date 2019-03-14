@@ -499,6 +499,7 @@ export default {
         // newlink(bool,id,formsid,schoolid,str,end){
         newlink(task){
             if(this.isControl){
+                console.log(task.isRelateStu,"565656")
                 if(!task.isRelateStu){
                     this.$router.push({path: '/studentTaskDetails/'+this.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
                 }else{

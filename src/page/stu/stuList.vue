@@ -9,13 +9,12 @@
         </div>
         <dir class="stuListPar">
             <div class="ripple" v-for="(item,index) in conData" :key="index" @click="link(item.stuId)">
-                <img class="first-img" src="../../assets/img/yiwancheng.png" v-if="item.taskStateName=='已完成'">
-                <img class="first-img" src="../../assets/img/jinxingzhong.png" v-if="item.taskStateName=='未完成'">
-                <img class="first-img" src="../../assets/img/daishenhe_t.png" v-if="item.taskStateName=='待审核'">
-                <img class="first-img" src="../../assets/img/yibohui_t.png" v-if="item.taskStateName=='未通过'">
-                <img class="first-img" src="../../assets/img/yijieshu.png" v-if="item.taskStateName=='已结束'">
-                <img class="first-img" src="../../assets/img/weikaiqi.png" v-if="item.taskStateName=='尚未开始'">
-                <img class="first-img" src="../../assets/img/jinxingzhong.png" v-if="item.taskStateName=='进行中'">
+                <img class="first-img" src="../../assets/img/yiwancheng.png" v-if="item.taskState== 4">
+                <img class="first-img" src="../../assets/img/jinxingzhong.png" v-if="item.taskState==1">
+                <img class="first-img" src="../../assets/img/daishenhe_t.png" v-if="item.taskState==2">
+                <img class="first-img" src="../../assets/img/yibohui_t.png" v-if="item.taskState==3">
+                <img class="first-img" src="../../assets/img/yijieshu.png" v-if="item.taskState==0">
+                <img class="first-img" src="../../assets/img/weikaiqi.png" v-if="item.taskState== -1">
                 <div class="ne-div">
                     <p>
                         <span>{{ item.stuName }}</span>
