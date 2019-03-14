@@ -15,8 +15,8 @@
                 <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
                     <!-- 单行 -->
                     <div class="fieldsWrap" v-if="item.formItemType == '1'">
-                        <span>{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
+                        <span class="fieldInput">{{item.formItemName}}</span>
+                        <input type="text" class="txtInput" v-model="item.formItemValue" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
                     </div>
                     <!-- 多行 -->
                     <div class="fieldsWrap txtarea" v-if="item.formItemType == '2'">
@@ -55,7 +55,7 @@
                     <!-- 地理位置 -->
                     <group class="positionWrap hasIco" v-if="item.formItemType == '9'">
                         <img src="../../assets/img/ico_position.png" alt="">
-                        <span>{{item.formItemName}}</span>
+                        <span class="fieldname">{{item.formItemName}}</span>
                         <!-- <cell :title="item.formItemName" :value="item.formItemValue"></cell> -->
                         <input type="text" readonly v-model="geographic">
                     </group>
@@ -70,13 +70,13 @@
                     <!-- 邮箱 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '14'">
                         <img src="../../assets/img/ico_email.png" alt="">
-                        <span>{{item.formItemName}}</span>
+                        <span class="fieldname">{{item.formItemName}}</span>
                         <input type="email" v-model="item.formItemValue" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" placeholder="请输入">
                     </div>
                     <!-- 电话 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '15'">
                         <img src="../../assets/img/ico_phone.png" alt="">
-                        <span>{{item.formItemName}}</span>
+                        <span class="fieldname">{{item.formItemName}}</span>
                         <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" placeholder="请输入" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" >
                     </div>
                     <!-- 选择列表 -->
@@ -125,7 +125,7 @@
                     <!-- 邮编 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '26'">
                         <img class="ico_postcode" src="../../assets/img/ico_postcode.png" alt="">
-                        <span>{{item.formItemName}}</span>
+                        <span class="fieldname">{{item.formItemName}}</span>
                         <input type="text" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" v-model="item.formItemValue" placeholder="请输入" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"  onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}" >
                     </div>
                     <!-- 身份证 -->
@@ -137,7 +137,7 @@
                     <!-- 音频 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '28'">
                         <img src="../../assets/img/ico_audio.png" alt="">
-                        <span>{{item.formItemName}}</span>
+                        <span class="fieldname">{{item.formItemName}}</span>
                         <div class="addAudio vux-1px-t"  v-if="item.formItemValue =='' || item.formItemValue == null">
                             <!-- <span></span> -->
                             <div class="addAudioInput">
@@ -145,7 +145,7 @@
                                 <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="audio/mpeg"> -->
                                 <input type="file" name="" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" @change="uploadVideo(item.id,$event,'mp3',index)" accept="audio/mpeg">
                             </div>
-                            <span>大文件请点击</span>
+                            <!-- <span>大文件请点击</span> -->
                         </div>
                         <template v-if="(item.formItemValue !='' && item.formItemValue != 'null'&& item.formItemValue != null)">
                             <div class="showAudio vux-1px-t">
@@ -164,20 +164,29 @@
                     <div class="fieldsWrap hasIco" :class="{'hasUrl':(item.formItemValue !='' && item.formItemValue != null)}" v-if="item.formItemType == '29'">
 
                         <img src="../../assets/img/ico_video.png" alt="">
-                        <span>{{item.formItemName}}</span>
-                        <div class="addVideo" v-if="item.formItemValue =='' || item.formItemValue == null">
-                            <div class="inputFile">
-                                <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="video/*"> -->
-                                <input type="file" name="" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" @change="uploadVideo(item.id,$event,'mp4',index)" accept="video/*">
+                        <span class="fieldname">{{item.formItemName}}</span>
+                        <template v-if ="item.formItemDbName != ''">
+                            <div class="addVideo" v-if="item.formItemValue =='' || item.formItemValue == null">
+                                <div class="inputFile">
+                                    <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="video/*"> -->
+                                    <input type="file" name="" :disabled="[1,3].includes(formState)? false :true" @change="uploadVideo(item.id,$event,'mp4',index)" accept="video/*">
+                                </div>
+                                <!-- <span>大文件请点击</span> -->
                             </div>
-                            <span>大文件请点击</span>
-                        </div>
-                        <template v-if="(item.formItemValue !='' && item.formItemValue != 'null'&& item.formItemValue != null)">
-                            <div class="showVideo">
+                            <template v-if="(item.formItemValue !='' && item.formItemValue != 'null'&& item.formItemValue != null)">
+                                <div class="showVideo">
+                                    <img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">
+                                </div>
+                            </template>
+                        </template>
+                        <template v-else>
+                            <div class="showVideo" v-if="(item.formItemValue !='' && item.formItemValue != 'null'&& item.formItemValue != null)">
                                 <img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">
                             </div>
+                            <div v-else class="videoNOdata">
+                                <img src="../../assets/img/noData.png" alt="">
+                            </div>
                         </template>
-                        
                     </div>
                 </li>
             </ul>
@@ -590,7 +599,7 @@ export default {
 .scroller-item,{
     font-size: 30px !important;
 }
-.dp-header .dp-item{
+.dp-header .dp-item,.vux-popup-header-right,.vux-popup-header-left{
     font-size: 36px !important;
     padding: 10px !important;
     height: auto !important;
@@ -762,6 +771,21 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     padding: 30px;
                     color: #333;
                     font-size: 30px;
+                    .fieldInput{
+                        width:182px;
+                        display:inline-block;
+                        vertical-align: middle;
+                    }
+                    .txtInput{
+                        position: static;
+                        display:inline-block !important;
+                        vertical-align:middle;
+                    }
+                    .fieldname{
+                        display:inline-block;
+                        width:182px;
+                        overflow:hidden;
+                    }
                     &.hasIco{
                         padding-left: 90px;
                     }
@@ -772,7 +796,10 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     input{
                         position: absolute;
                         right: 30px;
-                        top: 40px;
+                        top: 34px;
+                        display:block;
+                        height:30px;
+                        padding:6px;
                         border: none;
                         outline: none;
                         width: 476px;
@@ -874,6 +901,16 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             // width: calc(~'100% - 30px');
                             height: auto;
                             right: 60px;
+                        }
+                    }
+                    .videoNOdata{
+                        padding:10px 0;
+                        height: 96px;
+                        text-align:center;
+                        img{
+                            position:static;
+                            width: 230px;
+                            height:76px;
                         }
                     }
                     .addAudio{
