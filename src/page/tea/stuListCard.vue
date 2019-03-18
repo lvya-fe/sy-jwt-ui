@@ -555,8 +555,8 @@ export default {
             margin-top: 40px;
             .stulist-item{
                 margin-top: 40px;
-                // max-height: 820px;
-                // overflow: hidden;
+                max-height: 820px;
+                overflow: hidden;
                 .stuInfo{
                     position: relative;
                     padding: 30px;
