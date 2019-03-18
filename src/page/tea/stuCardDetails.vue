@@ -16,30 +16,34 @@
                     <!-- 单行 -->
                     <div class="fieldsWrap" v-if="item.formItemType == '1'">
                         <span class="fieldInput">{{item.formItemName}}</span>
-                        <input type="text" class="txtInput" v-model="item.formItemValue" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
+                        <input v-if=" [1,3].includes(formState) && item.citeDataType ==0 " type="text" class="txtInput" v-model="item.formItemValue"  @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
+                        <p class="readOnly" v-else>{{item.formItemValue}}</p>
                     </div>
                     <!-- 多行 -->
                     <div class="fieldsWrap txtarea" v-if="item.formItemType == '2'">
-                        <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
-                        <x-textarea v-if=" item.formItemDbName !=''" :max="200" v-model="item.formItemValue" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true"  placeholder="请输入" :show-counter="false"></x-textarea>
+                        <p :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>
+                        <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " :max="200" v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
+                        <div v-else class="readOnly-block">
+                            <p>{{item.formItemValue}}</p>
+                        </div>
                     </div>
                     <!-- 日期时间 -->
-                    <group class="fieldsDatetime hasIco" :class="{'readonly': ![1,3].includes(formState) || item.formItemDbName ==''}" v-if="item.formItemType == '3'">
+                    <group class="fieldsDatetime hasIco" :class="{'readonly': ![1,3].includes(formState) || item.citeDataType !=0}" v-if="item.formItemType == '3'">
                         <img src="../../assets/img/ico_datetime.png" alt="">
-                        <datetime v-model="item.formItemValue" format="YYYY-MM-DD HH:mm" :readonly="[1,3].includes(formState) || item.formItemDbName =='' ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
+                        <datetime v-model="item.formItemValue" format="YYYY-MM-DD HH:mm" :readonly="[1,3].includes(formState) && item.citeDataType ==0 ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
                     </group>
                     <!-- 单项选择 -->
                     <div class="fieldsWrap radios" v-if="item.formItemType == '4'">
                         <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
                         <group v-if="item.formSelectItemResps.length >0 ">
-                            <radio :options="item.formSelectItemResps" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" v-model="item.formItemValue" @on-change="change"></radio>
+                            <radio :options="item.formSelectItemResps" :class="{'disabled':([1,3].includes(formState) && item.citeDataType ==0)}" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" v-model="item.formItemValue" @on-change="change"></radio>
                         </group>
                     </div>
                     <!-- 多项选择 -->
                     <div class="fieldsWrap radios" v-if="item.formItemType == '5'">
                         <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
                         <group v-if="item.formSelectItemResps.length >0 ">
-                            <checklist label-position="left" :options="item.formSelectItemResps" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" v-model="item.itemValArr" @on-change="checkListChange(item.itemValArr,index)"></checklist>
+                            <checklist label-position="left" :options="item.formSelectItemResps" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" v-model="item.itemValArr" @on-change="checkListChange(item.itemValArr,index)"></checklist>
                         </group>
                     </div>
                     <!-- 图片上传 -----还没做 -->
@@ -51,6 +55,9 @@
                     <div class="fieldsWrap wenben" v-if="item.formItemType == '8'">
                         <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
                         <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p>
+                        <div v-else class="nodata">
+                            <img src="../../assets/img/noData.png" alt="">
+                        </div>
                     </div>
                     <!-- 地理位置 -->
                     <group class="positionWrap hasIco" v-if="item.formItemType == '9'">
@@ -71,26 +78,25 @@
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '14'">
                         <img src="../../assets/img/ico_email.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <input type="email" v-model="item.formItemValue" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" placeholder="请输入">
+                        <input type="email" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''">
                     </div>
                     <!-- 电话 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '15'">
                         <img src="../../assets/img/ico_phone.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" placeholder="请输入" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" >
+                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" >
                     </div>
                     <!-- 选择列表 -->
                     <group class="fieldsWrap selectList" v-if="item.formItemType == '16'" @click.native="showCheckList(item,index,formState)">
                         <cell :title="item.formItemName" ></cell>
-                        <span class="ico-right">{{item.formItemValue == '' || item.formItemValue == null ? '请选择' :item.formItemValue}}</span> 
+                        <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right">{{item.formItemValue == '' || item.formItemValue == null ? '请选择' :item.formItemValue}}</span> 
+                        <span v-else class="ico-right readOnly">{{item.formItemValue}}</span> 
                     </group>
                     <!-- 多选择列表 -->
                     <group class="fieldsWrap selectList" v-if="item.formItemType == '17'" @click.native="showCheckList(item,index,formState)">
                         <cell :title="item.formItemName" ></cell>
-                        <span class="ico-right" :class="{'hides': (item.formItemValue != '' && item.formItemValue != null) }">请选择</span> 
-                        <!-- <div class="itemsWrap" v-if="item.formItemValue != '' && item.formItemValue != null">
-                            <span v-for="val in item.itemValArr" :key="val">{{val}}</span>
-                        </div> -->
+                        <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right" :class="{'hides': (item.formItemValue != '' && item.formItemValue != null) }">请选择</span> 
+                        <span v-else class="ico-right readOnly"></span> 
                         <ul class="itemsWrap" v-if="item.itemValArr.length >0">
                             <li class="vux-1px" v-for="val in item.itemValArr" :key="val">{{val}}</li>
                         </ul>
@@ -99,55 +105,56 @@
                     <!-- 整数 -->
                     <div class="fieldsWrap" v-if="item.formItemType == '19'">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" @input="verifyNum(item.formItemValue,item.formItemId)" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" placeholder="请输入">
+                        <input type="text" v-model="item.formItemValue" @input="verifyNum(item.formItemValue,item.formItemId)" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
                     </div>
                     <!-- 小数 -->
                     <div class="fieldsWrap" v-if="item.formItemType == '20'">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" onkeyup= "if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);}" onkeydown="if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);} " placeholder="请输入">
+                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" onkeyup= "if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);}" onkeydown="if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);} " :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''">
                     </div>
                     <!-- 百分数 -->
                     <div class="fieldsWrap" v-if="item.formItemType == '21'">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" placeholder="请输入百分数(如：60.23)" onkeyup= "if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);}" onkeydown="if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);} " >
+                        <input type="text" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup= "if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);}" onkeydown="if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);} " >
                         <span class="percent">%</span>
                     </div>
                     <!-- 日期 -->
                     <group class="fieldsDatetime hasIco" :class="{'readonly': ![1,3].includes(formState)}" v-if="item.formItemType == '22'">
                         <img src="../../assets/img/ico_datetime.png" alt="">
-                        <datetime v-model="item.formItemValue" :readonly="[1,3].includes(formState) || item.formItemDbName =='' ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
+                        <datetime v-model="item.formItemValue" :readonly="[1,3].includes(formState) && item.citeDataType ==0 ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
                     </group>
                     <!-- 省市区 -->
                     <group  class="hasIco" v-if="item.formItemType == '25'">
                         <img class="ico_address" src="../../assets/img/ico_address.png" alt="">
-                        <x-address :title="item.formItemName" v-model="item.itemValArr" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" :list="addressData" placeholder="请选择"></x-address>
+                        <x-address :title="item.formItemName" v-model="item.itemValArr" :class="{'disabled': (![1,3].includes(formState) || item.citeDataType != 0)}" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :list="addressData" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请选择' :''"></x-address>
                     </group>
                     <!-- 邮编 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '26'">
                         <img class="ico_postcode" src="../../assets/img/ico_postcode.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <input type="text" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" v-model="item.formItemValue" placeholder="请输入" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"  onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}" >
+                        <input type="text" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" v-model="item.formItemValue" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"  onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}" >
                     </div>
                     <!-- 身份证 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '27'">
                         <img class="ico_idcard" src="../../assets/img/ico_idcard.png" alt="">
                         <span>{{item.formItemName}}</span>
-                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" placeholder="请输入" onKeyup="value=value.replace(/[^\d|xX]/g,'')" >
+                        <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onKeyup="value=value.replace(/[^\d|xX]/g,'')" >
                     </div>
                     <!-- 音频 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '28'">
                         <img src="../../assets/img/ico_audio.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <div class="addAudio vux-1px-t"  v-if="item.formItemValue =='' || item.formItemValue == null">
-                            <!-- <span></span> -->
-                            <div class="addAudioInput">
-                                添加音频
-                                <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="audio/mpeg"> -->
-                                <input type="file" name="" :disabled="[1,3].includes(formState) || item.formItemDbName =='' ? false :true" @change="uploadVideo(item.id,$event,'mp3',index)" accept="audio/mpeg">
+                        <template v-if ="item.citeDataType == 0 && [1,3].includes(formState)">
+                            <div class="addAudio vux-1px-t"  v-if="item.formItemValue ==''">
+                                <div class="addAudioInput">
+                                    添加音频
+                                    <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="audio/mpeg"> -->
+                                    <input type="file" name="" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" @change="uploadVideo(item.id,$event,'mp3',index)" accept="audio/mpeg">
+                                </div>
+                                <!-- <span>大文件请点击</span> -->
                             </div>
-                            <!-- <span>大文件请点击</span> -->
-                        </div>
-                        <template v-if="(item.formItemValue !='' && item.formItemValue != 'null'&& item.formItemValue != null)">
+                        </template>
+                        <template v-if="(item.formItemValue !='')">
                             <div class="showAudio vux-1px-t">
                                 <aplayer :autoplay="null" :music="{
                                     title: '数据来源自',
@@ -159,28 +166,31 @@
                                 </aplayer>
                             </div>
                         </template>
+                        <div v-if="(item.citeDataType != 0 || ![1,3].includes(formState)) && item.formItemValue ==''" class="videoNOdata">
+                            <img src="../../assets/img/noData.png" alt="">
+                        </div>
                     </div>
                     <!-- 视频 -->
                     <div class="fieldsWrap hasIco" :class="{'hasUrl':(item.formItemValue !='' && item.formItemValue != null)}" v-if="item.formItemType == '29'">
 
                         <img src="../../assets/img/ico_video.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <template v-if ="item.formItemDbName != ''">
-                            <div class="addVideo" v-if="item.formItemValue =='' || item.formItemValue == null">
+                        <template v-if ="item.citeDataType == 0 && [1,3].includes(formState)">
+                            <div class="addVideo" v-if="item.formItemValue =='' ">
                                 <div class="inputFile">
                                     <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="video/*"> -->
-                                    <input type="file" name="" :disabled="[1,3].includes(formState)? false :true" @change="uploadVideo(item.id,$event,'mp4',index)" accept="video/*">
+                                    <input type="file" name="" @change="uploadVideo(item.id,$event,'mp4',index)" accept="video/*">
                                 </div>
                                 <!-- <span>大文件请点击</span> -->
                             </div>
-                            <template v-if="(item.formItemValue !='' && item.formItemValue != 'null'&& item.formItemValue != null)">
+                            <template v-else>
                                 <div class="showVideo">
                                     <img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">
                                 </div>
                             </template>
                         </template>
                         <template v-else>
-                            <div class="showVideo" v-if="(item.formItemValue !='' && item.formItemValue != 'null'&& item.formItemValue != null)">
+                            <div class="showVideo" v-if="(item.formItemValue !='')">
                                 <img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">
                             </div>
                             <div v-else class="videoNOdata">
@@ -536,6 +546,7 @@ export default {
         },
          // 整数校验
         verifyNum(val,id){
+            console.log(val,id);
             val=val.replace(/[^\d]/g,'')
             var rs =''
             var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、+？-]")
@@ -749,6 +760,11 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             // left: 30px;
                         }
                     }
+                    .disabled{
+                        .weui-cell .weui-cell__ft:after{
+                            border:none;
+                        }
+                    }
                 }
                 .fieldsDatetime{
                     .vux-datetime{
@@ -760,9 +776,16 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                     &.readonly{
-                        .weui-cell .weui-cell__ft:after{
-                            right: 0;
-                        }
+                        .weui-cell{
+                            width: calc(~'100% - 120px');
+                            .vux-cell-value{
+                                color:#656565;
+                            }
+                            .weui-cell__ft:after{
+                                // right: 0;
+                                border:none;
+                            }
+                        } 
                     }
                 }
                 
@@ -771,6 +794,20 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     padding: 30px;
                     color: #333;
                     font-size: 30px;
+                    .readOnly{
+                        text-align:right;
+                        position: absolute;
+                        right: 30px;
+                        top:34px;
+                        color:#656565;
+                    }
+                    .readOnly-block{
+                        position:static;
+                        margin: 0 30px;
+                        padding-bottom:30px;
+                        color:#656565;
+                        p{background-color:#fafafa;}
+                    }
                     .fieldInput{
                         width:182px;
                         display:inline-block;
@@ -805,6 +842,10 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         width: 476px;
                         color: #656565;
                         text-align: left;
+                        &:disabled{
+                            border:none;
+                            text-align:right;
+                        }
                         &.padr30{
                             width: 446px;
                             padding-right: 30px;
@@ -846,6 +887,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                         text-align: center;
                         img{
+                            margin: 10px 0;
                             width: 230px;
                             height: 76px;
                         }
@@ -959,17 +1001,25 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 font-size: 30px;
                             }
                         }
+                        .vux-radio-disabled{
+                            .weui-cell__ft{
+                                background: none !important;
+                            }
+                            .weui-check:checked + .weui-icon-checked{
+                                background: url('../../assets/img/checked.png') no-repeat center center !important;
+                                background-size: 35px 31px !important;
+                                &:before{
+                                    content: '';
+                                }
+                            }
+                        }
                         .weui-cell_radio{
                             padding: 0;
-                            // .weui-cell:not(:first-child)::before{
-                            //     border-top: 0.013333rem solid #D9D9D9;
-                            // }
                             p{
                                 padding: 30px 0;
                                 font-size: 30px;
                             }
                             .weui-cell__ft{
-                                // margin-top: 4px;
                                 padding: 0;
                                 height: 40px;
                                 width: 40px;
@@ -1002,6 +1052,13 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             top: 0;
                             color: #c6c6c6;
                             font-size: 30px;
+                            &.readOnly{
+                                right:0;
+                                color:#656565;
+                                &:after{
+                                    border:none;
+                                }
+                            }
                             &.hides{
                                 color: transparent;
                             }
@@ -1088,6 +1145,15 @@ textarea:disabled, input:disabled{background-color: #fff;}
                 content: '';
             }
         }
+        .vux-checklist-disabled{
+            .weui-cells.weui-cells_checkbox .weui-check_label .weui-icon-checked{
+                background: none;
+                &::before{
+                    content: '';
+                }
+            }
+        }
+        
         .weui-cells_checkbox .weui-check:checked + .vux-checklist-icon-checked{
             height: 40px;
             width: 40px;
@@ -1095,6 +1161,12 @@ textarea:disabled, input:disabled{background-color: #fff;}
             background-size: 40px 40px;
             &::before{
                 content: '';
+            }
+        }
+        .vux-checklist-disabled{
+            .weui-cells_checkbox .weui-check:checked + .vux-checklist-icon-checked{
+                background: url('../../assets/img/checked.png') no-repeat center center;
+                background-size: 35px 31px;
             }
         }
         .weui-cells_checkbox .weui-icon-checked:before{
