@@ -49,7 +49,8 @@
                     <!-- 图片上传 -----还没做 -->
                     <div class="fieldsWrap imgUpload" v-if="item.formItemType == '6'">
                         <p class="vux-1px-b"><img src="../../assets/img/ico_position.png" alt=""><span>{{item.formItemName}}</span></p>
-                        <uploadImg v-if="item.type==6" :imgs.sync="item.val" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
+                        <!-- <uploadImg v-if="item.type==6" :imgs.sync="item.val" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg> -->
+                        <input type="file" name="" @change="uploadVideo(item.id,$event,'img',index)" accept="image/*">
                     </div>
                     <!-- 文本描述 -->
                     <div class="fieldsWrap wenben" v-if="item.formItemType == '8'">
@@ -67,7 +68,7 @@
                         <input type="text" readonly v-model="geographic">
                     </group>
                     <!-- 选人插件 -->
-                    <group class="choosePeople hasIco" v-if="item.formItemType == '10'" @click="selectionPlugin(item.formItemId,item.choiceMap.type)">
+                    <group class="choosePeople hasIco" v-if="item.formItemType == '10'" @click.native="selectionPlugin(item.formItemId,item.choiceType)">
                         <img src="../../assets/img/ico_people.png" alt="">
                         <cell :title="item.formItemName" value="请选择" ></cell>
                         <!-- <ul class="itemsWrap" v-if="item.itemValArr.length >0">
@@ -149,7 +150,7 @@
                                 <div class="addAudioInput">
                                     添加音频
                                     <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="audio/mpeg"> -->
-                                    <input type="file" name="" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" @change="uploadVideo(item.id,$event,'mp3',index)" accept="audio/mpeg">
+                                    <input type="file" name="" @change="uploadVideo(item.id,$event,'mp3',index)" accept="audio/mpeg">
                                 </div>
                                 <!-- <span>大文件请点击</span> -->
                             </div>
@@ -253,7 +254,7 @@
             ></video-player>
         </div>
         <!-- 选人插件组件 -->
-        <!-- <select2 v-bind:uid="uid" v-bind:orgId="orgId" v-bind:type="type" v-bind:sreach_tea="sreach_tea" v-bind:sreach_stu="sreach_stu" @qd="qd" @qx="qx" v-if="tsshow" v-bind:xr="xr"></select2> -->
+        <select2 v-bind:uid="uid" v-bind:orgId="orgId" v-bind:type="type" v-bind:sreach_tea="sreach_tea" v-bind:sreach_stu="sreach_stu" @qd="qd" @qx="qx" v-if="tsshow" v-bind:xr="xr"></select2>
     </div>
 </template>
 <script>
@@ -313,6 +314,14 @@ export default {
             },
             geographic:'',//地理位置 桥接使用
             count:9,//图片上传数量
+            
+            //选人插件相关
+            tsshow:false,//选人插件是否显示
+            xr:'',
+            orgId:'',
+            sreach_stu:'',
+            sreach_tea:'',
+            type:null,
 
         }
     },
@@ -334,6 +343,7 @@ export default {
         XButton,
         Flexbox,
         FlexboxItem,
+        select2,
     },
     created(){
         this.getStuInfos();
@@ -601,7 +611,37 @@ export default {
             }).catch( err =>{
                 this.errorUtil(err);
             })
-        }
+        },
+        //选人插件-相关方法
+        selectionPlugin(id,type){
+            this.xr=id
+            if(type==1){
+                this.type=3
+            }else if(type==2){
+                this.type=1
+            }else if(type==3){
+                this.type=2
+            }
+            this.tsshow= true;
+        },
+        qx(){
+          this.tsshow = false;
+        },
+        qd(obj){
+            this.itmes.forEach((it)=>{
+                // if(it.id==this.xr){
+                //     var con =[];
+                //     var va =[];
+                //     obj.forEach( (a) => {
+                //         con.push(a.name)
+                //         va.push(a.id)
+                //     })
+                //     it.valex=con
+                //     it.val=va.join(',')
+                // }
+            })
+          this.tsshow = false;
+        },
     },
     
 }
