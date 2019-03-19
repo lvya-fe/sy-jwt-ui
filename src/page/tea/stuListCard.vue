@@ -3,7 +3,7 @@
         <div class="top-back">
             <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ title }}</div>
-            <span class="img-2" style="display:none;">
+            <span class="img-2" style="display:none;" @click="openCycle">
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
             </span>
             <img class="img-3" style="display:none;" src="../../assets/img/ico_search.png" alt="">
@@ -383,6 +383,12 @@
         <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'65%','background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" class="dialog-demo vux-1px" hide-on-blur>
             <p>{{statusTime}}</p>
         </x-dialog>
+        <x-dialog v-model="cycleShow" :dialog-style="{'max-width': '100%',width:'90%','background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" class="dialog-cycle vux-1px" hide-on-blur>
+            <ul>
+                <li class="cycle-item" :class="{'selected': index == 0}" v-for="(cycle,index) in cycleLists" :key="index">{{cycle.startTime}} ~ {{cycle.endTime}}</li>
+            </ul>
+        </x-dialog>
+        <!-- <showcycle v-if="cycleShow" v-bind:conData="taskCycles" v-bind:indexCycle="indexCycle" @closeSelect="closeSelect" @selectCycle="selectCycle" v-bind:jointimetype="jointimetype" v-bind:cycle="cycle" v-bind:formZt="formZt"></showcycle> -->
     </div>
 </template>
 <script>
@@ -391,7 +397,7 @@ import qs from 'qs';
 import Bus from '@/plugins/eventBus.js'
 // import {formatDate} from '@/plugins/formatDate.js';
 // import BScroll from "better-scroll";
-// import showcycle from '@/page/tea/SelectionPeriod'
+import showcycle from '@/page/tea/SelectionPeriod'
 export default {
     data(){
         return{
@@ -407,6 +413,7 @@ export default {
             statusTime:'',
             showHideOnBlur:false,//状态时间弹框是否显示
             cycleLists:[], //任务周期列表
+            cycleShow:false, //任务周期是否显示
         }
     },
     components:{
@@ -419,7 +426,7 @@ export default {
     },
     created(){
         this.getStuLists();
-        //this.getCycleLists();
+        // this.getCycleLists();
     },
     methods:{
         goback(){
@@ -480,6 +487,9 @@ export default {
             }).catch( err =>{
                 this.errorUtil(err);
             })
+        },
+        openCycle(){
+            this.cycleShow = true;
         },
         //点击显示对应状态的时间
         showTime(txt){
@@ -724,6 +734,7 @@ export default {
                                         }
                                     }
                                     img{
+                                        margin-bottom: 30px;
                                         height: 216px;
                                         width: 216px;
                                         border-radius: 6px;
@@ -850,6 +861,17 @@ export default {
             p{
                 margin: 85px 0;
                 font-size: 26px;
+            }
+            
+        }
+        .dialog-cycle{
+            .cycle-item{
+                padding: 30px;
+                font-size: 26px;
+                &.selected{
+                    color: rgb(46, 209, 132);
+                    background-color: #f2f2f2;
+                }
             }
         }
     }
