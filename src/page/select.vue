@@ -44,6 +44,8 @@
             }
         },
         created() {
+            var token_ =  Cookies.get('wxtoken_');
+            Cookies.get('wxtoken',token_);
             this.token = Cookies.get('wxtoken');
             this.loadData();
         },

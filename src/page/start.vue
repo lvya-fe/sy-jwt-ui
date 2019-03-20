@@ -25,10 +25,13 @@
           this.$vux.loading.show({
            text: '微信登陆中..'
           });
-            var token = Cookies.get('wxtoken');
-            var lasturl = Cookies.get('lasturl');
+
+
           // var lasturl = localStorage.getItem("lasturl");
           setTimeout(function goto() {
+              var token = Cookies.get('wxtoken');
+              var lasturl = Cookies.get('lasturl');
+              Cookies.set('wxtoken_',token);
             location.replace("/app/auth/wx?uid="+localStorage.uid+"&code="+token+"&url="+encodeURIComponent(lasturl));
           },2000);
            
