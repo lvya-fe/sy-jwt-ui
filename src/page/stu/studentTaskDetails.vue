@@ -561,6 +561,7 @@
 
 <script>
 import qs from 'qs';
+import Cookies from 'js-cookie';
 import {formatDate} from '../../plugins/formatDate.js';
 import { Group, Cell, XTextarea, Datetime,Checklist  } from "vux";
 import VDistpicker from 'v-distpicker'
@@ -694,6 +695,9 @@ export default {
         }
     },
     created(){
+
+
+
         wechatconfigInit(this,qs,this.uid,this._url_);
         if(this.strTime=='1970-01-01 08:00:00'||this.strTime==null){
             this.strTime=null

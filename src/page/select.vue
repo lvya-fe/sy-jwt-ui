@@ -46,6 +46,7 @@
         created() {
             var token_ =  Cookies.get('wxtoken_');
             Cookies.get('wxtoken',token_);
+            Cookies.set('iosurl',window.location.href);
             this.token = Cookies.get('wxtoken');
             this.loadData();
         },

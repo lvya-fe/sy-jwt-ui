@@ -1,6 +1,7 @@
 /**
  * Created by duanhong on 2018/1/9.
  */
+import Cookies from 'js-cookie';
 
 export function wechatconfigInit(self_,qs,cropId,httpUrl) {
 
@@ -8,10 +9,15 @@ export function wechatconfigInit(self_,qs,cropId,httpUrl) {
   var u = navigator.userAgent;
   var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
   var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-
-  if (!isiOS) {
+   // alert(httpUrl+"-"+window.location.href);
+ if (!isiOS) {
     httpUrl = window.location.href;
-  }
+ }else{
+     if (httpUrl == undefined || httpUrl == "") {
+         httpUrl = Cookies.get('iosurl');
+     }
+ }
+
   self_.$axios.post( process.env.API_ROOT+"getWeixinSign",
 
     qs.stringify({
