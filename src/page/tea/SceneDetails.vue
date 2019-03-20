@@ -246,11 +246,12 @@ export default {
     countTab: function () {
 
       var count = 3;
-      if(this.nowsceneitem.length>0&&this.nowsceneitem.sceneItemEnclosures.length>0){
+      if(this.nowsceneitem &&this.nowsceneitem.sceneItemEnclosures.length>0){
+       
           count =  count +1;
 
       }
-      if(this.nowsceneitem.length>0&&this.nowsceneitem.sceneItemCers.length>0){
+      if(this.nowsceneitem &&this.nowsceneitem.sceneItemCers.length>0){
           count =  count +1;
       }
       return count;
@@ -275,7 +276,7 @@ export default {
             count:0,
             info:[],
             items:[],
-            nowsceneitem:[],
+            nowsceneitem:{},
             show:false,
             show10:false,
             total:120,
@@ -404,13 +405,12 @@ export default {
         },
         loadData(){
           var _self = this;
-          console.log(process.env.API_ROOT+"app/tea/"+_self.id+"/sceneView",'哪不对')
+          // console.log(process.env.API_ROOT+"app/tea/"+_self.id+"/sceneView",'哪不对')
           this.$axios.post( process.env.API_ROOT+"app/tea/"+_self.id+"/sceneView",
             qs.stringify({
               uid:_self.$route.params.uid
             })
           ).then(function(res) {
-            console.log(res)
             _self.info = res.data.scene;
             _self.items = (_self.defCourseId == undefined || _self.defCourseId == 'null')? res.data.infos : res.data.infos.filter((e) => { return e.id == _self.defCourseId; });
             _self.count = res.data.count;
@@ -466,7 +466,7 @@ export default {
               uid:_self.$route.params.uid
             })
           ).then(function(res){
-            console.log(res,'记录下拉')
+            // console.log(res,'记录下拉')
             _self.nowsceneitem.tws.lastId_PW = res.data.lastId_PW;
 
             res.data.listMap.forEach(function(item) {
@@ -509,7 +509,7 @@ export default {
               uid:_self.$route.params.uid
             })
           ).then(function(res){
-            console.log(res,'任务下拉')
+            // console.log(res,'任务下拉')
             // _self.nowsceneitem = res.data;
             res.data.listTask.forEach(function(item) {
               _self.nowsceneitem.listTask.push(item);
@@ -519,12 +519,12 @@ export default {
               if(_self.state2!=null){
                 _self.state2.loaded();
               }
-              if(res.data.length>0){
+              if(res.data.listTask.length>0){
                 _self.isaction=true;
               }
-              if(res.data.length==0){
+              if(res.data.listTask.length==0){
                 if(_self.state2!=null){
-                  _self.state2.completed("没有更多数据了");
+                  // _self.state2.completed("没有更多数据了");
                 }
               }
             });
@@ -563,6 +563,7 @@ export default {
           _self.active=index;
           _self.index=0;
           _self.nowsceneitem = this.items[index];
+          console.log(_self.nowsceneitem.title +':'+_self.nowsceneitem.id);
           _self.sceneItemView(index);
         },
 
@@ -587,7 +588,7 @@ export default {
                 lastid:0,
               })
             ).then(function(res){
-              console.log(res,'任务')
+              // console.log(res,'任务')
               _self.nowsceneitem = res.data;
               _self.items[index] = res.data;
             }).catch(function(err){
@@ -643,7 +644,7 @@ export default {
                 content:discuss,
               })
             ).then(function(res){
-              console.log(res)
+              // console.log(res)
               _self.show10=!_self.show10;
               _self.nowsceneitem.tws.listMap.forEach(function(item) {
                 if(item.id==_self.discussId){
@@ -671,7 +672,7 @@ export default {
                     scenefeelingid:id
                 })
             ).then(function(res){
-                console.log(res)
+                // console.log(res)
                 _self.$vux.toast.show({type: 'success',text:"删除成功" });
                 _self.nowsceneitem.tws.listMap.forEach(function(item) {
                   if(item.id==_self.discussId){
