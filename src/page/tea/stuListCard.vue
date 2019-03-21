@@ -378,6 +378,7 @@
                         </dl>
                     </li>
                 </ul>
+                <div class="mask-bottom"></div>
             </li>
         </ul>
         <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'65%','background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" class="dialog-demo vux-1px" hide-on-blur>
@@ -464,7 +465,6 @@ export default {
                             })
                         });
                     }
-                    console.log(this.stuLits,"12121212")
                 }
             }).catch( err =>{
                 this.errorUtil(err);
@@ -564,6 +564,7 @@ export default {
         .stuLists{
             margin-top: 40px;
             .stulist-item{
+                position: relative;
                 margin-top: 40px;
                 max-height: 820px;
                 overflow: hidden;
@@ -573,7 +574,7 @@ export default {
                     box-sizing: border-box;
                     height: 120px;
                     background-color: #fff;
-                    box-shadow: 0 1px 2px #ccc;
+                    box-shadow: 0 2px 16px #f3f3f3;
                     .avatar{
                         margin-right: 24px;
                         width: 60px;
@@ -591,13 +592,12 @@ export default {
                     .status{
                         position: absolute;
                         right: 30px;
-                        top: 45px;
-                        display: inline-block;
-                        height: 30px;
-                        line-height: 30px;
-                        padding: 4px 12px;
-                        border-radius: 15px;
-                        border: 1px solid #ccc;
+                        top: 36px;
+                        display: block;
+                        padding: 2px 12px;
+
+                        border-radius: 18px;
+                        border: 2px solid #ecebeb;
                         font-size: 14px;
                         color: #cfcfcf;
                     }
@@ -852,6 +852,14 @@ export default {
                         
                     }
                 }
+                .mask-bottom{
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    height: 180px;
+                    background:-webkit-linear-gradient(bottom, rgba(255,255,255,1), rgba(255,255,255,0));
+                }
             }
         }
         .dialog-demo{
@@ -862,7 +870,6 @@ export default {
                 margin: 85px 0;
                 font-size: 26px;
             }
-            
         }
         .dialog-cycle{
             .cycle-item{
