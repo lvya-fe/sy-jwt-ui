@@ -592,13 +592,11 @@ export default {
                     .status{
                         position: absolute;
                         right: 30px;
-                        top: 36px;
-                        display: block;
-                        padding: 2px 12px;
-
-                        border-radius: 18px;
+                        top: 40px;
+                        padding: 5px 12px 0;
+                        border-radius: 20px;
                         border: 2px solid #ecebeb;
-                        font-size: 14px;
+                        // font-size: 16px !important;
                         color: #cfcfcf;
                     }
                 }
