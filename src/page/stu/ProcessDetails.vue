@@ -28,14 +28,21 @@
                     <!-- <router-link :to="(item.statusName=='未通过'||item.statusName=='未完成'||item.statusName=='进行中')||item.statusName=='尚未开始'?'/studentTaskDetails/'+uid+'/'+item.id+'/'+fmtDate(item.joinstarttime)+'/'+fmtDate(item.joinendtime)+'/'+item.formsid:'/studentTaskDetailsCompleted/'+uid+'/'+item.id+'/'+fmtDate(item.joinstarttime)+'/'+fmtDate(item.joinendtime)+'/'+item.formsid"> -->
                     <div @click="newlink(item)"  class="ripple">
                     <!-- <div @click="newlink(item.isRelateStu,item.id,item.joinstarttime,item.joinendtime)"  class="ripple"> -->
+                        <!-- 关联同学 -->
                         <img class="first-img" src="../../assets/img/ico_task.png" alt="" v-if="item.isRelateStu">
-                        <img class="first-img" src="../../assets/img/yiwancheng.png" v-else-if="item.statusName=='已完成'">
-                        <img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.statusName=='未完成'">
-                        <img class="first-img" src="../../assets/img/daishenhe_t.png" v-else-if="item.statusName=='待审核'">
-                        <img class="first-img" src="../../assets/img/yibohui_t.png" v-else-if="item.statusName=='未通过'">
-                        <img class="first-img" src="../../assets/img/yijieshu.png" v-else-if="item.statusName=='已经结束'">
-                        <img class="first-img" src="../../assets/img/weikaiqi.png" v-else-if="item.statusName=='尚未开始'">
-                        <img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.statusName=='进行中'">
+                        <!-- 已完成 -->
+                        <img class="first-img" src="../../assets/img/yiwancheng.png" v-else-if="item.status == 4">
+                        <!-- <img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.statusName=='未完成'"> -->
+                        <!-- 待审核 -->
+                        <img class="first-img" src="../../assets/img/daishenhe_t.png" v-else-if="item.status == 2">
+                        <!-- 已驳回 -->
+                        <img class="first-img" src="../../assets/img/yibohui_t.png" v-else-if="item.status == 3">
+                        <!-- 已经结束 -->
+                        <img class="first-img" src="../../assets/img/yijieshu.png" v-else-if="item.status == 0">
+                        <!-- 未开始 -->
+                        <img class="first-img" src="../../assets/img/weikaiqi.png" v-else-if="item.status == -1">
+                        <!-- 进行中 -->
+                        <img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.status == 1"> 
                         
                         <div class="ne-div">
                             <p>{{ item.title }}</p>
@@ -499,7 +506,6 @@ export default {
         // newlink(bool,id,formsid,schoolid,str,end){
         newlink(task){
             if(this.isControl){
-                console.log(task.isRelateStu,"565656")
                 if(!task.isRelateStu){
                     this.$router.push({path: '/studentTaskDetails/'+this.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
                 }else{
