@@ -592,7 +592,7 @@ export default {
                     .status{
                         position: absolute;
                         right: 30px;
-                        top: 40px;
+                        top: 36px;
                         padding: 5px 12px 0;
                         border-radius: 20px;
                         border: 2px solid #ecebeb;

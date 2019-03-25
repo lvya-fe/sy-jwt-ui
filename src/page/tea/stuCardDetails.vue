@@ -23,8 +23,13 @@
                     <div class="fieldsWrap txtarea" v-if="item.formItemType == '2'">
                         <p :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>
                         <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " :max="200" v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
-                        <div v-else class="readOnly-block">
-                            <p>{{item.formItemValue}}</p>
+                        <div v-else>
+                            <div v-if="item.formItemValue !=''" class="readOnly-block">
+                                <p>{{item.formItemValue}}</p>
+                            </div>
+                            <div v-else class="nodata">
+                                <img src="../../assets/img/noData.png" alt="">
+                            </div>
                         </div>
                     </div>
                     <!-- 日期时间 -->
@@ -48,13 +53,21 @@
                     </div>
                     <!-- 图片上传 -----还没做 -->
                     <div class="fieldsWrap imgUpload" v-if="item.formItemType == '6'">
-                        <p class="vux-1px-b"><img src="../../assets/img/ico_position.png" alt=""><span>{{item.formItemName}}</span></p>
-                        <uploadImg v-if="item.type==6" :imgs.sync="item.val" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
+                        <p><img src="../../assets/img/ico_position.png" alt=""><span>{{item.formItemName}}</span></p>
+                        <uploadImg v-if="[1,3].includes(formState) && item.citeDataType ==0" :imgs.sync="item.val" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
+                        <div v-else>
+                            <div v-if="item.formItemValue == ''" class="nodata">
+                                <img src="../../assets/img/noData.png" alt="">
+                            </div>
+                        </div>
                     </div>
                     <!-- 文本描述 -->
                     <div class="fieldsWrap wenben" v-if="item.formItemType == '8'">
-                        <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
-                        <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p>
+                        <p :class="{'vux-1px-b': item.formItemValue != ''}"><span>{{item.formItemName}}</span></p>
+                        <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
+                        <div v-if="item.formItemValue != ''" class="readOnly-block">
+                            <p>{{item.formItemValue}}</p>
+                        </div>
                         <div v-else class="nodata">
                             <img src="../../assets/img/noData.png" alt="">
                         </div>
@@ -69,10 +82,15 @@
                     <!-- 选人插件 -->
                     <group class="choosePeople hasIco" v-if="item.formItemType == '10'" @click.native="selectionPlugin(item.formItemId,item.choiceType)">
                         <img src="../../assets/img/ico_people.png" alt="">
-                        <cell :title="item.formItemName" value="请选择" ></cell>
+                        <cell :title="item.formItemName" :value="[1,3].includes(formState) && item.citeDataType ==0 ? '请选择' :''" :class="{'readOnly': ![1,3].includes(formState) || item.citeDataType !=0}"></cell>
                         <!-- <ul class="itemsWrap" v-if="item.itemValArr.length >0">
                             <li class="vux-1px" v-for="val in item.itemValArr" :key="val">{{val}}</li>
                         </ul> -->
+                        <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
+                            <div v-if="item.formItemValue == ''" class="nodata">
+                                <img src="../../assets/img/noData.png" alt="">
+                            </div>
+                        </div>
                     </group>
                     <!-- 邮箱 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '14'">
@@ -100,6 +118,11 @@
                             <!-- <li class="vux-1px" v-for="val in item.itemValArr" :key="val">{{val}}</li> -->
                             <li v-for="val in item.itemValArr" :key="val">{{val}}</li>
                         </ul>
+                        <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
+                            <div v-if="item.formItemValue == ''" class="nodata">
+                                <img src="../../assets/img/noData.png" alt="">
+                            </div>
+                        </div>
                     </group>
                     
                     <!-- 整数 -->
@@ -312,6 +335,7 @@ export default {
                 fullscreenToggle: true  //全屏按钮
                 }
             },
+            percent:'',//音视频上传百分比
             geographic:'',//地理位置 桥接使用
             count:9,//图片上传数量
             
@@ -490,13 +514,19 @@ export default {
             });
         },
         doUpload(id,formdata,type,domain,url) {
-            this.$vux.loading.show({
-                text: '上传中...'
-            })
             var _self = this;
             this.$axios.post(url, formdata,{
                 headers:{
                     "Content-Type":"multipart/form-data"
+                },
+                onUploadProgress: (progressEvent) => {
+                    // 对原生进度事件的处理
+                    if(progressEvent.lengthComputable){
+                        this.percent = parseInt(progressEvent.loaded/progressEvent.total * 100) + '%';
+                        this.$vux.loading.show({
+                            text: "上传："+this.percent
+                        })
+                    }
                 }
             }).then(res => {
                 _self.$vux.loading.hide();
@@ -816,6 +846,22 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 right: 0 !important;
                             }
                         }
+                        .readOnly{
+                            .weui-cell__ft:after{
+                                height: 0;
+                                width: 0;
+                            }
+                        }
+                        .nodata{
+                            padding:10px 0;
+                            height: 96px;
+                            text-align:center;
+                            img{
+                                position:static;
+                                width: 230px;
+                                height:76px;
+                            }
+                        }
                     }
                     img{
                         position: absolute;
@@ -992,6 +1038,16 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 height:36px;
                             }
                         }
+                        .nodata{
+                            padding:10px 0;
+                            height: 96px;
+                            text-align:center;
+                            img{
+                                position:static;
+                                width: 230px;
+                                height:76px;
+                            }
+                        }
                     }
                     &.wenben{
                         p{
@@ -1007,6 +1063,16 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     &.txtarea{
                         .weui-cell:before{
                             border: none;
+                        }
+                        .nodata{
+                            padding:10px 0;
+                            height: 96px;
+                            text-align:center;
+                            img{
+                                position:static;
+                                width: 230px;
+                                height:76px;
+                            }
                         }
                     }
                     &.hasUrl{
@@ -1152,7 +1218,17 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             }
                         }
                     }
-                    &.selectList,.choosePeople{
+                    &.selectList{
+                        .nodata{
+                            padding:10px 0;
+                            height: 96px;
+                            text-align:center;
+                            img{
+                                position:static;
+                                width: 230px;
+                                height:76px;
+                            }
+                        }
                         .weui-cell{
                             p{
                                 padding: 0;
