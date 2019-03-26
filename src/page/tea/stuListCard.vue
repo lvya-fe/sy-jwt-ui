@@ -25,7 +25,8 @@
                             <template v-if="field.formItemType == '1'">
                                 <dt>
                                     <span>{{field.formItemName}}</span>
-                                    <p :class="{'hasVal':field.formItemValue !=''}">{{field.formItemValue == ''? '请输入':field.formItemValue}}</p>
+                                    <p v-if="[1,-1,3].includes(item.taskState)" :class="{'hasVal':field.formItemValue !=''}">{{field.formItemValue == ''? '请输入':field.formItemValue}}</p>
+                                    <p v-else :class="{'hasVal':field.formItemValue !=''}">{{field.formItemValue}}</p>
                                 </dt>
                             </template>
                             <!-- 多行 -->
@@ -48,8 +49,7 @@
                                         <p v-if="field.formItemValue != '' && field.formItemValue != null">{{field.formItemValue}}</p>
                                         <img v-else src="../../assets/img/noData.png" alt="">
                                     </dd>
-                                </template>
-                                
+                                </template>   
                             </template>
                             <!-- 日期时间 -->
                             <template v-if="field.formItemType == '3'">
@@ -58,12 +58,11 @@
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
                                         {{field.formItemValue}}
-                                        <template v-if="field.formItemValue ==''">
+                                        <template v-if="field.formItemValue =='' && [1,-1,3].includes(item.taskState)">
                                             <div class="noData">
                                                 <span>请选择</span>
                                                 <img src="../../assets/img/ico_right.png" alt="">
                                             </div>
-                                            
                                         </template>
                                     </p>
                                 </dt>
@@ -94,10 +93,13 @@
                                     <img src="../../assets/img/ico_pic.png" alt="">
                                     <span>{{field.formItemName}}</span>
                                 </dt>
-                                <dd class="fieldImg">
+                                <dd class="fieldImg" v-if="[1,-1].includes(item.taskState) && field.formItemValue =='' ">
                                     <div class="imgWrapper">
                                     </div>
                                     <img src="../../assets/img/tj_big.png" alt="">
+                                </dd>
+                                <dd v-else class="multiple">
+                                    <img src="../../assets/img/noData.png" alt="">
                                 </dd>
                             </template>
                             <!-- 文本描述 -->
@@ -127,7 +129,7 @@
                                 <dt>
                                     <img src="../../assets/img/ico_people.png" alt="">
                                     <span>{{field.formItemName}}</span>
-                                    <p>
+                                    <p v-if="[1,-1,3].includes(item.taskState) && field.formItemValue =='' ">
                                         <template>
                                             <div class="noData">
                                                 <span>请选择</span>
@@ -136,9 +138,16 @@
                                         </template>
                                     </p>
                                 </dt>
-                                <dd v-if="field.formItemValue !=''">
-
-                                </dd>
+                                <template>
+                                    <!-- <dd v-if="field.itemValArr.length >0 ">
+                                        <ul class="itemsWrap" >
+                                            <li class="vux-1px" v-for="val in field.itemValArr" :key="val">{{val}}</li>
+                                        </ul>
+                                    </dd> -->
+                                    <dd class="multiple" v-if="field.formItemValue =='' ">
+                                        <img src="../../assets/img/noData.png" alt="">
+                                    </dd>
+                                </template>
                             </template>
                             <!-- 邮箱 -->
                             <template v-if="field.formItemType == '14'">
@@ -178,7 +187,7 @@
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
                                         {{field.formItemValue}}
-                                        <template v-if="field.formItemValue ==''">
+                                        <template v-if="field.formItemValue ==''  && [1,-1,3].includes(item.taskState)">
                                             <div class="noData">
                                                 <span>请选择</span>
                                                 <img src="../../assets/img/ico_right.png" alt="">
@@ -256,7 +265,7 @@
                                 <dt>
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
-                                        {{field.formItemValue == '' && [1,-1,3].includes(item.taskState)?'请输入百分数(例如：62.23)':field.formItemValue}}
+                                        {{field.formItemValue == '' && [1,-1,3].includes(item.taskState)?'请输入百分数(如：62.23)':field.formItemValue}}
                                         <span class="percent">%</span>
                                     </p>
                                 </dt>
@@ -268,7 +277,7 @@
                                     <span>{{field.formItemName}}</span>
                                     <p :class="{'hasVal':field.formItemValue !=''}">
                                         {{field.formItemValue}}
-                                        <template v-if="field.formItemValue ==''">
+                                        <template v-if="field.formItemValue ==''  && [1,-1,3].includes(item.taskState)">
                                             <div class="noData">
                                                 <span>请选择</span>
                                                 <img src="../../assets/img/ico_right.png" alt="">
@@ -613,8 +622,8 @@ export default {
                                 p{
                                     position: absolute;
                                     right: 0;
-                                    top: 27px;
-                                    width: 460px;
+                                    top: 30px;
+                                    width: 386px;
                                     color: #c6c6c6;
                                     text-align: left;
                                     &.hasVal{

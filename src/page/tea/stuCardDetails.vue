@@ -14,8 +14,8 @@
                     21 百分数 22 日期  25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
                 <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
                     <!-- 单行 -->
-                    <div class="fieldsWrap" v-if="item.formItemType == '1'">
-                        <span class="fieldInput">{{item.formItemName}}</span>
+                    <div class="fieldsWrap disflex" v-if="item.formItemType == '1'">
+                        <span class="fieldInput fieldname">{{item.formItemName}}</span>
                         <input v-if=" [1,3].includes(formState) && item.citeDataType ==0 " type="text" class="txtInput" v-model="item.formItemValue"  @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
                         <p class="readOnly" v-else>{{item.formItemValue}}</p>
                     </div>
@@ -93,13 +93,13 @@
                         </div>
                     </group>
                     <!-- 邮箱 -->
-                    <div class="fieldsWrap hasIco" v-if="item.formItemType == '14'">
-                        <img src="../../assets/img/ico_email.png" alt="">
+                    <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '14'">
+                        <img class="icon" src="../../assets/img/ico_email.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span><input type="text" @blur="verifyField(item.formItemValue,item.formItemType)" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" >
                     </div>
                     <!-- 电话 -->
-                    <div class="fieldsWrap hasIco" v-if="item.formItemType == '15'">
-                        <img src="../../assets/img/ico_phone.png" alt="">
+                    <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '15'">
+                        <img class="icon" src="../../assets/img/ico_phone.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span><input type="number" v-if="[1,3].includes(formState) && item.citeDataType ==0" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" oninput = "value=value.replace(/[^\d]/g,'')" @blur="verifyField(item.formItemValue,item.formItemType)" >
                         <p class="readPhone" v-else>{{item.formItemValue.substring(0,3)}}  {{item.formItemValue.substring(3,7)}} {{item.formItemValue.substring(7)}}</p>
                     </div>
@@ -126,18 +126,18 @@
                     </group>
                     
                     <!-- 整数 -->
-                    <div class="fieldsWrap" v-if="item.formItemType == '19'">
-                        <span>{{item.formItemName}}</span>
+                    <div class="fieldsWrap disflex" v-if="item.formItemType == '19'">
+                        <span class="fieldname">{{item.formItemName}}</span>
                         <input type="number" v-model="item.formItemValue" oninput = "value=value.replace(/[^\d]/g,'')"  :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
                     </div>
                     <!-- 小数 -->
-                    <div class="fieldsWrap" v-if="item.formItemType == '20'">
-                        <span>{{item.formItemName}}</span>
+                    <div class="fieldsWrap disflex" v-if="item.formItemType == '20'">
+                        <span class="fieldname">{{item.formItemName}}</span>
                         <input type="number" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @blur="verifyFix(item.formItemValue,index)">
                     </div>
                     <!-- 百分数 -->
-                    <div class="fieldsWrap" v-if="item.formItemType == '21'">
-                        <span>{{item.formItemName}}</span>
+                    <div class="fieldsWrap disflex" v-if="item.formItemType == '21'">
+                        <span class="fieldname">{{item.formItemName}}</span>
                         <input type="number" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')"  @blur="verifyFix(item.formItemValue,index)">
                         <span class="percent">%</span>
                     </div>
@@ -152,20 +152,20 @@
                         <x-address :title="item.formItemName" v-model="item.itemValArr" :class="{'disabled': (![1,3].includes(formState) || item.citeDataType != 0)}" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :list="addressData" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请选择' :''"></x-address>
                     </group>
                     <!-- 邮编 -->
-                    <div class="fieldsWrap hasIco" v-if="item.formItemType == '26'">
-                        <img class="ico_postcode" src="../../assets/img/ico_postcode.png" alt="">
+                    <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '26'">
+                        <img class="ico_postcode icon" src="../../assets/img/ico_postcode.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span><input type="number" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" v-model="item.formItemValue" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" oninput = "value=value.replace(/[^\d]/g,'')" @blur="verifyField(item.formItemValue,item.formItemType)">
                     </div>
                     <!-- 身份证 -->
-                    <div class="fieldsWrap hasIco" v-if="item.formItemType == '27'">
-                        <img class="ico_idcard" src="../../assets/img/ico_idcard.png" alt="">
-                        <span>{{item.formItemName}}</span>
+                    <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '27'">
+                        <img class="ico_idcard icon" src="../../assets/img/ico_idcard.png" alt="">
+                        <span class="fieldname">{{item.formItemName}}</span>
                         <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" @blur="verifyField(item.formItemValue,item.formItemType)" >
                     </div>
                     <!-- 音频 -->
                     <div class="fieldsWrap hasIco" v-if="item.formItemType == '28'">
                         <img src="../../assets/img/ico_audio.png" alt="">
-                        <span class="fieldname">{{item.formItemName}}</span>
+                        <span>{{item.formItemName}}</span>
                         <template v-if ="item.citeDataType == 0 && [1,3].includes(formState)">
                             <div class="addAudio vux-1px-t"  v-if="item.formItemValue ==''">
                                 <div class="addAudioInput">
@@ -196,7 +196,7 @@
                     <div class="fieldsWrap hasIco" :class="{'hasUrl':(item.formItemValue !='' && item.formItemValue != null)}" v-if="item.formItemType == '29'">
 
                         <img src="../../assets/img/ico_video.png" alt="">
-                        <span class="fieldname">{{item.formItemName}}</span>
+                        <span>{{item.formItemName}}</span>
                         <template v-if ="item.citeDataType == 0 && [1,3].includes(formState)">
                             <div class="addVideo" v-if="item.formItemValue =='' ">
                                 <div class="inputFile">
@@ -268,6 +268,10 @@
                 </div>
             </div>
         </div> -->
+        <div class="weui-toast myToast" v-show="toastShow">
+            <inline-loading class="toastLoading"></inline-loading>
+            <p>上传中：{{percent}}</p>
+        </div>
         <!-- 视频播放控件 -->
         <div class="videoParent" @click.prevent.stop="videoPropShow=false" v-if="videoPropShow">
             <video-player class="video-player vjs-custom-skin"
@@ -281,7 +285,7 @@
     </div>
 </template>
 <script>
-import { LoadMore,Loading,Group,XDialog,Cell,XInput,XTextarea,Datetime,XAddress,ChinaAddressV4Data,Calendar,Radio,Checklist,XButton,Flexbox,FlexboxItem} from "vux";
+import { LoadMore,Loading,Group,XDialog,InlineLoading,Cell,XInput,XTextarea,Datetime,XAddress,ChinaAddressV4Data,Calendar,Radio,Checklist,XButton,Flexbox,FlexboxItem} from "vux";
 import qs from 'qs';
 import aplayer from "vue-aplayer";
 // import {formatDate} from '@/plugins/formatDate.js';
@@ -289,6 +293,7 @@ import aplayer from "vue-aplayer";
 import Bus from '@/plugins/eventBus.js'
 import select2 from '@/components/stu/select'
 import uploadImg  from '@/components/uploadImg'
+import { setTimeout } from 'timers';
 // import showcycle from '@/page/tea/SelectionPeriod'
 export default {
     data(){
@@ -336,6 +341,7 @@ export default {
                 }
             },
             percent:'',//音视频上传百分比
+            toastShow:false,
             geographic:'',//地理位置 桥接使用
             count:9,//图片上传数量
             
@@ -354,6 +360,7 @@ export default {
         aplayer,
         LoadMore,
         Loading,
+        InlineLoading,
         XDialog,
         uploadImg,
         Cell,
@@ -514,7 +521,6 @@ export default {
             });
         },
         doUpload(id,formdata,type,domain,url) {
-            var _self = this;
             this.$axios.post(url, formdata,{
                 headers:{
                     "Content-Type":"multipart/form-data"
@@ -523,24 +529,21 @@ export default {
                     // 对原生进度事件的处理
                     if(progressEvent.lengthComputable){
                         this.percent = parseInt(progressEvent.loaded/progressEvent.total * 100) + '%';
-                        this.$vux.loading.show({
-                            text: "上传："+this.percent
-                        })
+                        this.toastShow = true;
                     }
                 }
             }).then(res => {
-                _self.$vux.loading.hide();
+                this.toastShow = false;
                 console.log(res);
-                if(res.code=='200'){
-
+                if(res.code=='200'){ 
                     if(type=="mp4"){//视频
-                        _self.playerOptions.sources[0].src=domain+res.url
+                        this.playerOptions.sources[0].src=domain+res.url
                     }
-                    _self.curFieldsLists[_self.curIndex].formItemValue = domain+res.url;
-                    // _self.upDataShow=false;
+                    this.curFieldsLists[this.curIndex].formItemValue = domain+res.url;
+                    // this.upDataShow=false;
 
                 }else{
-                    _self.$vux.toast.show({type: 'warn',text:'暂无文件' });
+                    this.$vux.toast.show({type: 'warn',text:'暂无文件' });
                 }
 
             }).catch(err => {
@@ -735,6 +738,17 @@ export default {
         }
     }
 }
+.myToast{
+    .toastLoading{
+        width: 0.506667rem;
+        height: 0.506667rem;
+        margin: 30px 0 10px;
+    }
+    p{
+        margin-bottom: 15px;
+    }
+}
+
 .weui-check__label:active{background-color: #fff !important;}
 textarea:disabled, input:disabled{background-color: #fff;}
     .stuCardDetails{
@@ -805,6 +819,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                 background-color:#ebebeb;
             }
             .fields-item{
+                list-style: none;
                 margin-top: 40px;
                 background-color: #fff;
                 .vux-popup-picker-placeholder{
@@ -822,16 +837,16 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         input{
                             position: absolute;
                             right: 0;
-                            top: 0;
+                            top: 6px;
                             border: none;
                             outline: none;
-                            width: 476px;
+                            width: 336px;
                             color: #c6c6c6;
                             text-align: right;
                             font-size: 30px;
                         }
                         .weui-cells{
-                            padding-left: 60px;
+                            padding-left: 56px;
                             margin: 0;
                             font-size: 30px;
                             &:before,&:after{
@@ -959,29 +974,62 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         color:#656565;
                         p{background-color:#fafafa;}
                     }
-                    .fieldInput{
-                        width:182px;
-                        display:inline-block;
-                        vertical-align: middle;
-                    }
-                    .txtInput{
-                        position: static;
-                        padding-top:0;
-                        padding-bottom:0;
-                        display:inline-block !important;
-                        vertical-align:middle;
-                        font-size:30px;
-                        line-height:1;
-                    }
+                    // .fieldInput{
+                    //     width:253px;
+                    //     display:inline-block;
+                    //     vertical-align: middle;
+                    // }
+                    // .txtInput{
+                    //     position: static;
+                    //     padding-top:0;
+                    //     padding-bottom:0;
+                    //     display:inline-block !important;
+                    //     vertical-align:middle;
+                    //     width: 416px;
+                    //     font-size:30px;
+                    //     line-height:1;
+                    // }
                     .fieldname{
                         display:block;
                         width:182px;
                         overflow:hidden;
-                        // line-height:1;
                         font-size:30px;
                     }
                     &.hasIco{
                         padding-left: 90px;
+                        &.disflex{
+                            display:flex;
+                            display: -webkit-flex; /* Safari */
+                            align-items: center;
+                            padding-left: 30px;
+                            .icon,input{
+                                position: static;
+                            }
+                            .icon{
+                                margin-right: 20px;
+                            }
+                            .fieldname{
+                                display: inline-block;
+                                width: 180px;
+                            }
+                            input{
+                                padding-left: 20px;
+                                width: 424px;
+                            }
+                        }
+                    }
+                    &.disflex{
+                        display:flex;
+                        display: -webkit-flex; /* Safari */
+                        align-items: center;
+                        padding-left: 30px;
+                        input{
+                            position: static;
+                        }
+                        .fieldname{
+                            display: inline-block;
+                            width: 253px;
+                        }
                     }
                     .percent{
                         position: absolute;
@@ -997,7 +1045,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         line-height:30px;
                         border: none;
                         outline: none;
-                        width: 476px;
+                        width: 436px;
                         color: #656565;
                         text-align: left;
                         &:disabled{
@@ -1005,7 +1053,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             text-align:right;
                         }
                         &.padr30{
-                            width: 446px;
+                            width: 416px;
                             padding-right: 30px;
                         }
                     }
@@ -1206,7 +1254,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             }
                             
                             .weui-check:checked + .weui-icon-checked{
-                                margin-top: 0px;
+                                margin-top: 0;
                                 margin-left: -10px;
                                 height: 40px;
                                 width: 40px;
