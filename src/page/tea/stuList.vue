@@ -155,7 +155,6 @@ export default {
                     }
                     _self.$nextTick(() => {
                         if (!_self.scroll) {
-                            console.log("111111111111111111111111111")
                             _self.scroll = new BScroll(_self.$refs.bscroll, {
                                 click: true,
                                 scrollY: true,
@@ -174,7 +173,6 @@ export default {
                             _self.scroll.on('touchEnd', (pos) => {
                                 // 下拉动作
                                 if(pos.y > 50){
-                                    console.log("7777777777777777777777777")
                                     _self.status=true;
                                     _self.ztSta=true;
                                     _self.loadStatus=true;
@@ -185,7 +183,6 @@ export default {
                                 }
                                 //上拉加载 总高度>下拉的高度+10 触发加载更多
                                 if(_self.scroll.maxScrollY>pos.y+10){
-                                    console.log("9999999999999999999")
                                     if(_self.status&&_self.ztSta){
                                         _self.ztSta=false;
                                         _self.loadStatus=true
