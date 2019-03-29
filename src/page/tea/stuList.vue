@@ -13,7 +13,7 @@
         </p>
         <div class="list-con-div bscroll"  ref="bscroll" v-show="show3">
             <div class="bscroll-container">
-                <dir class="stuListPar">
+                <div class="stuListPar">
                     <div class="ripple" v-for="(item,index) in conData" :key="index" @click="link(item.task.id,item.stu.id,item.task.joinstarttime,item.task.joinendtime,item.stu.name)">
                         <img class="first-img" src="../../assets/img/yiwancheng.png" v-if="item.task.statusName=='已完成'">
                         <img class="first-img" src="../../assets/img/jinxingzhong.png" v-if="item.task.statusName=='未完成'">
@@ -52,7 +52,7 @@
                         <img src="@/assets/img/zanwushuju.png" alt="">
                         <span>暂无数据</span>
                     </div>
-                </dir>
+                </div>
                 <load-more v-show="loadshow" :show-loading="loadStatus" :tip="loadStatus?'正在加载':'暂无数据'"></load-more>
             </div>
             <!-- 暂无数据时显示 -->
@@ -155,6 +155,7 @@ export default {
                     }
                     _self.$nextTick(() => {
                         if (!_self.scroll) {
+                            console.log("111111111111111111111111111")
                             _self.scroll = new BScroll(_self.$refs.bscroll, {
                                 click: true,
                                 scrollY: true,
@@ -173,6 +174,7 @@ export default {
                             _self.scroll.on('touchEnd', (pos) => {
                                 // 下拉动作
                                 if(pos.y > 50){
+                                    console.log("7777777777777777777777777")
                                     _self.status=true;
                                     _self.ztSta=true;
                                     _self.loadStatus=true;
@@ -183,6 +185,7 @@ export default {
                                 }
                                 //上拉加载 总高度>下拉的高度+10 触发加载更多
                                 if(_self.scroll.maxScrollY>pos.y+10){
+                                    console.log("9999999999999999999")
                                     if(_self.status&&_self.ztSta){
                                         _self.ztSta=false;
                                         _self.loadStatus=true

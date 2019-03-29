@@ -25,7 +25,7 @@
                         <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " :max="200" v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
                         <div v-else>
                             <div v-if="item.formItemValue !=''" class="readOnly-block">
-                                <p>{{item.formItemValue}}</p>
+                                <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
                             </div>
                             <div v-else class="nodata">
                                 <img src="../../assets/img/noData.png" alt="">
@@ -51,7 +51,7 @@
                             <checklist label-position="left" :options="item.formSelectItemResps" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" v-model="item.itemValArr" @on-change="checkListChange(item.itemValArr,index)"></checklist>
                         </group>
                     </div>
-                    <!-- 图片上传 -----还没做 -->
+                    <!-- 图片上传 -->
                     <div class="fieldsWrap imgUpload" v-if="item.formItemType == '6'">
                         <p><img src="../../assets/img/ico_position.png" alt=""><span>{{item.formItemName}}</span></p>
                         <uploadImg v-if="[1,3].includes(formState) && item.citeDataType ==0" :imgs.sync="item.val" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
@@ -66,7 +66,7 @@
                         <p :class="{'vux-1px-b': item.formItemValue != ''}"><span>{{item.formItemName}}</span></p>
                         <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
                         <div v-if="item.formItemValue != ''" class="readOnly-block">
-                            <p>{{item.formItemValue}}</p>
+                            <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
                         </div>
                         <div v-else class="nodata">
                             <img src="../../assets/img/noData.png" alt="">
@@ -756,6 +756,10 @@ textarea:disabled, input:disabled{background-color: #fff;}
         background-color: #ebebeb;
         margin-top: 76px;
         padding-top: 20px;
+        textarea:disabled{
+            background-color: #fafafa;
+            color: #656565;
+        }
          input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
              color: #c6c6c6;
              font-size: 28px;
