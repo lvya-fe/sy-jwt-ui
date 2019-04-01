@@ -14,8 +14,10 @@ export function wechatconfigInit(self_,qs,cropId,httpUrl) {
     httpUrl = window.location.href;
  }else{
      if (httpUrl == undefined || httpUrl == "") {
-         httpUrl = Cookies.get('iosurl');
+         httpUrl = window.location.href;
+      //   httpUrl = Cookies.get('iosurl');
      }
+   //  alert(httpUrl);
  }
 
   self_.$axios.post( process.env.API_ROOT+"getWeixinSign",

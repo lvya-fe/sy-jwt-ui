@@ -291,7 +291,9 @@ import aplayer from "vue-aplayer";
 // import {formatDate} from '@/plugins/formatDate.js';
 // import BScroll from "better-scroll";
 import Bus from '@/plugins/eventBus.js'
+import {wechatconfigInit} from '@/plugins/wechat.js';
 import select2 from '@/components/stu/select'
+import { mapState } from 'vuex'
 import uploadImg  from '@/components/uploadImg'
 import { setTimeout } from 'timers';
 // import showcycle from '@/page/tea/SelectionPeriod'
@@ -355,6 +357,9 @@ export default {
 
         }
     },
+    computed: mapState({
+        _url_: state => state._url_
+    }),
     components:{
         Group,
         aplayer,
@@ -377,6 +382,7 @@ export default {
         select2,
     },
     created(){
+        wechatconfigInit(this,qs,this.uid,this._url_);
         this.getStuInfos();
         // this.getHistoryList();
         Bus.$on('stuCardListsData',(data)=>{
@@ -414,7 +420,8 @@ export default {
                                 })
                             }
                             if(element.formItemType == '9'){
-                                this.getMap();
+                                setTimeout(this.getMap(),3000);
+
                             }
                             if(element.formItemType == '10'){
 

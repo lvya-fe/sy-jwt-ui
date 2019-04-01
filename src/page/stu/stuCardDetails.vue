@@ -294,6 +294,8 @@ import Bus from '@/plugins/eventBus.js'
 import select2 from '@/components/stu/select'
 import uploadImg  from '@/components/uploadImg'
 import { setTimeout } from 'timers';
+import {wechatconfigInit} from '@/plugins/wechat.js';
+import { mapState } from 'vuex'
 // import showcycle from '@/page/tea/SelectionPeriod'
 export default {
     data(){
@@ -376,7 +378,11 @@ export default {
         FlexboxItem,
         select2,
     },
+    computed: mapState({
+        _url_: state => state._url_
+    }),
     created(){
+        wechatconfigInit(this,qs,this.uid,this._url_);
         this.getStuInfos();
         // this.getHistoryList();
         Bus.$on('stuCardListsData',(data)=>{
@@ -414,7 +420,7 @@ export default {
                                 })
                             }
                             if(element.formItemType == '9'){
-                                this.getMap();
+                                setTimeout(this.getMap(),3000);
                             }
                             if(element.formItemType == '10'){
 
