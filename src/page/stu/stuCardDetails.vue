@@ -9,8 +9,8 @@
         </div>
         <form action="" class="stuInfo">
             <ul>
-                <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,
-                14 邮箱 15 电话 16选择列表 17 多选列表  19 整数 20 小数
+                <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,  
+                14 邮箱 15 电话 16选择列表 17 多选列表  19 整数 20 小数  
                     21 百分数 22 日期  25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
                 <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
                     <!-- 单行 -->
@@ -40,9 +40,10 @@
                     <!-- 单项选择 -->
                     <div class="fieldsWrap radios" v-if="item.formItemType == '4'">
                         <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
-                        <group v-if="item.formSelectItemResps.length >0 ">
+                        <!-- <group v-if="item.formSelectItemResps.length >0 ">
                             <radio :options="item.formSelectItemResps" :class="{'disabled':([1,3].includes(formState) && item.citeDataType ==0)}" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" v-model="item.formItemValue" @on-change="change"></radio>
-                        </group>
+                        </group> -->
+                        <radioList :lists="item.formSelectItemResps" :checkVal="item.formItemValue" :index="index" @changeVal="changeRadio"></radioList>
                     </div>
                     <!-- 多项选择 -->
                     <div class="fieldsWrap radios" v-if="item.formItemType == '5'">
@@ -295,6 +296,7 @@ import aplayer from "vue-aplayer";
 // import BScroll from "better-scroll";
 import Bus from '@/plugins/eventBus.js'
 import select2 from '@/components/stu/select'
+import radioList from '@/components/common/com-radios'
 import uploadImg  from '@/components/uploadImg'
 import VideoPlayerCommon from "@/components/common/video/video-player-common.vue"
 import { setTimeout } from 'timers';
@@ -359,7 +361,7 @@ export default {
             type:null,
 
             //卡片列表页码
-            paramsData:{},
+            paramsData:{}
 
         }
     },
@@ -384,6 +386,7 @@ export default {
         FlexboxItem,
         select2,
       VideoPlayerCommon,
+      radioList
     },
     created(){
         this.getStuInfos();
@@ -473,6 +476,10 @@ export default {
         },
         change (value) {
             console.log('change',value)
+        },
+        //单选更改事件
+        changeRadio(val,index){
+            this.curFieldsLists[index].formItemValue = val;
         },
         checkListChange(value,index){
             this.curFieldsLists[index].formItemValue = value.length>0 ? value.join(',') : '';
@@ -1097,6 +1104,14 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         .weui-cells_checkbox{
                             p{padding-left: 0;}
                             .weui-cell__hd{padding:0;}
+                        }
+                    }
+                    &.radios{
+                        .radioLists{
+                            padding: 0 30px;
+                            span{
+
+                            }
                         }
                     }
                     &.imgUpload{
