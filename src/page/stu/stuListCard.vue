@@ -505,6 +505,9 @@ export default {
                                 probeType: 2,
                             });
                             this.scroll.on('touchEnd', (pos) => {
+                                if(pos.y > 20){
+                                    console.log('下拉刷新！！')
+                                }
                                 if(this.scroll.maxScrollY>pos.y+20){
                                     if(!this.hasNextPage) return;
                                     this.pageNo++;
@@ -621,6 +624,7 @@ export default {
             overflow: hidden;
         }
         .stuLists{
+            padding-top: 1px;
             .stulist-item{
                 position: relative;
                 margin-top: 40px;
