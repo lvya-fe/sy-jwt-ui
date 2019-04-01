@@ -544,6 +544,7 @@ export default {
               this.$router.push({path:'/stuList/'+this.uid+'/'+task.id+'/'+null});
             }
             if(task.showFlag == 2){
+              Cookies.set('cardPageNo',1);
               this.$router.push({path: '/stuListCard/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
             }
           }else if(task.teaDoType==3){

@@ -11,7 +11,7 @@
         </div>
         <div class="bscroll"  ref="bscroll">
             <ul class="stuLists">
-                <li class="stulist-item" v-for="item in stuLits" :key="item.stuId" @click="toStuDetail(item.stuId)">
+                <li class="stulist-item" v-for="item in stuLits" :key="item.stuId" @click="toStuDetail(item.stuId,item.pageNo)">
                     <div class="stuInfo">
                         <img src="../../assets/img/img_avatar.png" class="avatar" alt="">
                         <span class="name">{{item.stuName}}</span>
@@ -405,6 +405,7 @@
                             </dl>
                         </li>
                     </ul>
+                    <div></div>
                     <div class="mask-bottom"></div>
                 </li>
             </ul>
@@ -427,6 +428,7 @@ import Bus from '@/plugins/eventBus.js'
 // import {formatDate} from '@/plugins/formatDate.js';
 import BScroll from "better-scroll";
 import showcycle from '@/page/tea/SelectionPeriod'
+import Cookies from 'js-cookie';
 export default {
     data(){
         return{
@@ -444,6 +446,8 @@ export default {
             showHideOnBlur:false,//状态时间弹框是否显示
             cycleLists:[], //任务周期列表
             cycleShow:false, //任务周期是否显示
+            dropDown:false, //下拉状态
+            pullUp:false, //上拉状态
         }
     },
     components:{
@@ -456,6 +460,8 @@ export default {
         XTextarea
     },
     created(){
+        this.pageNo = Cookies.get('cardPageNo') == 'undefined' ? 1 : Number(Cookies.get('cardPageNo'));
+        console.log(this.pageNo,Cookies.get('cardPageNo'))
         this.getStuLists();
         // this.getCycleLists();
     },
@@ -483,8 +489,13 @@ export default {
                     this.$vux.loading.hide();
                     let resData = res.data;
                     this.title = resData.videoCardStuListRespList[0].taskName;
-                    this.stuLits = this.stuLits.concat(resData.videoCardStuListRespList);
-                    this.hasNextPage = resData.hasNextPage;
+                    if(this.pullUp || (!this.pullUp && !this.dropDown)){
+                        this.stuLits = this.stuLits.concat(resData.videoCardStuListRespList);
+                        this.hasNextPage = resData.hasNextPage;
+                    }
+                    if(this.dropDown){
+                        this.stuLits = resData.videoCardStuListRespList.concat(this.stuLits);
+                    }
                     if(this.stuLits.length>0){
                         this.stuLits.forEach(element => {
                             if(element.formItemResps.length == 0) return;
@@ -509,11 +520,19 @@ export default {
                             this.scroll.on('touchEnd', (pos) => {
                                 if(pos.y > 20){
                                     console.log('下拉刷新！！')
+                                    this.dropDown = true;
+                                    if(this.pageNo == 1) return;
+                                    this.pageNo--;
+                                    this.getStuLists();
+                                    this.scroll.refresh();
                                 }
                                 if(this.scroll.maxScrollY>pos.y+20){
+                                    console.log('上拉加载！！')
+                                    this.pullUp = true;
                                     if(!this.hasNextPage) return;
                                     this.pageNo++;
                                     this.getStuLists();
+                                    this.scroll.refresh();
                                 }
                             })
                         }
@@ -553,8 +572,16 @@ export default {
             this.showHideOnBlur = !this.showHideOnBlur;
         },
         //跳转至学生任务详情 - 需要区分-任务状态   展示，填写
-        toStuDetail(stuid){
-            Bus.$emit('stuCardListsData',this.stuLits);
+        toStuDetail(stuid,pageNo){
+            setTimeout(() => {
+                Bus.$emit('stuCardListsData',this.stuLits);
+                 Bus.$emit('cardListMsg',{
+                    pageNo:pageNo,
+                    taskId: this.id,
+                    formId:this.formId,
+                    schoolid:this.schooId
+                });
+            }, 500)
             this.$router.push({path: '/stuCardDetails2/'+this.uid+'/'+this.id+'/'+stuid+'/'+this.schooId});
         },
         //批量操作学生表单
