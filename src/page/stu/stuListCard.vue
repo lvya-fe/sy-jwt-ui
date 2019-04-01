@@ -18,7 +18,7 @@
                         <span class="status" @click.stop="showTime(item.updateTimeStr)">{{item.taskStateName}}</span>
                     </div>
                     <ul class="fieldLists">
-                        <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传   8 描述文本 9 地理位置  10 选人插件, 14 邮箱 15 电话 
+                        <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传   8 描述文本 9 地理位置  10 选人插件, 14 邮箱 15 电话
                         16选择列表 17 多选列表 19 整数 20 小数  21 百分数 22 日期   25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
                         <li class="fieldlist-item" v-for="(field,index) in item.formItemResps" :key="index">
                             <dl>
@@ -50,7 +50,7 @@
                                             <p v-if="field.formItemValue != '' && field.formItemValue != null">{{field.formItemValue}}</p>
                                             <img v-else src="../../assets/img/noData.png" alt="">
                                         </dd>
-                                    </template>   
+                                    </template>
                                 </template>
                                 <!-- 日期时间 -->
                                 <template v-if="field.formItemType == '3'">
@@ -78,7 +78,7 @@
                                             <radio :options="field.formSelectItemResps" v-model="field.formItemValue" disabled ></radio>
                                         </group>
                                     </dd>
-                                    
+
                                 </template>
                                 <template v-if="field.formItemType == '5'">
                                     <dt>
@@ -124,7 +124,7 @@
                                             <p v-if="field.formItemValue != '' && field.formItemValue != null">{{field.formItemValue}}</p>
                                             <img v-else src="../../assets/img/noData.png" alt="">
                                         </dd>
-                                    </template>   
+                                    </template>
                                 </template>
                                 <!-- 地理位置 -->
                                 <template v-if="field.formItemType == '9'">
@@ -226,7 +226,7 @@
                                             </template>
                                         </p>
                                     </dt>
-                                    <!-- 多选列表显示样式 ===field.citeDataType != 0 为数据引用-->  
+                                    <!-- 多选列表显示样式 ===field.citeDataType != 0 为数据引用-->
                                     <template v-if="field.citeDataType == 0">
                                         <dd v-if="field.itemValArr.length >0">
                                             <ul class="itemsWrap" >
@@ -375,7 +375,7 @@
                                             <img v-else class="noData" src="../../assets/img/noData.png" alt="">
                                         </dd>
                                     </template>
-                                    
+
                                 </template>
                                 <!-- 视频 -->
                                 <template v-if="field.formItemType == '29'">
@@ -400,7 +400,7 @@
                                             <img v-else class="noData" src="../../assets/img/noData.png" alt="">
                                         </dd>
                                     </template>
-                                    
+
                                 </template>
                             </dl>
                         </li>
@@ -503,6 +503,8 @@ export default {
                             this.scroll = new BScroll(this.$refs.bscroll, {
                                 click: true,
                                 probeType: 2,
+                                bounce: true,
+                                bounceTime: 50
                             });
                             this.scroll.on('touchEnd', (pos) => {
                                 if(pos.y > 20){
@@ -536,7 +538,7 @@ export default {
                 if(res.success){
                     this.cycleLists = res.data;
                     console.log(this.cycleLists);
-                    
+
                 }
             }).catch( err =>{
                 this.errorUtil(err);
@@ -560,7 +562,7 @@ export default {
             // this.$router.push({path: '/stuListBatch/'+this.uid+'/'+this.id+'/'+this.formId+'/'+this.schooId})
         }
     },
-    
+
 }
 </script>
 <style lang="less">
@@ -909,7 +911,7 @@ export default {
                                 }
                             }
                         }
-                        
+
                     }
                 }
                 .mask-bottom{

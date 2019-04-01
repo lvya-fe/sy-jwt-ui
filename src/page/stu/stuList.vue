@@ -69,7 +69,7 @@ export default {
         }
     },
     mounted(){
-        
+
     },
     computed: {
         noback:function(){
@@ -104,6 +104,8 @@ export default {
                             this.scroll = new BScroll(this.$refs.bscroll, {
                                 click: true,
                                 probeType: 2,
+                                bounce: true,
+                                bounceTime: 50
                             });
                             this.scroll.on('touchEnd', (pos) => {
                                 if(this.scroll.maxScrollY>pos.y+20){
