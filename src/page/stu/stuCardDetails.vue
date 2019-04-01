@@ -294,6 +294,7 @@ import Bus from '@/plugins/eventBus.js'
 import select2 from '@/components/stu/select'
 import uploadImg  from '@/components/uploadImg'
 import { setTimeout } from 'timers';
+import Cookies from 'js-cookie';
 // import showcycle from '@/page/tea/SelectionPeriod'
 export default {
     data(){
@@ -353,6 +354,9 @@ export default {
             sreach_tea:'',
             type:null,
 
+            //卡片列表页码
+            paramsData:{}
+
         }
     },
     components:{
@@ -382,10 +386,21 @@ export default {
         Bus.$on('stuCardListsData',(data)=>{
           this.stuListsData = data;
         });
+        Bus.$on('cardListMsg',(data)=>{
+          this.paramsData = data;
+          console.log(data,"6666")
+        });
     },
     methods:{
         goback(){
-            this.$router.go(-1);
+            // this.$router.go(-1);
+            Cookies.set('cardPageNo',this.paramsData.pageNo);
+            console.log(this.paramsData.taskId)
+            if(this.paramsData.taskId === undefined){
+                this.$router.go(-1);
+            }else{
+                this.$router.push({path: '/stuList2Card/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
+            }
         },
         //获取学生表单信息
         getStuInfos(){

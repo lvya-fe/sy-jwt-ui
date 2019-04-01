@@ -243,7 +243,7 @@ import {formatDate} from '../../plugins/formatDate.js';
 import NotebookDetails from '@/components/stu/NotebookDetails'
 import ReleaseRecord from '@/components/stu/ReleaseRecord'
 import Infinite from "@/components/vue-scroll";
-
+import Cookies from 'js-cookie';
 
 
 export default {
@@ -514,6 +514,7 @@ export default {
                         this.$router.push({path: '/stuList2/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid+'/'+null});
                     }
                     else if(task.showFlag == 2){
+                        Cookies.set('cardPageNo',1);
                         this.$router.push({path: '/stuList2Card/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
                     }
                 }
