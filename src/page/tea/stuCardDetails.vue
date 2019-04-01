@@ -63,7 +63,7 @@
                     </div>
                     <!-- 文本描述 -->
                     <div class="fieldsWrap wenben" v-if="item.formItemType == '8'">
-                        <p :class="{'vux-1px-b': item.formItemValue != ''}"><span>{{item.formItemName}}</span></p>
+                        <p><span>{{item.formItemName}}</span></p>
                         <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
                         <div v-if="item.formItemValue != ''" class="readOnly-block">
                             <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
@@ -221,8 +221,8 @@
                     </div>
                 </li>
             </ul>
-            <div class="btnsWrap" v-if="[1,3].includes(formState)">
-                <x-button type="primary" action-type="button" @click.native="submit">提交</x-button>
+            <div class="btnsWrap">
+                <x-button type="primary" v-if="[1,3].includes(formState)" action-type="button" @click.native="submit">提交</x-button>
                 <!-- <x-button type="primary" action-type="button">提交并切换学生</x-button> -->
                 <x-button action-type="button" @click.native="goback">返回</x-button>
             </div>
@@ -973,7 +973,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     }
                     .readOnly-block{
                         position:static;
-                        margin: 0 30px;
+                        // margin: 0 30px;
                         padding-bottom:30px;
                         color:#656565;
                         p{background-color:#fafafa;}
@@ -1064,7 +1064,9 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     .weui-cell.vux-x-textarea{
                         padding-left: 0;
                         padding-right: 0;
-                        .weui-textarea{padding: 30px 0;}
+                        .weui-textarea{
+                            padding: 0.15rem 0.2rem;
+                        }
                     }
                     &.txtarea,&.radios,&.wenben{
                         padding: 0;
