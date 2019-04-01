@@ -20,7 +20,7 @@ import VueScroller from 'vue-scroller'
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 
-import VideoPlayer from 'vue-video-player'
+import VideoPlayer from 'vue-video-player-lvya'
 require('video.js/dist/video-js.css')
 require('vue-video-player/src/custom-theme.css')
 import Cookies from 'js-cookie'

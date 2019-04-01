@@ -319,8 +319,9 @@
                     <span>"{{ item.name }}"</span>
                     <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
                         <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
-                        <div class="seeVideo" v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined">
-                            <img class ="seeImg" @click="ckSee(itemRefer.val)" src="@/assets/img/videoImgMo.png" alt="">
+                        <div class="seeVideoCustom" v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined">
+                          <VideoPlayerCommen :options="itemRefer"></VideoPlayerCommen>
+                            <!--<img class ="seeImg" @click="ckSee(itemRefer.val)" src="@/assets/img/videoImgMo.png" alt="">-->
                         </div>
                     </div>
                     <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
@@ -438,8 +439,9 @@
                 <template v-if="item.type==29&&item.citeDataType!=1">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
                     <div class="checkbox_div">
-                        <div class="seeVideo" v-if="item.valex!=null&&item.valex!=''&&item.valex!=undefined">
-                            <img class ="seeImg" @click="ckSee(item.valex)" src="@/assets/img/videoImgMo.png" alt="">
+                        <div class="seeVideoCustom" v-if="item.valex!=null&&item.valex!=''&&item.valex!=undefined">
+                          <VideoPlayerCommen :options="item"></VideoPlayerCommen>
+                            <!--<img class ="seeImg" @click="ckSee(item.valex)" src="@/assets/img/videoImgMo.png" alt="">-->
                         </div>
                         <div class="hs_div" v-if="item.valex==''||item.valex==null||item.valex==undefined">
                           --
@@ -451,8 +453,9 @@
                     <span>"{{ item.name }}"</span>
                     <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData" :key="index">
                         <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
-                        <div class="seeVideo" v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined">
-                            <img class ="seeImg" @click="ckSee(itemRefer.val)" src="@/assets/img/videoImgMo.png" alt="">
+                        <div class="seeVideoCustom" v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined">
+                          <VideoPlayerCommen :options="itemRefer"></VideoPlayerCommen>
+                            <!--<img class ="seeImg" @click="ckSee(itemRefer.val)" src="@/assets/img/videoImgMo.png" alt="">-->
                         </div>
                     </div>
                     <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
@@ -573,6 +576,8 @@ import uploadImg  from '@/components/uploadImg'
 import { mapState } from 'vuex'
 import showorg from '@/components/stu/selecttag'
 
+import VideoPlayerCommen from "@/components/common/video-player-common.vue"
+
 
 import aplayer from "vue-aplayer";
 
@@ -594,7 +599,8 @@ export default {
         uploadImg,
         showhistime,
         showorg,
-        aplayer: aplayer
+        aplayer: aplayer,
+        VideoPlayerCommen
     },
     data(){
         return{
@@ -1392,7 +1398,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
     .texCon{padding:20px 30px;font-size:28px;overflow: hidden;}
     .texCon .weui-textarea{font-size: 30px!important;color:#444;}
     .texCon .weui-cells__title{float:left;width: 100%;text-align: left;color:#444;padding:10px 0;margin:0;font-size:28px;}
@@ -1412,7 +1418,7 @@ export default {
     .distpicker-address-wrapper > select{width:100%;height:65px;line-height:65px;border:1px solid #e2e2e2;/*no*/border-radius:5px;/*no*/padding:0 0 0 10px;outline:none;font-size: 28px;color: #444;margin-bottom: 20px;-webkit-appearance: none;background: url("../../assets/img/select_down.png") no-repeat right 10px center transparent;}
 </style>
 
-<style scoped>
+<style scoped lang="less">
 
     .top-back {text-align: center;font-size: 36px;color: #444;position: fixed;left:0;right:0;padding:20px;background-color: #fff;z-index: 100;top: 0;}
     .top-back .img-1{position: absolute;width: 38px;height: 38px;left: 20px;top: 25px}
@@ -1543,4 +1549,5 @@ export default {
     .weui-uploader__input-box:after{content:none!important;}
     .weui-uploader__input-box:before{content:none!important;}
     .mgTopCss{position:absolute;bottom:20px;right:20px;width:auto!important;z-index: 2;}
+
 </style>
