@@ -206,7 +206,8 @@
                 <div class="taskdetails_ts" v-if="item.type==8">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
                     <div class="checkbox_div">
-                        {{ item.bz }}
+                        <!-- {{ item.bz }} -->
+                        <x-textarea disabled placeholder="" v-model="item.bz" ></x-textarea>
                     </div>
                 </div>
                 <!-- <div class="referenceDiv" v-if="item.citeDataType==1&&item.type==8">
@@ -409,8 +410,12 @@
             <div class="taskdetails_ts" v-for="item in itmes">
                 <template v-if="item.type!=6&&item.type!=29&&item.type!=28&&item.citeDataType!=1">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
-                    <div class="checkbox_div">
+                    <div v-if="item.type != 8 && item.type != 2" class="checkbox_div">
                         {{ item.valex==''||item.valex==null||item.valex==undefined?'--':item.type==22?removeStr(item.valex,8):item.type==21?item.valex+'%':item.type==3?removeStr(item.valex,3):(item.type==5||item.type==10||item.type==17||item.type==25)?item.valex.replace(/,/g,' | '):item.valex }}
+                    </div>
+                    <div v-else class="checkbox_div">
+                        <x-textarea v-if="item.type == 8" disabled placeholder="" v-model="item.bz" ></x-textarea>
+                        <x-textarea v-if="item.type == 2" disabled placeholder="" v-model="item.val" ></x-textarea>
                     </div>
                 </template>
                 <div class="referenceDiv referenceDivZs" v-if="item.citeDataType==1&&item.type!=6&&item.type!=29&&item.type!=28">
@@ -1393,6 +1398,7 @@ export default {
 </script>
 
 <style>
+    textarea:disabled{background-color:#fff;}
     .texCon{padding:20px 30px;font-size:28px;overflow: hidden;}
     .texCon .weui-textarea{font-size: 30px!important;color:#444;}
     .texCon .weui-cells__title{float:left;width: 100%;text-align: left;color:#444;padding:10px 0;margin:0;font-size:28px;}
