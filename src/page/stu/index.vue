@@ -5,7 +5,7 @@
           <router-link :to="'/studentDetails/'+uid" class="ripple">
             <i class="icon iconfont icon-hexinsuyang ts-img"></i>
           </router-link>
-          <p class="number_p">{{ num.score }}</p>
+          <p class="number_p">{{ num.score ?num.score: '&nbsp;' }}</p>
       </div>
 
       <div class="notice_div ripple" @click="goTodo">
@@ -58,7 +58,7 @@
                   </div>
               </router-link>
           </flexbox-item>
-          <div class="no-msg-div" v-if="sceneInfos.length<=0">
+          <div class="no-msg-div" v-if="sceneInfos.length<=0 && !isLoading">
               <img src="../../assets/img/zanwushuju.png" alt="">
               <span>暂无数据</span>
           </div>
@@ -78,7 +78,7 @@ import BottomNav from '@/components/stu/studentBottom'
 
 
 
-
+let intervalCtrl = ''
 export default {
   name:'index',
   data(){
@@ -87,10 +87,10 @@ export default {
       activeIndex: 0,
       whole:[],
       todosize:0,
-      todoList:[],
+      todoList: [],
       num:[],
-      sceneInfos:[],
-
+      isLoading: true,
+      sceneInfos: localStorage.getItem('sceneInfos') ? JSON.parse(localStorage.getItem('sceneInfos')):[],
       show:false,
     }
   },
@@ -116,10 +116,7 @@ export default {
   directives: {
       TransferDom
   },
-  created(){
-    this.loadData();
-    this.loadTodo();
-  },
+
   methods:{
       // 暂未开放功能
     tabProp(){
@@ -142,7 +139,7 @@ export default {
         _self.todoList = res.data.todoList;
         _self.todosize = res.data.todosize;
 
-        
+
         // alert("获取到数  据了");
       }).catch(function(err){
         _self.errorUtil(err);
@@ -152,13 +149,15 @@ export default {
 
     loadData(){
       var _self = this;
-
+      this.isLoading = true
       this.$axios.post( process.env.API_ROOT+"app/stu/v1/index",
         qs.stringify({
           uid:_self.$route.params.uid
         })
       ).then(function(res){
+        _self.isLoading = false;
         _self.sceneInfos = res.data.sceneInfos;
+        localStorage.setItem('sceneInfos',JSON.stringify(res.data.sceneInfos))
         _self.whole = res.data;
         _self.num = res.data.stuInfo;
         localStorage.setItem('mz',_self.num.id)
@@ -180,15 +179,26 @@ export default {
       }
 
   },
-  mounted() {
+  async mounted() {
+    // 延迟加载数据，不然动画卡顿
+    setTimeout(()=>{
+      this.loadData();
+      this.loadTodo();
+    }, 500)
+
      var _self = this;
-      setInterval(_ => {
+    intervalCtrl = setInterval(_ => {
           if(_self.activeIndex < _self.todoList.length-1) {
               _self.activeIndex += 1;
           } else {
               _self.activeIndex = 0;
           }
       }, 1500);
+  },
+
+  destroyed() {
+    // 销毁计时器
+    clearInterval(intervalCtrl)
   }
 }
 </script>

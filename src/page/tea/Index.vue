@@ -57,7 +57,7 @@
 
       </flexbox>
       <!-- 暂无数据时显示 -->
-      <div class="no-msg-div" v-if="sceneInfos.length<=0">
+      <div class="no-msg-div" v-if="sceneInfos.length<=0  && !isLoading">
         <img src="@/assets/img/zanwushuju.png" alt="">
         <span>暂无数据</span>
       </div>
@@ -110,8 +110,8 @@ export default {
       pageNo:1,
       isaction:true,
       conData:[],
-      sceneInfos:[],
-
+      isLoading: true,
+      sceneInfos: localStorage.getItem('sceneInfos') ? JSON.parse(localStorage.getItem('sceneInfos')):[],
       show:false,
     }
   },
@@ -154,6 +154,8 @@ export default {
         Cookies.set('indexB',0);
         Cookies.set('indexC',0);
 
+      this.isLoading = true
+
       var _self = this;
       var  operation_sceneids = _self.$cookie.get('operation_sceneid');
 
@@ -164,7 +166,9 @@ export default {
         })
       ).then(function(res){
         console.log(res)
+        _self.isLoading = false
         _self.sceneInfos = res.data.sceneInfos;
+        localStorage.setItem('sceneInfos',JSON.stringify(res.data.sceneInfos))
       }).catch(function(err){
         _self.errorUtil(err);
       })

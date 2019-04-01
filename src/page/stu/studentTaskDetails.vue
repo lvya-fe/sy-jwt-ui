@@ -707,8 +707,6 @@ export default {
     },
     created(){
 
-
-
         wechatconfigInit(this,qs,this.uid,this._url_);
         if(this.strTime=='1970-01-01 08:00:00'||this.strTime==null){
             this.strTime=null
