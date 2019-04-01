@@ -9,6 +9,9 @@
             <img class="img-3" style="display:none;" src="../../assets/img/ico_search.png" alt="">
             <img class="img-4" style="display:none;" src="../../assets/img/batch.png" @click="batch" alt="">
         </div>
+        <p class="drop-down" v-show="dropDownShow">
+            <img src="../../assets/img/upgx.gif" alt="">
+        </p>
         <div class="bscroll"  ref="bscroll">
             <ul class="stuLists">
                 <li class="stulist-item" v-for="item in stuLits" :key="item.stuId" @click="toStuDetail(item.stuId,item.pageNo)">
@@ -405,10 +408,12 @@
                             </dl>
                         </li>
                     </ul>
-                    <div></div>
                     <div class="mask-bottom"></div>
                 </li>
             </ul>
+            <div class="loadMore" v-if="pullUpShow">
+                <load-more :show-loading="hasNextPage" :tip="hasNextPage?'正在加载':'暂无数据'"></load-more>
+            </div>
         </div>
         <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'65%','background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" class="dialog-demo vux-1px" hide-on-blur>
             <p>{{statusTime}}</p>
@@ -422,7 +427,7 @@
     </div>
 </template>
 <script>
-import { XDialog,Cell,Group,Radio,Checklist,Loading,XTextarea } from "vux";
+import { XDialog,Cell,Group,Radio,Checklist,Loading,XTextarea,LoadMore } from "vux";
 import qs from 'qs';
 import Bus from '@/plugins/eventBus.js'
 // import {formatDate} from '@/plugins/formatDate.js';
@@ -447,7 +452,9 @@ export default {
             cycleLists:[], //任务周期列表
             cycleShow:false, //任务周期是否显示
             dropDown:false, //下拉状态
+            dropDownShow:false,
             pullUp:false, //上拉状态
+            pullUpShow:false
         }
     },
     components:{
@@ -457,7 +464,8 @@ export default {
         Radio,
         Checklist,
         Loading,
-        XTextarea
+        XTextarea,
+        LoadMore
     },
     created(){
         this.pageNo = Cookies.get('cardPageNo') == 'undefined' ? 1 : Number(Cookies.get('cardPageNo'));
@@ -517,22 +525,34 @@ export default {
                                 bounce: true,
                                 bounceTime: 50
                             });
+                            this.scroll.on('scroll', (pos) => {
+                                // console.log(pos.y,_self.dropDown)
+                                //如果下拉超过50px 就显示下拉刷新的文字
+                                if(pos.y>50){
+                                    this.dropDownShow = true
+                                }else{
+                                    this.dropDownShow = false
+                                }
+                            })
                             this.scroll.on('touchEnd', (pos) => {
-                                if(pos.y > 20){
+                                if(pos.y > 50){
                                     console.log('下拉刷新！！')
-                                    this.dropDown = true;
+                                    this.dropDownShow = false;
                                     if(this.pageNo == 1) return;
+                                    this.dropDown = true;
                                     this.pageNo--;
                                     this.getStuLists();
                                     this.scroll.refresh();
                                 }
                                 if(this.scroll.maxScrollY>pos.y+20){
                                     console.log('上拉加载！！')
-                                    this.pullUp = true;
+                                    this.pullUpShow = true;
                                     if(!this.hasNextPage) return;
+                                    this.pullUp = true;
                                     this.pageNo++;
                                     this.getStuLists();
                                     this.scroll.refresh();
+                                    this.pullUpShow = false;
                                 }
                             })
                         }
@@ -594,6 +614,15 @@ export default {
 </script>
 <style lang="less">
     .stuListCard{
+        .loadMore{
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 20px 0;
+            text-align: center;
+            background-color: transparent;
+        }
         background-color: #ebebeb;
         margin-top: 76px;
         padding-top: 20px;
@@ -969,6 +998,16 @@ export default {
                     background-color: #f2f2f2;
                 }
             }
+        }
+        .drop-down{
+            position: absolute;
+            top:90px;
+            left:0px;
+            width: 100%;
+            height: 50px;
+            line-height:50px;
+            text-align: center;
+            img{width:50px;height:50px;}
         }
     }
 </style>
