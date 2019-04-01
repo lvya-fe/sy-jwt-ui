@@ -581,7 +581,7 @@ import uploadImg  from '@/components/uploadImg'
 import { mapState } from 'vuex'
 import showorg from '@/components/stu/selecttag'
 
-import VideoPlayerCommen from "@/components/common/video-player-common.vue"
+import VideoPlayerCommen from "@/components/common/video/video-player-common.vue"
 
 
 import aplayer from "vue-aplayer";
@@ -605,7 +605,7 @@ export default {
         showhistime,
         showorg,
         aplayer: aplayer,
-        VideoPlayerCommen
+        videoPlayerCommon,
     },
     data(){
         return{

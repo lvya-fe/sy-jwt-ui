@@ -13,6 +13,7 @@
 
 <script>
   export default {
+    name: 'videoPlayerCommon',
     props: ['options'],
     data () {
       return {
@@ -53,7 +54,7 @@
           // type: this.options,
           type: "video/mp4",
           // src: 'http://c.tfedu.net/o_1alrflico1qii12j5172a1k2c1egl9.mp4'
-          src: this.options.valex || this.options.val
+          src: this.options.valex || this.options.val || this.options.formItemValue
         }]
 
         this.videoOptions.sources = sources
@@ -72,4 +73,5 @@
       font-size: 18px;
     }
   }
+  .video-player.video-player.vjs-custom-skin{margin-top:0 !important;}
 </style>

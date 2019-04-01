@@ -21,11 +21,13 @@ import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 
 import VideoPlayer from 'vue-video-player-lvya'
+import VideoPlayerCommom from "./components/common/video/index"
 require('video.js/dist/video-js.css')
 require('vue-video-player/src/custom-theme.css')
 import Cookies from 'js-cookie'
 
 Vue.use(VideoPlayer)
+Vue.use(VideoPlayerCommom)
 
 Vue.use(preview)
 

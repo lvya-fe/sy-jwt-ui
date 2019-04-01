@@ -9,8 +9,8 @@
         </div>
         <form action="" class="stuInfo">
             <ul>
-                <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,  
-                14 邮箱 15 电话 16选择列表 17 多选列表  19 整数 20 小数  
+                <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,
+                14 邮箱 15 电话 16选择列表 17 多选列表  19 整数 20 小数
                     21 百分数 22 日期  25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
                 <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
                     <!-- 单行 -->
@@ -106,14 +106,14 @@
                     <!-- 选择列表 -->
                     <group class="fieldsWrap selectList" v-if="item.formItemType == '16'" @click.native="showCheckList(item,index,formState)">
                         <cell :title="item.formItemName" ></cell>
-                        <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right" :class="{'hasVal':item.formItemValue != ''}">{{item.formItemValue == '' || item.formItemValue == null ? '请选择' :item.formItemValue}}</span> 
-                        <span v-else class="ico-right readOnly">{{item.formItemValue}}</span> 
+                        <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right" :class="{'hasVal':item.formItemValue != ''}">{{item.formItemValue == '' || item.formItemValue == null ? '请选择' :item.formItemValue}}</span>
+                        <span v-else class="ico-right readOnly">{{item.formItemValue}}</span>
                     </group>
                     <!-- 多选择列表 -->
                     <group class="fieldsWrap selectList" v-if="item.formItemType == '17'" @click.native="showCheckList(item,index,formState)">
                         <cell :title="item.formItemName" ></cell>
-                        <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right" :class="{'hides': (item.formItemValue != '' && item.formItemValue != null) }">请选择</span> 
-                        <span v-else class="ico-right readOnly"></span> 
+                        <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right" :class="{'hides': (item.formItemValue != '' && item.formItemValue != null) }">请选择</span>
+                        <span v-else class="ico-right readOnly"></span>
                         <ul class="itemsWrap" v-if="item.itemValArr.length >0">
                             <!-- <li class="vux-1px" v-for="val in item.itemValArr" :key="val">{{val}}</li> -->
                             <li v-for="val in item.itemValArr" :key="val">{{val}}</li>
@@ -124,7 +124,7 @@
                             </div>
                         </div>
                     </group>
-                    
+
                     <!-- 整数 -->
                     <div class="fieldsWrap disflex" v-if="item.formItemType == '19'">
                         <span class="fieldname">{{item.formItemName}}</span>
@@ -206,13 +206,15 @@
                             </div>
                             <template v-else>
                                 <div class="showVideo">
-                                    <img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">
+                                  <VideoPlayerCommon :options="item"></VideoPlayerCommon>
+                                    <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
                                 </div>
                             </template>
                         </template>
                         <template v-else>
                             <div class="showVideo" v-if="(item.formItemValue !='')">
-                                <img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">
+                              <VideoPlayerCommon :options="item"></VideoPlayerCommon>
+                                <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
                             </div>
                             <div v-else class="videoNOdata">
                                 <img src="../../assets/img/noData.png" alt="">
@@ -293,6 +295,7 @@ import aplayer from "vue-aplayer";
 import Bus from '@/plugins/eventBus.js'
 import select2 from '@/components/stu/select'
 import uploadImg  from '@/components/uploadImg'
+import VideoPlayerCommon from "@/components/common/video/video-player-common.vue"
 import { setTimeout } from 'timers';
 import Cookies from 'js-cookie';
 // import showcycle from '@/page/tea/SelectionPeriod'
@@ -345,7 +348,7 @@ export default {
             toastShow:false,
             geographic:'',//地理位置 桥接使用
             count:9,//图片上传数量
-            
+
             //选人插件相关
             tsshow:false,//选人插件是否显示
             xr:'',
@@ -379,6 +382,7 @@ export default {
         Flexbox,
         FlexboxItem,
         select2,
+      VideoPlayerCommon,
     },
     created(){
         this.getStuInfos();
@@ -550,7 +554,7 @@ export default {
             }).then(res => {
                 this.toastShow = false;
                 console.log(res);
-                if(res.code=='200'){ 
+                if(res.code=='200'){
                     if(type=="mp4"){//视频
                         this.playerOptions.sources[0].src=domain+res.url
                     }
@@ -628,7 +632,7 @@ export default {
         verifyFix(val,index){
             if(val.indexOf('.') == -1) return;
             if(val.split('.')[1].length > 2){
-                this.curFieldsLists[index].formItemValue = val.substring(0,val.indexOf(".")+3);  
+                this.curFieldsLists[index].formItemValue = val.substring(0,val.indexOf(".")+3);
             }
         },
         //表单提交
@@ -732,7 +736,7 @@ export default {
           this.tsshow = false;
         },
     },
-    
+
 }
 </script>
 <style lang="less">
@@ -784,7 +788,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
          }
         .vux-flexbox .vux-flexbox-item{
             margin-left: 0 !important;
-            
+
             .weui-btn{
                 font-size: 30px;
                 color: rgb(105, 105, 105);
@@ -967,10 +971,10 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 // right: 0;
                                 border:none;
                             }
-                        } 
+                        }
                     }
                 }
-                
+
                 .fieldsWrap{
                     position: relative;
                     padding: 30px;
@@ -1167,7 +1171,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 opacity: 0;
                             }
                         }
-                        
+
                         span{
                             position: absolute;
                             right: 0;
@@ -1273,7 +1277,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 background: url('../../assets/img/radio1.png') no-repeat center center;
                                 background-size: 40px 40px;
                             }
-                            
+
                             .weui-check:checked + .weui-icon-checked{
                                 margin-top: 0;
                                 margin-left: -10px;
@@ -1422,7 +1426,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                 }
             }
         }
-        
+
         .weui-cells_checkbox .weui-check:checked + .vux-checklist-icon-checked{
             height: 40px;
             width: 40px;
