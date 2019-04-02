@@ -61,8 +61,8 @@
                                 <img src="../../assets/img/noData.png" alt="">
                             </div>
                             <ul v-else class="img-items">
-                                <li v-for="url in item.itemValArr" :key="url">
-                                    <img :src="url" :preview="item.id" alt="">
+                                <li v-for="(url,i) in item.itemValArr" :key="i">
+                                    <img :src="url" :preview="i" alt="">
                                 </li>
                             </ul>
                         </div>
@@ -83,7 +83,8 @@
                         <img src="../../assets/img/ico_position.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span>
                         <!-- <cell :title="item.formItemName" :value="item.formItemValue"></cell> -->
-                        <input type="text" readonly v-model="geographic">
+                        <!-- <input type="text" readonly v-model="geographic"> -->
+                        <p>{{geographic}}</p>
                     </group>
                     <!-- 选人插件 -->
                     <group class="choosePeople hasIco" v-if="item.formItemType == '10'" @click.native="selectionPlugin(item.formItemId,item.choiceType)">
@@ -250,7 +251,7 @@
                         <x-button type="default cancel" action-type="button"  @click.native="showHideOnBlur = false">取消</x-button>
                     </flexbox-item>
                     <flexbox-item>
-                        <x-button class="vux-1px-l confirm" action-type="button" type="default" @click.native="checkListCommit">确定</x-button>
+                        <x-button class="confirm" action-type="button" type="default" @click.native="checkListCommit">确定</x-button>
                     </flexbox-item>
                 </flexbox>
             </x-dialog>
@@ -408,7 +409,6 @@ export default {
     },
     created(){
         wechatconfigInit(this,qs,this.uid,this._url_);
-        new VConsole();
         this.getStuInfos();
         // this.getHistoryList();
         Bus.$on('stuCardListsData',(data)=>{
@@ -460,7 +460,11 @@ export default {
                                 })
                             }
                             if(element.formItemType == '9'){
-                                this.getMap();
+                                if(element.formItemValue != ''){
+                                    this.geographic = element.formItemValue;
+                                }else{
+                                    this.getMap();
+                                }
                             }
                             if(element.formItemType == '10'){
 
@@ -967,25 +971,28 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             top: 3px;
                             left: 0;
                         }
-                        input{
-                            position: absolute;
-                            right: 0;
-                            top: 6px;
-                            border: none;
-                            outline: none;
-                            width: 336px;
-                            color: #c6c6c6;
-                            text-align: right;
-                            font-size: 30px;
+                        p{
+                           font-size: 30px; 
                         }
-                        .weui-cells{
-                            padding-left: 56px;
-                            margin: 0;
-                            font-size: 30px;
-                            &:before,&:after{
-                                border: none;
-                            }
-                        }
+                        // input{
+                        //     position: absolute;
+                        //     right: 0;
+                        //     top: 6px;
+                        //     border: none;
+                        //     outline: none;
+                        //     width: 336px;
+                        //     color: #c6c6c6;
+                        //     text-align: right;
+                        //     font-size: 30px;
+                        // }
+                        // .weui-cells{
+                        //     padding-left: 56px;
+                        //     margin: 0;
+                        //     font-size: 30px;
+                        //     &:before,&:after{
+                        //         border: none;
+                        //     }
+                        // }
                     }
                     &.choosePeople{
                         .weui-cell__ft{
@@ -1145,7 +1152,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 display: inline-block;
                                 width: 180px;
                             }
-                            input{
+                            input,p{
                                 padding-left: 20px;
                                 width: 424px;
                             }

@@ -100,9 +100,14 @@
                                         <span>{{field.formItemName}}</span>
                                     </dt>
                                     <dd class="fieldImg" v-if="[1,-1].includes(item.taskState) && field.formItemValue =='' ">
-                                        <div class="imgWrapper">
-                                        </div>
                                         <img src="../../assets/img/tj_big.png" alt="">
+                                    </dd>
+                                    <dd class="imgWrapper" v-if="![1,-1].includes(item.taskState) && field.formItemValue !=''">
+                                        <ul class="img-items">
+                                            <li v-for="(url,i) in field.itemValArr" :key="i">
+                                                <img :src="url" :preview="i" alt="">
+                                            </li>
+                                        </ul>
                                     </dd>
                                     <dd v-else class="multiple">
                                         <img src="../../assets/img/noData.png" alt="">
@@ -511,7 +516,7 @@ export default {
                         this.stuLits.forEach(element => {
                             if(element.formItemResps.length == 0) return;
                             element.formItemResps.forEach(ele =>{
-                                if(['5','17'].includes(ele.formItemType)){
+                                if(['5','6','17'].includes(ele.formItemType)){
                                     ele = Object.assign(ele,{
                                         itemValArr: (ele.formItemValue != '' && ele.formItemValue != null) ? ele.formItemValue.split(',') : []
                                     })
@@ -840,6 +845,25 @@ export default {
                                         background: url('../../assets/img/ico_addMedia.png') no-repeat right center;
                                         background-size: 32px 41px;
                                         color: #c9c7c8;
+                                    }
+                                }
+                                &.imgWrapper{
+                                    .img-items{
+                                        margin: 0;
+                                        font-size: 0;
+                                        li{
+                                            display: inline-block;
+                                            margin: 0 22px 22px 0;
+                                            width:215px;
+                                            height: 215px;
+                                            &:nth-child(3n+3){
+                                                margin-right: 0;
+                                            }
+                                            img{
+                                                width: 100%;
+                                                height: 100%;
+                                            }
+                                        }
                                     }
                                 }
                                 &.fieldImg{
