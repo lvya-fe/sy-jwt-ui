@@ -367,7 +367,7 @@
                                     <template v-if="field.citeDataType == 0">
                                         <dd class="addAudio" v-if="[1,-1,3].includes(item.taskState) && field.formItemValue ==''">
                                             <span>添加音频</span>
-                                            <!-- <span>大文件请点击</span> -->
+                                            <span>大文件请点击</span>
                                         </dd>
                                         <dd v-else class="audioWrap">
                                             <img class="audio" v-if="field.formItemValue != '' && field.formItemValue != null" src="../../assets/img/img_audio.png" alt="">
@@ -392,7 +392,7 @@
                                     <template v-if="field.citeDataType == 0">
                                         <dd class="addVideo" v-if="[1,-1,3].includes(item.taskState) && field.formItemValue ==''">
                                             <img src="../../assets/img/addVideo.png" alt="">
-                                            <!-- <span>大文件请点击</span> -->
+                                            <span>大文件请点击</span>
                                         </dd>
                                         <dd v-else class="audioWrap">
                                             <img v-if="field.formItemValue != '' && field.formItemValue != null" src="../../assets/img/img_video.jpg" alt="">
@@ -413,7 +413,7 @@
                     <div class="mask-bottom"></div>
                 </li>
             </ul>
-            <div class="loadMore" v-if="pullUpShow">
+            <div class="loadMore" v-show="pullUpShow">
                 <load-more :show-loading="hasNextPage" :tip="hasNextPage?'正在加载':'暂无数据'"></load-more>
             </div>
         </div>
@@ -627,8 +627,8 @@ export default {
             background-color: transparent;
         }
         background-color: #ebebeb;
-        margin-top: 76px;
-        padding-top: 20px;
+        // margin-top: 76px;
+        // padding-top: 20px;
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;

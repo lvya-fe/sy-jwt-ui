@@ -7,7 +7,6 @@
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
             </span>
         </div>
-        <div class="empty-top"></div>
         <form action="" class="stuInfo">
             <ul>
                 <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,
@@ -56,11 +55,16 @@
                     <!-- 图片上传 -->
                     <div class="fieldsWrap imgUpload" v-if="item.formItemType == '6'">
                         <p><img src="../../assets/img/ico_position.png" alt=""><span>{{item.formItemName}}</span></p>
-                        <uploadImg v-if="[1,3].includes(formState) && item.citeDataType ==0" :imgs.sync="item.val" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
+                        <uploadImg v-if="[1,3].includes(formState) && item.citeDataType ==0" :imgs.sync="item.formItemValue" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
                         <div v-else>
                             <div v-if="item.formItemValue == ''" class="nodata">
                                 <img src="../../assets/img/noData.png" alt="">
                             </div>
+                            <ul v-else class="img-items">
+                                <li v-for="(url,i) in item.itemValArr" :key="i">
+                                    <img :src="url" :preview="i" alt="">
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <!-- 文本描述 -->
@@ -75,7 +79,7 @@
                         </div>
                     </div>
                     <!-- 地理位置 -->
-                    <group class="positionWrap hasIco" v-if="item.formItemType == '9'">
+                    <group class="positionWrap hasIco disflex" v-if="item.formItemType == '9'">
                         <img src="../../assets/img/ico_position.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span>
                         <!-- <cell :title="item.formItemName" :value="item.formItemValue"></cell> -->
@@ -208,15 +212,14 @@
                             </div>
                             <template v-else>
                                 <div class="showVideo">
-                                  <VideoPlayerCommom :options="item"></VideoPlayerCommom>
+                                  <VideoPlayerCommon :options="item"></VideoPlayerCommon>
                                     <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
                                 </div>
                             </template>
                         </template>
                         <template v-else>
                             <div class="showVideo" v-if="(item.formItemValue !='')">
-
-                              <VideoPlayerCommom :options="item"></VideoPlayerCommom>
+                              <VideoPlayerCommon :options="item"></VideoPlayerCommon>
                                 <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
                             </div>
                             <div v-else class="videoNOdata">
@@ -298,7 +301,9 @@ import aplayer from "vue-aplayer";
 import Bus from '@/plugins/eventBus.js'
 import select2 from '@/components/stu/select'
 import radioList from '@/components/common/com-radios'
+import {wechatconfigInit,wechatopenimg} from '@/plugins/wechat.js';
 import uploadImg  from '@/components/uploadImg'
+import { mapState } from 'vuex'
 import VideoPlayerCommon from "@/components/common/video/video-player-common.vue"
 import { setTimeout } from 'timers';
 import Cookies from 'js-cookie';
@@ -402,6 +407,8 @@ export default {
       radioList
     },
     created(){
+        wechatconfigInit(this,qs,this.uid,this._url_);
+        new VConsole();
         this.getStuInfos();
         // this.getHistoryList();
         Bus.$on('stuCardListsData',(data)=>{
@@ -411,6 +418,10 @@ export default {
           this.paramsData = data;
         });
     },
+    computed: mapState({
+      _url_: state => state._url_
+
+    }),
     methods:{
         goback(){
             // this.$router.go(-1);
@@ -443,7 +454,7 @@ export default {
                     // 省市区，需要一个数组信息
                     if(this.curFieldsLists.length >0){
                         this.curFieldsLists.forEach(element => {
-                            if(['5','17','25'].includes(element.formItemType)){
+                            if(['5','6','17','25'].includes(element.formItemType)){
                                 element = Object.assign(element,{
                                     itemValArr: element.formItemValue != '' && element.formItemValue != null ? element.formItemValue.split(',') : []
                                 })
@@ -456,6 +467,7 @@ export default {
                             }
                         })
                     }
+                    this.$previewRefresh();
                 }
             }).catch( err =>{
                 this.errorUtil(err);
@@ -762,6 +774,7 @@ export default {
                     }
                 }
             }
+            
             this.$vux.loading.show({
                 text: '提交中...'
             });
@@ -1224,6 +1237,24 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 position:static;
                                 width: 230px;
                                 height:76px;
+                            }
+                        }
+                        .img-items{
+                            padding: 0 30px;
+                            margin: 0;
+                            font-size: 0;
+                            li{
+                                display: inline-block;
+                                margin: 0 22px 22px 0;
+                                width:215px;
+                                height: 215px;
+                                &:nth-child(3n+3){
+                                    margin-right: 0;
+                                }
+                                img{
+                                    width: 100%;
+                                    height: 100%;
+                                }
                             }
                         }
                     }

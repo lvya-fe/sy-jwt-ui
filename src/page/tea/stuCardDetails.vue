@@ -55,11 +55,16 @@
                     <!-- 图片上传 -->
                     <div class="fieldsWrap imgUpload" v-if="item.formItemType == '6'">
                         <p><img src="../../assets/img/ico_position.png" alt=""><span>{{item.formItemName}}</span></p>
-                        <uploadImg v-if="[1,3].includes(formState) && item.citeDataType ==0" :imgs.sync="item.val" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
+                        <uploadImg v-if="[1,3].includes(formState) && item.citeDataType ==0" :imgs.sync="item.formItemValue" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
                         <div v-else>
                             <div v-if="item.formItemValue == ''" class="nodata">
                                 <img src="../../assets/img/noData.png" alt="">
                             </div>
+                            <ul v-else class="img-items">
+                                <li v-for="url in item.itemValArr" :key="url">
+                                    <img :src="url" :preview="item.id" alt="">
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <!-- 文本描述 -->
@@ -74,7 +79,7 @@
                         </div>
                     </div>
                     <!-- 地理位置 -->
-                    <group class="positionWrap hasIco" v-if="item.formItemType == '9'">
+                    <group class="positionWrap hasIco disflex" v-if="item.formItemType == '9'">
                         <img src="../../assets/img/ico_position.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span>
                         <!-- <cell :title="item.formItemName" :value="item.formItemValue"></cell> -->
@@ -296,7 +301,9 @@ import aplayer from "vue-aplayer";
 import Bus from '@/plugins/eventBus.js'
 import select2 from '@/components/stu/select'
 import radioList from '@/components/common/com-radios'
+import {wechatconfigInit,wechatopenimg} from '@/plugins/wechat.js';
 import uploadImg  from '@/components/uploadImg'
+import { mapState } from 'vuex'
 import VideoPlayerCommon from "@/components/common/video/video-player-common.vue"
 import { setTimeout } from 'timers';
 import Cookies from 'js-cookie';
@@ -400,6 +407,8 @@ export default {
       radioList
     },
     created(){
+        wechatconfigInit(this,qs,this.uid,this._url_);
+        new VConsole();
         this.getStuInfos();
         // this.getHistoryList();
         Bus.$on('stuCardListsData',(data)=>{
@@ -409,16 +418,20 @@ export default {
           this.paramsData = data;
         });
     },
+    computed: mapState({
+      _url_: state => state._url_
+
+    }),
     methods:{
         goback(){
             // this.$router.go(-1);
             Cookies.set('cardPageNo',this.paramsData.pageNo);
             console.log(this.paramsData.taskId)
-            if(this.paramsData.taskId === undefined){
+            // if(this.paramsData.taskId === undefined){
                 this.$router.go(-1);
-            }else{
-                this.$router.push({path: '/stuListCard/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
-            }
+            // }else{
+            //     this.$router.push({path: '/stuList2Card/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
+            // }
         },
         //获取学生表单信息
         getStuInfos(){
@@ -441,7 +454,7 @@ export default {
                     // 省市区，需要一个数组信息
                     if(this.curFieldsLists.length >0){
                         this.curFieldsLists.forEach(element => {
-                            if(['5','17','25'].includes(element.formItemType)){
+                            if(['5','6','17','25'].includes(element.formItemType)){
                                 element = Object.assign(element,{
                                     itemValArr: element.formItemValue != '' && element.formItemValue != null ? element.formItemValue.split(',') : []
                                 })
@@ -454,6 +467,7 @@ export default {
                             }
                         })
                     }
+                    this.$previewRefresh();
                 }
             }).catch( err =>{
                 this.errorUtil(err);
@@ -760,6 +774,7 @@ export default {
                     }
                 }
             }
+            
             this.$vux.loading.show({
                 text: '提交中...'
             });
@@ -1222,6 +1237,24 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 position:static;
                                 width: 230px;
                                 height:76px;
+                            }
+                        }
+                        .img-items{
+                            padding: 0 30px;
+                            margin: 0;
+                            font-size: 0;
+                            li{
+                                display: inline-block;
+                                margin: 0 22px 22px 0;
+                                width:215px;
+                                height: 215px;
+                                &:nth-child(3n+3){
+                                    margin-right: 0;
+                                }
+                                img{
+                                    width: 100%;
+                                    height: 100%;
+                                }
                             }
                         }
                     }
