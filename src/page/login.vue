@@ -24,7 +24,6 @@ export default {
   filters: {
   },
   created(){
-    debugger
     this.loadData();
   },
   methods:{
@@ -38,7 +37,6 @@ export default {
           type:_self.$route.params.type
         })
       ).then(function(res){
-          alert(res.errorDesc);
          // localStorage.setItem("token",res.data);
           Cookies.set("wxtoken",res.data);
           _self.$vux.toast.show({type: 'success', text: "认证成功"});

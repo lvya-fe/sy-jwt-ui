@@ -7,10 +7,11 @@
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
             </span>
         </div>
+        <div class="empty-top"></div>
         <form action="" class="stuInfo">
             <ul>
-                <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,  
-                14 邮箱 15 电话 16选择列表 17 多选列表  19 整数 20 小数  
+                <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,
+                14 邮箱 15 电话 16选择列表 17 多选列表  19 整数 20 小数
                     21 百分数 22 日期  25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
                 <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
                     <!-- 单行 -->
@@ -404,11 +405,11 @@ export default {
             // this.$router.go(-1);
             Cookies.set('cardPageNo',this.paramsData.pageNo);
             console.log(this.paramsData.taskId)
-            if(this.paramsData.taskId === undefined){
+            // if(this.paramsData.taskId === undefined){
                 this.$router.go(-1);
-            }else{
-                this.$router.push({path: '/stuList2Card/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
-            }
+            // }else{
+            //     this.$router.push({path: '/stuList2Card/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
+            // }
         },
         //获取学生表单信息
         getStuInfos(){
@@ -781,8 +782,6 @@ textarea:disabled, input:disabled{background-color: #fff;}
     .stuCardDetails{
         height: calc(~'100vh - 96px');
         background-color: #ebebeb;
-        margin-top: 76px;
-        padding-top: 20px;
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;

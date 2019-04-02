@@ -7,6 +7,7 @@
             </router-link>
             <div class="n_title">{{ info.title }}</div>
         </div>
+        <div class="empty-top"></div>
         <!-- <div class="progress-bar">
             <p class="progress-title">参与情况 (<span>{{ count2 }}</span>/<span>{{ count }}</span>) </p>
             <div class="progress-left">
@@ -99,7 +100,7 @@
             </div>
           </template>
           <Infinite v-if="index == 0" v-on:infinite="infiniteMore2" ></Infinite>
-          <div class="no-msg-div" v-if="nowsceneitem.listTask<=0">
+          <div class="no-msg-div" v-if="nowsceneitem.listTask<=0 && !isLoading">
               <img src="@/assets/img/zanwushuju.png" alt="">
               <span>暂无数据</span>
           </div>
@@ -209,7 +210,7 @@
             @on-hide="onHide">
             </confirm>
         </div>
-    
+
         <div v-transfer-dom class="styleH">
             <alert v-model="showZw" title="该功能暂未开放"></alert>
         </div>
@@ -247,7 +248,7 @@ export default {
 
       var count = 3;
       if(this.nowsceneitem &&this.nowsceneitem.sceneItemEnclosures.length>0){
-       
+
           count =  count +1;
 
       }
@@ -285,11 +286,9 @@ export default {
             active:0,
             Swidth:0,
             index:0,
-
-
-
             tabTitle:['任务','记录','证书','附件',],
             showZw:false,
+            isLoading: true,
 
         }
     },
@@ -405,6 +404,7 @@ export default {
         },
         loadData(){
           var _self = this;
+          this.isLoading = true
           // console.log(process.env.API_ROOT+"app/tea/"+_self.id+"/sceneView",'哪不对')
           this.$axios.post( process.env.API_ROOT+"app/tea/"+_self.id+"/sceneView",
             qs.stringify({
@@ -440,6 +440,10 @@ export default {
                   })
                 })
               })
+              setTimeout(()=>{
+                _self.isLoading = false
+              }, 3000)
+
             }else{
               _self.$vux.toast.show({type: 'warn', text: "该场景无可用过程，请先添加过程"});
               _self.$router.go(-1);
