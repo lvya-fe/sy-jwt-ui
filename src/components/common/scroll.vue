@@ -2,27 +2,34 @@
   <div ref="wrapper" class="scroll-wrapper">
     <div class='bscroll'>
       <slot></slot>
+      <load-more v-show="showLoad" :show-loading="loadStatus" :tip="loadStatus?'正在加载': '暂无数据'"></load-more>
     </div>
   </div>
 </template>
 <style lang="less">
 
   .scroll-wrapper{
-    height: calc(~'100vh - 96px');
+    height: calc(~'100vh - 2.7rem');
     overflow: hidden;
+    margin-bottom: 1.5rem;
   }
 </style>
 
 <script>
+  import {LoadMore} from "vux";
   import BScroll from 'better-scroll'
 
   export default {
+    components: {
+      LoadMore
+    },
     data(){
       return {
         click: true,
         probeType: 2,
         bounce: true,
-        bounceTime: 50
+        bounceTime: 50,
+        loadStatus: true,
       }
     },
     props: {
@@ -32,7 +39,8 @@
       pullup: {type: Boolean, default: true},
       pulldown: {type: Boolean, default: false},
       beforeScroll: {type: Boolean, default: false},
-      refreshDelay: {type: Number, default: 50}
+      refreshDelay: {type: Number, default: 50},
+      showLoad: {type: Boolean, default: false},
     },
 
     watch: {
@@ -51,7 +59,6 @@
     },
     methods: {
       _initScroll() {
-        // debugger
         if (!this.$refs.wrapper) {
           return
         }
@@ -74,7 +81,10 @@
         if (this.pullup) {
           this.scroll.on('scrollEnd', () => {
             // 滚动到底部
-            console.log("pullup:", Math.abs(this.scroll.y), (Math.abs(this.scroll.maxScrollY)))
+            this.showLoad = true
+            setTimeout(()=>{
+              this.showLoad = false
+            }, 1000)
             if (Math.abs(this.scroll.y) <= (Math.abs(this.scroll.maxScrollY) + 50)) {
               this.$emit('scrollToEnd')
             }

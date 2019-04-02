@@ -20,9 +20,8 @@
         <div class="tab-swiper vux-center" v-show="index == 0">
           <group>
             <template>
-              <Scroll ref="scroll" class="scroll-content" :dataList="write" @scrollToEnd="QueryWrite">
-                <cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" v-for="(stu, index) in write"
-                          :key="index">
+              <Scroll ref="scroll" class="scroll-content" :dataList="write" @scrollToEnd="QueryWrite" :showLoad="showWriteLoading">
+                <cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" v-for="(stu, index) in write" :key="index">
                   <p>{{stu.type=='teaToStu'||stu.type=='stu'?stu.stuName:stu.teaName}}<br><span>{{stu.type=='tea'?stu.teaOrgName.split(',')[0]:stu.type=='stu'?stu.stuOrgName:stu.type=='teaToStu'?stu.stuOrgName+' 填写老师：'+stu.teaName:''}}</span>
                   </p>
                   <p><br><span>{{stu.ctime}}</span></p>
@@ -41,19 +40,15 @@
           <img src="../../assets/img/upgx.gif" alt="">
         </p>
         <div class="tab-swiper vux-center" v-show="index == 1">
-          <div class="task-con-div bscroll" ref="bscroll2">
+          <div class="task-con-div bscroll" ref="bscroll">
             <div class="bscroll-container">
               <group class="pareLvea">
                 <!--@change="btn($event)"-->
-                <template>
-                  <Scroll ref="scroll2" class="scroll-content" :dataList="nowrite" @scrollToEnd="QueryNoWrite">
-                    <cell-box class="con-child" v-for="(stu, index) in nowrite" :key="index">
-                      <p>{{stu.type=='stu'||stu.type=='teaToStu'?stu.stuName:stu.teaName}}<br><span>{{ stu.type=='stu'||stu.type=='teaToStu'?stu.stuOrgName:stu.teaOrgName.split(',')[0] }} {{ stu.type=='teaToStu'?'数据填写人：'+stu.teaName:'' }}</span>
-                      </p>
-                      <input type="checkbox" class="checkBox" :value="(stu.type=='tea')?stu.teaId:stu.stuId"
-                             v-model="selectStuId">
-                    </cell-box>
-                  </Scroll>
+                <template  v-for="stu in nowrite">
+                  <cell-box class="con-child">
+                    <p>{{stu.type=='stu'||stu.type=='teaToStu'?stu.stuName:stu.teaName}}<br><span>{{ stu.type=='stu'||stu.type=='teaToStu'?stu.stuOrgName:stu.teaOrgName.split(',')[0] }} {{ stu.type=='teaToStu'?'数据填写人：'+stu.teaName:'' }}</span></p>
+                    <input type="checkbox" class="checkBox" :value="(stu.type=='tea')?stu.teaId:stu.stuId" v-model="selectStuId" >
+                  </cell-box>
                 </template>
                 <div class="no-msg-div" v-if="nowrite<=0">
                   <img src="@/assets/img/zanwushuju.png" alt="">
@@ -84,6 +79,8 @@
   import qs from 'qs';
   import {formatDate} from '@/plugins/formatDate.js';
   import showcycle from "@/components/tea/showcycle";
+
+  import BScroll from 'better-scroll'
 
   import Scroll from "@/components/common/scroll.vue";
 
@@ -140,7 +137,8 @@
         status: true,
         ztSta: true,
         pageNo: 1,
-        pageSize: 5,
+        pageSize: 10,
+        showWriteLoading: false,
       }
     },
     watch: {
@@ -236,8 +234,7 @@
       },
 
       tab(index) {
-        this.pageNo = 0
-        this.nowrite = []
+        this.pageNo = 1
         this.write = []
         if (index == 0) {
           this.QueryWrite();
@@ -313,25 +310,101 @@
           })
         ).then(function (res) {
           _self.write = _self.write.concat(res.data)
+          if(res.data.length == 0) _self.showWriteLoading = false
         }).catch(function (err) {
           _self.errorUtil(err);
         })
       },
       QueryNoWrite() {
         var _self = this;
-        this.$axios.post(process.env.API_ROOT + "app/tea/task/queryNoWriteForms",
+        this.$axios.post( process.env.API_ROOT+"app/tea/task/queryNoWriteForms",
           qs.stringify({
-            uid: _self.uid,
-            lastid: _self.lastid_nowrite,
-            taskid: _self.taskid,
-            stime: _self.stime,
-            etime: _self.etime,
-            pageNo: this.pageNo++,
-            pageSize: this.pageSize
+            uid:_self.uid,
+            lastid:_self.lastid_nowrite,
+            taskid:_self.taskid,
+            stime:_self.stime,
+            etime:_self.etime
           })
-        ).then(function (res) {
-          _self.nowrite = _self.nowrite.concat(res.data)
-        }).catch(function (err) {
+        ).then(function(res){
+          console.log(res,'未填写人员')
+          if(_self.lastid_nowrite>0){
+            res.data.forEach(function(el){
+              _self.nowrite.push(el)
+            })
+            if(res.data.length==0){
+              _self.status=false
+            }else{
+              _self.ztSta=true;
+            }
+          }else{
+            _self.status=true
+            _self.ztSta=true;
+            _self.nowrite = res.data;
+          }
+          _self.$nextTick(() => {
+            if (!_self.scroll) {
+              _self.scroll = new BScroll(_self.$refs.bscroll, {
+                click: true,
+                scrollY: true,
+                probeType: 3
+              });
+              _self.scroll.on('scroll', (pos) => {
+                // console.log(pos.y,_self.dropDown)
+                //如果下拉超过50px 就显示下拉刷新的文字
+                if(pos.y>50){
+                  _self.dropDown = true
+                }else{
+                  _self.dropDown = false
+                }
+              })
+              // touchEnd（手指离开以后触发） 通过这个方法来监听下拉刷新
+              _self.scroll.on('touchEnd', (pos) => {
+                // 下拉动作
+                if(pos.y > 50){
+                  _self.status=true;
+                  _self.ztSta=true;
+                  _self.loadStatus=true;
+                  _self.lastid_nowrite=0;
+                  _self.QueryNoWrite()
+                  // console.log(111)
+                  _self.dropDown = false
+                }
+                //上拉加载 总高度>下拉的高度+10 触发加载更多
+                if(_self.scroll.maxScrollY>pos.y+10){
+                  if(_self.status&&_self.ztSta){
+                    _self.ztSta=false;
+                    _self.loadStatus=true
+                    _self.loadshow=true
+                    console.log("加载更多")
+                    // _self.pageNo+=1
+                    if(_self.nowrite[_self.nowrite.length-1].type=='tea'){
+                      _self.lastid_nowrite=_self.nowrite[_self.nowrite.length-1].teaId
+                    }else{
+                      _self.lastid_nowrite=_self.nowrite[_self.nowrite.length-1].stuId
+                    }
+                    setTimeout(function(){
+                      _self.QueryNoWrite();
+                      _self.scroll.refresh()
+                      _self.loadshow=false
+                    },1000);
+                    //使用refresh 方法 来更新scroll  解决无法滚动的问题
+                    console.log('refresh了啊')
+                  }
+                  if(!_self.status){
+                    _self.loadStatus=false
+                    console.log("暂无更多数据")
+                  }
+
+                }
+                // console.log(_self.scroll.maxScrollY+"总距离----下拉的距离"+pos.y)
+              })
+            }else{
+              _self.scroll.refresh();
+            }
+            // console.log(_self.scroll.maxScrollY)
+          });
+
+        }).catch(function(err){
           _self.errorUtil(err);
         })
       },
