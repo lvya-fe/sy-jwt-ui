@@ -24,6 +24,7 @@ export default {
   filters: {
   },
   created(){
+    debugger
     this.loadData();
   },
   methods:{
@@ -39,9 +40,8 @@ export default {
       ).then(function(res){
           alert(res.errorDesc);
          // localStorage.setItem("token",res.data);
-
           Cookies.set("wxtoken",res.data);
-          alert("登陆成功重新返回主页");
+          _self.$vux.toast.show({type: 'success', text: "认证成功"});
 
           if(_self.type=="stu"){
             _self.$router.push({path: '/stuIndex/'+_self.uid});

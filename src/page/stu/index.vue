@@ -104,7 +104,7 @@ export default {
   },
   computed: {
       top() {
-      return - this.activeIndex * 0.666667 + 'rem';
+        return - this.activeIndex * 0.666667 + 'rem';
       }
   },
   filters: {

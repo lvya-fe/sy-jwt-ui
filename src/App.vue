@@ -89,7 +89,7 @@ export default {
 /*}*/
 .weui-toast{
   min-height: 2rem !important;
-  top: 8.4rem !important;
+  top: 45% !important;
   .weui-loading{
     margin-top: 0.65rem !important;
     width: 0.7rem !important;
