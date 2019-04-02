@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul class="radioLists">
-            <li v-for="radio in lists" :key="radio.id" @click="radioChange(radio.value)">
+            <li v-for="radio in lists" class="vux-1px-t" :key="radio.id" @click="radioChange(radio.value)">
                 <!-- <input type="radio" :value="radio.value" > -->
                 <p :class="{'checked': checkVal == radio.value}">{{radio.value}}</p>
             </li>
@@ -48,6 +48,11 @@ export default {
         li{
             position: relative;
             list-style: none;
+            &:nth-child(1){
+                &.vux-1px-t:before{
+                    border: none;
+                }
+            }
             input{
                 position: absolute;
                 left: 0;
