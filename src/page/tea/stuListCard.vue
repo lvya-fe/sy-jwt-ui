@@ -14,6 +14,7 @@
             <img src="../../assets/img/upgx.gif" alt="">
         </p>
         <div class="bscroll"  ref="bscroll">
+            <!-- <load-more v-if="stuLits.length == 0" :show-loading="false" :tip="'暂无数据'" background-color="#fbf9fe"></load-more> -->
             <ul class="stuLists">
                 <li class="stulist-item" v-for="item in stuLits" :key="item.stuId" @click="toStuDetail(item.stuId,item.pageNo)">
                     <div class="stuInfo">
@@ -497,6 +498,7 @@ export default {
                 if(res.success){
                     this.$vux.loading.hide();
                     let resData = res.data;
+                    if(resData.videoCardStuListRespList.length == 0) return;
                     this.title = resData.videoCardStuListRespList[0].taskName;
                     if(this.pullUp || (!this.pullUp && !this.dropDown)){
                         this.stuLits = this.stuLits.concat(resData.videoCardStuListRespList);
@@ -625,6 +627,8 @@ export default {
             background-color: transparent;
         }
         background-color: #ebebeb;
+        margin-top: 76px;
+        padding-top: 20px;
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;

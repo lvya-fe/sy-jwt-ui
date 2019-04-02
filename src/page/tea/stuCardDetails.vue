@@ -150,7 +150,7 @@
                     <!-- 省市区 -->
                     <group  class="hasIco" v-if="item.formItemType == '25'">
                         <img class="ico_address" src="../../assets/img/ico_address.png" alt="">
-                        <x-address :title="item.formItemName" v-model="item.itemValArr" :class="{'disabled': (![1,3].includes(formState) || item.citeDataType != 0)}" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :list="addressData" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请选择' :''"></x-address>
+                        <x-address :title="item.formItemName" v-model="item.itemValArr" :raw-value='true' @on-hide="addressHide" @on-show="addressShow(index)" @on-shadow-change="changeAddress" :class="{'disabled': (![1,3].includes(formState) || item.citeDataType != 0)}" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :list="addressData" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请选择' :''"></x-address>
                     </group>
                     <!-- 邮编 -->
                     <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '26'">
@@ -174,7 +174,7 @@
                                     <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="audio/mpeg"> -->
                                     <input type="file" name="" @change="uploadVideo(item.id,$event,'mp3',index)" accept="audio/mpeg">
                                 </div>
-                                <!-- <span>大文件请点击</span> -->
+                                <span @click="upDataVideo(item.id,'mp3',index)">大文件请点击</span>
                             </div>
                         </template>
                         <template v-if="(item.formItemValue !='')">
@@ -203,7 +203,7 @@
                                 <div class="inputFile">
                                     <input type="file" name="" @change="uploadVideo(item.id,$event,'mp4',index)" accept="video/*">
                                 </div>
-                                <!-- <span>大文件请点击</span> -->
+                                <span @click="upDataVideo(item.id,'mp4',index)">大文件请点击</span>
                             </div>
                             <template v-else>
                                 <div class="showVideo">
@@ -251,11 +251,11 @@
             </x-dialog>
         </form>
         <!--视频大文件上传弹框-->
-        <!-- <div class="viedoPropParent" v-show="upDataShow">
+        <div class="viedoPropParent" v-show="upDataShow">
             <div class="viedoProp">
                 <p class="videoP1">
                     <img @click="upDataShow=false" src="@/assets/img/videoX.png" alt="">
-                    <img @click="upDataVideo(propId,propsta)" src="@/assets/img/videoRrefresh.png" alt="">
+                    <img @click="upDataVideo(propId,propsta,-1)" src="@/assets/img/videoRrefresh.png" alt="">
                 </p>
                 <p class="videoP2">请使用电脑访问此链接上传文件</p>
                 <p class="videoP3">（上传成功前，请勿关闭此页面，一小时内有效）</p>
@@ -270,7 +270,7 @@
                     最近无新上传文件
                 </div>
             </div>
-        </div> -->
+        </div>
         <div class="weui-toast myToast" v-show="toastShow">
             <inline-loading class="toastLoading"></inline-loading>
             <p>上传中：{{percent}}</p>
@@ -322,7 +322,6 @@ export default {
             popData:{},//弹框显示数据
             curIndex:null, //选择，多选择使用用 视频 音频 图片
             videoPropShow:false,
-            authorizationCode:'',
             playerOptions : {
                 playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
                 autoplay: false, //如果true,浏览器准备好时开始回放。
@@ -358,10 +357,23 @@ export default {
             sreach_stu:'',
             sreach_tea:'',
             type:null,
-
+            //省市区
+            tempAddress:[],
             //卡片列表页码
-            paramsData:{}
-
+            paramsData:{},
+            //音视频大文件上传相关
+            upDataShow:false,
+            upDataUrl:'',
+            btnGc:true,
+            inlineDescList:[],
+            inlineDescListValue:[],
+            propId:null,
+            // 验证码
+            obtainText:'获取验证码',
+            obtainVal:'',
+            si:0,
+            authorizationCode:'',
+            propsta:'',
         }
     },
     components:{
@@ -395,7 +407,6 @@ export default {
         });
         Bus.$on('cardListMsg',(data)=>{
           this.paramsData = data;
-          console.log(data,"6666")
         });
     },
     methods:{
@@ -480,8 +491,20 @@ export default {
         changeRadio(val,index){
             this.curFieldsLists[index].formItemValue = val;
         },
+        //多项选择选择值--省市区
         checkListChange(value,index){
             this.curFieldsLists[index].formItemValue = value.length>0 ? value.join(',') : '';
+        },
+        changeAddress(ids,names){
+            if(this.curIndex != null){
+                this.tempAddress = names;
+            }
+        },
+        addressShow(index){
+            this.curIndex = index;
+        },
+        addressHide(){
+            this.curFieldsLists[this.curIndex].formItemValue = this.tempAddress.length>0 ? this.tempAddress.join(',') : '';
         },
         //点击显示对应状态的时间
         showCheckList(item,index,state){
@@ -508,6 +531,7 @@ export default {
                         //     }
                         // })
                         _self.curFieldsLists[index].formItemValue = res.data.path;
+                        _self.upDataShow=false;
                     }else{
                         _self.$vux.toast.show({type: 'warn',text:'暂无文件' });
                     }
@@ -566,7 +590,7 @@ export default {
                         this.playerOptions.sources[0].src=domain+res.url
                     }
                     this.curFieldsLists[this.curIndex].formItemValue = domain+res.url;
-                    // this.upDataShow=false;
+                    this.upDataShow=false;
 
                 }else{
                     this.$vux.toast.show({type: 'warn',text:'暂无文件' });
@@ -578,9 +602,73 @@ export default {
         },
         //播放视频
         playMP4(index){
-            console.log(this.curFieldsLists[index].formItemValue);
             this.playerOptions.sources[0].src = this.curFieldsLists[index].formItemValue;
             this.videoPropShow = true;
+        },
+        //音视频大文件上传
+        changeFile (val, index) {
+            if(val!=""&&val!=undefined) {
+                var _self = this;
+                this.playerOptions.sources[0].src =val[0];
+                this.curFieldsLists[index].formItemValue = val[0];
+                // this.itmes.forEach(function (el) {
+                //     if (el.id == _self.propId) {
+                //         el.val = val[0];
+                //     }
+                // })
+                this.upDataShow = false;
+            }
+        },
+        //倒计时
+        countdown() {
+            this.si=2;
+            this.btnGc=true;
+            var time = window.setInterval( ()=> {
+                if (this.si === 0) {
+                    this.si = 0;
+                    this.btnGc=false;
+                    window.clearInterval(time)
+                } else {
+                    this.si -= 1;
+                }
+            }, 1000)
+        },
+        //上传视频弹窗
+        upDataVideo(id,cad,index){
+            this.upDataShow=true;
+            this.propId=id;
+            this.propsta=cad;
+            if(index != -1){
+                this.curIndex = index;
+            }
+            
+            if(this.si==0){
+                this.$axios.get( process.env.API_ROOT+"oss/2/"+cad+"/get/code",
+                    qs.stringify({
+                    })
+                ).then((res)=>{
+                    if(res.isSuccess){
+                        console.log(res,'验证码');
+                        this.authorizationCode=res.data.code
+                        this.upDataUrl='http://'+window.location.host+'/t/#/views/tea/upVideo/'+this.propsta+'/'+this.authorizationCode
+                        this.countdown();
+
+                        this.inlineDescList = [];
+
+                        res.data.list.forEach(v=>{
+                           var obj = {};
+                            obj.key = v.url;
+                            obj.value = v.url;
+                            obj.inlineDesc = "上传于:"+v.time;
+                            this.inlineDescList.push(obj);
+                        });
+                    }else{
+                        this.$vux.toast.show({type: 'warn',text:res.errorDesc });
+                    }
+                }).catch(function(err){
+                    this.errorUtil(err);
+                })
+            }
         },
         //获取地理位置 --1
         getMap() {
