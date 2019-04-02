@@ -321,7 +321,7 @@
                     <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
                         <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
                         <div class="seeVideoCustom" v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined">
-                          <VideoPlayerCommen :options="itemRefer"></VideoPlayerCommen>
+                          <VideoPlayerCommon :options="itemRefer"></VideoPlayerCommon>
                             <!--<img class ="seeImg" @click="ckSee(itemRefer.val)" src="@/assets/img/videoImgMo.png" alt="">-->
                         </div>
                     </div>
@@ -581,7 +581,7 @@ import uploadImg  from '@/components/uploadImg'
 import { mapState } from 'vuex'
 import showorg from '@/components/stu/selecttag'
 
-import videoPlayerCommon from "@/components/common/video/video-player-common.vue"
+import videoPlayerCommon from '@/components/common/video/video-player-common.vue'
 
 
 import aplayer from "vue-aplayer";
@@ -605,7 +605,7 @@ export default {
         showhistime,
         showorg,
         aplayer: aplayer,
-      videoPlayerCommon,
+      videoPlayerCommon
     },
     data(){
         return{
