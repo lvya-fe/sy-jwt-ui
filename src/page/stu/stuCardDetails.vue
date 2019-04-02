@@ -356,7 +356,7 @@ export default {
             toastShow:false,
             geographic:'',//地理位置 桥接使用
             count:9,//图片上传数量
-            
+
             //选人插件相关
             tsshow:false,//选人插件是否显示
             xr:'',
@@ -406,6 +406,9 @@ export default {
       VideoPlayerCommon,
       radioList
     },
+    computed: mapState({
+        _url_: state => state._url_
+    }),
     created(){
         wechatconfigInit(this,qs,this.uid,this._url_);
         new VConsole();
@@ -460,7 +463,7 @@ export default {
                                 })
                             }
                             if(element.formItemType == '9'){
-                                this.getMap();
+                                setTimeout(this.getMap(),3000);
                             }
                             if(element.formItemType == '10'){
 
@@ -655,7 +658,7 @@ export default {
             if(index != -1){
                 this.curIndex = index;
             }
-            
+
             if(this.si==0){
                 this.$axios.get( process.env.API_ROOT+"oss/2/"+cad+"/get/code",
                     qs.stringify({
@@ -774,7 +777,7 @@ export default {
                     }
                 }
             }
-            
+
             this.$vux.loading.show({
                 text: '提交中...'
             });

@@ -9,8 +9,8 @@
         </div>
         <form action="" class="stuInfo">
             <ul>
-                <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,  
-                14 邮箱 15 电话 16选择列表 17 多选列表  19 整数 20 小数  
+                <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,
+                14 邮箱 15 电话 16选择列表 17 多选列表  19 整数 20 小数
                     21 百分数 22 日期  25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
                 <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
                     <!-- 单行 -->
@@ -302,8 +302,8 @@ import Bus from '@/plugins/eventBus.js'
 import select2 from '@/components/stu/select'
 import radioList from '@/components/common/com-radios'
 import {wechatconfigInit,wechatopenimg} from '@/plugins/wechat.js';
-import uploadImg  from '@/components/uploadImg'
 import { mapState } from 'vuex'
+import uploadImg  from '@/components/uploadImg'
 import VideoPlayerCommon from "@/components/common/video/video-player-common.vue"
 import { setTimeout } from 'timers';
 import Cookies from 'js-cookie';
@@ -356,7 +356,7 @@ export default {
             toastShow:false,
             geographic:'',//地理位置 桥接使用
             count:9,//图片上传数量
-            
+
             //选人插件相关
             tsshow:false,//选人插件是否显示
             xr:'',
@@ -383,6 +383,9 @@ export default {
             propsta:'',
         }
     },
+    computed: mapState({
+        _url_: state => state._url_
+    }),
     components:{
         Group,
         aplayer,
@@ -460,7 +463,8 @@ export default {
                                 })
                             }
                             if(element.formItemType == '9'){
-                                this.getMap();
+                                setTimeout(this.getMap(),3000);
+
                             }
                             if(element.formItemType == '10'){
 
@@ -655,7 +659,7 @@ export default {
             if(index != -1){
                 this.curIndex = index;
             }
-            
+
             if(this.si==0){
                 this.$axios.get( process.env.API_ROOT+"oss/2/"+cad+"/get/code",
                     qs.stringify({
@@ -774,7 +778,7 @@ export default {
                     }
                 }
             }
-            
+
             this.$vux.loading.show({
                 text: '提交中...'
             });
