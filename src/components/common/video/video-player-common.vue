@@ -13,7 +13,7 @@
 
 <script>
   export default {
-    name: 'videoPlayerCommon',
+    name: 'VideoPlayerCommon',
     props: ['options'],
     data () {
       return {
