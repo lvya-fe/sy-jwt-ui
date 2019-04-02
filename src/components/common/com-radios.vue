@@ -3,7 +3,7 @@
         <ul class="radioLists">
             <li v-for="radio in lists" class="vux-1px-t" :key="radio.id" @click="radioChange(radio.value)">
                 <!-- <input type="radio" :value="radio.value" > -->
-                <p :class="{'checked': checkVal == radio.value}">{{radio.value}}</p>
+                <p :class="{'checked': checkVal == radio.value ,'disabled': disabled}">{{radio.value}}</p>
             </li>
         </ul>
     </div>
@@ -27,6 +27,10 @@ export default {
         index:{
             type:Number,
             default:null
+        },
+        disabled:{
+            type: Boolean,
+            default:false
         }
     },
     methods:{
@@ -66,10 +70,18 @@ export default {
                 padding-left: 0 !important;
                 background: url('../../assets/img/radio1.png') no-repeat right center;
                 background-size: 40px 40px;
+                &.disabled{
+                    background: none;
+                }
                 &.checked{
                     background: url('../../assets/img/radio_check1.png') no-repeat right center;
                     background-size: 40px 40px;
+                    &.disabled{
+                        background: url('../../assets/img/checked.png') no-repeat right center;
+                        background-size: 35px 31px;
+                    }
                 }
+                
             }
         }
     }
