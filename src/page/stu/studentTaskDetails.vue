@@ -445,7 +445,7 @@
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
                     <div class="checkbox_div">
                         <div class="seeVideoCustom" v-if="item.valex!=null&&item.valex!=''&&item.valex!=undefined">
-                          <VideoPlayerCommen :options="item"></VideoPlayerCommen>
+                          <videoPlayerCommon :options="item"></videoPlayerCommon>
                             <!--<img class ="seeImg" @click="ckSee(item.valex)" src="@/assets/img/videoImgMo.png" alt="">-->
                         </div>
                         <div class="hs_div" v-if="item.valex==''||item.valex==null||item.valex==undefined">
@@ -459,7 +459,7 @@
                     <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData" :key="index">
                         <p><span>{{ itemRefer.name }}</span> <span>{{ itemRefer.orgNames }}</span></p>
                         <div class="seeVideoCustom" v-if="itemRefer.val!=null&&itemRefer.val!=''&&itemRefer.val!=undefined">
-                          <VideoPlayerCommen :options="itemRefer"></VideoPlayerCommen>
+                          <videoPlayerCommon :options="itemRefer"></videoPlayerCommon>
                             <!--<img class ="seeImg" @click="ckSee(itemRefer.val)" src="@/assets/img/videoImgMo.png" alt="">-->
                         </div>
                     </div>
@@ -581,7 +581,7 @@ import uploadImg  from '@/components/uploadImg'
 import { mapState } from 'vuex'
 import showorg from '@/components/stu/selecttag'
 
-import VideoPlayerCommen from "@/components/common/video/video-player-common.vue"
+import videoPlayerCommon from "@/components/common/video/video-player-common.vue"
 
 
 import aplayer from "vue-aplayer";
@@ -605,7 +605,7 @@ export default {
         showhistime,
         showorg,
         aplayer: aplayer,
-        videoPlayerCommon,
+      videoPlayerCommon,
     },
     data(){
         return{

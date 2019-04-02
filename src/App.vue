@@ -71,27 +71,25 @@ export default {
 }
 
 /*loading*/
-.weui-loading_toast, .vux-loading {
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .weui-mask_transparent{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
+/*.weui-loading_toast, .vux-loading {*/
+  /*position: fixed;*/
+  /*z-index: 1000;*/
+  /*top: 0;*/
+  /*right: 0;*/
+  /*left: 0;*/
+  /*bottom: 0;*/
+  /*display: flex;*/
+  /*align-items: center;*/
+  /*justify-content: center;*/
+  /*.weui-mask_transparent{*/
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
+  /*}*/
+/*}*/
 .weui-toast{
   min-height: 2rem !important;
-  position: static !important;
-
-  transform: translateX(0);
+  top: 8.4rem !important;
   .weui-loading{
     margin-top: 0.65rem !important;
     width: 0.7rem !important;
