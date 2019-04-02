@@ -13,7 +13,7 @@
                 <ul>
                     <li v-for="(item,index) in conData" :key="index" :class="{lookY:item.lookY}">
                         <div class="list-con-left">
-                            <img v-if='item.stu.pic==null' src="../../assets/img/morenPic.png" alt="">
+                            <img v-if='item.stu.pic==null' src="../../assets/img/morenpic.png" alt="">
                             <img v-if='item.stu.pic!=null' :src="item.stu.pic" alt="">
                             <p>{{ item.stu.name }}</p>
                         </div>

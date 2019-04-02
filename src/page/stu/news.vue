@@ -17,7 +17,7 @@
                     <router-link :to="'/msgcontent/'+uid+'/'+index">
                         <div class="list-con-left">
                         <img v-if="item.conImg!=null&&item.conImg!=''" :src="item.conImg" alt="">
-                        <img v-if="item.conImg==null||item.conImg==''" src="../../assets/img/morenPic.png" alt="">
+                        <img v-if="item.conImg==null||item.conImg==''" src="../../assets/img/morenpic.png" alt="">
                         </div>
                         <div class="list-con-right">
                         <p class="name-date">

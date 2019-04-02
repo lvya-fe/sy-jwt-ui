@@ -159,21 +159,21 @@
                         </div>
                         <div class="conTab2" v-show="index02==1">
                             <div class="last_div">
-                                <img src="@/assets/img/morenPic.png" alt="">
+                                <img src="@/assets/img/morenpic.png" alt="">
                                 <div>
                                     <p>王强</p>
                                     <p>三年级二班</p>
                                 </div>
                             </div>
                             <div class="last_div">
-                                <img src="@/assets/img/morenPic.png" alt="">
+                                <img src="@/assets/img/morenpic.png" alt="">
                                 <div>
                                     <p>李萌</p>
                                     <p>三年级二班</p>
                                 </div>
                             </div>
                             <div class="last_div">
-                                <img src="@/assets/img/morenPic.png" alt="">
+                                <img src="@/assets/img/morenpic.png" alt="">
                                 <div>
                                     <p>向东旭</p>
                                     <p>三年级二班</p>
@@ -211,7 +211,7 @@ export default {
         Checker,
         CheckerItem,
         XInput,
-        Toast 
+        Toast
     },
     data(){
         return{

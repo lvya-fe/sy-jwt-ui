@@ -14,7 +14,7 @@
             </tab>
             <div class="tab-swiper vux-center" v-show="index == 0">
                 <div class="ic_img">
-                    <img src="@/assets/img/morenPic.png" alt="">
+                    <img src="@/assets/img/morenpic.png" alt="">
                 </div>
                 <div class="vie_div ts_vie">
                     <span>卢同学 </span>
@@ -115,7 +115,7 @@ export default {
         Checker,
         CheckerItem,
         XInput,
-        Toast 
+        Toast
     },
     data(){
         return{

@@ -12,9 +12,9 @@
         <div class="list-con-div bscroll"  ref="bscroll">
             <div class="bscroll-container">
                 <ul>
-                    <li v-for="(item,index) in conData" :key="index"  :class="{lookY:item.lookY}"> 
+                    <li v-for="(item,index) in conData" :key="index"  :class="{lookY:item.lookY}">
                         <div class="list-con-left">
-                            <img v-if='item.stu.pic==null' src="../../assets/img/morenPic.png" alt="">
+                            <img v-if='item.stu.pic==null' src="../../assets/img/morenpic.png" alt="">
                             <img v-if='item.stu.pic!=null' :src="item.stu.pic" alt="">
                             <p>{{ item.stu.name }}</p>
                         </div>
@@ -29,11 +29,11 @@
                             </div>
                             <img @click="toggle(index)" :class="{tranX:item.down}" class="tran-img" src="../../assets/img/back_left.png" alt="" v-show="item.btnshow">
                         </div>
-                        
+
                     </li>
                 </ul>
             </div>
-            
+
             <!-- 暂无数据时显示 -->
             <div class="no-msg-div" v-if="conData.length<=0">
                 <img src="@/assets/img/zanwushuju.png" alt="">
@@ -132,8 +132,8 @@ export default {
                     }
                 );
             });
-            
-            
+
+
             console.log(_self.conData)
 
 

@@ -22,7 +22,7 @@ import 'vue-photo-preview/dist/skin.css'
 
 import VideoPlayer from 'vue-video-player-lvya'
 require('video.js/dist/video-js.css')
-require('vue-video-player/src/custom-theme.css')
+require('vue-video-player-lvya/src/custom-theme.css')
 import Cookies from 'js-cookie'
 
 Vue.use(VideoPlayer)
@@ -297,7 +297,7 @@ const routes = [
       // title: '素养'
     },
     component: function (resolve) {
-      require(['./page/tea/index.vue'], resolve)
+      require(['./page/tea/Index.vue'], resolve)
     }
   }, {
     name:'scenesList',

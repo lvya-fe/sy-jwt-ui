@@ -12,7 +12,7 @@
                 <div class="avatar-mid">
                     <p>
                         <span>{{ item.name }}</span>
-                        <img v-if='item.pic==null' src="../../assets/img/morenPic.png" alt="">
+                        <img v-if='item.pic==null' src="../../assets/img/morenpic.png" alt="">
                         <img v-if='item.pic!=null' :src="item.pic" alt="">
                     </p>
                     <p>

@@ -27,7 +27,7 @@
                   <router-link :to="'/StudentDetails/'+uid+'/'+item.id">
                     <div class="list-con-left">
                         <img v-if="item.pic!=null&&item.pic!=''" :src="item.pic" alt="">
-                        <img v-if="item.pic==null||item.pic==''" src="@/assets/img/morenPic.png" alt="">
+                        <img v-if="item.pic==null||item.pic==''" src="@/assets/img/morenpic.png" alt="">
                     </div>
                     <div class="list-con-right">
                         <p class="name-date">
@@ -145,7 +145,7 @@
           }else{
             _self.pageNo= _self.pageNo+1;
           }
-          
+
           this.$axios.post( process.env.API_ROOT+"app/tea/Mystu/"+this.uid,
             qs.stringify({
               pageNo:_self.pageNo,

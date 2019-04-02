@@ -8,7 +8,7 @@
             <div class="avatar" v-for="(item,index) in conData" :key="index" :class="{active:index==active}"
                  @click="toggle(index,item)">
                 <div class="avatar-left">
-                    <img src="@/assets/img/morenPic.png" alt="" v-if="item.pic==null">
+                    <img src="@/assets/img/morenpic.png" alt="" v-if="item.pic==null">
                     <img :src="item.pic" alt="" else>
                 </div>
                 <div class="avatar-mid">

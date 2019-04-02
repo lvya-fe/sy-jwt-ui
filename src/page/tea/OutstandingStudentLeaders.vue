@@ -21,7 +21,7 @@
                             <div class="flex-demo" @click="tabProp(item)">
                                 <a :href="item.ztLink">
                                     <div class="set-div">
-                                        <img class="img1" v-if="item.pic==''||item.pic==null||item.pic==undefined" src="@/assets/img/morenPic.png" alt="">
+                                        <img class="img1" v-if="item.pic==''||item.pic==null||item.pic==undefined" src="@/assets/img/morenpic.png" alt="">
                                         <img class="img1" v-if="item.pic!=''&&item.pic!=null&&item.pic!=undefined" :src="item.pic" alt="">
                                         <img class="img2" v-if="st==0&&item.zt=='X'"  src="@/assets/img/weishangchuan.png" alt="">
                                         <img class="img2" v-if="st==0&&item.zt=='O'"  src="@/assets/img/weishenhe.png" alt="">
@@ -179,7 +179,7 @@ export default {
             _self.num=res.data.list.length;
             console.log(res.data.list)
             if(_self.list.length<=0){
-                _self.list=res.data.list 
+                _self.list=res.data.list
             }else{
                 res.data.list.forEach(function(el){
                     _self.list.push(el)

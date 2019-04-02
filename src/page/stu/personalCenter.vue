@@ -4,7 +4,7 @@
             <div class="avatar">
                 <div class="avatar-left ripple">
                     <router-link :to="'/setStuAvatar/'+uid">
-                    <img v-if='stu.pic==null' src="../../assets/img/morenPic.png" alt="">
+                    <img v-if='stu.pic==null' src="../../assets/img/morenpic.png" alt="">
                     <img v-if='stu.pic!=null' :src="stu.pic" alt="">
                     </router-link>
                 </div>
