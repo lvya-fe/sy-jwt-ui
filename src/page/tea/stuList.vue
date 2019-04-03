@@ -7,7 +7,6 @@
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
             </span>
         </div>
-
         <p class="drop-down" v-if="dropDown" v-show="show3">
             <img src="../../assets/img/upgx.gif" alt="">
         </p>
