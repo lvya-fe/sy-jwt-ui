@@ -600,6 +600,16 @@ const routes = [
         require(['./page/stu/stuCardDetails.vue'], resolve)
       }
     },
+  { //
+    name: 'task-details',
+    path: '/task-details/:uid/:id/:stuid/:schoolid',
+    meta: {
+      title: '通用任务详情'
+    },
+    component: function (resolve) {
+      require(['./page/details/task-details.vue'], resolve)
+    }
+  },
   { //老师帮学生填写--卡片式列表
     name: 'stuListCard',
     // path: '/stuListCard/:uid/:id/:cycleid',

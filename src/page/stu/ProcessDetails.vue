@@ -12,7 +12,7 @@
         </div>
 
       <div class="empty-top"></div>
-      
+
         <div style="height:1.133333rem;" v-show="show1">
             <sticky :check-sticky-support="false" :offset="0">
                 <div class="tab-con-change">
@@ -510,7 +510,8 @@ export default {
         newlink(task){
             if(this.isControl){
                 if(!task.isRelateStu){
-                    this.$router.push({path: '/studentTaskDetails/'+this.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
+                    // this.$router.push({path: '/studentTaskDetails/'+this.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
+                  this.$router.push({path: '/task-details/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
                 }else{
                     //列表式
                     if(task.showFlag == 1){

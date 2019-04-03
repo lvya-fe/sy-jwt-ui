@@ -39,6 +39,8 @@ export default {
       ).then(function(res){
          // localStorage.setItem("token",res.data);
           Cookies.set("wxtoken",res.data);
+          // 缓存学生或者老师
+          Cookies.set("roleType", _self.type);
           _self.$vux.toast.show({type: 'success', text: "认证成功"});
 
           if(_self.type=="stu"){

@@ -1,0 +1,320 @@
+<template>
+  <div class="task-details">
+    <div class="top-back">
+      <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
+      <div class="n_title">{{ title }}</div>
+      <span class="img-2" style="display:none;">
+                <i class="icon iconfont icon-shiyongcishu ripple"></i>
+            </span>
+    </div>
+    <form action="" class="stuInfo">
+      <ul>
+        <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,
+        14 邮箱 15 电话 16选择列表 17 多选列表  19 整数 20 小数
+            21 百分数 22 日期  25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
+        <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
+          <!-- 单行 -->
+          <div class="fieldsWrap disflex" v-if="item.formItemType == '1'">
+            <span class="fieldInput fieldname">{{item.formItemName}}</span>
+            <input v-if=" [1,3].includes(formState) && item.citeDataType ==0 " type="text" class="txtInput" v-model="item.formItemValue"  @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
+            <p class="readOnly" v-else>{{item.formItemValue}}</p>
+          </div>
+          <!-- 多行 -->
+          <div class="fieldsWrap txtarea" v-if="item.formItemType == '2'">
+            <p :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>
+            <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " :max="200" v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
+            <div v-else>
+              <div v-if="item.formItemValue !=''" class="readOnly-block">
+                <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
+              </div>
+              <div v-else class="nodata">
+                <img src="../../assets/img/noData.png" alt="">
+              </div>
+            </div>
+          </div>
+          <!-- 日期时间 -->
+          <group class="fieldsDatetime hasIco" :class="{'readonly': ![1,3].includes(formState) || item.citeDataType !=0}" v-if="item.formItemType == '3'">
+            <img src="../../assets/img/ico_datetime.png" alt="">
+            <datetime v-model="item.formItemValue" format="YYYY-MM-DD HH:mm" :readonly="[1,3].includes(formState) && item.citeDataType ==0 ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
+          </group>
+          <!-- 单项选择 -->
+          <div class="fieldsWrap radios" v-if="item.formItemType == '4'">
+            <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
+            <!-- <group v-if="item.formSelectItemResps.length >0 ">
+                <radio :options="item.formSelectItemResps" :class="{'disabled':([1,3].includes(formState) && item.citeDataType ==0)}" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" v-model="item.formItemValue" @on-change="change"></radio>
+            </group> -->
+            <radioList :lists="item.formSelectItemResps" :disabled = '(![1,3].includes(formState) || item.citeDataType !=0) ? true :false' :checkVal="item.formItemValue" :index="index" @changeVal="changeRadio"></radioList>
+          </div>
+          <!-- 多项选择 -->
+          <div class="fieldsWrap radios" v-if="item.formItemType == '5'">
+            <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
+            <group v-if="item.formSelectItemResps.length >0 ">
+              <checklist label-position="left" :options="item.formSelectItemResps" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" v-model="item.itemValArr" @on-change="checkListChange(item.itemValArr,index)"></checklist>
+            </group>
+          </div>
+          <!-- 图片上传 -->
+          <div class="fieldsWrap imgUpload" v-if="item.formItemType == '6'">
+            <p><img src="../../assets/img/ico_position.png" alt=""><span>{{item.formItemName}}</span></p>
+            <uploadImg v-if="[1,3].includes(formState) && item.citeDataType ==0" :imgs.sync="item.formItemValue" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
+            <div v-else>
+              <div v-if="item.formItemValue == ''" class="nodata">
+                <img src="../../assets/img/noData.png" alt="">
+              </div>
+              <ul v-else class="img-items">
+                <li v-for="(url,i) in item.itemValArr" :key="i">
+                  <img :src="url" :preview="i" alt="">
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- 文本描述 -->
+          <div class="fieldsWrap wenben" v-if="item.formItemType == '8'">
+            <p><span>{{item.formItemName}}</span></p>
+            <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
+            <div v-if="item.formItemValue != ''" class="readOnly-block">
+              <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
+            </div>
+            <div v-else class="nodata">
+              <img src="../../assets/img/noData.png" alt="">
+            </div>
+          </div>
+          <!-- 地理位置 -->
+          <div class="fieldsWrap positionWrap hasIco disflex" v-if="item.formItemType == '9'">
+            <img src="../../assets/img/ico_position.png" alt="">
+            <span class="fieldname">{{item.formItemName}}</span>
+            <p>{{geographic}}</p>
+          </div>
+          <!-- <group class="positionWrap hasIco disflex" v-if="item.formItemType == '9'">
+              <img src="../../assets/img/ico_position.png" alt="">
+              <span class="fieldname">{{item.formItemName}}</span>
+              <p>{{geographic}}</p>
+          </group> -->
+          <!-- 选人插件 -->
+          <div class="choosePeople hasIco" v-if="item.formItemType == '10'">
+            <p @click="selectionPlugin(item.formItemId,item.choiceType)">
+              <img class="icon" src="../../assets/img/ico_people.png" alt="">
+              <span class="fieldname">{{item.formItemName}}</span>
+              <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right">请选择</span>
+            </p>
+            <!-- <ul class="itemsWrap" v-if="item.itemValArr.length >0">
+                <li v-for="val in item.itemValArr" :key="val">{{val}}</li>
+            </ul> -->
+            <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
+              <div v-if="item.formItemValue == ''" class="nodata">
+                <img src="../../assets/img/noData.png" alt="">
+              </div>
+            </div>
+          </div>
+          <!-- <group class="choosePeople hasIco" v-if="item.formItemType == '10'" @click.native="selectionPlugin(item.formItemId,item.choiceType)">
+              <img src="../../assets/img/ico_people.png" alt="">
+              <cell :title="item.formItemName" :value="[1,3].includes(formState) && item.citeDataType ==0 ? '请选择' :''" :class="{'readOnly': ![1,3].includes(formState) || item.citeDataType !=0}"></cell>
+              <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
+                  <div v-if="item.formItemValue == ''" class="nodata">
+                      <img src="../../assets/img/noData.png" alt="">
+                  </div>
+              </div>
+          </group> -->
+          <!-- 邮箱 -->
+          <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '14'">
+            <img class="icon" src="../../assets/img/ico_email.png" alt="">
+            <span class="fieldname">{{item.formItemName}}</span><input type="text" @blur="verifyField(item.formItemValue,item.formItemType)" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" >
+          </div>
+          <!-- 电话 -->
+          <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '15'">
+            <img class="icon" src="../../assets/img/ico_phone.png" alt="">
+            <span class="fieldname">{{item.formItemName}}</span><input type="text" v-if="[1,3].includes(formState) && item.citeDataType ==0" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" oninput = "value=value.replace(/[^\d]/g,'')" @blur="verifyField(item.formItemValue,item.formItemType)" >
+            <p class="readPhone" v-else>{{item.formItemValue.substring(0,3)}}  {{item.formItemValue.substring(3,7)}} {{item.formItemValue.substring(7)}}</p>
+          </div>
+          <!-- 选择列表 -->
+          <group class="fieldsWrap selectList" v-if="item.formItemType == '16'" @click.native="showCheckList(item,index,formState)">
+            <cell :title="item.formItemName" ></cell>
+            <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right" :class="{'hasVal':item.formItemValue != ''}">{{item.formItemValue == '' || item.formItemValue == null ? '请选择' :item.formItemValue}}</span>
+            <span v-else class="ico-right readOnly">{{item.formItemValue}}</span>
+          </group>
+          <!-- 多选择列表 -->
+          <group class="fieldsWrap selectList" v-if="item.formItemType == '17'" @click.native="showCheckList(item,index,formState)">
+            <cell :title="item.formItemName" ></cell>
+            <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right" :class="{'hides': (item.formItemValue != '' && item.formItemValue != null) }">请选择</span>
+            <span v-else class="ico-right readOnly"></span>
+            <ul class="itemsWrap" v-if="item.itemValArr.length >0">
+              <!-- <li class="vux-1px" v-for="val in item.itemValArr" :key="val">{{val}}</li> -->
+              <li v-for="val in item.itemValArr" :key="val">{{val}}</li>
+            </ul>
+            <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
+              <div v-if="item.formItemValue == ''" class="nodata">
+                <img src="../../assets/img/noData.png" alt="">
+              </div>
+            </div>
+          </group>
+
+          <!-- 整数 -->
+          <div class="fieldsWrap disflex" v-if="item.formItemType == '19'">
+            <span class="fieldname">{{item.formItemName}}</span>
+            <input type="text" v-model="item.formItemValue" oninput = "value=value.replace(/[^\d]/g,'')"  :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
+          </div>
+          <!-- 小数 -->
+          <div class="fieldsWrap disflex" v-if="item.formItemType == '20'">
+            <span class="fieldname">{{item.formItemName}}</span>
+            <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @blur="verifyFix(item.formItemValue,index)">
+          </div>
+          <!-- 百分数 -->
+          <div class="fieldsWrap disflex" v-if="item.formItemType == '21'">
+            <span class="fieldname">{{item.formItemName}}</span>
+            <input type="text" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')"  @blur="verifyFix(item.formItemValue,index)">
+            <span class="percent">%</span>
+          </div>
+          <!-- 日期 -->
+          <group class="fieldsDatetime hasIco" :class="{'readonly': (![1,3].includes(formState) || item.citeDataType !=0)} " v-if="item.formItemType == '22'">
+            <img src="../../assets/img/ico_date.png" alt="">
+            <datetime v-model="item.formItemValue" :readonly="[1,3].includes(formState) && item.citeDataType ==0 ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
+          </group>
+          <!-- 省市区 -->
+          <group  class="hasIco" v-if="item.formItemType == '25'">
+            <img class="ico_address" src="../../assets/img/ico_address.png" alt="">
+            <x-address :title="item.formItemName" v-model="item.itemValArr" :raw-value='true' @on-hide="addressHide" @on-show="addressShow(index)" @on-shadow-change="changeAddress" :class="{'disabled': (![1,3].includes(formState) || item.citeDataType != 0)}" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :list="addressData" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请选择' :''"></x-address>
+          </group>
+          <!-- 邮编 -->
+          <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '26'">
+            <img class="ico_postcode icon" src="../../assets/img/ico_postcode.png" alt="">
+            <span class="fieldname">{{item.formItemName}}</span><input type="text" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" v-model="item.formItemValue" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" oninput = "value=value.replace(/[^\d]/g,'')" @blur="verifyField(item.formItemValue,item.formItemType)">
+          </div>
+          <!-- 身份证 -->
+          <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '27'">
+            <img class="ico_idcard icon" src="../../assets/img/ico_idcard.png" alt="">
+            <span class="fieldname">{{item.formItemName}}</span>
+            <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" @blur="verifyField(item.formItemValue,item.formItemType)" >
+          </div>
+          <!-- 音频 -->
+          <div class="fieldsWrap hasIco" v-if="item.formItemType == '28'">
+            <img src="../../assets/img/ico_audio.png" alt="">
+            <span>{{item.formItemName}}</span>
+            <template v-if ="item.citeDataType == 0 && [1,3].includes(formState)">
+              <div class="addAudio vux-1px-t"  v-if="item.formItemValue ==''">
+                <div class="addAudioInput">
+                  添加音频
+                  <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="audio/mpeg"> -->
+                  <input type="file" name="" @change="uploadVideo(item.id,$event,'mp3',index)" accept="audio/mpeg">
+                </div>
+                <span @click="upDataVideo(item.id,'mp3',index)">大文件请点击</span>
+              </div>
+            </template>
+            <template v-if="(item.formItemValue !='')">
+              <div class="showAudio vux-1px-t">
+                <aplayer :autoplay="null" :music="{
+                                    title: '数据来源自',
+                                    author: '绿芽',
+                                    url: item.formItemValue,
+                                    pic: '',
+                                    lrc: '[00:00.00]lrc here\n[00:01.00]aplayer'
+                                    }">
+                </aplayer>
+              </div>
+            </template>
+            <div v-if="(item.citeDataType != 0 || ![1,3].includes(formState)) && item.formItemValue ==''" class="videoNOdata">
+              <img src="../../assets/img/noData.png" alt="">
+            </div>
+          </div>
+          <!-- 视频 -->
+          <div class="fieldsWrap hasIco" :class="{'hasUrl':(item.formItemValue !='' && item.formItemValue != null)}" v-if="item.formItemType == '29'">
+
+            <img src="../../assets/img/ico_video.png" alt="">
+            <span>{{item.formItemName}}</span>
+            <template v-if ="item.citeDataType == 0 && [1,3].includes(formState)">
+              <div class="addVideo" v-if="item.formItemValue =='' ">
+                <div class="inputFile">
+                  <input type="file" name="" @change="uploadVideo(item.id,$event,'mp4',index)" accept="video/*">
+                </div>
+                <span @click="upDataVideo(item.id,'mp4',index)">大文件请点击</span>
+              </div>
+              <template v-else>
+                <div class="showVideo">
+                  <VideoPlayerCommon :options="item"></VideoPlayerCommon>
+                  <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
+                </div>
+              </template>
+            </template>
+            <template v-else>
+              <div class="showVideo" v-if="(item.formItemValue !='')">
+                <VideoPlayerCommon :options="item"></VideoPlayerCommon>
+                <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
+              </div>
+              <div v-else class="videoNOdata">
+                <img src="../../assets/img/noData.png" alt="">
+              </div>
+            </template>
+          </div>
+        </li>
+      </ul>
+      <div class="btnsWrap">
+        <x-button type="primary" v-if="[1,3].includes(formState)" action-type="button" @click.native="submit">提交</x-button>
+        <!-- <x-button type="primary" action-type="button">提交并切换学生</x-button> -->
+        <x-button action-type="button" @click.native="goback">返回</x-button>
+      </div>
+      <!-- 选择列表，多选择列表 -->
+      <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'80%', overflow:'auto', 'background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" :class="{'vux-1px':showHideOnBlur}" hide-on-blur>
+        <h4 class="vux-1px-b">{{popData.formItemName}}</h4>
+        <div class="modalWrapper">
+          <group title="" v-if="popType == 0">
+            <radio :options="popData.formSelectItemResps" v-model="popData.formItemValue"></radio>
+          </group>
+          <div v-if="popType == 1">
+            <checklist title=""  label-position="left" :options="popData.formSelectItemResps" v-model="popData.itemValArr" @on-change="change"></checklist>
+          </div>
+        </div>
+        <flexbox>
+          <flexbox-item>
+            <x-button type="default cancel" action-type="button"  @click.native="showHideOnBlur = false">取消</x-button>
+          </flexbox-item>
+          <flexbox-item>
+            <x-button class="confirm" action-type="button" type="default" @click.native="checkListCommit">确定</x-button>
+          </flexbox-item>
+        </flexbox>
+      </x-dialog>
+    </form>
+    <!--视频大文件上传弹框-->
+    <div class="viedoPropParent" v-show="upDataShow">
+      <div class="viedoProp">
+        <p class="videoP1">
+          <img @click="upDataShow=false" src="@/assets/img/videoX.png" alt="">
+          <img @click="upDataVideo(propId,propsta,-1)" src="@/assets/img/videoRrefresh.png" alt="">
+        </p>
+        <p class="videoP2">请使用电脑访问此链接上传文件</p>
+        <p class="videoP3">（上传成功前，请勿关闭此页面，一小时内有效）</p>
+        <p class="videoP4">{{ upDataUrl }}</p>
+        <div class="videoP5" v-if="btnGc">上传成功后，点击获取文件（<span>{{ si }}</span>S）</div>
+        <div class="videoP5" v-if="!btnGc" @click="obtainVideo">点击获取文件</div>
+
+        <div v-show="inlineDescList.length>0">
+          <checklist title="最近上传文件" :max="1" :options="inlineDescList" v-model="inlineDescListValue" @on-change="changeFile"></checklist>
+        </div>
+        <div v-show="inlineDescList.length<=0">
+          最近无新上传文件
+        </div>
+      </div>
+    </div>
+    <div class="weui-toast myToast" v-show="toastShow">
+      <inline-loading class="toastLoading"></inline-loading>
+      <p>上传中：{{percent}}</p>
+    </div>
+    <!-- 视频播放控件 -->
+    <div class="videoParent" @click.prevent.stop="videoPropShow=false" v-if="videoPropShow">
+      <video-player class="video-player vjs-custom-skin"
+                    ref="videoPlayer"
+                    :playsinline="true"
+                    :options="playerOptions"
+      ></video-player>
+    </div>
+    <!-- 选人插件组件 -->
+    <select2 v-bind:uid="uid" v-bind:orgId="orgId" v-bind:type="type" v-bind:sreach_tea="sreach_tea" v-bind:sreach_stu="sreach_stu" @qd="qd" @qx="qx" v-if="tsshow" v-bind:xr="xr"></select2>
+  </div>
+</template>
+
+<style lang="less">
+  @import "./task-details.less";
+</style>
+
+<script>
+  import taskDetails from './task-details'
+  export default taskDetails
+</script>
+
