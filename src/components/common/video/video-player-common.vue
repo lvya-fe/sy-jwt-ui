@@ -1,3 +1,13 @@
+<!--
+组件名称：视频播放组件
+props:
+  options  视频信息 ，类型object
+  showDelete 是否显示删除 bool 默认flase
+
+event:
+  @delete 删除视频
+
+-->
 <template>
   <div v-if="initVideo" >
     <video-player class="video-player vjs-custom-skin"
@@ -12,9 +22,13 @@
 </template>
 
 <script>
+  import VideoPoster from "@/assets/img/common/video/default.jpg"
   export default {
     name: 'VideoPlayerCommon',
-    props: ['options'],
+    props: {
+      options: {type: Object, default: {}},
+      showDelete: {type: Boolean, default: false}
+    },
     data () {
       return {
         initVideo: false,
@@ -31,7 +45,7 @@
             type: "mp4",
             src: '' //url地址
           }],
-          poster: "../../static/images/test.jpg", //你的封面地址
+          poster: VideoPoster, //你的封面地址
           // width: document.documentElement.clientWidth,
           notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
           controlBar: {
