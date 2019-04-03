@@ -515,9 +515,7 @@ export default {
             this.curFieldsLists[index].formItemValue = value.length>0 ? value.join(',') : '';
         },
         changeAddress(ids,names){
-            if(this.curIndex != null){
-                this.tempAddress = names;
-            }
+            this.tempAddress = names;
         },
         addressShow(index){
             this.curIndex = index;

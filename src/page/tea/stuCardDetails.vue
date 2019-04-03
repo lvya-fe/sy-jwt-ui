@@ -1,5 +1,5 @@
 <template>
-    <div class="stuCardDetails" :class="{'hasbgColor': hasbgColor}">
+    <div class="stuCardDetails">
         <div class="top-back">
             <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ title }}</div>
@@ -83,7 +83,7 @@
                     </div>
                     <!-- 选人插件 -->
                     <div class="choosePeople hasIco" v-if="item.formItemType == '10'">
-                        <p @click="selectionPlugin(item.formItemId,item.choiceType,index)">
+                        <p @click="selectionPlugin(item.formItemId,item.choiceType)">
                             <img class="icon" src="../../assets/img/ico_people.png" alt="">
                             <span class="fieldname">{{item.formItemName}}</span>
                             <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right">请选择</span>
@@ -381,8 +381,7 @@ export default {
             authorizationCode:'',
             propsta:'',
             //选人插件
-            formShow:true,
-            hasbgColor:true
+            formShow:true
         }
     },
     components:{
@@ -428,10 +427,10 @@ export default {
             // this.$router.go(-1);
             Cookies.set('cardPageNo',this.paramsData.pageNo);
             console.log(this.paramsData.taskId)
-            // if(this.paramsData.taskId === undefined){
+            if(this.paramsData.taskId === undefined){
                 this.$router.go(-1);
             }else{
-                this.$router.replace({path: '/stuList2Card/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
+                this.$router.replace({path: '/stuListCard/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
             }
         },
         //获取学生表单信息
@@ -468,7 +467,7 @@ export default {
                                 }
                             }
                             if(element.formItemType == '10'){
-                                element.formSelectItemResps = element.formSelectItemResps == null ? [] : element.formSelectItemResps;
+
                             }
                         })
                     }
@@ -510,14 +509,13 @@ export default {
         changeRadio(val,index){
             this.curFieldsLists[index].formItemValue = val;
         },
-        //多项选择选择值--省市区
+        //多项选择选择值
         checkListChange(value,index){
             this.curFieldsLists[index].formItemValue = value.length>0 ? value.join(',') : '';
         },
+        //省市区
         changeAddress(ids,names){
-            if(this.curIndex != null){
-                this.tempAddress = names;
-            }
+            this.tempAddress = names;
         },
         addressShow(index){
             this.curIndex = index;
@@ -804,8 +802,7 @@ export default {
                 formItemValues:formItemValues,
                 stuId:this.stuid
             })
-            console.log(formValueJson,"提交数据")
-            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTaskFormList",
+            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTeaTaskFormList",
             qs.stringify({
                     uid:this.uid,
                     schoolId:Number(this.schoolId),
@@ -824,7 +821,7 @@ export default {
             })
         },
         //选人插件-相关方法
-        selectionPlugin(id,type,index){
+        selectionPlugin(id,type){
             this.xr=id
             if(type==1){
                 this.type=3
@@ -835,27 +832,24 @@ export default {
             }
             this.tsshow= true;
             this.formShow = false;
-            this.hasbgColor = false;
-            this.curIndex = index;
         },
         qx(){
           this.tsshow = false;
         },
         qd(obj){
-            if(obj.length == 0) return;
-            this.curFieldsLists[this.curIndex].formSelectItemResps = [];
-            let pids = [];
-            obj.forEach( (a) => {
-                this.curFieldsLists[this.curIndex].formSelectItemResps.push({
-                    'id': a.id,
-                    'name': a.name
-                });
-                pids.push(a.id);
+            this.itmes.forEach((it)=>{
+                // if(it.id==this.xr){
+                //     var con =[];
+                //     var va =[];
+                //     obj.forEach( (a) => {
+                //         con.push(a.name)
+                //         va.push(a.id)
+                //     })
+                //     it.valex=con
+                //     it.val=va.join(',')
+                // }
             })
-            this.curFieldsLists[this.curIndex].formItemValue = pids.join(',');
-            this.formShow = true;
-            this.hasbgColor = true;
-            this.tsshow = false;
+          this.tsshow = false;
         },
     },
 
@@ -894,11 +888,10 @@ export default {
 textarea:disabled, input:disabled{background-color: #fff;}
     .stuCardDetails{
         height: calc(~'100vh - 96px');
+        overflow-y: auto;
+        background-color: #ebebeb;
         margin-top: 76px;
         padding-top: 20px;
-        &.hasbgColor{
-            background-color: #ebebeb;
-        }
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;
@@ -934,7 +927,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
             font-size: 36px;
             color: #444;
             background-color: #fff;
-            z-index: 10;
+            z-index: 1000;
             img{
                 width: 38px;
                 height: 38px;
@@ -990,6 +983,18 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                     &.choosePeople{
+                        // .weui-cell__ft{
+                        //     color:#c6c6c6;
+                        //     &:after{
+                        //         right: 0 !important;
+                        //     }
+                        // }
+                        // .readOnly{
+                        //     .weui-cell__ft:after{
+                        //         height: 0;
+                        //         width: 0;
+                        //     }
+                        // }
                         p{
                             position: relative;
                             padding: 30px 30px 30px 75px;
@@ -1025,24 +1030,6 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                     top: 50%;
                                     margin-top: -0.133333rem;
                                     right: -0.566667rem;
-                                }
-                            }
-                        }
-                        .itemsWrap{
-                            box-sizing: border-box;
-                            padding: 30px 30px 0 30px;
-                            font-size: 0;
-                            li{
-                                margin-bottom: 30px;
-                                margin-right: 30px;
-                                display: inline-block;
-                                padding: 20px;
-                                font-size: 28px;
-                                border:2px solid #ccc;
-                                border-radius: 16px;
-                                color: #656565;
-                                &:first-child{
-                                    margin-left: 0;
                                 }
                             }
                         }
