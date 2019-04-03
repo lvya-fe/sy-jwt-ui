@@ -10,6 +10,9 @@
                 </span>
             </router-link>
         </div>
+
+      <div class="empty-top"></div>
+      
         <div style="height:1.133333rem;" v-show="show1">
             <sticky :check-sticky-support="false" :offset="0">
                 <div class="tab-con-change">
@@ -42,21 +45,21 @@
                         <!-- 未开始 -->
                         <img class="first-img" src="../../assets/img/weikaiqi.png" v-else-if="item.status == -1">
                         <!-- 进行中 -->
-                        <img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.status == 1"> 
-                        
+                        <img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.status == 1">
+
                         <div class="ne-div">
                             <p>{{ item.title }}</p>
                             <p>
-                                {{ 
+                                {{
                                     item.statusName=='已完成'?'完成时间 :':
                                 (item.statusName=='未完成'||item.statusName=='进行中')&&item.jointimetype==0?'不限制':
                                 (item.statusName=='未完成'||item.statusName=='进行中')&&item.jointimetype==2?'剩余时间 :':
                                 item.statusName=='待审核'?'提交时间 :':
                                 item.statusName=='未通过'?'审核时间 :':
                                 item.statusName=='已经结束'&&item.jointimetype==2?'结束时间 :':
-                                item.statusName=='尚未开始'&&item.jointimetype==2?'开启时间:':'' }}  
+                                item.statusName=='尚未开始'&&item.jointimetype==2?'开启时间:':'' }}
                                 <span>
-                                    {{ 
+                                    {{
                                     (item.statusName=='尚未开始'&&item.jointimetype==2&&item.limittimes.length==0)?item.joinstarttime:
                                     (item.statusName=='尚未开始'&&item.jointimetype==2&&item.limittimes.length>0)?formatDuringNextDay(item.limittimes):
                                     item.statusName=='已完成'||item.statusName=='待审核'||item.statusName=='未通过'? item.joinStartTimeShow:
@@ -64,7 +67,7 @@
                                     (item.statusName=='未完成'||item.statusName=='进行中')&&item.jointimetype==2&&item.limittimes.length==0?formatDuring(item.joinendtime):
                                     (item.statusName=='未完成'||item.statusName=='进行中')&&item.jointimetype==2&&item.limittimes.length>0?formatDuringToday(item.limittimes):''
                                     }}
-                                </span> 
+                                </span>
                                 </p>
                             <img class="back-a" src="../../assets/img/you.png" alt="">
                         </div>
@@ -135,7 +138,7 @@
             <!-- 证书 -->
             <div class="certificate" v-show="index == 2">
                 <template v-for="cer in zs">
-                    <!-- <router-link 
+                    <!-- <router-link
                     :to="(cer.showName=='已经获得'||(cer.cometype==1&&cer.showName=='尚未获得'))? '/CertificateAcquisition/'+uid+'/'+cer.id :(cer.cometype==0&&cer.showName=='尚未获得')||(cer.cometype==0&&cer.showName=='未通过')?'/CertificateRUploadRejection/'+uid+'/'+cer.id:(cer.cometype==0&&cer.showName=='待审核')?'/CertificatePendingReview/'+uid+'/'+cer.id:''"> -->
                     <div @click="link1(cer.id)" class="ripple">
                         <img class="first-img" :src="cer.img" alt="">
@@ -226,7 +229,7 @@
             </div>
         </div>
 
-        
+
 
 
         <!-- 添加评论(新建,查看) -->
@@ -252,7 +255,7 @@ export default {
     },
     components:{
         Sticky,
-        Tab, 
+        Tab,
         TabItem,
         Confirm,
         Popup,
@@ -279,7 +282,7 @@ export default {
             zs:[],
             book:[],
             fj:[],
-            
+
             discussId:0,
             show11:false,
             show10:false,
@@ -329,7 +332,7 @@ export default {
             var minutes = parseInt(((c-d) % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = ((c-d) % (1000 * 60)) / 1000;
             var a = days + " 天 " + hours + " 小时 " + minutes + " 分钟 "
-            
+
             // console.log(a,'剩余时间')
             return a;
         },
@@ -347,8 +350,8 @@ export default {
                 strDate = "0" + strDate;
             }
             var currentdate = year + seperator1 + month + seperator1 + strDate;
-            console.log(currentdate,'今天的日期')  
-            console.log(array,'日期数组')  
+            console.log(currentdate,'今天的日期')
+            console.log(array,'日期数组')
             var conTime = null;
             array.forEach(function(el,index){
                 if(el==currentdate){
@@ -379,20 +382,20 @@ export default {
             con=array[indexC]+' 00:00:00'
             return con
         },
-        // fmtDate(inputTime) {  
+        // fmtDate(inputTime) {
         //     var date = new Date(inputTime);
-        //     var y = date.getFullYear();  
-        //     var m = date.getMonth() + 1;  
-        //     m = m < 10 ? ('0' + m) : m;  
-        //     var d = date.getDate();  
-        //     d = d < 10 ? ('0' + d) : d;  
+        //     var y = date.getFullYear();
+        //     var m = date.getMonth() + 1;
+        //     m = m < 10 ? ('0' + m) : m;
+        //     var d = date.getDate();
+        //     d = d < 10 ? ('0' + d) : d;
         //     var h = date.getHours();
         //     h = h < 10 ? ('0' + h) : h;
         //     var minute = date.getMinutes();
         //     var second = date.getSeconds();
-        //     minute = minute < 10 ? ('0' + minute) : minute;  
-        //     second = second < 10 ? ('0' + second) : second; 
-        //     return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;  
+        //     minute = minute < 10 ? ('0' + minute) : minute;
+        //     second = second < 10 ? ('0' + second) : second;
+        //     return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
         // },
         loadData(){
           var _self = this;
@@ -412,7 +415,7 @@ export default {
             _self.zs = res.data.listCer;
             _self.book = res.data.listNote;
             _self.isControl = res.data.sceneItemInfo.isCanyu;
-            
+
             _self.meId=localStorage.mz
 
           }).catch(function(err){
@@ -518,7 +521,7 @@ export default {
                         this.$router.push({path: '/stuList2Card/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
                     }
                 }
-                
+
             }else{
                 this.showProp=!this.showProp
             }
@@ -604,7 +607,7 @@ export default {
             ).then(function(res){
                 _self.$vux.toast.show({type: 'success',text:"删除成功" });
                 _self.loadData1();
-                
+
             }).catch(function(err){
                 _self.errorUtil(err);
             })
@@ -666,7 +669,7 @@ export default {
             })
         },
         // 笔记本
-        
+
         ssCon(con,id){
             this.show1=!this.show1
             this.show11=!this.show11
@@ -766,7 +769,7 @@ export default {
 <style>
     .vux-x-dialog .weui-dialog{max-width:520px;-webkit-transform: translate(0,0);transform: translate(0,0);left:0;top:0;}
     .vux-x-dialog .weui-dialog__bd {padding: 0 1.6em .8em;min-height: 40px;font-size: 15px;line-height: 1.3;word-wrap: break-word;word-break: break-all;color: #999;}
-    .tab-con-change .vux-tab{height: 85px;background: #fff;} 
+    .tab-con-change .vux-tab{height: 85px;background: #fff;}
     .tab-con-change .vux-tab-con-changetainer,.tab-con-change .vux-tab-wrap{height: 85px;padding-top: 0;}
     .tab-con-change .vux-tab .vux-tab-item {font-size: 28px;line-height: 85px;color: #646464;font-weight: 600;}
     .tab-con-change .vux-tab-container{height:85px;}
@@ -777,7 +780,7 @@ export default {
     .vux-x-dialog .weui-dialog__title {font-size: 28px;color: #444;}
     .vux-x-dialog .weui-dialog__ft {line-height: 65px;}
 
-    
+
     .styleC .weui-dialog__ft .weui-dialog__btn_default {font-size: 28px;color: #fff;background-color: #11c772;}
     .styleC .weui-dialog__ft .weui-dialog__btn_primary {font-size: 28px;color: #fff;background-color: #8f8e8e;}
 </style>
@@ -804,7 +807,7 @@ export default {
     .task .back-a{position: absolute;right: 20px;top: 50px;width: 24px;height: 24px;}
 
 
-    
+
 
 
     .dynamic{position: relative;border-top:1px solid #f4f3f3;/*no*/}
@@ -834,7 +837,7 @@ export default {
     .display-body i{font-size: 28px;color: #d5d3d3;margin-left:40px;}
     .display-body strong{color: #444;font-weight: 400;margin-right: 10px;}
     .dynameic-child{padding:25px 20px 25px 20px;border-bottom: 5px solid #f4f3f3;/*no*/}
-    
+
 
 
 
@@ -854,7 +857,7 @@ export default {
 
     .notebook{position: relative;border-top:1px solid #f4f3f3;/*no*/}
     .notebook div{padding: 20px;}
-    .t_book{padding: 10px 20px!important;border-bottom:5px solid #f4f4f4;/*no*/}  
+    .t_book{padding: 10px 20px!important;border-bottom:5px solid #f4f4f4;/*no*/}
     .t_book > p{font-size: 26px;color: #8f8e8e;}
     .t_book > i{font-size: 46px;color: #2ed184;}
     .notebook .bk_child p:first-child{font-size: 28px;color: #444;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp:3;overflow: hidden;}
