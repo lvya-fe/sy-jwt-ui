@@ -5,16 +5,20 @@ props:
   showDelete 是否显示删除 bool 默认flase
 
 event:
-  @delete 删除视频
+  @deleteVideo 删除视频
 
 -->
+
 <template>
-  <div v-if="initVideo" >
+  <div v-if="initVideo" class="video-player-common">
     <video-player class="video-player vjs-custom-skin"
                   ref="videoPlayer"
                   :playsinline="true"
                   :options="videoOptions"
     ></video-player>
+    <div class="delete-video" @click="deleteVideo" v-if="showDelete">
+      <img src="@/assets/img/shanchub.png" alt="">
+    </div>
 
     <!--<video id="my-video" src="http://c.tfedu.net/o_1alrflico1qii12j5172a1k2c1egl9.mp4" controls x5-playsinline="" playsinline="" webkit-playsinline=""  x-webkit-airplay="allow" preload="auto"></video>-->
 
@@ -37,7 +41,7 @@ event:
           autoplay: false, //如果true,浏览器准备好时开始回放。
           muted: false, // 默认情况下将会消除任何音频。
           loop: false, // 导致视频一结束就重新开始。
-          preload: 'meta', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+          preload: 'none', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
           language: 'zh-CN',
           aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
@@ -67,12 +71,17 @@ event:
         let sources = [{
           // type: this.options,
           type: "video/mp4",
-          // src: 'http://c.tfedu.net/o_1alrflico1qii12j5172a1k2c1egl9.mp4'
-          src: this.options.valex || this.options.val || this.options.formItemValue
+          src: 'http://sy-oss.lvya.org/2019/04/03/upload_dveikmslkjb80yvcf4lrdqvzlgwrf4nm.mp4'
+          // src: this.options.valex || this.options.val || this.options.formItemValue
         }]
 
         this.videoOptions.sources = sources
         this.initVideo = true
+      },
+
+      deleteVideo() {
+        this.initVideo = false
+        this.$emit("deleteVideo")
       }
     },
     mounted() {
@@ -81,11 +90,5 @@ event:
   }
 </script>
 <style lang="less">
-  .seeVideoCustom {
-    overflow:hidden;
-    .video-js button{
-      font-size: 18px;
-    }
-  }
-  .video-player.video-player.vjs-custom-skin{margin-top:0 !important;}
+  @import "less/video.less";
 </style>
