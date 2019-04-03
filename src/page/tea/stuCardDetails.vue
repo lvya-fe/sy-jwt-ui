@@ -90,18 +90,30 @@
                         <p>{{geographic}}</p>
                     </group> -->
                     <!-- 选人插件 -->
-                    <group class="choosePeople hasIco" v-if="item.formItemType == '10'" @click.native="selectionPlugin(item.formItemId,item.choiceType)">
-                        <img src="../../assets/img/ico_people.png" alt="">
-                        <cell :title="item.formItemName" :value="[1,3].includes(formState) && item.citeDataType ==0 ? '请选择' :''" :class="{'readOnly': ![1,3].includes(formState) || item.citeDataType !=0}"></cell>
+                    <div class="choosePeople hasIco" v-if="item.formItemType == '10'">
+                        <p @click="selectionPlugin(item.formItemId,item.choiceType)">
+                            <img class="icon" src="../../assets/img/ico_people.png" alt="">
+                            <span class="fieldname">{{item.formItemName}}</span>
+                            <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right">请选择</span>
+                        </p>
                         <!-- <ul class="itemsWrap" v-if="item.itemValArr.length >0">
-                            <li class="vux-1px" v-for="val in item.itemValArr" :key="val">{{val}}</li>
+                            <li v-for="val in item.itemValArr" :key="val">{{val}}</li>
                         </ul> -->
                         <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
                             <div v-if="item.formItemValue == ''" class="nodata">
                                 <img src="../../assets/img/noData.png" alt="">
                             </div>
                         </div>
-                    </group>
+                    </div>
+                    <!-- <group class="choosePeople hasIco" v-if="item.formItemType == '10'" @click.native="selectionPlugin(item.formItemId,item.choiceType)">
+                        <img src="../../assets/img/ico_people.png" alt="">
+                        <cell :title="item.formItemName" :value="[1,3].includes(formState) && item.citeDataType ==0 ? '请选择' :''" :class="{'readOnly': ![1,3].includes(formState) || item.citeDataType !=0}"></cell>
+                        <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
+                            <div v-if="item.formItemValue == ''" class="nodata">
+                                <img src="../../assets/img/noData.png" alt="">
+                            </div>
+                        </div>
+                    </group> -->
                     <!-- 邮箱 -->
                     <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '14'">
                         <img class="icon" src="../../assets/img/ico_email.png" alt="">
@@ -826,7 +838,6 @@ export default {
         },
         //选人插件-相关方法
         selectionPlugin(id,type){
-	return;
             this.xr=id
             if(type==1){
                 this.type=3
@@ -986,16 +997,54 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                     &.choosePeople{
-                        .weui-cell__ft{
-                            color:#c6c6c6;
-                            &:after{
-                                right: 0 !important;
+                        // .weui-cell__ft{
+                        //     color:#c6c6c6;
+                        //     &:after{
+                        //         right: 0 !important;
+                        //     }
+                        // }
+                        // .readOnly{
+                        //     .weui-cell__ft:after{
+                        //         height: 0;
+                        //         width: 0;
+                        //     }
+                        // }
+                        p{
+                            position: relative;
+                            padding: 30px 30px 30px 75px;
+                            img{
+                                width: 35px;
+                                height: 37px;
+                                position: absolute;
+                                top:28px;
+                                left:30px;
                             }
-                        }
-                        .readOnly{
-                            .weui-cell__ft:after{
-                                height: 0;
-                                width: 0;
+                            .fieldname{
+                                font-size: 30px;
+                                line-height: 1;
+                            }
+                            .ico-right{
+                                position: absolute;
+                                right: 80px;
+                                top: 24px;
+                                color: #c6c6c6;
+                                font-size: 30px;
+                                &:after{
+                                    content: " ";
+                                    display: inline-block;
+                                    height: 0.213333rem;
+                                    width: 0.213333rem;
+                                    border-width: 0.026667rem 0.026667rem 0 0;
+                                    border-color: #c8c8cd;
+                                    border-style: solid;
+                                    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+                                    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+                                    position: relative;
+                                    position: absolute;
+                                    top: 50%;
+                                    margin-top: -0.133333rem;
+                                    right: -0.566667rem;
+                                }
                             }
                         }
                         .nodata{

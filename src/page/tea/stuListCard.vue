@@ -640,8 +640,8 @@ export default {
             background-color: transparent;
         }
         background-color: #ebebeb;
-        // margin-top: 76px;
-        // padding-top: 20px;
+        margin-top: 76px;
+        padding-top: 20px;
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;
