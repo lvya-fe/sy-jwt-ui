@@ -167,11 +167,11 @@
                                         </p>
                                     </dt>
                                     <template>
-                                        <!-- <dd v-if="field.itemValArr.length >0 ">
+                                        <dd v-if="field.formSelectItemResps !=null && field.formSelectItemResps.length >0 ">
                                             <ul class="itemsWrap" >
-                                                <li class="vux-1px" v-for="val in field.itemValArr" :key="val">{{val}}</li>
+                                                <li v-for="val in field.formSelectItemResps" :key="val.id">{{val.value}}</li>
                                             </ul>
-                                        </dd> -->
+                                        </dd>
                                         <dd class="multiple" v-if="field.formItemValue =='' ">
                                             <img src="../../assets/img/noData.png" alt="">
                                         </dd>
@@ -990,14 +990,16 @@ export default {
                                     font-size: 0;
                                     li{
                                         margin-bottom: 30px;
-                                        margin-left: 30px;
+                                        margin-right: 30px;
                                         display: inline-block;
                                         padding: 20px;
                                         font-size: 28px;
-                                        color: #999;
-                                        &:first-child{
-                                            margin-left: 0;
-                                        }
+                                        color: #656565;
+                                        border:2px solid #ccc;
+                                        border-radius: 16px;
+                                        // &:first-child{
+                                        //     margin-left: 0;
+                                        // }
                                     }
                                 }
                             }

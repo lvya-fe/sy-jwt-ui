@@ -20,9 +20,9 @@
                         <p class="readOnly" v-else>{{item.formItemValue}}</p>
                     </div>
                     <!-- 多行 -->
-                    <div class="fieldsWrap txtarea" v-if="item.formItemType == '2'">
+                    <div class="fieldsWrap txtarea hookTxtarea" v-if="item.formItemType == '2'">
                         <p :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>
-                        <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " :max="200" v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
+                        <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " rows='3' v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
                         <div v-else>
                             <div v-if="item.formItemValue !=''" class="readOnly-block">
                                 <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
@@ -65,11 +65,11 @@
                         </div>
                     </div>
                     <!-- 文本描述 -->
-                    <div class="fieldsWrap wenben" v-if="item.formItemType == '8'">
+                    <div class="fieldsWrap wenben hookTxtarea" v-if="item.formItemType == '8'">
                         <p><span>{{item.formItemName}}</span></p>
                         <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
                         <div v-if="item.formItemValue != ''" class="readOnly-block">
-                            <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
+                            <x-textarea disabled rows="3" v-model="item.formItemValue" :show-counter="false"></x-textarea>
                         </div>
                         <div v-else class="nodata">
                             <img src="../../assets/img/noData.png" alt="">
@@ -89,7 +89,7 @@
                             <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right">请选择</span>
                         </p>
                         <ul class="itemsWrap" v-if="item.formSelectItemResps.length >0">
-                            <li v-for="val in item.formSelectItemResps" :key="val.id">{{val.name}}</li>
+                            <li v-for="val in item.formSelectItemResps" :key="val.id">{{val.value}}</li>
                         </ul>
                         <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
                             <div v-if="item.formSelectItemResps.length == 0" class="nodata">
@@ -510,10 +510,11 @@ export default {
         changeRadio(val,index){
             this.curFieldsLists[index].formItemValue = val;
         },
-        //多项选择选择值--省市区
+        //多项选择选择值
         checkListChange(value,index){
             this.curFieldsLists[index].formItemValue = value.length>0 ? value.join(',') : '';
         },
+        //省市区
         changeAddress(ids,names){
             this.tempAddress = names;
         },
@@ -846,7 +847,7 @@ export default {
             obj.forEach( (a) => {
                 this.curFieldsLists[this.curIndex].formSelectItemResps.push({
                     'id': a.id,
-                    'name': a.name
+                    'value': a.name
                 });
                 pids.push(a.id);
             })

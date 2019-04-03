@@ -1,5 +1,5 @@
 <template>
-    <div class="stuCardDetails">
+    <div class="stuCardDetails" :class="{'hasbgColor': hasbgColor}">
         <div class="top-back">
             <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ title }}</div>
@@ -20,9 +20,9 @@
                         <p class="readOnly" v-else>{{item.formItemValue}}</p>
                     </div>
                     <!-- 多行 -->
-                    <div class="fieldsWrap txtarea" v-if="item.formItemType == '2'">
+                    <div class="fieldsWrap txtarea hookTxtarea" v-if="item.formItemType == '2'">
                         <p :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>
-                        <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " :max="200" v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
+                        <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " rows='3' v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
                         <div v-else>
                             <div v-if="item.formItemValue !=''" class="readOnly-block">
                                 <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
@@ -65,11 +65,11 @@
                         </div>
                     </div>
                     <!-- 文本描述 -->
-                    <div class="fieldsWrap wenben" v-if="item.formItemType == '8'">
+                    <div class="fieldsWrap wenben hookTxtarea" v-if="item.formItemType == '8'">
                         <p><span>{{item.formItemName}}</span></p>
                         <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
                         <div v-if="item.formItemValue != ''" class="readOnly-block">
-                            <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
+                            <x-textarea disabled rows="3" v-model="item.formItemValue" :show-counter="false"></x-textarea>
                         </div>
                         <div v-else class="nodata">
                             <img src="../../assets/img/noData.png" alt="">
@@ -83,13 +83,13 @@
                     </div>
                     <!-- 选人插件 -->
                     <div class="choosePeople hasIco" v-if="item.formItemType == '10'">
-                        <p @click="selectionPlugin(item.formItemId,item.choiceType)">
+                        <p @click="selectionPlugin(item.formItemId,item.choiceType,index)">
                             <img class="icon" src="../../assets/img/ico_people.png" alt="">
                             <span class="fieldname">{{item.formItemName}}</span>
                             <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right">请选择</span>
                         </p>
                         <ul class="itemsWrap" v-if="item.formSelectItemResps.length >0">
-                            <li v-for="val in item.formSelectItemResps" :key="val.id">{{val.name}}</li>
+                            <li v-for="val in item.formSelectItemResps" :key="val.id">{{val.value}}</li>
                         </ul>
                         <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
                             <div v-if="item.formSelectItemResps.length == 0" class="nodata">
@@ -381,7 +381,8 @@ export default {
             authorizationCode:'',
             propsta:'',
             //选人插件
-            formShow:true
+            formShow:true,
+            hasbgColor:true
         }
     },
     components:{
@@ -467,7 +468,7 @@ export default {
                                 }
                             }
                             if(element.formItemType == '10'){
-
+                                element.formSelectItemResps = element.formSelectItemResps == null ? [] : element.formSelectItemResps;
                             }
                         })
                     }
@@ -802,7 +803,8 @@ export default {
                 formItemValues:formItemValues,
                 stuId:this.stuid
             })
-            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTeaTaskFormList",
+            console.log(formValueJson,"提交数据")
+            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTaskFormList",
             qs.stringify({
                     uid:this.uid,
                     schoolId:Number(this.schoolId),
@@ -821,7 +823,7 @@ export default {
             })
         },
         //选人插件-相关方法
-        selectionPlugin(id,type){
+        selectionPlugin(id,type,index){
             this.xr=id
             if(type==1){
                 this.type=3
@@ -832,24 +834,27 @@ export default {
             }
             this.tsshow= true;
             this.formShow = false;
+            this.hasbgColor = false;
+            this.curIndex = index;
         },
         qx(){
           this.tsshow = false;
         },
         qd(obj){
-            this.itmes.forEach((it)=>{
-                // if(it.id==this.xr){
-                //     var con =[];
-                //     var va =[];
-                //     obj.forEach( (a) => {
-                //         con.push(a.name)
-                //         va.push(a.id)
-                //     })
-                //     it.valex=con
-                //     it.val=va.join(',')
-                // }
+            if(obj.length == 0) return;
+            this.curFieldsLists[this.curIndex].formSelectItemResps = [];
+            let pids = [];
+            obj.forEach( (a) => {
+                this.curFieldsLists[this.curIndex].formSelectItemResps.push({
+                    'id': a.id,
+                    'value': a.name
+                });
+                pids.push(a.id);
             })
-          this.tsshow = false;
+            this.curFieldsLists[this.curIndex].formItemValue = pids.join(',');
+            this.formShow = true;
+            this.hasbgColor = true;
+            this.tsshow = false;
         },
     },
 
@@ -888,10 +893,11 @@ export default {
 textarea:disabled, input:disabled{background-color: #fff;}
     .stuCardDetails{
         height: calc(~'100vh - 96px');
-        overflow-y: auto;
-        background-color: #ebebeb;
         margin-top: 76px;
         padding-top: 20px;
+        &.hasbgColor{
+            background-color: #ebebeb;
+        }
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;
@@ -927,7 +933,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
             font-size: 36px;
             color: #444;
             background-color: #fff;
-            z-index: 1000;
+            z-index: 10;
             img{
                 width: 38px;
                 height: 38px;
@@ -983,18 +989,6 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                     &.choosePeople{
-                        // .weui-cell__ft{
-                        //     color:#c6c6c6;
-                        //     &:after{
-                        //         right: 0 !important;
-                        //     }
-                        // }
-                        // .readOnly{
-                        //     .weui-cell__ft:after{
-                        //         height: 0;
-                        //         width: 0;
-                        //     }
-                        // }
                         p{
                             position: relative;
                             padding: 30px 30px 30px 75px;
@@ -1030,6 +1024,24 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                     top: 50%;
                                     margin-top: -0.133333rem;
                                     right: -0.566667rem;
+                                }
+                            }
+                        }
+                        .itemsWrap{
+                            box-sizing: border-box;
+                            padding: 30px 30px 0 30px;
+                            font-size: 0;
+                            li{
+                                margin-bottom: 30px;
+                                margin-right: 30px;
+                                display: inline-block;
+                                padding: 20px;
+                                font-size: 28px;
+                                border:2px solid #ccc;
+                                border-radius: 16px;
+                                color: #656565;
+                                &:first-child{
+                                    margin-left: 0;
                                 }
                             }
                         }
