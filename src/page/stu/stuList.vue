@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="top-back">
+        <div class="top-back" v-show="topShow">
             <img class="img-1" v-show="!noback" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ title }}</div>
             <!-- <span class="img-2"  v-if="!(jointimetype==0&&cycle==0)">
@@ -53,9 +53,11 @@ export default {
             back:this.$route.params.back,
             formId:this.$route.params.formId,
             schoolId:this.$route.params.schoolid,
+            topShow:true,
             title:'',
             pageNo:1,
             hasNextPage:false,//是否有下一页数据
+	        noData:false,
             conData:[],
         }
     },
@@ -96,6 +98,10 @@ export default {
             }).then((res)=>{
                 if(res.success){
                     this.$vux.loading.hide();
+		            if(res.data.videoStuListRespList == null || res.data.videoStuListRespList.length == 0){
+	                    this.topShow = false;
+	                    return;
+                    }
                     this.conData = this.conData.concat(res.data.videoStuListRespList);
                     this.title = res.data.videoStuListRespList[0].taskName;
                     this.hasNextPage = res.data.hasNextPage;

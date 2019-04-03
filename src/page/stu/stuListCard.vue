@@ -1,6 +1,6 @@
 <template>
     <div class="stuListCard">
-        <div class="top-back">
+        <div class="top-back" v-show="topShow">
             <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ title }}</div>
             <span class="img-2" style="display:none;" @click="openCycle">
@@ -9,7 +9,7 @@
             <img class="img-3" style="display:none;" src="../../assets/img/ico_search.png" alt="">
             <img class="img-4" style="display:none;" src="../../assets/img/batch.png" @click="batch" alt="">
         </div>
-      <div class="empty-top"></div>
+      <!-- <div class="empty-top"></div> -->
         <p class="drop-down" v-show="dropDownShow">
             <img src="../../assets/img/upgx.gif" alt="">
         </p>
@@ -421,6 +421,10 @@
             <div class="loadMore" v-show="pullUpShow">
                 <load-more :show-loading="hasNextPage" :tip="hasNextPage?'正在加载':'暂无数据'"></load-more>
             </div>
+            <div class="no-msg-div" v-if="stuLits.length==0">
+                <img src="@/assets/img/zanwushuju.png" alt="">
+                <span>暂无数据</span>
+            </div>
         </div>
         <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'65%','background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" class="dialog-demo vux-1px" hide-on-blur>
             <p>{{statusTime}}</p>
@@ -450,6 +454,7 @@ export default {
             // back:this.$route.params.back,
             formId:this.$route.params.formId,
             schooId:this.$route.params.schoolid,
+            topShow:true,//顶部信息是否显示
             title:'',
             pageNo:1,
             hasNextPage:false,//是否有下一页数据
@@ -503,7 +508,10 @@ export default {
                 if(res.success){
                     this.$vux.loading.hide();
                     let resData = res.data;
-                    if(resData.videoCardStuListRespList.length == 0) return;
+                    if(resData.videoCardStuListRespList.length == 0){
+                        this.topShow = false;
+                        return;
+                    };
                     this.title = resData.videoCardStuListRespList[0].taskName;
                     if(this.pullUp || (!this.pullUp && !this.dropDown)){
                         this.stuLits = this.stuLits.concat(resData.videoCardStuListRespList);
@@ -1007,6 +1015,9 @@ export default {
                 }
             }
         }
+        .no-msg-div{color: #999!important;text-align: center;line-height: 64px;margin-top: 50px;text-align:center!important;}
+        .no-msg-div img{width: 70px;height: 70px;display: inline-block;vertical-align: middle}
+        .no-msg-div span{height: 70px;display: inline-block;vertical-align: middle;font-size:28px;}
         .dialog-demo{
             .weui-mask{
                 background: transparent;

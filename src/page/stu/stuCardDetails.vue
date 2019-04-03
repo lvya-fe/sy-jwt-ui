@@ -152,8 +152,8 @@
                         <span class="percent">%</span>
                     </div>
                     <!-- 日期 -->
-                    <group class="fieldsDatetime hasIco" :class="{'readonly': ![1,3].includes(formState)}" v-if="item.formItemType == '22'">
-                        <img src="../../assets/img/ico_datetime.png" alt="">
+                    <group class="fieldsDatetime hasIco" :class="{'readonly': (![1,3].includes(formState) || item.citeDataType !=0)} " v-if="item.formItemType == '22'">
+                        <img src="../../assets/img/ico_date.png" alt="">
                         <datetime v-model="item.formItemValue" :readonly="[1,3].includes(formState) && item.citeDataType ==0 ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
                     </group>
                     <!-- 省市区 -->
@@ -387,6 +387,9 @@ export default {
             propsta:'',
         }
     },
+    computed: mapState({
+        _url_: state => state._url_
+    }),
     components:{
         Group,
         aplayer,
@@ -410,9 +413,6 @@ export default {
       VideoPlayerCommon,
       radioList
     },
-    computed: mapState({
-        _url_: state => state._url_
-    }),
     created(){
         wechatconfigInit(this,qs,this.uid,this._url_);
         this.getStuInfos();
