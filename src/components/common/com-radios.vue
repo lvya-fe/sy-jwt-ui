@@ -35,6 +35,7 @@ export default {
     },
     methods:{
         radioChange(val){
+            if(this.disabled) return;
             this.checkedVal = val;
             this.$emit('changeVal',this.checkedVal,this.index);
         }

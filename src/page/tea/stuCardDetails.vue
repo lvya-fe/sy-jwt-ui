@@ -1,5 +1,5 @@
 <template>
-    <div class="stuCardDetails">
+    <div class="stuCardDetails" :class="{'hasbgColor': hasbgColor}">
         <div class="top-back">
             <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ title }}</div>
@@ -7,7 +7,7 @@
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
             </span>
         </div>
-        <form action="" class="stuInfo">
+        <form action="" class="stuInfo" v-show="formShow">
             <ul>
                 <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,
                 14 邮箱 15 电话 16选择列表 17 多选列表  19 整数 20 小数
@@ -40,9 +40,6 @@
                     <!-- 单项选择 -->
                     <div class="fieldsWrap radios" v-if="item.formItemType == '4'">
                         <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
-                        <!-- <group v-if="item.formSelectItemResps.length >0 ">
-                            <radio :options="item.formSelectItemResps" :class="{'disabled':([1,3].includes(formState) && item.citeDataType ==0)}" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" v-model="item.formItemValue" @on-change="change"></radio>
-                        </group> -->
                         <radioList :lists="item.formSelectItemResps" :disabled = '(![1,3].includes(formState) || item.citeDataType !=0) ? true :false' :checkVal="item.formItemValue" :index="index" @changeVal="changeRadio"></radioList>
                     </div>
                     <!-- 多项选择 -->
@@ -84,36 +81,22 @@
                         <span class="fieldname">{{item.formItemName}}</span>
                         <p>{{geographic}}</p>
                     </div>
-                    <!-- <group class="positionWrap hasIco disflex" v-if="item.formItemType == '9'">
-                        <img src="../../assets/img/ico_position.png" alt="">
-                        <span class="fieldname">{{item.formItemName}}</span>
-                        <p>{{geographic}}</p>
-                    </group> -->
                     <!-- 选人插件 -->
                     <div class="choosePeople hasIco" v-if="item.formItemType == '10'">
-                        <p @click="selectionPlugin(item.formItemId,item.choiceType)">
+                        <p @click="selectionPlugin(item.formItemId,item.choiceType,index)">
                             <img class="icon" src="../../assets/img/ico_people.png" alt="">
                             <span class="fieldname">{{item.formItemName}}</span>
                             <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right">请选择</span>
                         </p>
-                        <!-- <ul class="itemsWrap" v-if="item.itemValArr.length >0">
-                            <li v-for="val in item.itemValArr" :key="val">{{val}}</li>
-                        </ul> -->
+                        <ul class="itemsWrap" v-if="item.formSelectItemResps.length >0">
+                            <li v-for="val in item.formSelectItemResps" :key="val.id">{{val.name}}</li>
+                        </ul>
                         <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
-                            <div v-if="item.formItemValue == ''" class="nodata">
+                            <div v-if="item.formSelectItemResps.length == 0" class="nodata">
                                 <img src="../../assets/img/noData.png" alt="">
                             </div>
                         </div>
                     </div>
-                    <!-- <group class="choosePeople hasIco" v-if="item.formItemType == '10'" @click.native="selectionPlugin(item.formItemId,item.choiceType)">
-                        <img src="../../assets/img/ico_people.png" alt="">
-                        <cell :title="item.formItemName" :value="[1,3].includes(formState) && item.citeDataType ==0 ? '请选择' :''" :class="{'readOnly': ![1,3].includes(formState) || item.citeDataType !=0}"></cell>
-                        <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
-                            <div v-if="item.formItemValue == ''" class="nodata">
-                                <img src="../../assets/img/noData.png" alt="">
-                            </div>
-                        </div>
-                    </group> -->
                     <!-- 邮箱 -->
                     <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '14'">
                         <img class="icon" src="../../assets/img/ico_email.png" alt="">
@@ -126,13 +109,13 @@
                         <p class="readPhone" v-else>{{item.formItemValue.substring(0,3)}}  {{item.formItemValue.substring(3,7)}} {{item.formItemValue.substring(7)}}</p>
                     </div>
                     <!-- 选择列表 -->
-                    <group class="fieldsWrap selectList" v-if="item.formItemType == '16'" @click.native="showCheckList(item,index,formState)">
+                    <group class="fieldsWrap selectList" v-if="item.formItemType == '16'" @click.native="showCheckList(item,index,formState,item.citeDataType)">
                         <cell :title="item.formItemName" ></cell>
                         <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right" :class="{'hasVal':item.formItemValue != ''}">{{item.formItemValue == '' || item.formItemValue == null ? '请选择' :item.formItemValue}}</span>
                         <span v-else class="ico-right readOnly">{{item.formItemValue}}</span>
                     </group>
                     <!-- 多选择列表 -->
-                    <group class="fieldsWrap selectList" v-if="item.formItemType == '17'" @click.native="showCheckList(item,index,formState)">
+                    <group class="fieldsWrap selectList" v-if="item.formItemType == '17'" @click.native="showCheckList(item,index,formState,item.citeDataType)">
                         <cell :title="item.formItemName" ></cell>
                         <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right" :class="{'hides': (item.formItemValue != '' && item.formItemValue != null) }">请选择</span>
                         <span v-else class="ico-right readOnly"></span>
@@ -315,7 +298,7 @@ import aplayer from "vue-aplayer";
 // import {formatDate} from '@/plugins/formatDate.js';
 // import BScroll from "better-scroll";
 import Bus from '@/plugins/eventBus.js'
-import select2 from '@/components/stu/select'
+import select2 from '@/components/tea/select'
 import radioList from '@/components/common/com-radios'
 import {wechatconfigInit,wechatopenimg} from '@/plugins/wechat.js';
 import uploadImg  from '@/components/uploadImg'
@@ -397,11 +380,11 @@ export default {
             si:0,
             authorizationCode:'',
             propsta:'',
+            //选人插件
+            formShow:true,
+            hasbgColor:true
         }
     },
-    computed: mapState({
-        _url_: state => state._url_
-    }),
     components:{
         Group,
         aplayer,
@@ -447,9 +430,9 @@ export default {
             console.log(this.paramsData.taskId)
             // if(this.paramsData.taskId === undefined){
                 this.$router.go(-1);
-            // }else{
-            //     this.$router.push({path: '/stuList2Card/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
-            // }
+            }else{
+                this.$router.replace({path: '/stuList2Card/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
+            }
         },
         //获取学生表单信息
         getStuInfos(){
@@ -485,7 +468,7 @@ export default {
                                 }
                             }
                             if(element.formItemType == '10'){
-
+                                element.formSelectItemResps = element.formSelectItemResps == null ? [] : element.formSelectItemResps;
                             }
                         })
                     }
@@ -543,8 +526,11 @@ export default {
             this.curFieldsLists[this.curIndex].formItemValue = this.tempAddress.length>0 ? this.tempAddress.join(',') : '';
         },
         //点击显示对应状态的时间
-        showCheckList(item,index,state){
-            if( ![1,3].includes(state)) return;
+        /**
+         * {item}字段数据 {index}当前索引 {state}字段状态 {type}是否引用字段
+         */
+        showCheckList(item,index,state,type){
+            if( ![1,3].includes(state) || type != 0) return;
             this.popType = item.formItemType == 16 ? 0 : 1;
             this.popData = Object.assign({},item);
             this.curIndex = index;
@@ -818,7 +804,8 @@ export default {
                 formItemValues:formItemValues,
                 stuId:this.stuid
             })
-            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTeaTaskFormList",
+            console.log(formValueJson,"提交数据")
+            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTaskFormList",
             qs.stringify({
                     uid:this.uid,
                     schoolId:Number(this.schoolId),
@@ -837,7 +824,7 @@ export default {
             })
         },
         //选人插件-相关方法
-        selectionPlugin(id,type){
+        selectionPlugin(id,type,index){
             this.xr=id
             if(type==1){
                 this.type=3
@@ -847,24 +834,28 @@ export default {
                 this.type=2
             }
             this.tsshow= true;
+            this.formShow = false;
+            this.hasbgColor = false;
+            this.curIndex = index;
         },
         qx(){
           this.tsshow = false;
         },
         qd(obj){
-            this.itmes.forEach((it)=>{
-                // if(it.id==this.xr){
-                //     var con =[];
-                //     var va =[];
-                //     obj.forEach( (a) => {
-                //         con.push(a.name)
-                //         va.push(a.id)
-                //     })
-                //     it.valex=con
-                //     it.val=va.join(',')
-                // }
+            if(obj.length == 0) return;
+            this.curFieldsLists[this.curIndex].formSelectItemResps = [];
+            let pids = [];
+            obj.forEach( (a) => {
+                this.curFieldsLists[this.curIndex].formSelectItemResps.push({
+                    'id': a.id,
+                    'name': a.name
+                });
+                pids.push(a.id);
             })
-          this.tsshow = false;
+            this.curFieldsLists[this.curIndex].formItemValue = pids.join(',');
+            this.formShow = true;
+            this.hasbgColor = true;
+            this.tsshow = false;
         },
     },
 
@@ -903,9 +894,11 @@ export default {
 textarea:disabled, input:disabled{background-color: #fff;}
     .stuCardDetails{
         height: calc(~'100vh - 96px');
-        background-color: #ebebeb;
         margin-top: 76px;
         padding-top: 20px;
+        &.hasbgColor{
+            background-color: #ebebeb;
+        }
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;
@@ -941,7 +934,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
             font-size: 36px;
             color: #444;
             background-color: #fff;
-            z-index: 1000;
+            z-index: 10;
             img{
                 width: 38px;
                 height: 38px;
@@ -997,18 +990,6 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                     &.choosePeople{
-                        // .weui-cell__ft{
-                        //     color:#c6c6c6;
-                        //     &:after{
-                        //         right: 0 !important;
-                        //     }
-                        // }
-                        // .readOnly{
-                        //     .weui-cell__ft:after{
-                        //         height: 0;
-                        //         width: 0;
-                        //     }
-                        // }
                         p{
                             position: relative;
                             padding: 30px 30px 30px 75px;
@@ -1044,6 +1025,24 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                     top: 50%;
                                     margin-top: -0.133333rem;
                                     right: -0.566667rem;
+                                }
+                            }
+                        }
+                        .itemsWrap{
+                            box-sizing: border-box;
+                            padding: 30px 30px 0 30px;
+                            font-size: 0;
+                            li{
+                                margin-bottom: 30px;
+                                margin-right: 30px;
+                                display: inline-block;
+                                padding: 20px;
+                                font-size: 28px;
+                                border:2px solid #ccc;
+                                border-radius: 16px;
+                                color: #656565;
+                                &:first-child{
+                                    margin-left: 0;
                                 }
                             }
                         }
