@@ -79,13 +79,16 @@
                         </div>
                     </div>
                     <!-- 地理位置 -->
-                    <group class="positionWrap hasIco disflex" v-if="item.formItemType == '9'">
+                    <div class="fieldsWrap positionWrap hasIco disflex" v-if="item.formItemType == '9'">
                         <img src="../../assets/img/ico_position.png" alt="">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <!-- <cell :title="item.formItemName" :value="item.formItemValue"></cell> -->
-                        <!-- <input type="text" readonly v-model="geographic"> -->
                         <p>{{geographic}}</p>
-                    </group>
+                    </div>
+                    <!-- <group class="positionWrap hasIco disflex" v-if="item.formItemType == '9'">
+                        <img src="../../assets/img/ico_position.png" alt="">
+                        <span class="fieldname">{{item.formItemName}}</span>
+                        <p>{{geographic}}</p>
+                    </group> -->
                     <!-- 选人插件 -->
                     <group class="choosePeople hasIco" v-if="item.formItemType == '10'" @click.native="selectionPlugin(item.formItemId,item.choiceType)">
                         <img src="../../assets/img/ico_people.png" alt="">
@@ -970,32 +973,17 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     &.positionWrap{
                         padding: 30px;
                         font-size: 30px;
+                        .fieldname{
+                            margin-left: 10px;
+                        }
                         img{
-                            top: 3px;
-                            left: 0;
+                            position: static;
                         }
                         p{
-                           font-size: 30px;
+                           width: 460px;
+                           font-size: 30px; 
+                           text-align: right;
                         }
-                        // input{
-                        //     position: absolute;
-                        //     right: 0;
-                        //     top: 6px;
-                        //     border: none;
-                        //     outline: none;
-                        //     width: 336px;
-                        //     color: #c6c6c6;
-                        //     text-align: right;
-                        //     font-size: 30px;
-                        // }
-                        // .weui-cells{
-                        //     padding-left: 56px;
-                        //     margin: 0;
-                        //     font-size: 30px;
-                        //     &:before,&:after{
-                        //         border: none;
-                        //     }
-                        // }
                     }
                     &.choosePeople{
                         .weui-cell__ft{
@@ -1155,7 +1143,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 display: inline-block;
                                 width: 180px;
                             }
-                            input,p{
+                            input{
                                 padding-left: 20px;
                                 width: 424px;
                             }
