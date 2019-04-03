@@ -157,7 +157,7 @@
                                     <dt>
                                         <img src="../../assets/img/ico_people.png" alt="">
                                         <span>{{field.formItemName}}</span>
-                                        <p v-if="[1,-1,3].includes(item.taskState) && field.formItemValue =='' ">
+                                        <p v-if="[1,-1,3].includes(item.taskState) && field.citeDataType ==0 ">
                                             <template>
                                                 <div class="noData">
                                                     <span>请选择</span>
@@ -166,7 +166,7 @@
                                             </template>
                                         </p>
                                     </dt>
-                                    <template>
+                                    <template v-if="![1,-1,3].includes(item.taskState) || field.citeDataType !=0 ">
                                         <dd v-if="field.formSelectItemResps !=null && field.formSelectItemResps.length >0 ">
                                             <ul class="itemsWrap" >
                                                 <li v-for="val in field.formSelectItemResps" :key="val.id">{{val.value}}</li>
