@@ -515,8 +515,10 @@ export default {
         },
         //多行文本  查看全文
         readAll(index){
-            this.curFieldsLists[index].readAll = !this.curFieldsLists[index].readAll;
-            this.curFieldsLists[index].btntxt = this.curFieldsLists[index].btntxt == '全文' ? '收起':'全文';
+            this.$nextTick(()=>{
+                this.curFieldsLists[index].readAll = !this.curFieldsLists[index].readAll;
+                this.curFieldsLists[index].btntxt = this.curFieldsLists[index].btntxt == '全文' ? '收起':'全文';
+            })
         },
         change (value) {
             console.log('change',value)
