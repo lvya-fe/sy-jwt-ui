@@ -9,7 +9,7 @@
             <img class="img-3" style="display:none;" src="../../assets/img/ico_search.png" alt="">
             <img class="img-4" style="display:none;" src="../../assets/img/batch.png" @click="batch" alt="">
         </div>
-      <!-- <div class="empty-top"></div> -->
+       <div class="empty-top"></div>
         <p class="drop-down" v-show="dropDownShow">
             <img src="../../assets/img/upgx.gif" alt="">
         </p>
@@ -637,8 +637,6 @@ export default {
             background-color: transparent;
         }
         background-color: #ebebeb;
-        margin-top: 76px;
-        padding-top: 20px;
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;
