@@ -604,7 +604,7 @@ const routes = [
     name: 'task-details',
     path: '/task-details/:uid/:id/:stuid/:schoolid',
     meta: {
-      title: '任务详情'
+      // title: '任务详情'
     },
     component: function (resolve) {
       require(['./page/details/task-details.vue'], resolve)
@@ -614,7 +614,7 @@ const routes = [
     name: 'task-cite-other',
     path: '/task-cite-other/:uid/:id/:stuid/:schoolid',
     meta: {
-      title: '引用任务详情'
+      // title: '引用任务详情'
     },
     component: function (resolve) {
       require(['./page/details/task-cite-other.vue'], resolve)
