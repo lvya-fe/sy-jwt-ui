@@ -25,7 +25,8 @@
                         <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
                         <div v-else>
                             <div v-if="item.formItemValue !=''" class="readOnly-block">
-                                <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
+                                <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :autosize="item.readAll" :show-counter="false"></x-textarea>
+                                <span class="moreTxt" @click="readAll(index)" v-show="!item.readAll">全文</span>
                             </div>
                             <div v-else class="nodata">
                                 <img src="../../assets/img/noData.png" alt="">
@@ -68,9 +69,9 @@
                     <div class="fieldsWrap wenben hookTxtarea" v-if="item.formItemType == '8'">
                         <p><span>{{item.formItemName}}</span></p>
                         <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
-                        <div v-if="item.formItemValue != ''" class="readOnly-block">
-                            <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :show-counter="false"></x-textarea>
-                            <span class="moreTxt" @click="readAll(index)">全文</span>
+                        <div v-if="item.formItemValue != ''" class="readOnly-block"  >
+                            <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :autosize="item.readAll" :show-counter="false"></x-textarea>
+                            <span class="moreTxt" @click="readAll(index)" v-show="!item.readAll">全文</span>
                         </div>
                         <div v-else class="nodata">
                             <img src="../../assets/img/noData.png" alt="">
@@ -457,9 +458,9 @@ export default {
                     if(this.curFieldsLists.length >0){
                         this.curFieldsLists.forEach(element => {
                             if(['2','8'].includes(element.formItemType)){
-                                element = Object.assign(element,{
-                                    readAll:false
-                                });
+                                let bool = false;
+                                bool = element.formItemValue.split(/\r?\n|\r/).length>3 ? false :true;
+                                this.$set(element, 'readAll', bool)
                             }
                             if(['5','6','17','25'].includes(element.formItemType)){
                                 element = Object.assign(element,{
@@ -511,9 +512,7 @@ export default {
         },
         //多行文本  查看全文
         readAll(index){
-            console.log(this.curFieldsLists[index].readAll,index,"111111111")
             this.curFieldsLists[index].readAll = true;
-            console.log(this.curFieldsLists[index].readAll,index,"111111111")
         },
         change (value) {
             console.log('change',value)
@@ -1234,7 +1233,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             padding: 0.15rem 0.2rem;
                         }
                     }
-                    &.txtarea,&.radios{
+                    &.radios{
                         padding: 0;
                         p{padding: 30px;}
                         .weui-cell,.weui-cells_radio,.weui-cells_checkbox{
@@ -1306,8 +1305,16 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             height: 76px;
                         }
                         .readOnly-block{
+                            margin-top: 18px;
                             padding-right: 30px;
                             position:relative;
+                            .readAll{
+                               .weui-textarea{
+                                    padding-bottom: 0;
+                                    height: auto;
+                                    overflow: auto;
+                                } 
+                            }
                             .weui-textarea{
                                 padding-bottom: 0;
                             }
@@ -1320,8 +1327,37 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                     &.txtarea{
-                        .weui-cell:before{
-                            border: none;
+                        padding: 0;
+                        p{padding: 30px;}
+                        .weui-cell{
+                            padding: 0 60px 0 30px;
+                            &:before{
+                                border: none;
+                            }
+                        }
+                        .readOnly-block{
+                            padding-right: 30px;
+                            padding-bottom: 30px;
+                            position:relative;
+                            .weui-cell{
+                                padding-right: 30px;
+                            }
+                            .readAll{
+                               .weui-textarea{
+                                    padding-bottom: 0;
+                                    height: auto;
+                                    overflow: auto;
+                                } 
+                            }
+                            .weui-textarea{
+                                padding-bottom: 0;
+                            }
+                            .moreTxt{
+                                position: absolute;
+                                right: 45px;
+                                bottom: 30px;
+                                color: #1abe7f;
+                            }
                         }
                         .nodata{
                             padding:10px 0;

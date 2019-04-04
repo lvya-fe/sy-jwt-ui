@@ -21,7 +21,7 @@
 
 
 
-        <div class="con-area" v-show="tea1">
+        <div class="con-area" v-show="tea1" title="tea1">
             <div class="con-area-child" v-for="(org,index) in orgsTealist">
                 <span @click="teaIn(org)">{{org.title}}</span>
                 <strong class="select-dian" v-show="org.dian2" >•</strong>
@@ -32,7 +32,7 @@
             已选：{{selecttea}}
         </div>
 
-        <div class="con-area" v-show="tea2">
+        <div class="con-area" v-show="tea2" title="tea2">
             <!-- <div class="con-area-child">
               <input class="checkBox" type="checkbox"  ref="all3"  @click="chooseStuAll"
               v-model="checkstuCalculate">
@@ -51,7 +51,7 @@
         </div>
 
 
-        <div class="con-area" v-show="tea3">
+        <div class="con-area" v-show="tea3" title="tea3">
             <div class="child-title">
                 <span >查询{{query}} </span>
             </div>
@@ -63,7 +63,7 @@
         </div>
         <button type="button" class="bottom-title-btn" v-show="tea3" @click="queryOut">返回</button>
 
-        <div class="con-area" v-show="o1">
+        <div class="con-area" v-show="o1" title="o1">
             <div class="child-title" v-if="tabs.length>0">
                 <span @click="orgOutIndex">首页</span>
                 <span v-for="tab in tabs"  @click="orgIn(tab,tab.id)">{{'/ '+tab.title+' '}}</span>
@@ -83,7 +83,7 @@
         <div class="bottom-title" @click.prevent.stop="tallBtn($event)" v-show="o1">
             已选：{{selectorg}}
         </div>
-        <div class="con-area" v-show="o3">
+        <div class="con-area" v-show="o3" title="o3">
             <div class="child-title" >
                 <span >查询{{query}} </span>
             </div> 
@@ -93,7 +93,7 @@
             </div>
         </div>
 
-        <div class="con-area" v-show="stu1">
+        <div class="con-area" v-show="stu1" title="stu1">
             <div class="con-area-child" v-for="(org,index) in orgsStulist">
                 <span @click="stuIn(org)">{{org.title}}</span>
                 <strong class="select-dian" v-show="org.dian2" >•</strong>
@@ -104,7 +104,7 @@
             已选：{{selectstu}}
         </div>
 
-        <div class="con-area" v-show="stu2">
+        <div class="con-area" v-show="stu2" title="stu2">
             <!-- <div class="con-area-child">
               <input class="checkBox" type="checkbox"  ref="all3"  @click="chooseStuAll"
               v-model="checkstuCalculate">
@@ -115,13 +115,13 @@
                 <span @click="stuOut">首页 /</span>
                 <span>{{stuname}}</span>
             </div>
-            <div class="con-area-child" v-for="(stu, key, index) in stus" v-bind:key="stu.id" v-if="stu.orgid==orgid">
+            <div class="con-area-child" v-for="(stu, key, index) in stus" v-bind:key="stu.id" v-if="stu.orgids==orgid">
                 <input class="checkBox" type="checkbox" v-model="stu.check">
                 <span>{{stu.name}}</span>
             </div>
         </div>
 
-        <div class="con-area" v-show="stu3">
+        <div class="con-area" v-show="stu3" title="stu3">
             <div class="child-title" >
                 <span >查询{{query}} </span>
             </div>
@@ -267,7 +267,7 @@
 
 
 
-            tabs:function(){
+            tabs(){
                 var self_ = this;
                 var pid_ =this.pid;
                 if(pid_==0){
@@ -292,7 +292,7 @@
                 return arr;
             },
 
-            stulist:function() {
+            stulist() {
                 var self_ = this;
                 self_.stus.forEach(function (stu) {
                     if(stu.check==undefined){
@@ -300,15 +300,15 @@
                     }
                 })
                 return this.stus.filter(function (item) {
-                    return item.orgid == self_.orgid
+                    return item.orgids == self_.orgid
                 })
             },
-            orgsStulist:function() {
+            orgsStulist() {
                 var self_ = this;
                 this.listOrg.forEach(function(item) {
                     item.dian2 = false;
                     self_.stus.forEach(function (stu) {
-                        if(stu.orgid==item.id){
+                        if(stu.orgids==item.id){
                             if(stu.check){
                                 item.dian2 = true;
                             }
@@ -320,7 +320,7 @@
                     return item
                 })
             },
-            orgsTealist:function() {
+            orgsTealist() {
                 var self_ = this;
                 this.listOrg.forEach(function(item) {
                     item.dian2 = false;
@@ -336,7 +336,7 @@
                     return item.type != '-1'
                 })
             },
-            listOrgToCalculate:function() {
+            listOrgToCalculate() {
                 var self_ = this;
                 var flg = true;
                 this.listOrg.forEach(function(item) {
@@ -358,13 +358,13 @@
                 })
             },
 
-            listOrgToQuery:function() {
+            listOrgToQuery() {
                 var self_ = this;
                 return this.listOrg.filter(function (item) {
                     return item.title.indexOf(self_.query)!=-1;
                 })
             },
-            checkorgCalculate:function() {
+            checkorgCalculate() {
                 var self_ = this;
                 var flg = true;
                 this.listOrg.forEach(function(item) {
@@ -377,7 +377,7 @@
                 return flg;
             },
 
-            checkStuCalculate:function() {
+            checkStuCalculate() {
                 var self_ = this;
                 var flg = true;
                 this.stumap[this.orgid].forEach(function(item) {
@@ -393,7 +393,7 @@
             },
 
 
-            selectstu:function(){
+            selectstu(){
                 var text = "";
                 this.stus.forEach(function(item) {
                     if(item.check){
@@ -405,7 +405,7 @@
                 }
                 return text;
             },
-            selecttea:function(){
+            selecttea(){
                 var text = "";
                 this.teas.forEach(function(item) {
                     if(item.check){
@@ -418,7 +418,7 @@
                 return text;
             },
 
-            selectorg:function(){
+            selectorg(){
                 var text = "";
                 this.listOrg.forEach(function(item) {
                     if(item.check){
