@@ -849,7 +849,9 @@ export default {
             this.curIndex = index;
         },
         qx(){
-          this.tsshow = false;
+            this.formShow = true;
+            this.hasbgColor = true;
+            this.tsshow = false;
         },
         qd(obj){
             if(obj.length == 0) return;

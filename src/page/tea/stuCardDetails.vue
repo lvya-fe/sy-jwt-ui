@@ -300,7 +300,7 @@ import aplayer from "vue-aplayer";
 // import {formatDate} from '@/plugins/formatDate.js';
 // import BScroll from "better-scroll";
 import Bus from '@/plugins/eventBus.js'
-import select2 from '@/components/tea/select'
+import select2 from '@/components/tea/select2'
 import radioList from '@/components/common/com-radios'
 import {wechatconfigInit,wechatopenimg} from '@/plugins/wechat.js';
 import uploadImg  from '@/components/uploadImg'
@@ -850,7 +850,9 @@ export default {
             this.curIndex = index;
         },
         qx(){
-          this.tsshow = false;
+            this.formShow = true;
+            this.hasbgColor = true;
+            this.tsshow = false;
         },
         qd(obj){
             if(obj.length == 0) return;

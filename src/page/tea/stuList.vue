@@ -149,9 +149,8 @@ export default {
                     }else{
                         _self.status=true
                         _self.ztSta=true;
-                        // _self.conData=res.data.listStuTask
+                        _self.conData=res.data.listStuTask
                         _self.title=res.data.task.title
-                        return;
                     }
                     _self.$nextTick(() => {
                         if (!_self.scroll) {
