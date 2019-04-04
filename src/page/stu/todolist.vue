@@ -7,7 +7,7 @@
         <!-- <group>
             <cell-box class="con-child ripple" v-for="todo in todos" :key="todo.id"  >
                 <div class="link_div" @click="goTodo(todo)">
-                    <span>{{todo.title}}    
+                    <span>{{todo.title}}
                         <strong v-if="todo.taskid==null" v-show="todo.state=='O'">
                             <img src="../../assets/img/weishangchuan.png" alt="">
                         </strong>
@@ -60,8 +60,8 @@
             </confirm>
         </div>
     </div>
-    
-    
+
+
 </template>
 
 <script>
@@ -73,7 +73,7 @@ export default {
         TransferDom
     },
     components: {
-        Tab, 
+        Tab,
         TabItem,
         CellBox,
         Group,
@@ -99,7 +99,8 @@ export default {
         },
         goTodo(todo){
             if(todo.type=='1'){
-                 this.$router.push({path: '/studentTaskDetails/'+this.$route.params.uid+'/'+todo.id+'/'+null+'/'+null+'/'+0});
+              // this.$router.push({path: '/studentTaskDetails/'+this.$route.params.uid+'/'+todo.id+'/'+null+'/'+null+'/'+0});
+              this.$router.push({path: '/task-details/'+this.$route.params.uid+'/'+todo.id+'/'+null+'/'+0});
             }
             if(todo.type=='2'){
                  this.$router.push({path: '/CertificateRUploadRejection/'+this.$route.params.uid+'/'+todo.id});
@@ -170,7 +171,7 @@ export default {
     .top-back .img-1{position: absolute;width: 38px;height: 38px;left: 20px;top: 25px}
     .n_title{width:80%;margin:0 auto;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
 
-    
+
     .todoChange{position: relative;}
     .todoChange >div{padding: 25px;text-align: left;color: #444;overflow: hidden;border-bottom: 1px solid #f4f3f3;/*no*/margin-bottom: 30px;position: relative;}
     .todoChange >div:last-child{border-bottom:none;}

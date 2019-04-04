@@ -147,7 +147,8 @@ export default {
         resData = await this.$axios.post( process.env.API_ROOT+'app/stu/v1/taskview', qs.stringify(params))
         console.log('stu:', resData)
       } else {
-        resData = await this.$axios.post( process.env.API_ROOT+ 'app/tea/v1/taskview', qs.stringify(params))
+        // teaTaskView taskView
+        resData = await this.$axios.post( process.env.API_ROOT+ 'app/tea/task/teaTaskView', qs.stringify(params))
         console.log('tea:', resData)
       }
       this.$vux.loading.hide()

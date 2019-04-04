@@ -10,7 +10,7 @@
         <p class="drop-down" v-if="dropDown" v-show="show3">
             <img src="../../assets/img/upgx.gif" alt="">
         </p>
-        <div class="list-con-div bscroll" :class="{'hasNoData':conData.length == 0}"  ref="bscroll" v-show="show3">
+        <div class="list-con-div bscroll"  ref="bscroll" v-show="show3">
             <div class="bscroll-container">
                 <div class="stuListPar">
                     <div class="ripple" v-for="(item,index) in conData" :key="index" @click="link(item.task.id,item.stu.id,item.task.joinstarttime,item.task.joinendtime,item.stu.name)">
@@ -27,7 +27,7 @@
                                 <span>{{ item.stu.orgname }}</span>
                             </p>
                             <p>
-                                {{ 
+                                {{
                                     item.task.statusName=='已完成'?'完成时间 :':
                                 (item.task.statusName=='未完成'||item.task.statusName=='进行中')&&item.task.jointimetype==0?'不限制':
                                 (item.task.statusName=='未完成'||item.task.statusName=='进行中')&&item.task.jointimetype==2?'剩余时间 :':
@@ -35,14 +35,14 @@
                                 item.task.statusName=='未通过'?'审核时间 :':
                                 item.task.statusName=='已经结束'&&item.task.jointimetype==2?'结束时间 :':
                                 item.task.statusName=='尚未开始'&&item.task.jointimetype==2?'开启时间:':'' }}
-                                <span>{{ 
+                                <span>{{
                                     (item.task.statusName=='尚未开始'&&item.task.jointimetype==2&&item.task.limittimes.length==0)?item.task.joinstarttime:
                                     (item.task.statusName=='尚未开始'&&item.task.jointimetype==2&&item.task.limittimes.length>0)?formatDuringNextDay(item.task.limittimes):
                                     item.task.statusName=='已完成'||item.task.statusName=='待审核'||item.task.statusName=='未通过'? item.task.joinStartTimeShow:
                                     item.task.statusName=='已经结束'&&item.task.jointimetype==2?item.task.joinendtime:
                                     (item.task.statusName=='未完成'||item.task.statusName=='进行中')&&item.task.jointimetype==2&&item.task.limittimes.length==0?formatDuring(item.task.joinendtime):
                                     (item.task.statusName=='未完成'||item.task.statusName=='进行中')&&item.task.jointimetype==2&&item.task.limittimes.length>0?formatDuringToday(item.task.limittimes):''
-                                    }}</span> 
+                                    }}</span>
                                 </p>
                             <img class="back-a" src="../../assets/img/you.png" alt="">
                         </div>
@@ -108,7 +108,7 @@ export default {
         }
     },
     mounted(){
-        
+
     },
     computed: {
         noback:function(){
@@ -149,9 +149,8 @@ export default {
                     }else{
                         _self.status=true
                         _self.ztSta=true;
-                        // _self.conData=res.data.listStuTask
+                        _self.conData=res.data.listStuTask
                         _self.title=res.data.task.title
-                        return;
                     }
                     _self.$nextTick(() => {
                         if (!_self.scroll) {
@@ -193,7 +192,7 @@ export default {
                                             _self.query();
                                             _self.scroll.refresh()
                                             _self.loadshow=false
-                                        },1000); 
+                                        },1000);
                                         //使用refresh 方法 来更新scroll  解决无法滚动的问题
                                         console.log('refresh了啊')
                                     }
@@ -201,7 +200,7 @@ export default {
                                         _self.loadStatus=false
                                         console.log("暂无更多数据")
                                     }
-                                    
+
                                 }
                                 // console.log(_self.scroll.maxScrollY+"总距离----下拉的距离"+pos.y)
                             })
@@ -226,7 +225,7 @@ export default {
             var minutes = parseInt(((c-d) % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = ((c-d) % (1000 * 60)) / 1000;
             var a = days + " 天 " + hours + " 小时 " + minutes + " 分钟 "
-            
+
             // console.log(a,'剩余时间')
             return a;
         },
@@ -244,8 +243,8 @@ export default {
                 strDate = "0" + strDate;
             }
             var currentdate = year + seperator1 + month + seperator1 + strDate;
-            console.log(currentdate,'今天的日期')  
-            console.log(array,'日期数组')  
+            console.log(currentdate,'今天的日期')
+            console.log(array,'日期数组')
             var conTime = null;
             array.forEach(function(el,index){
                 if(el==currentdate){
@@ -278,7 +277,9 @@ export default {
         },
         link(id,stuid,str,end,stuname){
             var _self = this;
-            this.$router.push({path: '/studentTaskDetailsTea/'+_self.uid+'/'+id+'/'+stuid+'/'+str+'/'+end+'/'+0+'/'+stuname});
+            // this.$router.push({path: '/studentTaskDetailsTea/'+_self.uid+'/'+id+'/'+stuid+'/'+str+'/'+end+'/'+0+'/'+stuname});
+            this.$router.push({path: '/task-details/'+this.uid+'/'+id+'/'+null+'/'+null});
+
         },
         propShow2(){
             this.show2=true
@@ -326,7 +327,6 @@ export default {
 .no-msg-div span{height: 70px;display: inline-block;vertical-align: middle;font-size:28px;}
 
 .bscroll{width: 100%;overflow: hidden;}
-.bscroll.hasNoData{background-color:#fafafa;}
 .drop-down{position: absolute;top:90px;left:0px;width: 100%;height: 50px;line-height:50px;text-align: center;}
 .drop-down img{width:50px;height:50px;}
 </style>
