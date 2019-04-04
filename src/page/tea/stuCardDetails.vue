@@ -7,6 +7,7 @@
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
             </span>
         </div>
+        <div class="empty-top"></div>
         <form action="" class="stuInfo" v-show="formShow">
             <ul>
                 <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,
@@ -170,13 +171,11 @@
                         <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" @blur="verifyField(item.formItemValue,item.formItemType)" >
                     </div>
                     <!-- 音频 -->
-                    <div class="fieldsWrap hasIco fieldAudio" v-if="item.formItemType == '28'">
-                        <p class="vux-1px-b">
-                            <img src="../../assets/img/ico_audio.png" alt="">
-                            <span>{{item.formItemName}}</span>
-                        </p>
+                    <div class="fieldsWrap hasIco" v-if="item.formItemType == '28'">
+                        <img src="../../assets/img/ico_audio.png" alt="">
+                        <span>{{item.formItemName}}</span>
                         <template v-if ="item.citeDataType == 0 && [1,3].includes(formState)">
-                            <div class="addAudio"  v-if="item.formItemValue ==''">
+                            <div class="addAudio vux-1px-t"  v-if="item.formItemValue ==''">
                                 <div class="addAudioInput">
                                     添加音频
                                     <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="audio/mpeg"> -->
@@ -186,8 +185,7 @@
                             </div>
                         </template>
                         <template v-if="(item.formItemValue !='')">
-                            <div class="showAudio">
-                                <img class="close" @click="item.formItemValue = ''" src="../../assets/img/shanchub.png" v-show="item.citeDataType == 0 && [1,3].includes(formState)">
+                            <div class="showAudio vux-1px-t">
                                 <aplayer :autoplay="null" :music="{
                                     title: '数据来源自',
                                     author: '绿芽',
@@ -303,7 +301,7 @@ import aplayer from "vue-aplayer";
 // import {formatDate} from '@/plugins/formatDate.js';
 // import BScroll from "better-scroll";
 import Bus from '@/plugins/eventBus.js'
-import select2 from '@/components/tea/select2'
+import select2 from '@/components/tea/select'
 import radioList from '@/components/common/com-radios'
 import {wechatconfigInit,wechatopenimg} from '@/plugins/wechat.js';
 import uploadImg  from '@/components/uploadImg'
@@ -460,6 +458,7 @@ export default {
                     // 省市区，需要一个数组信息
                     if(this.curFieldsLists.length >0){
                         this.curFieldsLists.forEach(element => {
+
                             if(['2','8'].includes(element.formItemType)){
                                 let bool = false;
                                 bool = element.formItemValue.split(/\r?\n|\r/).length>3 ? false :true;
@@ -818,7 +817,7 @@ export default {
                 stuId:this.stuid
             })
             console.log(formValueJson,"提交数据")
-            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTeaTaskFormList",
+            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTaskFormList",
             qs.stringify({
                     uid:this.uid,
                     schoolId:Number(this.schoolId),
@@ -852,9 +851,7 @@ export default {
             this.curIndex = index;
         },
         qx(){
-            this.formShow = true;
-            this.hasbgColor = true;
-            this.tsshow = false;
+          this.tsshow = false;
         },
         qd(obj){
             if(obj.length == 0) return;
@@ -909,8 +906,6 @@ export default {
 textarea:disabled, input:disabled{background-color: #fff;}
     .stuCardDetails{
         height: calc(~'100vh - 96px');
-        margin-top: 76px;
-        padding-top: 20px;
         &.hasbgColor{
             background-color: #ebebeb;
         }
@@ -1002,7 +997,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                         p{
                            width: 460px;
-                           font-size: 30px; 
+                           font-size: 30px;
                            text-align: right;
                         }
                     }
@@ -1171,20 +1166,6 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     }
                     &.hasIco{
                         padding-left: 90px;
-                        &.fieldAudio{
-                            padding: 0;
-                            p{
-                                position: relative;
-                                padding: 30px 30px 30px 90px;
-                                img{
-                                    position: absolute;
-                                    left: 30px;
-                                    top:38px;
-                                    width: 37px;
-                                    height: 34px;
-                                }
-                            }
-                        }
                         &.disflex{
                             display:flex;
                             display: -webkit-flex; /* Safari */
@@ -1332,7 +1313,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                     padding-bottom: 0;
                                     height: auto;
                                     overflow: auto;
-                                } 
+                                }
                             }
                             .weui-textarea{
                                 padding-bottom: 0;
@@ -1366,7 +1347,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                     padding-bottom: 0;
                                     height: auto;
                                     overflow: auto;
-                                } 
+                                }
                             }
                             .weui-textarea{
                                 padding-bottom: 0;
@@ -1448,8 +1429,8 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                     .addAudio{
-                        // margin: 30px -30px 0 0px;
-                        padding: 30px;
+                        margin: 30px -30px 0 -90px;
+                        padding: 30px 30px 0;
                         // span:nth-child(1){
                         //     color: #1abe7f;
                         // }
@@ -1475,17 +1456,8 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                     .showAudio{
-                        position: relative;
-                        // margin: 30px -30px 0 -90px;
-                        padding: 32px;
-                        img.close{
-                            position: absolute;
-                            top:30px;
-                            left: 696px;
-                            width: 22px;
-                            height: 22px;
-                            z-index: 100;
-                        }
+                        margin: 30px -30px 0 -90px;
+                        padding: 30px 30px 0;
                     }
                     .weui-cells{
                         margin-top: 0;
