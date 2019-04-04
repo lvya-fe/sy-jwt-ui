@@ -171,11 +171,13 @@
                         <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" @blur="verifyField(item.formItemValue,item.formItemType)" >
                     </div>
                     <!-- 音频 -->
-                    <div class="fieldsWrap hasIco" v-if="item.formItemType == '28'">
-                        <img src="../../assets/img/ico_audio.png" alt="">
-                        <span>{{item.formItemName}}</span>
+                    <div class="fieldsWrap hasIco fieldAudio" v-if="item.formItemType == '28'">
+                        <p class="vux-1px-b">
+                            <img src="../../assets/img/ico_audio.png" alt="">
+                            <span>{{item.formItemName}}</span>
+                        </p>
                         <template v-if ="item.citeDataType == 0 && [1,3].includes(formState)">
-                            <div class="addAudio vux-1px-t"  v-if="item.formItemValue ==''">
+                            <div class="addAudio"  v-if="item.formItemValue ==''">
                                 <div class="addAudioInput">
                                     添加音频
                                     <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="audio/mpeg"> -->
@@ -185,7 +187,8 @@
                             </div>
                         </template>
                         <template v-if="(item.formItemValue !='')">
-                            <div class="showAudio vux-1px-t">
+                            <div class="showAudio">
+                                <img class="close" @click="item.formItemValue = ''" src="../../assets/img/shanchub.png" v-show="item.citeDataType == 0 && [1,3].includes(formState)">
                                 <aplayer :autoplay="null" :music="{
                                     title: '数据来源自',
                                     author: '绿芽',
@@ -823,7 +826,7 @@ export default {
                 stuId:this.stuid
             })
             console.log(formValueJson,"提交数据")
-            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTaskFormList",
+            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTeaTaskFormList",
             qs.stringify({
                     uid:this.uid,
                     schoolId:Number(this.schoolId),
@@ -1174,6 +1177,20 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     }
                     &.hasIco{
                         padding-left: 90px;
+                        &.fieldAudio{
+                            padding: 0;
+                            p{
+                                position: relative;
+                                padding: 30px 30px 30px 70px;
+                                img{
+                                    position: absolute;
+                                    left: 30px;
+                                    top:38px;
+                                    width: 37px;
+                                    height: 34px;
+                                }
+                            }
+                        }
                         &.disflex{
                             display:flex;
                             display: -webkit-flex; /* Safari */
@@ -1442,8 +1459,8 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                     .addAudio{
-                        margin: 30px -30px 0 -90px;
-                        padding: 30px 30px 0;
+                        // margin: 30px -30px 0 0px;
+                        padding: 30px;
                         // span:nth-child(1){
                         //     color: #1abe7f;
                         // }
@@ -1469,8 +1486,16 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                     .showAudio{
-                        margin: 30px -30px 0 -90px;
-                        padding: 30px 30px 0;
+                        position: relative;
+                        padding: 32px;
+                        img.close{
+                            position: absolute;
+                            top:40px;
+                            left: 690px;
+                            width: 22px;
+                            height: 22px;
+                            z-index: 100;
+                        }
                     }
                     .weui-cells{
                         margin-top: 0;
