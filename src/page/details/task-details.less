@@ -1,40 +1,13 @@
 .task-details{
   height: calc(~'100vh - 96px');
-  background-color: #ebebeb;
-  .scroller-item{
-    font-size: 30px !important;
+  &.hasbgColor{
+    background-color: #ebebeb;
   }
-  .dp-header .dp-item{
-    font-size: 36px !important;
-    padding: 10px !important;
-    height: auto !important;
-  }
-  .vux-popup-picker .vux-popup-picker-container{
-    .vux-popup-header{
-      height:1rem;
-      line-height: 1rem;
-      .vux-popup-header-right,.vux-popup-header-left{
-        font-size:32px;
-      }
-    }
-  }
-  .myToast{
-    .toastLoading{
-      width: 0.506667rem;
-      height: 0.506667rem;
-      margin: 30px 0 10px;
-    }
-    p{
-      margin-bottom: 15px;
-    }
-  }
-
-  .weui-check__label:active{background-color: #fff !important;}
-  textarea:disabled, input:disabled{background-color: #fff;}
-
   textarea:disabled{
     background-color: #fafafa;
     color: #656565;
+    height: 150px;
+    overflow: hidden;
   }
   input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
     color: #c6c6c6;
@@ -161,6 +134,24 @@
               }
             }
           }
+          .itemsWrap{
+            box-sizing: border-box;
+            padding: 30px 30px 0 30px;
+            font-size: 0;
+            li{
+              margin-bottom: 30px;
+              margin-right: 30px;
+              display: inline-block;
+              padding: 20px;
+              font-size: 28px;
+              border:2px solid #ccc;
+              border-radius: 16px;
+              color: #656565;
+              &:first-child{
+                margin-left: 0;
+              }
+            }
+          }
           .nodata{
             padding:10px 0;
             height: 96px;
@@ -261,28 +252,6 @@
         .readPhone{
           top:32px;
         }
-        .readOnly-block{
-          position:static;
-          // margin: 0 30px;
-          padding-bottom:30px;
-          color:#656565;
-          p{background-color:#fafafa;}
-        }
-        // .fieldInput{
-        //     width:253px;
-        //     display:inline-block;
-        //     vertical-align: middle;
-        // }
-        // .txtInput{
-        //     position: static;
-        //     padding-top:0;
-        //     padding-bottom:0;
-        //     display:inline-block !important;
-        //     vertical-align:middle;
-        //     width: 416px;
-        //     font-size:30px;
-        //     line-height:1;
-        // }
         .fieldname{
           display:block;
           width:182px;
@@ -358,7 +327,7 @@
             padding: 0.15rem 0.2rem;
           }
         }
-        &.txtarea,&.radios,&.wenben{
+        &.radios{
           padding: 0;
           p{padding: 30px;}
           .weui-cell,.weui-cells_radio,.weui-cells_checkbox{
@@ -429,10 +398,60 @@
             width: 230px;
             height: 76px;
           }
+          .readOnly-block{
+            margin-top: 18px;
+            padding-right: 30px;
+            position:relative;
+            .readAll{
+              .weui-textarea{
+                padding-bottom: 0;
+                height: auto;
+                overflow: auto;
+              }
+            }
+            .weui-textarea{
+              padding-bottom: 0;
+            }
+            .moreTxt{
+              position: absolute;
+              right: 20px;
+              bottom: 15px;
+              color: #1abe7f;
+            }
+          }
         }
         &.txtarea{
-          .weui-cell:before{
-            border: none;
+          padding: 0;
+          p{padding: 30px;}
+          .weui-cell{
+            padding: 0 60px 0 30px;
+            &:before{
+              border: none;
+            }
+          }
+          .readOnly-block{
+            padding-right: 30px;
+            padding-bottom: 30px;
+            position:relative;
+            .weui-cell{
+              padding-right: 30px;
+            }
+            .readAll{
+              .weui-textarea{
+                padding-bottom: 0;
+                height: auto;
+                overflow: auto;
+              }
+            }
+            .weui-textarea{
+              padding-bottom: 0;
+            }
+            .moreTxt{
+              position: absolute;
+              right: 45px;
+              bottom: 30px;
+              color: #1abe7f;
+            }
           }
           .nodata{
             padding:10px 0;

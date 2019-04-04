@@ -1,6 +1,8 @@
 import { LoadMore,Loading,Group,XDialog,InlineLoading,Cell,XInput,XTextarea,Datetime,XAddress,ChinaAddressV4Data,Calendar,Radio,Checklist,XButton,Flexbox,FlexboxItem} from "vux";
 import qs from 'qs';
 import aplayer from "vue-aplayer";
+// import {formatDate} from '@/plugins/formatDate.js';
+// import BScroll from "better-scroll";
 import Bus from '@/plugins/eventBus.js'
 import select2 from '@/components/stu/select'
 import radioList from '@/components/common/com-radios'
@@ -8,11 +10,10 @@ import {wechatconfigInit,wechatopenimg} from '@/plugins/wechat.js';
 import uploadImg  from '@/components/uploadImg'
 import { mapState } from 'vuex'
 import VideoPlayerCommon from "@/components/common/video/video-player-common.vue"
-
 import FormCommon from "@/components/common/cite/cite-other/form-common.vue"
-
 import Cookies from 'js-cookie'
 import TaskConvert from "@/utils/TaskConvert"
+// import showcycle from '@/page/tea/SelectionPeriod'
 export default {
   data(){
     return{
@@ -86,11 +87,12 @@ export default {
       si:0,
       authorizationCode:'',
       propsta:'',
+      //选人插件
+      formShow:true,
+      hasbgColor:true,
+      FormCommon,
     }
   },
-  computed: mapState({
-    _url_: state => state._url_
-  }),
   components:{
     Group,
     aplayer,
@@ -112,8 +114,7 @@ export default {
     FlexboxItem,
     select2,
     VideoPlayerCommon,
-    radioList,
-    FormCommon
+    radioList
   },
   created(){
     wechatconfigInit(this,qs,this.uid,this._url_);
@@ -121,34 +122,51 @@ export default {
     // this.getHistoryList();
     Bus.$on('stuCardListsData',(data)=>{
       this.stuListsData = data;
-    })
+    });
     Bus.$on('cardListMsg',(data)=>{
-      this.paramsData = data
-    })
+      this.paramsData = data;
+    });
   },
+  computed: mapState({
+    _url_: state => state._url_
+
+  }),
   methods: {
-    goback () {
-      this.$router.go(-1)
+    goback() {
+      // this.$router.go(-1);
+      Cookies.set('cardPageNo', this.paramsData.pageNo);
+      console.log(this.paramsData.taskId)
+      if (this.paramsData.taskId === undefined) {
+        this.$router.go(-1);
+      } else {
+        this.$router.replace({path: '/stuList2Card/' + this.uid + '/' + this.paramsData.taskId + '/' + this.paramsData.formId + '/' + this.paramsData.schoolid});
+      }
     },
-    // 获取学生表单信息
-    async getStuInfos () {
+    //获取学生表单信息
+    async getStuInfos() {
       this.$vux.loading.show({
         text: '加载中...'
-      })
+      });
+
       // 学生数据
-      let  params = {
-        uid:this.uid,
-        taskid:Number(this.id),
+      let params = {
+        uid: this.uid,
+        taskid: Number(this.id),
         stime: '',
         etime: ''
       }
       let resData = {}
       if (Cookies.get('roleType') === 'stu') {
-        resData = await this.$axios.post( process.env.API_ROOT+'app/stu/v1/taskview', qs.stringify(params))
+        resData = await this.$axios.post(process.env.API_ROOT + 'app/stu/v1/taskview', qs.stringify(params))
         console.log('stu:', resData)
       } else {
         // teaTaskView taskView
-        resData = await this.$axios.post( process.env.API_ROOT+ 'app/tea/task/teaTaskView', qs.stringify(params))
+        if (this.$route.query.stuid) {
+          params.stuId = this.$route.query.stuid
+          resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/taskView', qs.stringify(params))
+        } else {
+          resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/teaTaskView', qs.stringify(params))
+        }
         console.log('tea:', resData)
       }
       this.$vux.loading.hide()
@@ -157,117 +175,126 @@ export default {
       } else {
         return false
       }
-      this.title = resData.name
-      this.formState = resData.taskState
-      this.curFieldsLists = resData.formItemResps
+
+      this.title = resData.name;
+      this.formState = resData.taskState;
+      this.curFieldsLists = resData.formItemResps;
       // 省市区，需要一个数组信息
-      if (this.curFieldsLists.length >0) {
+      if (this.curFieldsLists.length > 0) {
         this.curFieldsLists.forEach(element => {
-          if(['5','6','17','25'].includes(element.formItemType)){
-            element = Object.assign(element,{
+          if (['2', '8'].includes(element.formItemType)) {
+            let bool = false;
+            bool = element.formItemValue.split(/\r?\n|\r/).length > 3 ? false : true;
+            this.$set(element, 'readAll', bool)
+          }
+          if (['5', '6', '17', '25'].includes(element.formItemType)) {
+            element = Object.assign(element, {
               itemValArr: element.formItemValue != '' && element.formItemValue != null ? element.formItemValue.split(',') : []
             })
           }
-          if(element.formItemType == '9'){
-            if(element.formItemValue != ''){
+          if (element.formItemType == '9') {
+            if (element.formItemValue != '') {
               this.geographic = element.formItemValue;
-            }else{
+            } else {
               this.getMap();
             }
           }
-          if(element.formItemType == '10'){
-
+          if (element.formItemType == '10') {
+            element.formSelectItemResps = element.formSelectItemResps == null ? [] : element.formSelectItemResps;
           }
         })
       }
       this.$previewRefresh();
-      // }
-      // }).catch( err =>{
-      //   this.errorUtil(err);
-      // })
     },
     //获取学生填写记录
-    getHistoryList(){
-      this.$axios.get( process.env.API_ROOT+"app/stu/v1/getStuToStuTaskSubmitHistory",{params:{
-          uid:this.uid,
-          schoolId:Number(this.schoolId),
-          stuId:Number(this.stuid),
-          taskId:Number(this.id),
-        }}
-      ).then( res =>{
-        if(res.success){
+    getHistoryList() {
+      this.$axios.get(process.env.API_ROOT + "app/stu/v1/getStuToStuTaskSubmitHistory", {
+          params: {
+            uid: this.uid,
+            schoolId: Number(this.schoolId),
+            stuId: Number(this.stuid),
+            taskId: Number(this.id),
+          }
+        }
+      ).then(res => {
+        if (res.success) {
           this.historyList = res.data;
           console.log(this.historyList);
         }
-      }).catch( err =>{
+      }).catch(err => {
         this.errorUtil(err);
       })
     },
     //选择列表，多选择列表点击确定使用
-    checkListCommit(){
-      if(this.popData.formItemType == '17' && this.popData.itemValArr.length>0){
+    checkListCommit() {
+      if (this.popData.formItemType == '17' && this.popData.itemValArr.length > 0) {
         this.popData.formItemValue = this.popData.itemValArr.join(',');
       }
       this.curFieldsLists[this.curIndex] = this.popData;
       this.showHideOnBlur = false;
     },
-    change (value) {
-      console.log('change',value)
+    //多行文本  查看全文
+    readAll(index) {
+      this.curFieldsLists[index].readAll = true;
+    },
+    change(value) {
+      console.log('change', value)
     },
     //单选更改事件
-    changeRadio(val,index){
+    changeRadio(val, index) {
       this.curFieldsLists[index].formItemValue = val;
     },
-    //多项选择选择值--省市区
-    checkListChange(value,index){
-      this.curFieldsLists[index].formItemValue = value.length>0 ? value.join(',') : '';
+    //多项选择选择值
+    checkListChange(value, index) {
+      this.curFieldsLists[index].formItemValue = value.length > 0 ? value.join(',') : '';
     },
-    changeAddress(ids,names){
-      if(this.curIndex != null){
-        this.tempAddress = names;
-      }
+    //省市区
+    changeAddress(ids, names) {
+      this.tempAddress = names;
     },
-    addressShow(index){
+    addressShow(index) {
       this.curIndex = index;
     },
-    addressHide(){
-      this.curFieldsLists[this.curIndex].formItemValue = this.tempAddress.length>0 ? this.tempAddress.join(',') : '';
+    addressHide() {
+      this.curFieldsLists[this.curIndex].formItemValue = this.tempAddress.length > 0 ? this.tempAddress.join(',') : '';
     },
     //点击显示对应状态的时间
-    showCheckList(item,index,state){
-      if( ![1,3].includes(state)) return;
+    /**
+     * {item}字段数据 {index}当前索引 {state}字段状态 {type}是否引用字段
+     */
+    showCheckList(item, index, state, type) {
+      if (![1, 3].includes(state) || type != 0) return;
       this.popType = item.formItemType == 16 ? 0 : 1;
-      this.popData = Object.assign({},item);
+      this.popData = Object.assign({}, item);
       this.curIndex = index;
       this.showHideOnBlur = !this.showHideOnBlur;
     },
     //获取视频地址----------
-    obtainVideo(index){
+    obtainVideo(index) {
       var _self = this;
-      this.$axios.get( process.env.API_ROOT+"oss/2/get/code/"+_self.authorizationCode,
-        qs.stringify({
-        })
-      ).then(function(res){
-        if(res.isSuccess){
-          console.log(res,'获取视频')
-          if(res.data.path!='ok'){
-            _self.playerOptions.sources[0].src=res.data.path
+      this.$axios.get(process.env.API_ROOT + "oss/2/get/code/" + _self.authorizationCode,
+        qs.stringify({})
+      ).then(function (res) {
+        if (res.isSuccess) {
+          console.log(res, '获取视频')
+          if (res.data.path != 'ok') {
+            _self.playerOptions.sources[0].src = res.data.path
             // _self.itmes.forEach(function(el){
             //     if(el.id==_self.propId){
             //         el.val=res.data.path;
             //     }
             // })
             _self.curFieldsLists[index].formItemValue = res.data.path;
-            _self.upDataShow=false;
-          }else{
-            _self.$vux.toast.show({type: 'warn',text:'暂无文件' });
+            _self.upDataShow = false;
+          } else {
+            _self.$vux.toast.show({type: 'warn', text: '暂无文件'});
           }
         }
-      }).catch(function(err){
+      }).catch(function (err) {
         _self.errorUtil(err);
       })
     },
-    uploadVideo(id,e,type,index) {
+    uploadVideo(id, e, type, index) {
       //e.target.value文件名
       try {
         this.curIndex = index;
@@ -275,12 +302,12 @@ export default {
         var formdata = new FormData();
         formdata.append('file', file);
         this.ossconfig(id, formdata, type);
-      }catch (e) {
+      } catch (e) {
         this.$vux.loading.hide();
-        this.$vux.toast.show({type: 'warn',text:'当前设备不支持,请在电脑端上传' });
+        this.$vux.toast.show({type: 'warn', text: '当前设备不支持,请在电脑端上传'});
       }
     },
-    ossconfig(id,formdata,type) {
+    ossconfig(id, formdata, type) {
       var _self = this;
       //process.env.API_ROOT + 'oss/2/get/config'
       this.$axios.get(process.env.API_ROOT + 'oss/2/get/config').then(res => {
@@ -292,35 +319,35 @@ export default {
           formdata.append('policy', res.data.policy);
           formdata.append('save-key', res.data.save_key);
 
-          _self.doUpload(id, formdata, type,res.data.domain,res.data.url);
+          _self.doUpload(id, formdata, type, res.data.domain, res.data.url);
 
         }
       });
     },
-    doUpload(id,formdata,type,domain,url) {
-      this.$axios.post(url, formdata,{
-        headers:{
-          "Content-Type":"multipart/form-data"
+    doUpload(id, formdata, type, domain, url) {
+      this.$axios.post(url, formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data"
         },
         onUploadProgress: (progressEvent) => {
           // 对原生进度事件的处理
-          if(progressEvent.lengthComputable){
-            this.percent = parseInt(progressEvent.loaded/progressEvent.total * 100) + '%';
+          if (progressEvent.lengthComputable) {
+            this.percent = parseInt(progressEvent.loaded / progressEvent.total * 100) + '%';
             this.toastShow = true;
           }
         }
       }).then(res => {
         this.toastShow = false;
         console.log(res);
-        if(res.code=='200'){
-          if(type=="mp4"){//视频
-            this.playerOptions.sources[0].src=domain+res.url
+        if (res.code == '200') {
+          if (type == "mp4") {//视频
+            this.playerOptions.sources[0].src = domain + res.url
           }
-          this.curFieldsLists[this.curIndex].formItemValue = domain+res.url;
-          this.upDataShow=false;
+          this.curFieldsLists[this.curIndex].formItemValue = domain + res.url;
+          this.upDataShow = false;
 
-        }else{
-          this.$vux.toast.show({type: 'warn',text:'暂无文件' });
+        } else {
+          this.$vux.toast.show({type: 'warn', text: '暂无文件'});
         }
 
       }).catch(err => {
@@ -328,15 +355,15 @@ export default {
       })
     },
     //播放视频
-    playMP4(index){
+    playMP4(index) {
       this.playerOptions.sources[0].src = this.curFieldsLists[index].formItemValue;
       this.videoPropShow = true;
     },
     //音视频大文件上传
-    changeFile (val, index) {
-      if(val!=""&&val!=undefined) {
+    changeFile(val, index) {
+      if (val != "" && val != undefined) {
         var _self = this;
-        this.playerOptions.sources[0].src =val[0];
+        this.playerOptions.sources[0].src = val[0];
         this.curFieldsLists[index].formItemValue = val[0];
         // this.itmes.forEach(function (el) {
         //     if (el.id == _self.propId) {
@@ -348,12 +375,12 @@ export default {
     },
     //倒计时
     countdown() {
-      this.si=2;
-      this.btnGc=true;
-      var time = window.setInterval( ()=> {
+      this.si = 2;
+      this.btnGc = true;
+      var time = window.setInterval(() => {
         if (this.si === 0) {
           this.si = 0;
-          this.btnGc=false;
+          this.btnGc = false;
           window.clearInterval(time)
         } else {
           this.si -= 1;
@@ -361,51 +388,50 @@ export default {
       }, 1000)
     },
     //上传视频弹窗
-    upDataVideo(id,cad,index){
-      this.upDataShow=true;
-      this.propId=id;
-      this.propsta=cad;
-      if(index != -1){
+    upDataVideo(id, cad, index) {
+      this.upDataShow = true;
+      this.propId = id;
+      this.propsta = cad;
+      if (index != -1) {
         this.curIndex = index;
       }
 
-      if(this.si==0){
-        this.$axios.get( process.env.API_ROOT+"oss/2/"+cad+"/get/code",
-          qs.stringify({
-          })
-        ).then((res)=>{
-          if(res.isSuccess){
-            console.log(res,'验证码');
-            this.authorizationCode=res.data.code
-            this.upDataUrl='http://'+window.location.host+'/t/#/views/tea/upVideo/'+this.propsta+'/'+this.authorizationCode
+      if (this.si == 0) {
+        this.$axios.get(process.env.API_ROOT + "oss/2/" + cad + "/get/code",
+          qs.stringify({})
+        ).then((res) => {
+          if (res.isSuccess) {
+            console.log(res, '验证码');
+            this.authorizationCode = res.data.code
+            this.upDataUrl = 'http://' + window.location.host + '/t/#/views/tea/upVideo/' + this.propsta + '/' + this.authorizationCode
             this.countdown();
 
             this.inlineDescList = [];
 
-            res.data.list.forEach(v=>{
+            res.data.list.forEach(v => {
               var obj = {};
               obj.key = v.url;
               obj.value = v.url;
-              obj.inlineDesc = "上传于:"+v.time;
+              obj.inlineDesc = "上传于:" + v.time;
               this.inlineDescList.push(obj);
             });
-          }else{
-            this.$vux.toast.show({type: 'warn',text:res.errorDesc });
+          } else {
+            this.$vux.toast.show({type: 'warn', text: res.errorDesc});
           }
-        }).catch(function(err){
+        }).catch(function (err) {
           this.errorUtil(err);
         })
       }
     },
     //获取地理位置 --1
     getMap() {
-      var  self_ = this;
-      this.$wechat.ready(function(){
+      var self_ = this;
+      this.$wechat.ready(function () {
         self_.$wechat.getLocation({
           success: function (res) {
             var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-            var longitude = res.longitude ; // 经度，浮点数，范围为180 ~ -180。
-            self_.addressDetail(latitude,longitude);
+            var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+            self_.addressDetail(latitude, longitude);
 
           },
           cancel: function (res) {
@@ -415,74 +441,74 @@ export default {
       });
     },
     //--2
-    addressDetail(lat,lng){
-      var self=this;
+    addressDetail(lat, lng) {
+      var self = this;
       var geolocation = new BMap.Geolocation();
       var myGeo = new BMap.Geocoder();
-      myGeo.getLocation(new BMap.Point(lng,lat),function (result) {
-        if(result){
-          self.geographic=result.address
+      myGeo.getLocation(new BMap.Point(lng, lat), function (result) {
+        if (result) {
+          self.geographic = result.address
         }
       })
     },
-    verifyField(val,type){
-      if(val == '') return;
-      switch(type){
+    verifyField(val, type) {
+      if (val == '') return;
+      switch (type) {
         case '26': //邮编
-          if(!/^[1-9]\d{5}(?!\d)$/.test(val)){
-            this.$vux.toast.show({type: 'warn',text:'邮编填写不正确' });
+          if (!/^[1-9]\d{5}(?!\d)$/.test(val)) {
+            this.$vux.toast.show({type: 'warn', text: '邮编填写不正确'});
           }
           break;
         case '14': //邮箱
-          if(!/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(val)){
-            this.$vux.toast.show({type: 'warn',text:'邮箱填写不正确' });
+          if (!/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(val)) {
+            this.$vux.toast.show({type: 'warn', text: '邮箱填写不正确'});
           }
           break;
         case '27': //身份证
-          if(!/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(val)){
-            this.$vux.toast.show({type: 'warn',text:'身份证填写不正确' });
+          if (!/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(val)) {
+            this.$vux.toast.show({type: 'warn', text: '身份证填写不正确'});
           }
           break;
         case '15': //电话
-          if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(val)){
-            this.$vux.toast.show({type: 'warn',text:'电话填写不正确' });
+          if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(val)) {
+            this.$vux.toast.show({type: 'warn', text: '电话填写不正确'});
           }
           break;
       }
     },
     //小数，百分数  校验小数点后最多两位
-    verifyFix(val,index){
-      if(val.indexOf('.') == -1) return;
-      if(val.split('.')[1].length > 2){
-        this.curFieldsLists[index].formItemValue = val.substring(0,val.indexOf(".")+3);
+    verifyFix(val, index) {
+      if (val.indexOf('.') == -1) return;
+      if (val.split('.')[1].length > 2) {
+        this.curFieldsLists[index].formItemValue = val.substring(0, val.indexOf(".") + 3);
       }
     },
     //表单提交
-    submit(){
+    submit() {
       //app/stu/v1/addStuTaskFormList
-      if(this.curFieldsLists.length == 0) return;
-      for(let i=0;i<this.curFieldsLists.length;i++){
-        if(this.curFieldsLists[i].formItemType == '14' && this.curFieldsLists[i].formItemValue != ''){
-          if(!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(this.curFieldsLists[i].formItemValue)){
-            this.$vux.toast.show({type: 'warn',text:'邮箱填写不正确' });
+      if (this.curFieldsLists.length == 0) return;
+      for (let i = 0; i < this.curFieldsLists.length; i++) {
+        if (this.curFieldsLists[i].formItemType == '14' && this.curFieldsLists[i].formItemValue != '') {
+          if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(this.curFieldsLists[i].formItemValue)) {
+            this.$vux.toast.show({type: 'warn', text: '邮箱填写不正确'});
             return;
           }
         }
-        if(this.curFieldsLists[i].formItemType == '15' && this.curFieldsLists[i].formItemValue != ''){
-          if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.curFieldsLists[i].formItemValue)){
-            this.$vux.toast.show({type: 'warn',text:'电话填写不正确' });
+        if (this.curFieldsLists[i].formItemType == '15' && this.curFieldsLists[i].formItemValue != '') {
+          if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.curFieldsLists[i].formItemValue)) {
+            this.$vux.toast.show({type: 'warn', text: '电话填写不正确'});
             return;
           }
         }
-        if(this.curFieldsLists[i].formItemType == '26' && this.curFieldsLists[i].formItemValue != ''){
-          if(!/^[1-9]\d{5}(?!\d)$/.test(this.curFieldsLists[i].formItemValue)){
-            this.$vux.toast.show({type: 'warn',text:'邮编填写不正确' });
+        if (this.curFieldsLists[i].formItemType == '26' && this.curFieldsLists[i].formItemValue != '') {
+          if (!/^[1-9]\d{5}(?!\d)$/.test(this.curFieldsLists[i].formItemValue)) {
+            this.$vux.toast.show({type: 'warn', text: '邮编填写不正确'});
             return;
           }
         }
-        if(this.curFieldsLists[i].formItemType == '27' && this.curFieldsLists[i].formItemValue != ''){
-          if(!/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(this.curFieldsLists[i].formItemValue)){
-            this.$vux.toast.show({type: 'warn',text:'身份证填写不正确' });
+        if (this.curFieldsLists[i].formItemType == '27' && this.curFieldsLists[i].formItemValue != '') {
+          if (!/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(this.curFieldsLists[i].formItemValue)) {
+            this.$vux.toast.show({type: 'warn', text: '身份证填写不正确'});
             return;
           }
         }
@@ -493,7 +519,7 @@ export default {
       });
       let formValueJson = [];
       let formItemValues = [];
-      this.curFieldsLists.forEach( ele => {
+      this.curFieldsLists.forEach(ele => {
         ele.formItemValue = ele.formItemType == '9' ? this.geographic : ele.formItemValue;
         formItemValues.push({
           formItemType: ele.formItemType,
@@ -501,62 +527,69 @@ export default {
           formItemName: ele.formItemDbName
         })
 
-        if(ele.formItemNotNull=='Y'&&(ele.formItemValue==''||ele.formItemValue==null)){
-          this.$vux.toast.show({type: 'warn',text:'请将信息填写完整' });
+        if (ele.formItemNotNull == 'Y' && (ele.formItemValue == '' || ele.formItemValue == null)) {
+          this.$vux.toast.show({type: 'warn', text: '请将信息填写完整'});
         }
       })
       formValueJson.push({
-        formItemValues:formItemValues,
-        stuId:this.stuid
+        formItemValues: formItemValues,
+        stuId: this.stuid
       })
-      this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTaskFormList",
-        qs.stringify({
-          uid:this.uid,
-          schoolId:Number(this.schoolId),
-          formId:Number(this.formId),
-          taskId:Number(this.id),
-          stuId:Number(this.stuid),
-          formValueJson:JSON.stringify(formValueJson)
-        }))
-        .then( res =>{
-          if(res.success){
-            this.$vux.loading.hide();
-            this.goback();
-          }
-        }).catch( err =>{
-        this.errorUtil(err);
+      let path = ''
+      if (Cookies.get('roleType') === 'stu') {
+        path = 'app/stu/v1/addtask'
+      } else {
+        path = 'app/tea/task/addtask'
+      }
+
+      let obj = {}
+      obj.uid = this.uid
+      obj.taskid = this.id
+      let convertObj = TaskConvert.covertResult(this.curFieldsLists)
+      obj = {...convertObj, ...obj}
+      console.log('obj:', obj)
+      this.$axios.post(process.env.API_ROOT + path, qs.stringify(obj)).then(res => {
+        if (res.success) {
+          this.$vux.loading.hide();
+          this.goback();
+        }
+      }).catch(err => {
+        this.errorUtil(err)
       })
     },
     //选人插件-相关方法
-    selectionPlugin(id,type){
-      this.xr=id
-      if(type==1){
-        this.type=3
-      }else if(type==2){
-        this.type=1
-      }else if(type==3){
-        this.type=2
+    selectionPlugin(id, type, index) {
+      this.xr = id
+      if (type == 1) {
+        this.type = 3
+      } else if (type == 2) {
+        this.type = 1
+      } else if (type == 3) {
+        this.type = 2
       }
-      this.tsshow= true;
+      this.tsshow = true;
+      this.formShow = false;
+      this.hasbgColor = false;
+      this.curIndex = index;
     },
-    qx(){
+    qx() {
       this.tsshow = false;
     },
-    qd(obj){
-      this.itmes.forEach((it)=>{
-        // if(it.id==this.xr){
-        //     var con =[];
-        //     var va =[];
-        //     obj.forEach( (a) => {
-        //         con.push(a.name)
-        //         va.push(a.id)
-        //     })
-        //     it.valex=con
-        //     it.val=va.join(',')
-        // }
+    qd(obj) {
+      if (obj.length == 0) return;
+      this.curFieldsLists[this.curIndex].formSelectItemResps = [];
+      let pids = [];
+      obj.forEach((a) => {
+        this.curFieldsLists[this.curIndex].formSelectItemResps.push({
+          'id': a.id,
+          'value': a.name
+        });
+        pids.push(a.id);
       })
+      this.curFieldsLists[this.curIndex].formItemValue = pids.join(',');
+      this.formShow = true;
+      this.hasbgColor = true;
       this.tsshow = false;
-    },
-  },
-
+    }
+  }
 }

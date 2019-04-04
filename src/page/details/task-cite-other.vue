@@ -16,14 +16,14 @@
         <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
           <!-- 单行 -->
           <div class="fieldsWrap txtarea" v-if="item.formItemType == '1'">
-            <p class="fieldInput">{{item.formItemName}}</p>
+            <!--<p class="fieldInput">{{item.formItemName}}</p>-->
             <input v-if=" [1,3].includes(formState) && item.citeDataType ==0 " type="text" class="txtInput" v-model="item.formItemValue"  @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
             <!--<p class="readOnly" v-else>{{item.formItemValue}}</p>-->
             <FormCommon v-else :item.sync="item"></FormCommon>
           </div>
           <!-- 多行 -->
           <div class="fieldsWrap txtarea" v-if="item.formItemType == '2'">
-            <p :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>
+            <!--<p :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>-->
             <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " :max="200" v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
             <FormCommon v-else :item.sync="item"></FormCommon>
             <!--<div v-else>-->
@@ -37,10 +37,11 @@
 
           </div>
           <!-- 日期时间 -->
-          <group class="fieldsDatetime hasIco" :class="{'readonly': ![1,3].includes(formState) || item.citeDataType !=0}" v-if="item.formItemType == '3'">
-            <img src="../../assets/img/ico_datetime.png" alt="">
-            <datetime v-model="item.formItemValue" format="YYYY-MM-DD HH:mm" :readonly="[1,3].includes(formState) && item.citeDataType ==0 ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
+          <group class="fieldsDatetime" :class="{'readonly': ![1,3].includes(formState) || item.citeDataType !=0}" v-if="item.formItemType == '3'">
+            <datetime v-model="item.formItemValue" format="YYYY-MM-DD HH:mm" :readonly="[1,3].includes(formState) && item.citeDataType ==0 ? false :true"  @on-change="change" :title="item.formItemName" v-if="[1,3].includes(formState) && item.citeDataType ==0"></datetime>
+            <FormCommon v-else :item.sync="item" iconType="datetime"></FormCommon>
           </group>
+
           <!-- 单项选择 -->
           <div class="fieldsWrap radios" v-if="item.formItemType == '4'">
             <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
@@ -72,15 +73,11 @@
             </div>
           </div>
           <!-- 文本描述 -->
-          <div class="fieldsWrap wenben" v-if="item.formItemType == '8'">
-            <p><span>{{item.formItemName}}</span></p>
-            <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
-            <div v-if="item.formItemValue != ''" class="readOnly-block">
+          <div class="" v-if="item.formItemType == '8'">
+            <div v-if="!item.formItemValue" class="readOnly-block">
               <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
             </div>
-            <div v-else class="nodata">
-              <img src="../../assets/img/noData.png" alt="">
-            </div>
+            <FormCommon v-else :item.sync="item"></FormCommon>
           </div>
 
           <!-- 地理位置 -->
@@ -122,16 +119,17 @@
               </div>
           </group> -->
           <!-- 邮箱 -->
-          <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '14'">
-            <img class="icon" src="../../assets/img/ico_email.png" alt="">
-            <span class="fieldname">{{item.formItemName}}</span><input type="text" @blur="verifyField(item.formItemValue,item.formItemType)" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" >
+          <div class="" v-if="item.formItemType == '14'">
+            <input type="text" @blur="verifyField(item.formItemValue,item.formItemType)" v-if="[1,3].includes(formState) && item.citeDataType ==0" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" >
+            <FormCommon v-else :item.sync="item" iconType="email"></FormCommon>
           </div>
+
           <!-- 电话 -->
-          <div class="fieldsWrap hasIco disflex" v-if="item.formItemType == '15'">
-            <img class="icon" src="../../assets/img/ico_phone.png" alt="">
-            <span class="fieldname">{{item.formItemName}}</span><input type="text" v-if="[1,3].includes(formState) && item.citeDataType ==0" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" oninput = "value=value.replace(/[^\d]/g,'')" @blur="verifyField(item.formItemValue,item.formItemType)" >
-            <p class="readPhone" v-else>{{item.formItemValue.substring(0,3)}}  {{item.formItemValue.substring(3,7)}} {{item.formItemValue.substring(7)}}</p>
+          <div v-if="item.formItemType == '15'">
+          <input type="text" v-if="[1,3].includes(formState) && item.citeDataType ==0" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" oninput = "value=value.replace(/[^\d]/g,'')" @blur="verifyField(item.formItemValue,item.formItemType)" >
+            <FormCommon v-else :item.sync="item" iconType="phone"></FormCommon>
           </div>
+
           <!-- 选择列表 -->
           <group class="fieldsWrap selectList" v-if="item.formItemType == '16'" @click.native="showCheckList(item,index,formState)">
             <cell :title="item.formItemName" ></cell>
@@ -172,12 +170,11 @@
             <input type="text" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')"  @blur="verifyFix(item.formItemValue,index)">
             <span class="percent">%</span>
           </div>
-          <!-- 日期 -->
 
-          <group class="fieldsDatetime hasIco" :class="{'readonly': (![1,3].includes(formState) || item.citeDataType !=0)} " v-if="item.formItemType == '22'">
-            <img src="../../assets/img/ico_date.png" alt="">
+          <!-- 日期 -->
+          <group class="fieldsDatetime" :class="{'readonly': (![1,3].includes(formState) || item.citeDataType !=0)} " v-if="item.formItemType == '22'">
             <datetime v-model="item.formItemValue" v-if="[1,3].includes(formState) && item.citeDataType ==0" :readonly="[1,3].includes(formState) && item.citeDataType ==0 ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
-            <FormCommon v-else :item.sync="item"></FormCommon>
+            <FormCommon v-else :item.sync="item" iconType="date"></FormCommon>
           </group>
 
           <!-- 省市区 -->

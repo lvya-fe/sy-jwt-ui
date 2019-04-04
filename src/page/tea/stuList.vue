@@ -278,7 +278,10 @@ export default {
         link(id,stuid,str,end,stuname){
             var _self = this;
             // this.$router.push({path: '/studentTaskDetailsTea/'+_self.uid+'/'+id+'/'+stuid+'/'+str+'/'+end+'/'+0+'/'+stuname});
-            this.$router.push({path: '/task-details/'+this.uid+'/'+id+'/'+null+'/'+null});
+            this.$router.push({path: '/task-details/'+this.uid+'/'+id+'/'+null+'/'+null, query: {
+                stuid: stuid
+              }
+            })
 
         },
         propShow2(){

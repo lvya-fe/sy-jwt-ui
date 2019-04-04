@@ -1,22 +1,23 @@
 <!--
 组件名称：引用他人 普通表单组件
 props:
+  item
+  iconType 图标类型，同表单名
 
 event:
 -->
 
 <template>
   <div class="form-common form-item">
-    <!--<div class="form-wrap">-->
-      <!--<span class="form-name">{{item.formItemName}}</span>-->
-    <!--</div>-->
+    <div class="form-wrap">
+      <span class="form-name">
+          <img :src="'static/icon/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
+        {{item.formItemName}}
+      </span>
+    </div>
     <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
       <div class="user-avatar">
         <img class="user-circle" src="../../../../assets/img/common/user/avatar-default.jpg">
-        <div class="user-name">
-          <span class="text-ellipsis">{{cite.name}}</span>
-        </div>
-        <div class="user-org">{{cite.orgNames}}</div>
       </div>
 
       <div class="form-content form-user-custom">
@@ -39,7 +40,8 @@ event:
   export default {
     name: 'FormCommon',
     props: {
-      item: {type: Object, default: {}}
+      item: {type: Object, default: {}},
+      iconType: {type: String, default: ''}
     },
     data () {
       return {
