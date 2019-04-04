@@ -1,7 +1,7 @@
 <!--
 组件名称：视频播放组件
 props:
-  options  视频信息 ，类型object
+  options  视频信息 ，类型object. .sync方式
   showDelete 是否显示删除 bool 默认flase
 
 event:
@@ -71,20 +71,23 @@ event:
         let sources = [{
           // type: this.options,
           type: "video/mp4",
-          src: 'http://sy-oss.lvya.org/2019/04/03/upload_dveikmslkjb80yvcf4lrdqvzlgwrf4nm.mp4'
-          // src: this.options.valex || this.options.val || this.options.formItemValue
+          // src: 'http://sy-oss.lvya.org/2019/04/03/upload_dveikmslkjb80yvcf4lrdqvzlgwrf4nm.mp4'
+          src: this.options.valex || this.options.val || this.options.formItemValue
         }]
 
         this.videoOptions.sources = sources
         this.initVideo = true
       },
 
-      deleteVideo() {
+      deleteVideo () {
         this.initVideo = false
-        this.$emit("deleteVideo")
+        let options = {...this.options}
+        options.valex = options.val = options.formItemValue = ''
+        this.$emit('update:options', options)
+        this.$emit('deleteVideo')
       }
     },
-    mounted() {
+    mounted () {
       this.initData()
     }
   }
