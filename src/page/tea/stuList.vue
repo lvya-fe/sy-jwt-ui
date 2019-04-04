@@ -10,7 +10,7 @@
         <p class="drop-down" v-if="dropDown" v-show="show3">
             <img src="../../assets/img/upgx.gif" alt="">
         </p>
-        <div class="list-con-div bscroll"  ref="bscroll" v-show="show3">
+        <div class="list-con-div bscroll" :class="{'hasNoData':conData.length == 0}"  ref="bscroll" v-show="show3">
             <div class="bscroll-container">
                 <div class="stuListPar">
                     <div class="ripple" v-for="(item,index) in conData" :key="index" @click="link(item.task.id,item.stu.id,item.task.joinstarttime,item.task.joinendtime,item.stu.name)">
@@ -149,8 +149,9 @@ export default {
                     }else{
                         _self.status=true
                         _self.ztSta=true;
-                        _self.conData=res.data.listStuTask
+                        // _self.conData=res.data.listStuTask
                         _self.title=res.data.task.title
+                        return;
                     }
                     _self.$nextTick(() => {
                         if (!_self.scroll) {
@@ -325,6 +326,7 @@ export default {
 .no-msg-div span{height: 70px;display: inline-block;vertical-align: middle;font-size:28px;}
 
 .bscroll{width: 100%;overflow: hidden;}
+.bscroll.hasNoData{background-color:#fafafa;}
 .drop-down{position: absolute;top:90px;left:0px;width: 100%;height: 50px;line-height:50px;text-align: center;}
 .drop-down img{width:50px;height:50px;}
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="stuListCard">
-        <div class="top-back" v-show="topShow">
+        <div class="top-back">
             <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ title }}</div>
             <span class="img-2" style="display:none;" @click="openCycle">
@@ -446,7 +446,6 @@ export default {
             // back:this.$route.params.back,
             formId:this.$route.params.formId,
             schooId:this.$route.params.schoolid,
-            topShow:true,//顶部信息是否显示
             title:'',
             pageNo:1,
             hasNextPage:false,//是否有下一页数据
@@ -500,11 +499,8 @@ export default {
                 if(res.success){
                     this.$vux.loading.hide();
                     let resData = res.data;
-                    if(resData.videoCardStuListRespList.length == 0){
-                        this.topShow = false;
-                        return;
-                    };
-                    this.title = resData.videoCardStuListRespList[0].taskName;
+                    this.title = resData.taskName;
+                    if(resData.videoCardStuListRespList.length == 0) return;
                     if(this.pullUp || (!this.pullUp && !this.dropDown)){
                         this.stuLits = this.stuLits.concat(resData.videoCardStuListRespList);
                         this.hasNextPage = resData.hasNextPage;
