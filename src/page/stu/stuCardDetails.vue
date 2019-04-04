@@ -214,7 +214,7 @@
                             </div>
                             <template v-else>
                                 <div class="showVideo">
-                                  <VideoPlayerCommon :options.sync="item" @deleteVideo="deleteVideo" :showDelete="(item.citeDataType == 0 && [1,3].includes(formState))"></VideoPlayerCommon>
+                                  <VideoPlayerCommon :options.sync="item" @deleteVideo="deleteVideo(index)" :showDelete="(item.citeDataType == 0 && [1,3].includes(formState))"></VideoPlayerCommon>
                                     <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
                                 </div>
                             </template>
@@ -875,8 +875,10 @@ export default {
             this.hasbgColor = true;
             this.tsshow = false;
         },
-    },
-
+        deleteVideo(index) {
+          this.curFieldsLists[index].formItemValue = ''
+        }
+    }
 }
 </script>
 <style lang="less">
