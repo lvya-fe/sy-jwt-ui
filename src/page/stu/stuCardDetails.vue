@@ -22,7 +22,7 @@
                     <!-- 多行 -->
                     <div class="fieldsWrap txtarea hookTxtarea" v-if="item.formItemType == '2'">
                         <p :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>
-                        <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " rows='3' v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
+                        <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
                         <div v-else>
                             <div v-if="item.formItemValue !=''" class="readOnly-block">
                                 <x-textarea disabled :max="200" v-model="item.formItemValue" :show-counter="false"></x-textarea>
@@ -69,7 +69,8 @@
                         <p><span>{{item.formItemName}}</span></p>
                         <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
                         <div v-if="item.formItemValue != ''" class="readOnly-block">
-                            <x-textarea disabled rows="3" v-model="item.formItemValue" :show-counter="false"></x-textarea>
+                            <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :show-counter="false"></x-textarea>
+                            <span class="moreTxt" @click="readAll(index)">全文</span>
                         </div>
                         <div v-else class="nodata">
                             <img src="../../assets/img/noData.png" alt="">
@@ -218,7 +219,7 @@
                         </template>
                         <template v-else>
                             <div class="showVideo" v-if="(item.formItemValue !='')">
-                              <VideoPlayerCommon :options="item"></VideoPlayerCommon>
+                              <VideoPlayerCommon :options="item.sync" :showDelete="(item.citeDataType != 0 || ![1,3].includes(formState))"></VideoPlayerCommon>
                                 <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
                             </div>
                             <div v-else class="videoNOdata">
@@ -455,6 +456,11 @@ export default {
                     // 省市区，需要一个数组信息
                     if(this.curFieldsLists.length >0){
                         this.curFieldsLists.forEach(element => {
+                            if(['2','8'].includes(element.formItemType)){
+                                element = Object.assign(element,{
+                                    readAll:false
+                                });
+                            }
                             if(['5','6','17','25'].includes(element.formItemType)){
                                 element = Object.assign(element,{
                                     itemValArr: element.formItemValue != '' && element.formItemValue != null ? element.formItemValue.split(',') : []
@@ -502,6 +508,12 @@ export default {
             }
             this.curFieldsLists[this.curIndex] = this.popData;
             this.showHideOnBlur = false;
+        },
+        //多行文本  查看全文
+        readAll(index){
+            console.log(this.curFieldsLists[index].readAll,index,"111111111")
+            this.curFieldsLists[index].readAll = true;
+            console.log(this.curFieldsLists[index].readAll,index,"111111111")
         },
         change (value) {
             console.log('change',value)
@@ -901,6 +913,8 @@ textarea:disabled, input:disabled{background-color: #fff;}
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;
+            height: 150px;
+            overflow: hidden;
         }
          input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
              color: #c6c6c6;
@@ -1145,28 +1159,6 @@ textarea:disabled, input:disabled{background-color: #fff;}
                     .readPhone{
                         top:32px;
                     }
-                    .readOnly-block{
-                        position:static;
-                        // margin: 0 30px;
-                        padding-bottom:30px;
-                        color:#656565;
-                        p{background-color:#fafafa;}
-                    }
-                    // .fieldInput{
-                    //     width:253px;
-                    //     display:inline-block;
-                    //     vertical-align: middle;
-                    // }
-                    // .txtInput{
-                    //     position: static;
-                    //     padding-top:0;
-                    //     padding-bottom:0;
-                    //     display:inline-block !important;
-                    //     vertical-align:middle;
-                    //     width: 416px;
-                    //     font-size:30px;
-                    //     line-height:1;
-                    // }
                     .fieldname{
                         display:block;
                         width:182px;
@@ -1242,7 +1234,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             padding: 0.15rem 0.2rem;
                         }
                     }
-                    &.txtarea,&.radios,&.wenben{
+                    &.txtarea,&.radios{
                         padding: 0;
                         p{padding: 30px;}
                         .weui-cell,.weui-cells_radio,.weui-cells_checkbox{
@@ -1312,6 +1304,19 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             margin: 10px 0;
                             width: 230px;
                             height: 76px;
+                        }
+                        .readOnly-block{
+                            padding-right: 30px;
+                            position:relative;
+                            .weui-textarea{
+                                padding-bottom: 0;
+                            }
+                            .moreTxt{
+                                position: absolute;
+                                right: 20px;
+                                bottom: 15px;
+                                color: #1abe7f;
+                            }
                         }
                     }
                     &.txtarea{
