@@ -458,7 +458,9 @@ export default {
                     if(this.curFieldsLists.length >0){
                         this.curFieldsLists.forEach(element => {
                             if(['2','8'].includes(element.formItemType)){
-                                this.$set(element, 'readAll', false)
+                                let bool = false;
+                                bool = element.formItemValue.split(/\r?\n|\r/).length>3 ? false :true;
+                                this.$set(element, 'readAll', bool)
                             }
                             if(['5','6','17','25'].includes(element.formItemType)){
                                 element = Object.assign(element,{
@@ -1231,7 +1233,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             padding: 0.15rem 0.2rem;
                         }
                     }
-                    &.txtarea,&.radios{
+                    &.radios{
                         padding: 0;
                         p{padding: 30px;}
                         .weui-cell,.weui-cells_radio,.weui-cells_checkbox{
@@ -1325,13 +1327,21 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                     &.txtarea{
-                        .weui-cell:before{
-                            border: none;
+                        padding: 0;
+                        p{padding: 30px;}
+                        .weui-cell{
+                            padding: 0 60px 0 30px;
+                            &:before{
+                                border: none;
+                            }
                         }
                         .readOnly-block{
                             padding-right: 30px;
                             padding-bottom: 30px;
                             position:relative;
+                            .weui-cell{
+                                padding-right: 30px;
+                            }
                             .readAll{
                                .weui-textarea{
                                     padding-bottom: 0;

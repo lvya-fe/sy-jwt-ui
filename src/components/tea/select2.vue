@@ -115,7 +115,7 @@
                 <span @click="stuOut">首页 /</span>
                 <span>{{stuname}}</span>
             </div>
-            <div class="con-area-child" v-for="(stu, key, index) in stus" v-bind:key="stu.id" v-if="stu.orgid==orgid">
+            <div class="con-area-child" v-for="(stu, key, index) in stus" v-bind:key="stu.id" v-if="stu.orgids==orgid">
                 <input class="checkBox" type="checkbox" v-model="stu.check">
                 <span>{{stu.name}}</span>
             </div>
@@ -300,7 +300,7 @@
                     }
                 })
                 return this.stus.filter(function (item) {
-                    return item.orgid == self_.orgid
+                    return item.orgids == self_.orgid
                 })
             },
             orgsStulist:function() {
@@ -308,7 +308,7 @@
                 this.listOrg.forEach(function(item) {
                     item.dian2 = false;
                     self_.stus.forEach(function (stu) {
-                        if(stu.orgid==item.id){
+                        if(stu.orgids==item.id){
                             if(stu.check){
                                 item.dian2 = true;
                             }

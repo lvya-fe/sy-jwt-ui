@@ -37,7 +37,6 @@
                                 </template>
                                 <!-- 多行 -->
                                 <template v-if="field.formItemType == '2'">
-                                    <!-- <dt :class="{'vux-1px-b':field.formItemValue ==''}"> -->
                                     <dt>
                                         <span>{{field.formItemName}}</span>
                                     </dt>
@@ -45,8 +44,11 @@
                                         <dd class="hasbgColor" v-if="[1,-1,3].includes(item.taskState)">
                                             <x-textarea disabled :max="200" v-model="field.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
                                         </dd>
-                                        <dd class="textarea" :class="{'hasbgColor':field.formItemValue != '' && field.formItemValue != null}" v-else>
-                                            <x-textarea v-if=" field.formItemValue != '' " disabled :max="200" v-model="field.formItemValue" :show-counter="false"></x-textarea>
+                                        <dd class="textarea readOnly" :class="{'hasbgColor':field.formItemValue != '' && field.formItemValue != null}" v-else>
+                                            <div v-if=" field.formItemValue != '' ">
+                                                <x-textarea  disabled v-model="field.formItemValue" :show-counter="false"></x-textarea>
+                                                <span class="moreTxt" v-show="!field.readAll">全文</span>
+                                            </div>
                                             <img v-else src="../../assets/img/noData.png" alt="">
                                         </dd>
                                     </template>
@@ -118,23 +120,13 @@
                                     <dt>
                                         <span>{{field.formItemName}}</span>
                                     </dt>
-                                    <template v-if="field.citeDataType == 0">
-                                        <dd class="hasbgColor" v-if="[1,-1,3].includes(item.taskState)">
-                                            <!-- <p>{{field.formItemValue == ''? '请输入':field.formItemValue}}</p> -->
-                                            <x-textarea disabled :max="200" v-model="field.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
-                                        </dd>
-                                        <dd class="textarea" :class="{'hasbgColor':field.formItemValue != '' && field.formItemValue != null}" v-else>
-                                            <!-- <p v-if="field.formItemValue != '' && field.formItemValue != null">{{field.formItemValue}}</p> -->
-                                            <x-textarea v-if=" field.formItemValue != '' " disabled :max="200" v-model="field.formItemValue" :show-counter="false"></x-textarea>
-                                            <img v-else src="../../assets/img/noData.png" alt="">
-                                        </dd>
-                                    </template>
-                                    <template v-if="field.citeDataType != 0">
-                                        <dd class="textarea" :class="{'hasbgColor':field.formItemValue != '' && field.formItemValue != null}">
-                                            <p v-if="field.formItemValue != '' && field.formItemValue != null">{{field.formItemValue}}</p>
-                                            <img v-else src="../../assets/img/noData.png" alt="">
-                                        </dd>
-                                    </template>
+                                    <dd class="textarea readOnly" :class="{'hasbgColor':field.formItemValue != '' && field.formItemValue != null}">
+                                        <div v-if=" field.formItemValue != '' ">
+                                            <x-textarea  disabled v-model="field.formItemValue" :show-counter="false"></x-textarea>
+                                            <span class="moreTxt" v-show="!field.readAll">全文</span>
+                                        </div>
+                                        <img v-else src="../../assets/img/noData.png" alt="">
+                                    </dd>
                                 </template>
                                 <!-- 地理位置 -->
                                 <template v-if="field.formItemType == '9'">
@@ -529,6 +521,11 @@ export default {
                                         itemValArr: (ele.formItemValue != '' && ele.formItemValue != null) ? ele.formItemValue.split(',') : []
                                     })
                                 }
+                                if(['2','8'].includes(ele.formItemType)){
+                                    let bool = false;
+                                    bool = ele.formItemValue.split(/\r?\n|\r/).length>3 ? false :true;
+                                    this.$set(ele, 'readAll', bool)
+                                }
                             })
                         });
                     }
@@ -645,6 +642,8 @@ export default {
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;
+            height: 150px;
+            overflow-y: hidden;
         }
         .top-back {
             position: fixed;
@@ -806,6 +805,15 @@ export default {
                                     img{
                                         width: 230px;
                                         height: 76px;
+                                    }
+                                    &.readOnly{
+                                        position: relative;
+                                        .moreTxt{
+                                            position: absolute;
+                                            right: 15px;
+                                            bottom: 10px;
+                                            color: #1abe7f;
+                                        }
                                     }
                                 }
                                 &.audioWrap{
