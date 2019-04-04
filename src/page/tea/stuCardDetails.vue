@@ -211,7 +211,7 @@
                             </div>
                             <template v-else>
                                 <div class="showVideo">
-                                  <VideoPlayerCommon :options.sync="item" :showDelete="(item.citeDataType != 0 || ![1,3].includes(formState))"></VideoPlayerCommon>
+                                  <VideoPlayerCommon :options.sync="item" :showDelete="(item.citeDataType == 0 && [1,3].includes(formState))"></VideoPlayerCommon>
                                     <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
                                 </div>
                             </template>
