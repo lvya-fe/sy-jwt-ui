@@ -29,8 +29,8 @@
                             <dl>
                                 <!-- 单行 -->
                                 <template v-if="field.formItemType == '1'">
-                                    <dt>
-                                        <span>{{field.formItemName}}</span>
+                                    <dt class="disflex">
+                                        <span class="fieldName">{{field.formItemName}}</span>
                                         <p v-if="[1,-1,3].includes(item.taskState)" :class="{'hasVal':field.formItemValue !=''}">{{field.formItemValue == ''? '请输入':field.formItemValue}}</p>
                                         <p v-else :class="{'hasVal':field.formItemValue !=''}">{{field.formItemValue}}</p>
                                     </dt>
@@ -739,6 +739,19 @@ export default {
                                 position: relative;
                                 padding: 27px 0;
                                 color: #333;
+                                &.disflex{
+                                    display:flex;
+                                    display: -webkit-flex; /* Safari */
+                                    align-items: center;
+                                    .fieldName{
+                                        display: inline-block;
+                                        width: 253px;
+                                    }
+                                    p{
+                                        position: static;
+                                        width: 426px;
+                                    }
+                                }
                                 p{
                                     position: absolute;
                                     right: 0;
