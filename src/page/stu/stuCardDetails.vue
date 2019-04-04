@@ -27,7 +27,7 @@
                         <div v-else>
                             <div v-if="item.formItemValue !=''" class="readOnly-block">
                                 <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :autosize="item.readAll" :show-counter="false"></x-textarea>
-                                <span class="moreTxt" @click="readAll(index)" v-show="!item.readAll">全文</span>
+                                <span class="moreTxt" @click="readAll(index)" v-show="!item.showBtn">{{item.btntext}}</span>
                             </div>
                             <div v-else class="nodata">
                                 <img src="../../assets/img/noData.png" alt="">
@@ -72,7 +72,7 @@
                         <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
                         <div v-if="item.formItemValue != ''" class="readOnly-block"  >
                             <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :autosize="item.readAll" :show-counter="false"></x-textarea>
-                            <span class="moreTxt" @click="readAll(index)" v-show="!item.readAll">全文</span>
+                            <span class="moreTxt" @click="readAll(index)" v-show="!item.showBtn">{{item.btntxt}}</span>
                         </div>
                         <div v-else class="nodata">
                             <img src="../../assets/img/noData.png" alt="">
@@ -136,17 +136,17 @@
                     <!-- 整数 -->
                     <div class="fieldsWrap disflex" v-if="item.formItemType == '19'">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <input type="number" v-model="item.formItemValue" oninput = "value=value.replace(/[^\d]/g,'')"  :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
+                        <input type="number" max="99999999999999999999" v-model="item.formItemValue" oninput = "value=value.replace(/[^\d]/g,'')"  :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
                     </div>
                     <!-- 小数 -->
                     <div class="fieldsWrap disflex" v-if="item.formItemType == '20'">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <input type="number" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @blur="verifyFix(item.formItemValue,index)">
+                        <input type="number" max="99999999999999999999" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @blur="verifyFix(item.formItemValue,index)">
                     </div>
                     <!-- 百分数 -->
                     <div class="fieldsWrap disflex" v-if="item.formItemType == '21'">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <input type="number" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')"  @blur="verifyFix(item.formItemValue,index)">
+                        <input type="number" max="99999999999999999999" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')"  @blur="verifyFix(item.formItemValue,index)">
                         <span class="percent">%</span>
                     </div>
                     <!-- 日期 -->
@@ -461,7 +461,9 @@ export default {
                             if(['2','8'].includes(element.formItemType)){
                                 let bool = false;
                                 bool = element.formItemValue.split(/\r?\n|\r/).length>3 ? false :true;
-                                this.$set(element, 'readAll', bool)
+                                this.$set(element, 'readAll', bool);
+                                this.$set(element, 'showBtn', bool);
+                                this.$set(element, 'btntxt', '全文');
                             }
                             if(['5','6','17','25'].includes(element.formItemType)){
                                 element = Object.assign(element,{
@@ -513,7 +515,10 @@ export default {
         },
         //多行文本  查看全文
         readAll(index){
-            this.curFieldsLists[index].readAll = true;
+            this.$nextTick(()=>{
+                this.curFieldsLists[index].readAll = !this.curFieldsLists[index].readAll;
+                this.curFieldsLists[index].btntxt = this.curFieldsLists[index].btntxt == '全文' ? '收起':'全文';
+            })
         },
         change (value) {
             console.log('change',value)
