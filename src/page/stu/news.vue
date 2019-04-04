@@ -144,10 +144,13 @@
 
 
 .top-search{background-color: #f4f4f4;padding: 20px;text-align: center;position: relative;}
-.top-search input{width: 80%;height: 60px;line-height: 60px;border: 1px solid #e7e6e6;/*no*/border-radius: 5px;/*no*/padding: 10px 0 10px 60px;position: relative;font-size: 26px;}
+.top-search input{width: 80%;height: 60px;line-height: 60px;border: 1px solid #e7e6e6;
+  border-radius: 5px;
+  position: relative;font-size: 26px;
+}
 .top-search img {position: absolute;width: 28px;height: 28px;left: 11%;top: 48px;}
-.list-con-div{position: absolute;bottom:0;top:220px;left:0;right:0;}
-.list-con-div ul li {overflow:hidden;padding: 15px 20px;border-bottom: 1px solid #ededee;/*no*/}
+.message .list-con-div{position: absolute;bottom:0;top:120px;left:0;right:0;}
+  .message .list-con-div ul li {overflow:hidden;padding: 15px 20px;border-bottom: 1px solid #ededee;/*no*/}
 .list-con-left {float: left;width: 90px;height: 90px;border-radius: 100%;border: 1px solid #ccc;/*no*/margin-right: 20px;}
 .list-con-left img{width: 90px;height: 90px;border-radius: 100%;}
 .list-con-right {float: left;width: 580px;}
