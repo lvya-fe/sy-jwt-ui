@@ -27,7 +27,7 @@
             <div v-else>
               <div v-if="item.formItemValue !=''" class="readOnly-block">
                 <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :autosize="item.readAll" :show-counter="false"></x-textarea>
-                <span class="moreTxt" @click="readAll(index)" v-show="!item.readAll">全文</span>
+                <span class="moreTxt" @click="readAll(index)" v-show="!item.showBtn">{{item.btntext}}</span>
               </div>
               <div v-else class="nodata">
                 <img src="../../assets/img/noData.png" alt="">
@@ -72,7 +72,7 @@
             <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
             <div v-if="item.formItemValue != ''" class="readOnly-block"  >
               <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :autosize="item.readAll" :show-counter="false"></x-textarea>
-              <span class="moreTxt" @click="readAll(index)" v-show="!item.readAll">全文</span>
+              <span class="moreTxt" @click="readAll(index)" v-show="!item.showBtn">{{item.btntxt}}</span>
             </div>
             <div v-else class="nodata">
               <img src="../../assets/img/noData.png" alt="">
@@ -136,17 +136,17 @@
           <!-- 整数 -->
           <div class="fieldsWrap disflex" v-if="item.formItemType == '19'">
             <span class="fieldname">{{item.formItemName}}</span>
-            <input type="number" v-model="item.formItemValue" oninput = "value=value.replace(/[^\d]/g,'')"  :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
+            <input type="number" max="99999999999999999999" v-model="item.formItemValue" oninput = "value=value.replace(/[^\d]/g,'')"  :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
           </div>
           <!-- 小数 -->
           <div class="fieldsWrap disflex" v-if="item.formItemType == '20'">
             <span class="fieldname">{{item.formItemName}}</span>
-            <input type="number" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @blur="verifyFix(item.formItemValue,index)">
+            <input type="number" max="99999999999999999999" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @blur="verifyFix(item.formItemValue,index)">
           </div>
           <!-- 百分数 -->
           <div class="fieldsWrap disflex" v-if="item.formItemType == '21'">
             <span class="fieldname">{{item.formItemName}}</span>
-            <input type="number" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')"  @blur="verifyFix(item.formItemValue,index)">
+            <input type="number" max="99999999999999999999" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')"  @blur="verifyFix(item.formItemValue,index)">
             <span class="percent">%</span>
           </div>
           <!-- 日期 -->
@@ -171,11 +171,13 @@
             <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" @blur="verifyField(item.formItemValue,item.formItemType)" >
           </div>
           <!-- 音频 -->
-          <div class="fieldsWrap hasIco" v-if="item.formItemType == '28'">
-            <img src="../../assets/img/ico_audio.png" alt="">
-            <span>{{item.formItemName}}</span>
+          <div class="fieldsWrap hasIco fieldAudio" v-if="item.formItemType == '28'">
+            <p class="vux-1px-b">
+              <img src="../../assets/img/ico_audio.png" alt="">
+              <span>{{item.formItemName}}</span>
+            </p>
             <template v-if ="item.citeDataType == 0 && [1,3].includes(formState)">
-              <div class="addAudio vux-1px-t"  v-if="item.formItemValue ==''">
+              <div class="addAudio"  v-if="item.formItemValue ==''">
                 <div class="addAudioInput">
                   添加音频
                   <!-- <input type="file" name="" :disabled="[1,3].includes(formState) ? false :true" @change="tirggerFile($event,index)" accept="audio/mpeg"> -->
@@ -185,7 +187,8 @@
               </div>
             </template>
             <template v-if="(item.formItemValue !='')">
-              <div class="showAudio vux-1px-t">
+              <div class="showAudio">
+                <img class="close" @click="item.formItemValue = ''" src="../../assets/img/shanchub.png" v-show="item.citeDataType == 0 && [1,3].includes(formState)">
                 <aplayer :autoplay="null" :music="{
                                     title: '数据来源自',
                                     author: '绿芽',
@@ -221,7 +224,7 @@
             </template>
             <template v-else>
               <div class="showVideo" v-if="(item.formItemValue !='')">
-                <VideoPlayerCommon :options="item" ></VideoPlayerCommon>
+                <VideoPlayerCommon :options="item"></VideoPlayerCommon>
                 <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
               </div>
               <div v-else class="videoNOdata">

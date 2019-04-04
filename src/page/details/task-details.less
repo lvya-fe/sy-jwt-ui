@@ -261,6 +261,20 @@
         }
         &.hasIco{
           padding-left: 90px;
+          &.fieldAudio{
+            padding: 0;
+            p{
+              position: relative;
+              padding: 30px 30px 30px 70px;
+              img{
+                position: absolute;
+                left: 30px;
+                top:38px;
+                width: 37px;
+                height: 34px;
+              }
+            }
+          }
           &.disflex{
             display:flex;
             display: -webkit-flex; /* Safari */
@@ -293,6 +307,11 @@
           .fieldname{
             display: inline-block;
             width: 253px;
+          }
+          .readOnly{
+            position: static;
+            padding-left: 20px;
+            width: 424px;
           }
         }
         .percent{
@@ -524,8 +543,8 @@
           }
         }
         .addAudio{
-          margin: 30px -30px 0 -90px;
-          padding: 30px 30px 0;
+          // margin: 30px -30px 0 0px;
+          padding: 30px;
           // span:nth-child(1){
           //     color: #1abe7f;
           // }
@@ -551,8 +570,16 @@
           }
         }
         .showAudio{
-          margin: 30px -30px 0 -90px;
-          padding: 30px 30px 0;
+          position: relative;
+          padding: 32px;
+          img.close{
+            position: absolute;
+            top:40px;
+            left: 690px;
+            width: 22px;
+            height: 22px;
+            z-index: 100;
+          }
         }
         .weui-cells{
           margin-top: 0;
