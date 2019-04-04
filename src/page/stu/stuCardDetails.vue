@@ -1175,7 +1175,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             padding: 0;
                             p{
                                 position: relative;
-                                padding: 30px 30px 30px 70px;
+                                padding: 30px 30px 30px 90px;
                                 img{
                                     position: absolute;
                                     left: 30px;
@@ -1217,6 +1217,11 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         .fieldname{
                             display: inline-block;
                             width: 253px;
+                        }
+                        .readOnly{
+                            position: static;
+                            padding-left: 20px;
+                            width: 424px;
                         }
                     }
                     .percent{

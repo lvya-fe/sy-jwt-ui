@@ -818,7 +818,7 @@ export default {
                 stuId:this.stuid
             })
             console.log(formValueJson,"提交数据")
-            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTaskFormList",
+            this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTeaTaskFormList",
             qs.stringify({
                     uid:this.uid,
                     schoolId:Number(this.schoolId),
@@ -1175,7 +1175,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             padding: 0;
                             p{
                                 position: relative;
-                                padding: 30px 30px 30px 70px;
+                                padding: 30px 30px 30px 90px;
                                 img{
                                     position: absolute;
                                     left: 30px;
