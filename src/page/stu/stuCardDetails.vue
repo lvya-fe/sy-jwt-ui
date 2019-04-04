@@ -1224,6 +1224,11 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             display: inline-block;
                             width: 253px;
                         }
+                        .readOnly{
+                          position: static;
+                          padding-left: 20px;
+                          width: 424px;
+                        }
                     }
                     .percent{
                         position: absolute;
