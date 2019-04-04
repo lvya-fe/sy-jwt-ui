@@ -217,7 +217,7 @@
                             </div>
                             <template v-else>
                                 <div class="showVideo">
-                                  <VideoPlayerCommon :options.sync="item" :showDelete="(item.citeDataType == 0 && [1,3].includes(formState))"></VideoPlayerCommon>
+                                  <VideoPlayerCommon :options.sync="item" @deleteVideo="deleteVideo(index)" :showDelete="(item.citeDataType == 0 && [1,3].includes(formState))"></VideoPlayerCommon>
                                     <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
                                 </div>
                             </template>
@@ -304,7 +304,7 @@ import aplayer from "vue-aplayer";
 // import {formatDate} from '@/plugins/formatDate.js';
 // import BScroll from "better-scroll";
 import Bus from '@/plugins/eventBus.js'
-import select2 from '@/components/tea/select2'
+import select2 from '@/components/tea/select'
 import radioList from '@/components/common/com-radios'
 import {wechatconfigInit,wechatopenimg} from '@/plugins/wechat.js';
 import uploadImg  from '@/components/uploadImg'
@@ -523,7 +523,7 @@ export default {
                 this.curFieldsLists[index].readAll = !this.curFieldsLists[index].readAll;
                 this.curFieldsLists[index].btntxt = this.curFieldsLists[index].btntxt == '全文' ? '收起':'全文';
             })
-            
+
         },
         change (value) {
             console.log('change',value)
@@ -860,9 +860,7 @@ export default {
             this.curIndex = index;
         },
         qx(){
-            this.tsshow = false;
-            this.formShow = true;
-            this.hasbgColor = true;
+          this.tsshow = false;
         },
         qd(obj){
             if(obj.length == 0) return;
@@ -880,8 +878,10 @@ export default {
             this.hasbgColor = true;
             this.tsshow = false;
         },
-    },
-
+        deleteVideo(index) {
+          this.curFieldsLists[index].formItemValue = ''
+        }
+    }
 }
 </script>
 <style lang="less">
