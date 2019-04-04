@@ -212,14 +212,14 @@
                             </div>
                             <template v-else>
                                 <div class="showVideo">
-                                  <VideoPlayerCommon :options="item"></VideoPlayerCommon>
+                                  <VideoPlayerCommon :options="item.sync" :showDelete="(item.citeDataType != 0 || ![1,3].includes(formState))"></VideoPlayerCommon>
                                     <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
                                 </div>
                             </template>
                         </template>
                         <template v-else>
                             <div class="showVideo" v-if="(item.formItemValue !='')">
-                              <VideoPlayerCommon :options="item.sync" :showDelete="(item.citeDataType != 0 || ![1,3].includes(formState))"></VideoPlayerCommon>
+                              <VideoPlayerCommon :options="item" ></VideoPlayerCommon>
                                 <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
                             </div>
                             <div v-else class="videoNOdata">
