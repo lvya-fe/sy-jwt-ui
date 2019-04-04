@@ -1,5 +1,5 @@
 <template>
-  <div class="task-details">
+  <div class="task-details" :class="{'hasbgColor': hasbgColor}">
     <div class="top-back">
       <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
       <div class="n_title">{{ title }}</div>
@@ -214,7 +214,7 @@
               </div>
               <template v-else>
                 <div class="showVideo">
-                  <VideoPlayerCommon :options.sync="item" :showDelete="(item.citeDataType == 0 && [1,3].includes(formState))"></VideoPlayerCommon>
+                  <VideoPlayerCommon :options.sync="item" @deleteVideo="deleteVideo(index)" :showDelete="(item.citeDataType == 0 && [1,3].includes(formState))"></VideoPlayerCommon>
                   <!--<img src="../../assets/img/img_video.jpg" @click="playMP4(index)" alt="">-->
                 </div>
               </template>
