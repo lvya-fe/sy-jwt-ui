@@ -63,7 +63,7 @@ event:
     },
     watch: {
       options () {
-        this.initData()
+        // this.initData()
       }
     },
     methods: {
@@ -83,6 +83,7 @@ event:
         this.initVideo = false
         let options = {...this.options}
         options.valex = options.val = options.formItemValue = ''
+        console.log('options:', options)
         this.$emit('update:options', options)
         this.$emit('deleteVideo')
       }

@@ -90,7 +90,6 @@ export default {
       //选人插件
       formShow:true,
       hasbgColor:true,
-      FormCommon,
     }
   },
   components:{
@@ -114,7 +113,8 @@ export default {
     FlexboxItem,
     select2,
     VideoPlayerCommon,
-    radioList
+    radioList,
+    FormCommon
   },
   created(){
     wechatconfigInit(this,qs,this.uid,this._url_);
@@ -590,6 +590,10 @@ export default {
       this.formShow = true;
       this.hasbgColor = true;
       this.tsshow = false;
+    },
+
+    deleteVideo(index) {
+      this.curFieldsLists[index].formItemValue = ''
     }
   }
 }
