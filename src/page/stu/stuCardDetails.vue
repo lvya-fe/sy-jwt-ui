@@ -27,7 +27,7 @@
                         <div v-else>
                             <div v-if="item.formItemValue !=''" class="readOnly-block">
                                 <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :autosize="item.readAll" :show-counter="false"></x-textarea>
-                                <span class="moreTxt" @click="readAll(index)" v-show="!item.readAll">全文</span>
+                                <span class="moreTxt" @click="readAll(index)" v-show="!item.showBtn">{{item.btntext}}</span>
                             </div>
                             <div v-else class="nodata">
                                 <img src="../../assets/img/noData.png" alt="">
@@ -72,7 +72,7 @@
                         <!-- <p class="txt" v-if="item.formItemValue != '' && item.formItemValue != null">{{item.formItemValue}}</p> -->
                         <div v-if="item.formItemValue != ''" class="readOnly-block"  >
                             <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :autosize="item.readAll" :show-counter="false"></x-textarea>
-                            <span class="moreTxt" @click="readAll(index)" v-show="!item.readAll">全文</span>
+                            <span class="moreTxt" @click="readAll(index)" v-show="!item.showBtn">{{item.btntxt}}</span>
                         </div>
                         <div v-else class="nodata">
                             <img src="../../assets/img/noData.png" alt="">
@@ -461,7 +461,9 @@ export default {
                             if(['2','8'].includes(element.formItemType)){
                                 let bool = false;
                                 bool = element.formItemValue.split(/\r?\n|\r/).length>3 ? false :true;
-                                this.$set(element, 'readAll', bool)
+                                this.$set(element, 'readAll', bool);
+                                this.$set(element, 'showBtn', bool);
+                                this.$set(element, 'btntxt', '全文');
                             }
                             if(['5','6','17','25'].includes(element.formItemType)){
                                 element = Object.assign(element,{
@@ -513,7 +515,8 @@ export default {
         },
         //多行文本  查看全文
         readAll(index){
-            this.curFieldsLists[index].readAll = true;
+            this.curFieldsLists[index].readAll = !this.curFieldsLists[index].readAll;
+            this.curFieldsLists[index].btntxt = this.curFieldsLists[index].btntxt == '全文' ? '收起':'全文';
         },
         change (value) {
             console.log('change',value)
