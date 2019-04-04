@@ -8,6 +8,9 @@ import {wechatconfigInit,wechatopenimg} from '@/plugins/wechat.js';
 import uploadImg  from '@/components/uploadImg'
 import { mapState } from 'vuex'
 import VideoPlayerCommon from "@/components/common/video/video-player-common.vue"
+
+import FormCommon from "@/components/common/cite/cite-other/form-common.vue"
+
 import Cookies from 'js-cookie'
 import TaskConvert from "@/utils/TaskConvert"
 export default {
@@ -109,7 +112,8 @@ export default {
     FlexboxItem,
     select2,
     VideoPlayerCommon,
-    radioList
+    radioList,
+    FormCommon
   },
   created(){
     wechatconfigInit(this,qs,this.uid,this._url_);

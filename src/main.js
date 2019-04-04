@@ -600,14 +600,24 @@ const routes = [
         require(['./page/stu/stuCardDetails.vue'], resolve)
       }
     },
-  { //
+  {
     name: 'task-details',
     path: '/task-details/:uid/:id/:stuid/:schoolid',
     meta: {
-      title: '通用任务详情'
+      title: '任务详情'
     },
     component: function (resolve) {
       require(['./page/details/task-details.vue'], resolve)
+    }
+  },
+  {
+    name: 'task-cite-other',
+    path: '/task-cite-other/:uid/:id/:stuid/:schoolid',
+    meta: {
+      title: '引用任务详情'
+    },
+    component: function (resolve) {
+      require(['./page/details/task-cite-other.vue'], resolve)
     }
   },
   { //老师帮学生填写--卡片式列表

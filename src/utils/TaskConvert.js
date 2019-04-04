@@ -46,6 +46,7 @@ class TaskConvert {
         formItemValueId: null,
         formSelectItemResps: null,
         ctime: item.ctime,
+        listCiteData: item.listCiteData,
         order: index,
         formSelectItemResps: formSelectItemResps, //多项选择
       })
