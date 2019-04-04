@@ -315,7 +315,7 @@
 </style>
 
 <script>
-  import taskDetails from './task-details'
+  import taskDetails from './task-details.js'
   export default taskDetails
 </script>
 

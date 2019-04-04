@@ -509,22 +509,27 @@ export default {
         formItemValues:formItemValues,
         stuId:this.stuid
       })
-      this.$axios.post( process.env.API_ROOT+"app/stu/v1/addStuTaskFormList",
-        qs.stringify({
-          uid:this.uid,
-          schoolId:Number(this.schoolId),
-          formId:Number(this.formId),
-          taskId:Number(this.id),
-          stuId:Number(this.stuid),
-          formValueJson:JSON.stringify(formValueJson)
-        }))
-        .then( res =>{
+
+      let path = ''
+      if (Cookies.get('roleType') === 'stu') {
+        path =  'app/stu/v1/addtask'
+      } else {
+        path =  'app/tea/task/addtask'
+      }
+
+      let obj ={}
+      obj.uid=this.uid
+      obj.taskid = this.id
+      let convertObj = TaskConvert.covertResult(this.curFieldsLists)
+      obj = {...convertObj,...obj}
+      console.log('obj:', obj)
+      this.$axios.post( process.env.API_ROOT+path, qs.stringify(obj)).then( res =>{
           if(res.success){
             this.$vux.loading.hide();
             this.goback();
           }
-        }).catch( err =>{
-        this.errorUtil(err);
+      }).catch( err => {
+          this.errorUtil(err)
       })
     },
     //选人插件-相关方法

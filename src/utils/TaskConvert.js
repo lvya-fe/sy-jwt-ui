@@ -48,10 +48,44 @@ class TaskConvert {
         ctime: item.ctime,
         listCiteData: item.listCiteData,
         order: index,
+        dbItemName: item.dbItemName,
         formSelectItemResps: formSelectItemResps, //多项选择
       })
     })
     return newData
+  }
+  // 处理提交数据
+  covertResult(data) {
+    let obj = {}
+    data.forEach(function (el) {
+      var vKey = el.dbItemName
+      if (el.type == 22) {
+        if (el.formItemValue == null || el.formItemValue == '') {
+          obj[vKey] = null
+        } else if (el.formItemValue.length <= 10) {
+          obj[vKey] = el.formItemValue + ' 00:00:00'
+        } else if (el.formItemValue.length > 10) {
+          obj[vKey] = el.formItemValue
+        }
+      } else if (el.type == 3) {
+        if (el.formItemValue == null || el.formItemValue == '') {
+          obj[vKey] = null
+        } else if (el.formItemValue.length <= 16) {
+          obj[vKey] = el.formItemValue + ':00'
+        } else if (el.formItemValue.length > 16) {
+          obj[vKey] = el.formItemValue
+        }
+      } else if (el.type == 5 || el.type == 17 || el.type == 25) {
+        obj[vKey] = el.formItemValue.join(',')
+
+      } else if (el.type == 9) {
+        // obj[vKey] = _self.geographic
+        obj[vKey] = ''
+      } else {
+        obj[vKey] = el.formItemValue
+      }
+    })
+    return obj
   }
 }
 
