@@ -3,6 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+const WebConfig = require('../webconfig/webconfig')
 
 module.exports = {
   dev: {
@@ -10,12 +11,12 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/upImg/': { // 服务器图片代理
-        target: 'http://sy-test.lvya.org/',
+      '/upImg/': { // 上传图片 服务器图片代理
+        target: WebConfig.GateWayServer.IP,
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
       },
-      '/images/': { // 服务器图片代理
-        target: 'http://sy-test.lvya.org/',
+      '/images/': { // 静态图片 服务器图片代理
+        target: WebConfig.GateWayServer.IP,
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
       }
     },

@@ -12,7 +12,7 @@ export function wechatconfigInit(self_,qs,cropId,httpUrl) {
    // alert(httpUrl+"-"+window.location.href);
  if (!isiOS) {
     httpUrl = window.location.href;
- }else{
+ }else {
      if (httpUrl == undefined || httpUrl == "") {
          httpUrl = window.location.href;
       //   httpUrl = Cookies.get('iosurl');
@@ -20,35 +20,35 @@ export function wechatconfigInit(self_,qs,cropId,httpUrl) {
    //  alert(httpUrl);
  }
 
-  self_.$axios.post( process.env.API_ROOT+"getWeixinSign",
+  //延迟 提高页面初始化加载速度 异步签名处理
+  setTimeout(()=>{
+    self_.$axios.post( process.env.API_ROOT+"getWeixinSign",
 
-    qs.stringify({
-      uid:cropId,
-      url:httpUrl
+      qs.stringify({
+        uid:cropId,
+        url:httpUrl
+      })
+    ).then(function(result){
+
+      self_.$wechat.config({
+        beta: true,
+        debug: false,
+        appId: result.appId,
+        timestamp: result.timestamp,
+        nonceStr: result.nonceStr,
+        signature: result.signature,
+        jsApiList: [
+          'checkJsApi',
+          'chooseImage',
+          'uploadImage',
+          'getLocation',
+          'uploadVoice'
+        ]
+      });
+    }).catch(function(err){
+      self_.$vux.toast.show({type: 'warn',text:err.message})
     })
-  ).then(function(result){
-
-    self_.$wechat.config({
-      beta: true,
-      debug: false,
-      appId: result.appId,
-      timestamp: result.timestamp,
-      nonceStr: result.nonceStr,
-      signature: result.signature,
-      jsApiList: [
-        'checkJsApi',
-        'chooseImage',
-        'uploadImage',
-        'getLocation',
-        'uploadVoice'
-      ]
-    });
-
-
-  }).catch(function(err){
-    self_.$vux.toast.show({type: 'warn',text:err.message})
-  })
-
+  }, 2000)
 };
 
 export function wechatopenimg(self_,adess,imgs) {

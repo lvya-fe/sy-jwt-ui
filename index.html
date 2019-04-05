@@ -13,19 +13,17 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <meta name=apple-mobile-web-app-capable content=yes>
     <link rel="stylesheet" href="http://at.alicdn.com/t/font_722574_gu2hitld2br.css">
-
     <title></title>
   </head>
   <body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.0.0-beta.49/polyfill.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.0.0-beta.49/polyfill.min.js"></script>-->
+  <!--<script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.slim.min.js"></script>-->
+  <script src="http://lib.sinaapp.com/js/jquery/3.1.0/jquery-3.1.0.min.js"></script>
+  <script src="https://cdn.staticfile.org/vue/2.6.10/vue.min.js"></script>
+  <script src="https://cdn.staticfile.org/fastclick/1.0.6/fastclick.min.js"></script>
 
 <!--    <script src="https://res.wx.qq.com/open/libs/weuijs/1.0.0/weui.min.js"></script> -->
-  <!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
 
-  <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=CEbaa34302d55375cf2a08b0b118313d"></script>-->
-  <!--<script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>-->
-  <!--<script type="text/javascript" src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script>-->
   <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=CEbaa34302d55375cf2a08b0b118313d"></script>
   <!--<script type="text/javascript" src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js"></script>-->
 
@@ -33,17 +31,10 @@
     <div id="app-box"></div>
     <!-- built files will be auto injected -->
     <style>
-      html{background-color: #fff;}
-
-      /* .ripple{position:relative;overflow:hidden;transform:translate3d(0,0,0)}
-      .ripple:after{content:"";display:block;position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none;background-image:radial-gradient(circle,#000 10%,transparent 10.01%);background-repeat:no-repeat;background-position:50%;transform:scale(10,10);opacity:0;transition:transform .5s,opacity 1s}
-      .ripple:active:after{transform:scale(0,0);opacity:.2;transition:0s} */
-
-
+      <!-- Todo 全局样式，不受px转rem控制，临时放在这里-->
       .pswp__top-bar{padding:20px 0!important;}
       .pswp__counter{margin-top:10px;}
       .pswp__top-bar > button{margin-top:-10px;}
-
 
       .scroller-component {
         display: block;
@@ -112,39 +103,11 @@
     </style>
 
     <script>
+      // 初始化 FastClick
+      $(function() {
+        FastClick.attach(document.body);
+      });
 
-     // var vConsole = new VConsole();
-     // console.log('VConsole is cool');
-
-    //  var vConsole = new VConsole();
-    //   var B = setInterval(function () {
-    //     if ($(".noLook")) {
-    //         $(".noLook").each(function () {
-    //           if($(this).attr('a')=='f'){
-    //             if ($(this).prop('scrollHeight') <= $(this).prop('clientHeight')) {
-    //               $(this).parent().next().children("img").hide()
-    //             } else {
-    //               $(this).parent().next().children("img").show()
-    //             }
-    //             $(this).attr("a",'t')
-    //           }
-    //         })
-    //     }
-    //     if($(".vjs-icon-placeholder")){
-    //         $(".vjs-icon-placeholder").each(function () {
-    //           if(!$(this).hasClass('needsclick')){
-    //               $(this).addClass('needsclick')
-    //           }
-    //       })
-    //     }
-    //     if ($(".vjs-button")) {
-    //       $(".vjs-button").each(function () {
-    //         if (!$(this).hasClass('needsclick')) {
-    //           $(this).addClass('needsclick')
-    //         }
-    //       })
-    //     }
-    //   }, 100)
     </script>
   </body>
 </html>

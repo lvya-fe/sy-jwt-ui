@@ -40,7 +40,6 @@ export default {
 @import '~vux/src/styles/reset.less';
 @import '~vux/src/styles/1px.less';
 @import 'less/frontend.less';
-// @import 'http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css';
 .vux-pop-out-enter-active,
 .vux-pop-out-leave-active,
 .vux-pop-in-enter-active,

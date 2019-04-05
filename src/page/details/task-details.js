@@ -185,26 +185,28 @@ export default {
       this.formState = resData.taskState;
       this.curFieldsLists = resData.formItemResps;
       // 省市区，需要一个数组信息
-      if (this.curFieldsLists.length > 0) {
+      if(this.curFieldsLists.length >0){
         this.curFieldsLists.forEach(element => {
-          if (['2', '8'].includes(element.formItemType)) {
+          if(['2','8'].includes(element.formItemType)){
             let bool = false;
-            bool = element.formItemValue.split(/\r?\n|\r/).length > 3 ? false : true;
-            this.$set(element, 'readAll', bool)
+            bool = element.formItemValue.split(/\r?\n|\r/).length>3 ? false :true;
+            this.$set(element, 'readAll', bool);
+            this.$set(element, 'showBtn', bool);
+            this.$set(element, 'btntxt', '全文');
           }
-          if (['5', '6', '17', '25'].includes(element.formItemType)) {
-            element = Object.assign(element, {
+          if(['5','6','17','25'].includes(element.formItemType)){
+            element = Object.assign(element,{
               itemValArr: element.formItemValue != '' && element.formItemValue != null ? element.formItemValue.split(',') : []
             })
           }
-          if (element.formItemType == '9') {
-            if (element.formItemValue != '') {
+          if(element.formItemType == '9'){
+            if(element.formItemValue != ''){
               this.geographic = element.formItemValue;
-            } else {
+            }else{
               this.getMap();
             }
           }
-          if (element.formItemType == '10') {
+          if(element.formItemType == '10'){
             element.formSelectItemResps = element.formSelectItemResps == null ? [] : element.formSelectItemResps;
           }
         })
@@ -239,8 +241,11 @@ export default {
       this.showHideOnBlur = false;
     },
     //多行文本  查看全文
-    readAll(index) {
-      this.curFieldsLists[index].readAll = true;
+    readAll(index){
+      this.$nextTick(()=>{
+        this.curFieldsLists[index].readAll = !this.curFieldsLists[index].readAll;
+        this.curFieldsLists[index].btntxt = this.curFieldsLists[index].btntxt == '全文' ? '收起':'全文';
+      })
     },
     change(value) {
       console.log('change', value)

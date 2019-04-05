@@ -15,10 +15,10 @@ class TaskConvert {
       // 引用数据
       let citeData = []
       if(!item.listCiteData || item.listCiteData.length == 0){
-        citeData = [item.val]
+        citeData = [item.valex]
       } else {
         item.listCiteData.forEach((cite)=>{
-          citeData.push(cite.val)
+          citeData.push(cite.valex)
         })
       }
       // 多项选择

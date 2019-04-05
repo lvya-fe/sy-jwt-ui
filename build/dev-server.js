@@ -63,6 +63,8 @@ app.use(hotMiddleware)
 // serve pure static assets
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
+// 增加webconfig基本配置
+app.use('/webconfig', express.static('./webconfig'))
 
 var uri = 'http://localhost:' + port
 

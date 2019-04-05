@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <div class="top-back">
             <img class="img1" src="@/assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ sceneInfo.orgname }}</div>

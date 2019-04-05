@@ -280,7 +280,8 @@ export default {
             this.$router.push({path: '/singNut'});
         },
         alta(){
-          this.$vux.toast.text('创建成功', 'middle')
+          this.$vux.toast.text('创建成功')
+          this.$router.go(-1)
         },
         changeRight(){
           this.rightShow=!this.rightShow
