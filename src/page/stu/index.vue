@@ -75,7 +75,7 @@
 import qs from 'qs';
 import { Group, Cell, Flexbox, FlexboxItem, TransferDom, Alert } from 'vux'
 import BottomNav from '@/components/stu/studentBottom'
-
+import Cookies from 'js-cookie';
 
 
 let intervalCtrl = ''
@@ -180,6 +180,12 @@ export default {
 
   },
   async mounted() {
+    // 角色判断
+    if(/stu/.test(location.href)) {
+      Cookies.set("roleType", 'stu');
+    } else {
+      Cookies.set("roleType", 'tea');
+    }
     // 延迟加载数据，不然动画卡顿
     setTimeout(()=>{
       this.loadData();

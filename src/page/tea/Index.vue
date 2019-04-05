@@ -134,6 +134,12 @@ export default {
       TransferDom
   },
   created(){
+    // 角色判断
+    if(/stu/.test(location.href)) {
+      Cookies.set("roleType", 'stu');
+    } else {
+      Cookies.set("roleType", 'tea');
+    }
     this.loadData();
     this.query();
   },
