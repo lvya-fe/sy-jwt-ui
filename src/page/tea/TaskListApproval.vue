@@ -18,7 +18,8 @@
             <div class="tab-swiper vux-center" v-show="index != 3">
                 <group>
                   <template  v-for="stu in writeList">
-                    <cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" >
+                    <!--<cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" >-->
+                    <cell-box class="con-child"  @click.native="to(stu.id)" >
                         <p>{{stu.type=='teaToStu'||stu.type=='stu'?stu.stuName:stu.teaName}}<br><span>{{stu.type=='tea'?stu.teaOrgName.split(',')[0]:stu.type=='stu'?stu.stuOrgName:stu.type=='teaToStu'?stu.stuOrgName+' 填写老师：'+stu.teaName:''}}</span></p>
                         <p><br><span>{{stu.ctime}}</span></p>
                         <img class="right-img" src="@/assets/img/you.png" alt="">
@@ -31,7 +32,7 @@
                 </div>
             </div>
 
-            
+
             <p class="drop-down" v-if="dropDown">
                 <img src="../../assets/img/upgx.gif" alt="">
             </p>
@@ -195,8 +196,9 @@ export default {
         closeSelect(){
           this.isshow =true;
         },
-        to(type,id){
-          this.$router.push({  path: '/AuditOperation/'+this.uid+'/'+id});
+        to(stuId) {
+          // this.$router.push({path: '/AuditOperation/' + this.uid + '/' + id});
+          this.$router.push({path: '/task-details/'+this.uid+'/'+this.taskid+'/'+stuId+'/'+null})
         },
         changeTask(v){
           var _self = this;
@@ -420,7 +422,7 @@ export default {
                                 _self.QueryNoWrite();
                                 _self.scroll.refresh()
                                 _self.loadshow=false
-                            },1000); 
+                            },1000);
                             //使用refresh 方法 来更新scroll  解决无法滚动的问题
                             console.log('refresh了啊')
                         }
@@ -428,7 +430,7 @@ export default {
                             _self.loadStatus=false
                             console.log("暂无更多数据")
                         }
-                        
+
                     }
                     // console.log(_self.scroll.maxScrollY+"总距离----下拉的距离"+pos.y)
                 })

@@ -21,8 +21,10 @@
           <group>
             <template>
               <Scroll ref="scroll" class="scroll-content" :dataList="write" @scrollToEnd="QueryWrite" :showLoad="showWriteLoading">
-                <cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" v-for="(stu, index) in write" :key="index">
-                  <p>{{stu.type=='teaToStu'||stu.type=='stu'?stu.stuName:stu.teaName}}<br><span>{{stu.type=='tea'?stu.teaOrgName.split(',')[0]:stu.type=='stu'?stu.stuOrgName:stu.type=='teaToStu'?stu.stuOrgName+' 填写老师：'+stu.teaName:''}}</span>
+
+                <!--<cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" v-for="(stu, index) in write" :key="index">-->
+                <cell-box class="con-child" @click.native="to(stu.id)" v-for="(stu, index) in write" :key="index">
+                  <p>{{stu.type=='teaToStu'||stu.type=='stu'?stu.stuName:stu.teaName}}<br><span>{{stu.type=='tea'?stu.teaOrgName&&stu.teaOrgName.split(',')[0]:stu.type=='stu'?stu.stuOrgName:stu.type=='teaToStu'?stu.stuOrgName+' 填写老师：'+stu.teaName:''}}</span>
                   </p>
                   <p><br><span>{{stu.ctime}}</span></p>
                   <img class="right-img" src="@/assets/img/you.png" alt="">
@@ -46,7 +48,7 @@
                 <!--@change="btn($event)"-->
                 <template  v-for="stu in nowrite">
                   <cell-box class="con-child">
-                    <p>{{stu.type=='stu'||stu.type=='teaToStu'?stu.stuName:stu.teaName}}<br><span>{{ stu.type=='stu'||stu.type=='teaToStu'?stu.stuOrgName:stu.teaOrgName.split(',')[0] }} {{ stu.type=='teaToStu'?'数据填写人：'+stu.teaName:'' }}</span></p>
+                    <p>{{stu.type=='stu'||stu.type=='teaToStu'?stu.stuName:stu.teaName}}<br><span>{{ stu.type=='stu'||stu.type=='teaToStu'?stu.stuOrgName:stu.teaOrgName&&stu.teaOrgName.split(',')[0] }} {{ stu.type=='teaToStu'?'数据填写人：'+stu.teaName:'' }}</span></p>
                     <input type="checkbox" class="checkBox" :value="(stu.type=='tea')?stu.teaId:stu.stuId" v-model="selectStuId" >
                   </cell-box>
                 </template>
@@ -180,8 +182,9 @@
       closeSelect() {
         this.isshow = true;
       },
-      to(type, id) {
-        this.$router.push({path: '/AuditOperation/' + this.uid + '/' + id});
+      to(stuId) {
+        // this.$router.push({path: '/AuditOperation/' + this.uid + '/' + id});
+        this.$router.push({path: '/task-details/'+this.uid+'/'+this.taskid+'/'+stuId+'/'+null})
       },
       changeTask(v) {
         var _self = this;
