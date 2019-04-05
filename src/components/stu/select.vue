@@ -86,7 +86,7 @@
         <div class="con-area" v-show="o3" title="o3">
             <div class="child-title" >
                 <span >查询{{query}} </span>
-            </div> 
+            </div>
             <div class="con-area-child" v-for="(org,index) in listOrgToQuery">
                 <input class="checkBox" @change="chooseOrg(org)" type="checkbox" checked="true"  v-model="org.check">
                 <span @click="orgIn(org,org.id)">{{org.title}}</span>
@@ -798,7 +798,7 @@
     .tab-div > div{font-size: 30px;width: 100%;padding: 20px 0;border-bottom: 2px solid transparent;/*no*/}
     .tab-div > .selected{color: #01c269;border-bottom-color: #01c269;}
     .bottom-title-btn{position: fixed;bottom:0;font-size: 36px;color: #8c8b8b;padding:28px;left: 0;right: 0;border-top: 1px solid #e7e6e6;/*no*/background: #01c269;color: #fff;border: none;width: 100%;}
-    .con-area{margin-bottom: 100px;margin-top: 280px;}
+    .con-area{margin-bottom: 100px;margin-top: 0px;}
     .con-area-ts{margin-bottom: 100px;margin-top: 280px;}
 
     .bottom-title{position: fixed;bottom:0;font-size: 24px;color: #8c8b8b;padding:10px 40px 0;height:100px;line-height:45px;left: 0;right: 0;border-top: 1px solid #e7e6e6;/*no*/background: #fff;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;}

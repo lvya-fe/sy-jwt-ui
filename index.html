@@ -43,6 +43,72 @@
       .pswp__top-bar{padding:20px 0!important;}
       .pswp__counter{margin-top:10px;}
       .pswp__top-bar > button{margin-top:-10px;}
+
+
+      .scroller-component {
+        display: block;
+        position: relative;
+        height: 238px;
+        overflow: hidden;
+        width: 100%;
+      }
+      .scroller-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+      }
+      .scroller-mask {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        margin: 0 auto;
+        width: 100%;
+        z-index: 3;
+        -webkit-transform: translateZ(0px);
+        transform: translateZ(0px);
+        background-image:
+          -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.95)), to(rgba(255,255,255,0.6))),
+          -webkit-gradient(linear, left bottom, left top, from(rgba(255,255,255,0.95)), to(rgba(255,255,255,0.6)));
+        background-image:
+          linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.6)),
+          linear-gradient(to top, rgba(255,255,255,0.95), rgba(255,255,255,0.6));
+        background-position: top, bottom;
+        background-size: 100% 102px;
+        background-repeat: no-repeat;
+      }
+      .scroller-item {
+        text-align: center;
+        font-size: 16px;
+        height: 34px;
+        line-height: 34px;
+        color: #000;
+      }
+      .scroller-indicator {
+        width: 100%;
+        height: 34px;
+        position: absolute;
+        left: 0;
+        top: 102px;
+        z-index: 3;
+        background-image:
+          -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), color-stop(#d0d0d0), color-stop(transparent), to(transparent)),
+          -webkit-gradient(linear, left bottom, left top, from(#d0d0d0), color-stop(#d0d0d0), color-stop(transparent), to(transparent));
+        background-image:
+          linear-gradient(to bottom, #d0d0d0, #d0d0d0, transparent, transparent),
+          linear-gradient(to top, #d0d0d0, #d0d0d0, transparent, transparent);
+        background-position: top, bottom;
+        background-size: 100% 1px;
+        background-repeat: no-repeat;
+      }
+      .scroller-item {
+        line-clamp: 1;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     </style>
 
     <script>
@@ -51,34 +117,34 @@
      // console.log('VConsole is cool');
 
     //  var vConsole = new VConsole();
-      var B = setInterval(function () {
-        if ($(".noLook")) {
-            $(".noLook").each(function () {
-              if($(this).attr('a')=='f'){
-                if ($(this).prop('scrollHeight') <= $(this).prop('clientHeight')) {
-                  $(this).parent().next().children("img").hide()
-                } else {
-                  $(this).parent().next().children("img").show()
-                }
-                $(this).attr("a",'t')
-              }
-            })
-        }
-        if($(".vjs-icon-placeholder")){
-            $(".vjs-icon-placeholder").each(function () {
-              if(!$(this).hasClass('needsclick')){
-                  $(this).addClass('needsclick')
-              }
-          })
-        }
-        if ($(".vjs-button")) {
-          $(".vjs-button").each(function () {
-            if (!$(this).hasClass('needsclick')) {
-              $(this).addClass('needsclick')
-            }
-          })
-        }
-      }, 100)
+    //   var B = setInterval(function () {
+    //     if ($(".noLook")) {
+    //         $(".noLook").each(function () {
+    //           if($(this).attr('a')=='f'){
+    //             if ($(this).prop('scrollHeight') <= $(this).prop('clientHeight')) {
+    //               $(this).parent().next().children("img").hide()
+    //             } else {
+    //               $(this).parent().next().children("img").show()
+    //             }
+    //             $(this).attr("a",'t')
+    //           }
+    //         })
+    //     }
+    //     if($(".vjs-icon-placeholder")){
+    //         $(".vjs-icon-placeholder").each(function () {
+    //           if(!$(this).hasClass('needsclick')){
+    //               $(this).addClass('needsclick')
+    //           }
+    //       })
+    //     }
+    //     if ($(".vjs-button")) {
+    //       $(".vjs-button").each(function () {
+    //         if (!$(this).hasClass('needsclick')) {
+    //           $(this).addClass('needsclick')
+    //         }
+    //       })
+    //     }
+    //   }, 100)
     </script>
   </body>
 </html>

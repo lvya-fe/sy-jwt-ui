@@ -558,28 +558,30 @@ export default {
       })
     },
     //选人插件-相关方法
-    selectionPlugin(id, type, index) {
-      this.xr = id
-      if (type == 1) {
-        this.type = 3
-      } else if (type == 2) {
-        this.type = 1
-      } else if (type == 3) {
-        this.type = 2
+    selectionPlugin(id,type,index){
+      this.xr=id
+      if(type==1){
+        this.type=3
+      }else if(type==2){
+        this.type=1
+      }else if(type==3){
+        this.type=2
       }
-      this.tsshow = true;
+      this.tsshow= true;
       this.formShow = false;
       this.hasbgColor = false;
       this.curIndex = index;
     },
-    qx() {
+    qx(){
       this.tsshow = false;
+      this.formShow = true;
+      this.hasbgColor = true;
     },
-    qd(obj) {
-      if (obj.length == 0) return;
+    qd(obj){
+      if(obj.length == 0) return;
       this.curFieldsLists[this.curIndex].formSelectItemResps = [];
       let pids = [];
-      obj.forEach((a) => {
+      obj.forEach( (a) => {
         this.curFieldsLists[this.curIndex].formSelectItemResps.push({
           'id': a.id,
           'value': a.name
