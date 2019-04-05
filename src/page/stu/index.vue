@@ -129,8 +129,7 @@ export default {
       //获取接口的例子
 
     loadTodo(){
-      var _self = this;
-
+      var _self = this
       this.$axios.post( process.env.API_ROOT+"app/stu/v1/index_todo",
         qs.stringify({
           uid:_self.$route.params.uid

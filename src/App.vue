@@ -96,5 +96,8 @@ export default {
     width: 0.7rem !important;
     height: 0.7rem !important;
   }
+  .weui-toast__content{
+    font-size: 0.3rem  !important;
+  }
 }
 </style>
