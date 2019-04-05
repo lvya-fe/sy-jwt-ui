@@ -411,7 +411,8 @@
                 </li>
             </ul>
             <div class="loadMore" v-show="pullUpShow">
-                <load-more :show-loading="hasNextPage" :tip="hasNextPage?'正在加载':'暂无数据'"></load-more>
+              <!-- lgzhang 先注释下，分页加载统一优化写-->
+                <!--<load-more :show-loading="hasNextPage" :tip="hasNextPage?'正在加载':'暂无数据'"></load-more>-->
             </div>
             <div class="no-msg-div" v-if="stuLits.length==0">
                 <img src="@/assets/img/zanwushuju.png" alt="">
@@ -501,7 +502,7 @@ export default {
                     let resData = res.data;
                     this.title = resData.taskName;
                     if(resData.videoCardStuListRespList.length == 0) return;
-                    
+
                     if(this.pullUp || (!this.pullUp && !this.dropDown)){
                         this.stuLits = this.stuLits.concat(resData.videoCardStuListRespList);
                         this.hasNextPage = resData.hasNextPage;

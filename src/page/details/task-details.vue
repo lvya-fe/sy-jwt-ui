@@ -294,7 +294,8 @@
       ></video-player>
     </div>
     <!-- 选人插件组件 -->
-    <select2 v-bind:uid="uid" v-bind:orgId="orgId" v-bind:type="type" v-bind:sreach_tea="sreach_tea" v-bind:sreach_stu="sreach_stu" @qd="qd" @qx="qx" v-if="tsshow" v-bind:xr="xr"></select2>
+    <SelectStu v-bind:uid="uid" v-bind:orgId="orgId" v-bind:type="type" v-bind:sreach_tea="sreach_tea" v-bind:sreach_stu="sreach_stu" @qd="qd" @qx="qx" v-if="tsshow && roleType=='stu'" v-bind:xr="xr"></SelectStu>
+    <SelectTea v-bind:uid="uid" v-bind:orgId="orgId" v-bind:type="type" v-bind:sreach_tea="sreach_tea" v-bind:sreach_stu="sreach_stu" @qd="qd" @qx="qx" v-if="tsshow && roleType=='tea'" v-bind:xr="xr"></SelectTea>
   </div>
 </template>
 

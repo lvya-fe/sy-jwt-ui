@@ -63,7 +63,7 @@
     </div>
     <button type="button" class="bottom-title-btn" v-show="s3" @click="queryOut">返回</button>
 
-    
+
 
 
 
@@ -255,7 +255,7 @@ export default {
                     this.stu3 = false;
                 }
           }
-          
+
 
     }
   },
@@ -779,8 +779,8 @@ export default {
     chooseStu(stu){
         var flg = false;
         var stu2 = {
-          id: stu.id, 
-          orgid: stu.orgid, 
+          id: stu.id,
+          orgid: stu.orgid,
           name: stu.name,
           check: stu.check,
         }
@@ -789,7 +789,7 @@ export default {
           this.stumap[stu2.orgid].forEach(function(item) {
               if(item.id==stu2.id){
                 item.check=stu2.check;
-                flg = true; 
+                flg = true;
               }
           });
 
@@ -813,8 +813,8 @@ export default {
         if(!flg){
           this.stus.push(stu2);
         }
-        
-       
+
+
     },
     stuIn(org){
 
@@ -839,10 +839,10 @@ export default {
           orgId:orgid
         })
       ).then(function(res){
-     
-      
 
-        // 非空的情况将已经选择的值传递下去 
+
+
+        // 非空的情况将已经选择的值传递下去
           res.data.listStu.forEach(function(item2) {
 
             if(index_.indexOf(item2.id)!=-1){
@@ -871,7 +871,7 @@ export default {
 
 
 
-   
+
     },
     tallBtn(event){
         event.target.scrollTop=0
@@ -900,7 +900,7 @@ export default {
   .tab-div > div{font-size: 28px;width: 33.3%;padding: 20px 0;border-bottom: 2px solid transparent;/*no*/}
   .tab-div > .selected{color: #01c269;border-bottom-color: #01c269;}
   .bottom-title-btn{position: fixed;bottom:0;font-size: 36px;color: #8c8b8b;padding:28px;left: 0;right: 0;border-top: 1px solid #e7e6e6;/*no*/background: #01c269;color: #fff;border: none;width: 100%;}
-  .con-area{margin-bottom: 100px;margin-top: 280px;}
+  .con-area{margin-bottom: 100px;margin-top: 100px;}
   .con-area-ts{margin-bottom: 100px;margin-top: 280px;}
 
   .bottom-title{position: fixed;bottom:0;font-size: 24px;color: #8c8b8b;padding:10px 40px 0;height:100px;line-height:45px;left: 0;right: 0;border-top: 1px solid #e7e6e6;/*no*/background: #fff;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;}

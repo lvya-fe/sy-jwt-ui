@@ -4,7 +4,8 @@ import aplayer from "vue-aplayer";
 // import {formatDate} from '@/plugins/formatDate.js';
 // import BScroll from "better-scroll";
 import Bus from '@/plugins/eventBus.js'
-import select2 from '@/components/stu/select'
+import SelectStu from '@/components/stu/select'
+import SelectTea from '@/components/tea/select2'
 import radioList from '@/components/common/com-radios'
 import {wechatconfigInit,wechatopenimg} from '@/plugins/wechat.js';
 import uploadImg  from '@/components/uploadImg'
@@ -90,6 +91,7 @@ export default {
       //选人插件
       formShow:true,
       hasbgColor:true,
+      roleType: '',
     }
   },
   components:{
@@ -111,10 +113,11 @@ export default {
     XButton,
     Flexbox,
     FlexboxItem,
-    select2,
     VideoPlayerCommon,
     radioList,
-    FormCommon
+    FormCommon,
+    SelectStu,
+    SelectTea,
   },
   created(){
     wechatconfigInit(this,qs,this.uid,this._url_);
@@ -157,10 +160,11 @@ export default {
       }
       let resData = {}
       if (Cookies.get('roleType') === 'stu') {
+        this.roleType = 'stu'
         resData = await this.$axios.post(process.env.API_ROOT + 'app/stu/v1/taskview', qs.stringify(params))
-        console.log('stu:', resData)
       } else {
         // teaTaskView taskView
+        this.roleType = 'stu'
         if (this.$route.query.stuid) {
           params.stuId = this.$route.query.stuid
           resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/taskView', qs.stringify(params))
@@ -173,6 +177,7 @@ export default {
       if (resData.success) {
         resData = TaskConvert.doTaskData(resData.data)
       } else {
+        this.errorUtil({});
         return false
       }
 

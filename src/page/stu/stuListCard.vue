@@ -410,8 +410,9 @@
                     <div class="mask-bottom"></div>
                 </li>
             </ul>
-            <div class="loadMore" v-show="pullUpShow">
-                <load-more :show-loading="hasNextPage" :tip="hasNextPage?'正在加载':'暂无数据'"></load-more>
+            <div class="loadMore" v-if="pullUpShow">
+                <!-- lgzhang 先注释下，分页加载统一优化写-->
+                <!--<load-more :show-loading="hasNextPage" :tip="hasNextPage?'正在加载':'暂无数据'"></load-more>-->
             </div>
             <div class="no-msg-div" v-if="stuLits.length==0">
                 <img src="@/assets/img/zanwushuju.png" alt="">

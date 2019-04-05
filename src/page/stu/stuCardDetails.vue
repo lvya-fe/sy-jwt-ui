@@ -432,13 +432,13 @@ export default {
     methods:{
         goback(){
             // this.$router.go(-1);
-            Cookies.set('cardPageNo',this.paramsData.pageNo);
-            console.log(this.paramsData.taskId)
-            if(this.paramsData.taskId === undefined){
+            // Cookies.set('cardPageNo',this.paramsData.pageNo);
+            // console.log(this.paramsData.taskId)
+            // if(this.paramsData.taskId === undefined){
                 this.$router.go(-1);
-            }else{
-                this.$router.replace({path: '/stuList2Card/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
-            }
+            // }else{
+            //     this.$router.replace({path: '/stuList2Card/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
+            // }
         },
         //获取学生表单信息
         getStuInfos(){
