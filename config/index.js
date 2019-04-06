@@ -19,6 +19,10 @@ module.exports = {
       '/images/': { // 静态图片 服务器图片代理
         target: WebConfig.GateWayServer.IP,
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+      },
+      '/app/': { // 后端 微信认证
+        target: WebConfig.GateWayServer.IP,
+        changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
       }
     },
 

@@ -9,8 +9,11 @@ import axios from './plugins/ajax'
 
 // import VueWechatTitle from 'vue-wechat-title';
 import { WechatPlugin } from 'vux'
+// TODO lgzhang: 用一个cookie就行，后面统一把vue-cookie去掉
 import VueCookie from 'vue-cookie'
 import Cookies from 'js-cookie'
+// 配置成全局使用
+window.Cookies = Cookies
 // 配合 px to rem 转换
 import 'lib-flexible/flexible'
 

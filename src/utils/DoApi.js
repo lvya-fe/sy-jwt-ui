@@ -1,10 +1,8 @@
 /*
 * api 处理
 */
-import Cookies from "js-cookie";
-
 class DoApi {
-
+  // api异常处理
   doError(err,uid) {
     if (err.data != undefined && err.data.errorCode == "ERROR") {
       this.$router.replace({path: '/error/' + uid + "/" + err.message});
@@ -12,10 +10,8 @@ class DoApi {
       if (localStorage.uid) {
         //保存当前url
         var httpUrl = window.location.href;
-
         Cookies.set('lasturl', httpUrl);
         localStorage.setItem("lasturl", httpUrl);
-
         this.$router.replace({path: '/start/' + localStorage.uid});
       }
       return;
@@ -27,7 +23,6 @@ class DoApi {
       } else {
         this.$vux.toast.show({type: 'warn', text: "未知错误"});
       }
-
     }
   }
 }

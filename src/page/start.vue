@@ -23,18 +23,16 @@
     methods:{
         loadData(){
           this.$vux.loading.show({
-           text: '微信登陆中..'
+           text: '微信登录中...'
           });
-
-
           // var lasturl = localStorage.getItem("lasturl");
-          setTimeout(function goto() {
+          setTimeout(function() {
               var token = Cookies.get('wxtoken');
               var lasturl = Cookies.get('lasturl');
               Cookies.set('wxtoken_',token);
-            location.replace("/app/auth/wx?uid="+localStorage.uid+"&code="+token+"&url="+encodeURIComponent(lasturl));
-          },2000);
-           
+              location.replace("/app/auth/wx?uid="+localStorage.uid+"&code="+token+"&url="+encodeURIComponent(lasturl));
+          },1000);
+
         }
     }
   }

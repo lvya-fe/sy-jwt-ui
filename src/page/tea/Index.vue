@@ -99,9 +99,7 @@ import {formatDate} from '@/plugins/formatDate.js';
 import Infinite from "@/components/vue-scroll";
 import qs from 'qs';
 import { Group, Cell, Flexbox, FlexboxItem, TransferDom, Alert} from 'vux'
-import Cookies from 'js-cookie';
-
-
+import DoApi from '@/utils/DoApi'
 export default {
   name:'index',
   data(){
@@ -133,7 +131,9 @@ export default {
   directives: {
       TransferDom
   },
+
   created(){
+
     // 角色判断
     if(/stu/.test(location.href)) {
       Cookies.set("roleType", 'stu');
@@ -153,10 +153,6 @@ export default {
       this.$router.push({path: '/signIn'});
     },
     loadData(){
-      // localStorage.setItem('indexB',0);
-      // localStorage.setItem('indexC',0);
-
-
         Cookies.set('indexB',0);
         Cookies.set('indexC',0);
 

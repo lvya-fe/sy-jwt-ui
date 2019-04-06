@@ -41,7 +41,7 @@
 - utils 通用工具类js
 - config.js 跟外界无关的程序配置文件
 - main.js js入口文件
-- routes.js 路由文件
+- router.js 路由文件
 
 ##
 ======================

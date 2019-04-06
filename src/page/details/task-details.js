@@ -137,13 +137,11 @@ export default {
   methods: {
     goback() {
       // this.$router.go(-1);
-      Cookies.set('cardPageNo', this.paramsData.pageNo);
-      console.log(this.paramsData.taskId)
-      if (this.paramsData.taskId === undefined) {
+      // if (this.paramsData.taskId === undefined) {
         this.$router.go(-1);
-      } else {
-        this.$router.replace({path: '/stuList2Card/' + this.uid + '/' + this.paramsData.taskId + '/' + this.paramsData.formId + '/' + this.paramsData.schoolid});
-      }
+      // } else {
+      //   this.$router.replace({path: '/stuList2Card/' + this.uid + '/' + this.paramsData.taskId + '/' + this.paramsData.formId + '/' + this.paramsData.schoolid});
+      // }
     },
     //获取学生表单信息
     async getStuInfos() {
@@ -159,26 +157,29 @@ export default {
         etime: ''
       }
       let resData = {}
-      if (Cookies.get('roleType') === 'stu') {
-        this.roleType = 'stu'
-        resData = await this.$axios.post(process.env.API_ROOT + 'app/stu/v1/taskview', qs.stringify(params))
-      } else {
-        // teaTaskView taskView
-        this.roleType = 'stu'
-        if (this.$route.query.stuid) {
-          params.stuId = this.$route.query.stuid
-          resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/taskView', qs.stringify(params))
+      // 角色判断
+      if(this.$route.query.roleType) Cookies.set('roleType', this.$route.query.roleType)
+      try{
+        if (Cookies.get('roleType') === 'tea') {
+          // teaTaskView taskView
+          this.roleType = 'tea'
+          // 教师帮学生填写
+          if (this.$route.query.stuid) {
+            params.stuId = this.$route.query.stuid
+            resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/taskView', qs.stringify(params))
+          } else {
+            resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/teaTaskView', qs.stringify(params))
+          }
         } else {
-          resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/teaTaskView', qs.stringify(params))
+          this.roleType = 'stu'
+          resData = await this.$axios.post(process.env.API_ROOT + 'app/stu/v1/taskview', qs.stringify(params))
         }
-        console.log('tea:', resData)
+      } catch (err) {
+        this.errorUtil(err);
       }
       this.$vux.loading.hide()
       if (resData.success) {
         resData = TaskConvert.doTaskData(resData.data)
-      } else {
-        this.errorUtil({});
-        return false
       }
 
       this.title = resData.name;

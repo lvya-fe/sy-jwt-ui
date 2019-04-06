@@ -101,7 +101,7 @@ export default {
         goTodo(todo){
             if(todo.type=='1'){
               // this.$router.push({path: '/studentTaskDetails/'+this.$route.params.uid+'/'+todo.id+'/'+null+'/'+null+'/'+0});
-              this.$router.push({path: '/task-details/'+this.$route.params.uid+'/'+todo.id+'/'+null+'/'+0});
+              this.$router.push({path: '/task-details/'+this.$route.params.uid+'/'+todo.id+'/'+null+'/'+0, query: {roleType: 'stu'}});
             }
             if(todo.type=='2'){
                  this.$router.push({path: '/CertificateRUploadRejection/'+this.$route.params.uid+'/'+todo.id});
