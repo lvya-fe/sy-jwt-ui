@@ -66,7 +66,6 @@
 }
 </script>
 <style scoped>
-@import 'http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css';
 body {
   background-color: #fbf9fe;
 }

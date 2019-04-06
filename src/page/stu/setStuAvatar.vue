@@ -9,12 +9,12 @@
             <div class="avatar-left">
                 头像设置
             </div>
-        
+
         </div>
     </div> -->
 
 <uploadImg v-bind:imgs.sync="imgs" v-bind:count.sync="count" v-bind:uid.sync="uid"></uploadImg>
-  
+
 
 
     <div class="btn1-div">
@@ -72,18 +72,17 @@
 }
 </script>
 <style scoped>
-@import 'http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css';
 body {
   background-color: #fbf9fe;
 }
 
 
 
-  
+
   .top-back {text-align: center;font-size: 36px;color: #444;padding:20px;background-color: #fff;}
   .top-back .img1{position: absolute;width: 38px;height: 38px;left: 20px;top: 25px}
   .n_title{width:80%;margin:0 auto;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
-  
+
   .weui-uploader__file{position:relative;}
   .delete_photo{display:block;position:absolute;width:25px;height:25px;border-radius:50%;background:#00ba0a;color:#fff;font-weight:bold;text-align:center;line-height:10px;top:-10px;right:-6px;font-size:17px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;}
 

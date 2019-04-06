@@ -3,8 +3,8 @@
 
 const WebConfig = {
   GateWayServer: {
-    IP: 'http://sy-test.lvya.org/',  // nginx网关服务,即后端外网地址，以 /结束
-    // IP: 'http://sy.lvya.org/',  // nginx网关服务,即后端外网地址，以 /结束
+    IP: 'http://sy-test.lvya.org/',  // 测试平台 nginx网关服务,即后端外网地址，以 /结束
+    // IP: 'http://sy.lvya.org/',  // 正式平台 nginx网关服务,即后端外网地址，以 /结束
     innerIP: ''
   }
 }

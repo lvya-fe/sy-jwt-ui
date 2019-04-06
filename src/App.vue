@@ -30,9 +30,7 @@ export default {
     }
   }),
   created() {
-
   }
-
 }
 </script>
 
@@ -68,35 +66,5 @@ export default {
 .vux-pop-in-leave-active {
   opacity: 0;
   transform: translate3d(-100%, 0, 0);
-}
-
-/*loading*/
-/*.weui-loading_toast, .vux-loading {*/
-  /*position: fixed;*/
-  /*z-index: 1000;*/
-  /*top: 0;*/
-  /*right: 0;*/
-  /*left: 0;*/
-  /*bottom: 0;*/
-  /*display: flex;*/
-  /*align-items: center;*/
-  /*justify-content: center;*/
-  /*.weui-mask_transparent{*/
-    /*display: flex;*/
-    /*align-items: center;*/
-    /*justify-content: center;*/
-  /*}*/
-/*}*/
-.weui-toast{
-  min-height: 2rem !important;
-  top: 45% !important;
-  .weui-loading{
-    margin-top: 0.65rem !important;
-    width: 0.7rem !important;
-    height: 0.7rem !important;
-  }
-  .weui-toast__content{
-    font-size: 0.3rem  !important;
-  }
 }
 </style>

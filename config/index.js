@@ -3,6 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+// 前端配置文件
 const WebConfig = require('../webconfig/webconfig')
 
 module.exports = {

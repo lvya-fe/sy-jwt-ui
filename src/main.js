@@ -29,22 +29,6 @@ import store from './vuex/store'
 
 import App from './App'
 
-Vue.use(VideoPlayer)
-Vue.use(preview)
-
-Vue.use(VueScroller)
-
-// Vue.use(VueWechatTitle)
-Vue.use(WechatPlugin)
-
-Vue.use(AlertPlugin)
-Vue.use(ToastPlugin)
-Vue.use(LoadingPlugin)
-Vue.use(VueRouter)
-Vue.use(axios)
-Vue.use(Vuex)
-Vue.use(VueCookie)
-
 const router = new VueRouter({
   routes
 })
@@ -64,6 +48,23 @@ PageAnimation(router, store)
 
 // Todo 清缓存
 localStorage.setItem('sceneInfos', '')
+
+
+Vue.use(VideoPlayer)
+Vue.use(preview)
+
+Vue.use(VueScroller)
+
+// Vue.use(VueWechatTitle)
+Vue.use(WechatPlugin)
+
+Vue.use(AlertPlugin)
+Vue.use(ToastPlugin)
+Vue.use(LoadingPlugin)
+Vue.use(VueRouter)
+Vue.use(axios)
+// Vue.use(Vuex)
+Vue.use(VueCookie)
 
 new Vue({
   router,

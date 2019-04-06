@@ -43,8 +43,6 @@
 <script>
 
     import qs from 'qs';
-    import echarts from 'echarts';
-
     export default {
         components: {
         },
@@ -57,7 +55,7 @@
                 dataName: [],
                 data: [],
 
-                
+
             }
         },
         created(){
