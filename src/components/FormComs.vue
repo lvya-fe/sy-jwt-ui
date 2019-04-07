@@ -7,6 +7,7 @@
 <script>
   import FormType from "../edu-common/src/const/FormType"
 
+  // 以下是表单组件 4各一组，不要分开
   import InputAdd from "./common/form/input/Add"
   import InputQuery from "./common/form/input/Query"
   import InputCiteSelf from "./common/form/input/CiteSelf"
@@ -158,7 +159,6 @@
       taskState: {type: String, default: ''}
     },
     components:{
-
       InputAdd,
       InputQuery,
       InputCiteSelf,
@@ -332,7 +332,7 @@
       }
     },
     mounted() {
+
     }
   }
 </script>
-
