@@ -12,7 +12,7 @@ event:
     <!--</div>-->
     <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
       <div class="user-avatar">
-        <img class="user-circle" src="../../../../assets/img/common/user/avatar-default.jpg">
+        <img class="user-circle" src="static/img/user/avatar-default.jpg">
         <div class="user-name">
           <span class="text-ellipsis">{{cite.name}}</span>
         </div>

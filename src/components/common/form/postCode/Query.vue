@@ -1,5 +1,5 @@
 <!--
-组件名称：引用他人 普通表单组件
+组件名称：InputQuery
 props:
   item
   iconType 图标类型，同表单名
@@ -27,9 +27,9 @@ event:
         </div>
         <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
         <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
-        <div class="result-content">
-          {{cite.val}}
-        </div>
+          <div class="result-content">
+            <pre>{{cite.val}}</pre>
+          </div>
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@ event:
 
 <script>
   export default {
-    name: 'FormCommon',
+    name: 'InputQuery',
     props: {
       item: {type: Object, default: {}},
       iconType: {type: String, default: ''}
@@ -48,9 +48,6 @@ event:
       }
     },
     watch: {
-      item () {
-        console.log(item)
-      }
     },
     methods: {
     },
