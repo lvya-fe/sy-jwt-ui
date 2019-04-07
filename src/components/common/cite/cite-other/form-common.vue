@@ -48,7 +48,8 @@ event:
       }
     },
     watch: {
-      options () {
+      item () {
+        console.log(item)
       }
     },
     methods: {

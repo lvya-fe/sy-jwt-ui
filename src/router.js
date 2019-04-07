@@ -553,13 +553,13 @@ export default [
       // title: '任务详情'
     },
     component: function (resolve) {
-      require(['./page/task-details/task-details.vue'], resolve)
+      require(['./page/task-details/details.vue'], resolve)
     },
     children: [{
       path: 'task-details/:uid/:id/:stuid/:schoolid',
       component: function (resolve) {
-        require(['./page/task-details/details-stu.vue'], resolve)
-      },
+        require(['./page/task-details/task-details.vue'], resolve)
+      }
     }]
   },
   {

@@ -37,6 +37,7 @@ class TaskConvert {
         choiceLimitType: null,
         choiceType: null,
         citeDataType: item.citeDataType,
+        dataRangeType: item.dataRangeType,
         formItemDbName: '',
         formItemId: item.id,
         formItemName: item.name,
