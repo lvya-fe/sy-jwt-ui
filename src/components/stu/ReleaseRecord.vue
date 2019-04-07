@@ -8,7 +8,7 @@
         <group class="cont-tex add_tex">
             <x-textarea :max="200" autosize :rows="8" v-model="textmsg" @on-focus="onEvent" @on-blur="onEvent" placeholder="此刻你想说些什么" ></x-textarea>
         </group>
-        <uploadImg v-bind:imgs.sync="imgs" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg> 
+        <uploadImg v-bind:imgs.sync="imgs" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
 
         <!-- <div class="picture_div">
             <div class="img_div">
@@ -30,8 +30,8 @@ import { mapState } from 'vuex'
 import qs from 'qs';
 export default {
     components:{
-        Group, 
-        Cell, 
+        Group,
+        Cell,
         XTextarea,
         Confirm,
         uploadImg
@@ -46,7 +46,7 @@ export default {
         }
     },
     computed: mapState({
-      _url_: state => state._url_
+      _url_: state => state.animation._url_
     }),
     created(){
       wechatconfigInit(this,qs,this.uid,this._url_);

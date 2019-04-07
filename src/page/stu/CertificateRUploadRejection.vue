@@ -42,7 +42,7 @@
                     <x-textarea :max="200" autosize :rows="8" :placeholder="msgNot" v-model="bz" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')"></x-textarea>
                 </group>
             </div>
-            
+
         </div>
 
         <div class="main_content" v-if="set.showName=='未通过'">
@@ -54,7 +54,7 @@
                     <cell title="审核时间 :" align-items="flex-start" :value="con.ctime" value-align="left"></cell>
                 </group>
             </div>
-            
+
 
             <div class="Certificate_No">
                 <span>证书编号 :</span>
@@ -91,9 +91,9 @@
                     <x-textarea :max="200" autosize :rows="8" :placeholder="msgNot" v-model="bz" @on-focus="onEvent('focus')" @on-blur="onEvent('blur')"></x-textarea>
                 </group>
             </div>
-            
+
         </div>
-        
+
         <div class="bh_div" v-if="set.showName=='待审核'">
             <group label-width="5em">
                 <cell title="证书编号 :" align-items="flex-start" :value="con.code" value-align="left"></cell>
@@ -157,7 +157,7 @@ import {formatDate} from '../../plugins/formatDate.js';
 
 export default {
     components:{
-        Group, 
+        Group,
         Cell,
         Datetime,
         XTextarea,
@@ -183,7 +183,7 @@ export default {
 
             msgNot:'最多输入200个汉字。',
 
-            
+
             imgs:[],
             count:9,
             zsImg:[],
@@ -193,12 +193,12 @@ export default {
         formatDate(time) {
             var date = new Date(time);
             return  formatDate(date, "yyyy-MM-dd hh:mm");
-             
+
         }
     },
     computed: mapState({
-      _url_: state => state._url_
-      
+      _url_: state => state.animation._url_
+
     }),
     created(){
         this.loadData()
@@ -208,25 +208,25 @@ export default {
         goback(){
             this.$router.go(-1);
         },
-        fmtDate(inputTime) {  
+        fmtDate(inputTime) {
             var date = new Date(inputTime);
-            var y = date.getFullYear();  
-            var m = date.getMonth() + 1;  
-            m = m < 10 ? ('0' + m) : m;  
-            var d = date.getDate();  
-            d = d < 10 ? ('0' + d) : d;  
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? ('0' + m) : m;
+            var d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
             var h = date.getHours();
             h = h < 10 ? ('0' + h) : h;
             var minute = date.getMinutes();
             var second = date.getSeconds();
-            minute = minute < 10 ? ('0' + minute) : minute;  
-            second = second < 10 ? ('0' + second) : second; 
-            return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;  
+            minute = minute < 10 ? ('0' + minute) : minute;
+            second = second < 10 ? ('0' + second) : second;
+            return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
         },
         change (value) {
             console.log('change', value)
         },
-        
+
         log (str1, str2 = '') {
             console.log(str1, str2)
         },
@@ -293,7 +293,7 @@ export default {
                         console.log(res)
                         _self.$vux.toast.show({type: 'success',text:"成功" });
                         _self.goback()
-                        
+
 
                     }).catch(function(err){
                         _self.errorUtil(err);
@@ -317,7 +317,7 @@ export default {
                         console.log(res)
                         _self.$vux.toast.show({type: 'success',text:"成功" });
                         _self.goback()
-                        
+
 
                     }).catch(function(err){
                         _self.errorUtil(err);
@@ -327,13 +327,13 @@ export default {
                 }
             }
         }
-        
+
     }
 }
 </script>
 <style>
-    .main_content .weui-cell{padding: 30px;font-size: 28px;text-align: left;} 
-    .main_content .weui-cells{margin-top: 0;} 
+    .main_content .weui-cell{padding: 30px;font-size: 28px;text-align: left;}
+    .main_content .weui-cells{margin-top: 0;}
     .main_content .weui-cell .weui-cell__ft{text-align: left;padding-left: 30px;}
 
     .cont-tex .weui-cells{height: 100%;}
@@ -358,8 +358,8 @@ export default {
     .bh_div .vux-no-group-title .weui-cell .vux-cell-bd{margin-right: 20px;text-align: right;}
     .bh_div .vux-no-group-title:before,.bh_div .weui-cell:before{content: none;}
     .bh_div .weui-cell:last-child{border-top: 1px solid #f4f4f4;/*no*/}
-    .bh_div .weui-cell{padding: 30px;font-size: 28px;text-align: left;} 
-    .bh_div .weui-cells{margin-top: 0;} 
+    .bh_div .weui-cell{padding: 30px;font-size: 28px;text-align: left;}
+    .bh_div .weui-cells{margin-top: 0;}
     .bh_div .weui-cell .weui-cell__ft{text-align: left;padding-left: 10px;}
 
 
@@ -395,7 +395,7 @@ export default {
     .Certificate_No {padding:20px 30px;font-size:28px;color:#444;}
     .Certificate_No input{width:500px;height:65px;line-height:65px;border:1px solid #c4c5c6;/*no*/border-radius:5px;/*no*/padding-left:20px;outline:none;}
 
-    .certificate_picture{padding:20px 30px 30px 20px;font-size:28px;color:#444;border-bottom: 1px solid 
+    .certificate_picture{padding:20px 30px 30px 20px;font-size:28px;color:#444;border-bottom: 1px solid
     #f4f3f3;/*no*/}
     .certificate_picture span{width:5em;text-align:right;display: inline-block;}
     .picture_div{margin: 20px 0;overflow: hidden;}

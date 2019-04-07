@@ -22,8 +22,8 @@ export default {
     Loading
   },
   computed: mapState({
-    isLoading: state => state.isLoading,
-    direction: state => state.direction,
+    isLoading: state => state.animation.isLoading,
+    direction: state => state.animation.direction,
     viewTransition () {
       if (!this.direction) return ''
       return 'vux-pop-' + (this.direction === 'forward' ? 'in' : 'out')

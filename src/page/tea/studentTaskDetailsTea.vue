@@ -63,8 +63,8 @@
                 </div>
                 <!-- 日期时间 -->
                 <group v-if="item.type==3&&item.citeDataType!=1" class="datetimeCon">
-                    <datetime 
-                        v-model="item.val" 
+                    <datetime
+                        v-model="item.val"
                         :title="(item.notnull=='Y')?'<strong style='+'color:#ff0000;vertical-align:middle;'+'>*</strong>'+item.name:item.name"
                         format="YYYY-MM-DD HH:mm"
                         placeholder="请选择日期时间">
@@ -82,7 +82,7 @@
                 <div class="taskdetails_child" v-if="item.type==19&&item.citeDataType!=1">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
                     <input type="tel" v-model="item.val" :maxlength="item.charnumber" @input="number(item.val,item.id)"/>
-                </div>  
+                </div>
                 <div class="referenceDiv" v-if="item.citeDataType==1&&item.type==19">
                     <span>"{{ item.name }}"</span>
                     <div class="referChildDiv" v-for="(itemRefer,index) in item.listCiteData">
@@ -91,7 +91,7 @@
                     </div>
                     <p style="color:#706f6f;" v-if="item.listCiteData.length<=0">--</p>
                 </div>
-                
+
                 <!-- 小数 -->
                 <div class="taskdetails_child" v-if="item.type==20&&item.citeDataType!=1">
                     <span><strong :style="item.notnull=='Y'?'color:#ff0000;vertical-align: middle;':''"> {{ (item.notnull=='Y')?'*':'•' }}</strong>{{ item.name }}</span>
@@ -396,7 +396,7 @@
                     北京市朝阳区惠中北路
                 </div>
             </div> -->
-           
+
             <!-- <div class="taskdetails_child">
                 <span>图片上传 :</span>
                 <div class="picture_div">
@@ -514,7 +514,7 @@
                 </div>
             </div>
 
-            
+
             <!-- <div class="taskdetails_ts">
                 <span>图片上传 :</span>
                 <div class="picture_div">
@@ -524,11 +524,11 @@
                 </div>
             </div> -->
         </div>
-        
 
-        
 
-        
+
+
+
 
 
         <div class="prop_history" v-show="show">
@@ -569,7 +569,7 @@
 
 
     </div>
-     
+
 </template>
 
 <script>
@@ -593,8 +593,8 @@ import aplayer from "vue-aplayer";
 
 export default {
     components:{
-        Group, 
-        Cell, 
+        Group,
+        Cell,
         XTextarea,
         Datetime,
         VDistpicker,
@@ -653,7 +653,7 @@ export default {
             conJsSelect:[],
 
 
-            
+
             taskCycles:[],
             indexCycle:0,
             indexCycle1:0,
@@ -668,7 +668,7 @@ export default {
             dataModel: [],
             // selectZd:[],
 
-            
+
             data:[],
             xr:'',
             orgId:'',
@@ -685,8 +685,8 @@ export default {
             obtainText:'获取验证码',
             obtainVal:'',
 
-            
-            
+
+
             // 数据引用
             itmesRe:[],
 
@@ -704,8 +704,8 @@ export default {
         }
     },
     computed: mapState({
-      _url_: state => state._url_
-      
+      _url_: state => state.animation._url_
+
     }),
     computed: {
         noback:function(){
@@ -1120,11 +1120,11 @@ export default {
                 _self.isshow1=false
                 _self.isshow2=true
             }
-            
+
             _self.$previewRefresh()
             console.log(res,'看新返回值')
             _self.isRuleApproval = res.data.isRuleApproval;
-            
+
           }).catch(function(err){
             _self.errorUtil(err);
           })
@@ -1184,7 +1184,7 @@ export default {
                 }).catch(function(err){
                     _self.errorUtil(err);
                 })
-                
+
             }
         },
         add(){
@@ -1277,7 +1277,7 @@ export default {
                             age='请输入正确的电子邮箱'
                         }
                     }
-                    
+
                 }
                 if(el.type==27){
                     if(el.notnull!='Y'&&el.val!=''&&el.val!=null){
@@ -1330,11 +1330,11 @@ export default {
                         console.log(err)
                         _self.errorUtil(err);
                     })
-                }   
+                }
             }else{
                 _self.$vux.toast.show({type: 'warn',text:age });
             }
-            
+
         },
         getMap() {
             var  self_ = this;
@@ -1388,7 +1388,7 @@ export default {
 </style>
 
 <style scoped>
-    
+
 
     .top-back {text-align: center;font-size: 36px;color: #444;position: fixed;left:0;right:0;padding:20px;background-color: #fff;z-index: 100;top: 0;}
     .top-back .img-1{position: absolute;width: 38px;height: 38px;left: 20px;top: 25px}
@@ -1408,7 +1408,7 @@ export default {
     .taskdetails_child > div{float: left;width:100%;}
     .taskdetails_child > div input[type='text']{width:95%;height:65px;line-height:65px;margin-bottom:20px;border:1px solid #c4c5c6;/*no*/border-radius:5px;/*no*/padding-left:5%;outline:none;font-size:28px;}
     .pic_p{padding:20px 30px 0;font-size:28px;color:#444;overflow: hidden;}
-    
+
     .taskdetails_ts{padding:10px 20px 0;font-size:28px;color:#444;overflow: hidden;}
     .taskdetails_ts > span {float:left;width: 100%;text-align: left;padding:10px 0;font-size:28px;}
     .taskdetails_ts select{float:left;width:100%;height:67px;line-height:67px;border:1px solid #e2e2e2;/*no*/border-radius:5px;/*no*/padding-left:3%;outline:none;font-size:28px;}
@@ -1437,7 +1437,7 @@ export default {
     .prop_history_content > div{text-align: center;font-size: 28px;color:#444;padding: 40px 0;margin: 0 20px;}
     .prop_history_content > div:first-child{border-bottom:1px solid #f4f3f3;/*no*/}
     .ts_prop{width:100%;height:100%;}
-    
+
 
     .select_peo{float:left;width:95%!important;min-height:65px;line-height:65px;border:1px solid #e2e2e2;/*no*/border-radius:5px;/*no*/padding:0 2.5%;overflow: hidden;}
     .select_peo strong{font-weight:400;float:left;margin: 5px 10px;border:1px solid #e2e2e2;/*no*/padding:0 5px;/*no*/border-radius:5px;/*no*/position:relative;}
@@ -1446,7 +1446,7 @@ export default {
     /* 新增电话样式 */
     .phone_div > .sr_input{width:60%;}
     .phone_div > .js_input{margin-top:20px;}
-    
+
     .phone_div .dick_yz{float: left;width:35%;font-size:28px;height:65px;line-height:65px;text-align:center;color:#01c267;cursor: pointer;border:1px solid #fff;background:#fff;outline:none;}
 
     input[type="text"],input[type="button"],input[type="tel"],input[type="number"], input[type="submit"], input[type="reset"],select {
@@ -1454,7 +1454,7 @@ export default {
     textarea {-webkit-appearance: none;} 
     select {background: url("../../assets/img/select_down.png") no-repeat right 10px center transparent;}
 
-    
+
     /* 视频 */
     .addVideo{width:215px!important;height:215px;}
     .addVideo img{width:215px;height:215px;}

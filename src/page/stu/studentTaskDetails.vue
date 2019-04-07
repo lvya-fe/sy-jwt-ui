@@ -697,7 +697,7 @@ export default {
         }
     },
     computed: mapState({
-      _url_: state => state._url_
+      _url_: state => state.animation._url_
 
     }),
     computed: {
