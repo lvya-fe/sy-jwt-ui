@@ -32,20 +32,25 @@
                     <div @click="newlink(item)"  class="ripple">
                     <!-- <div @click="newlink(item.isRelateStu,item.id,item.joinstarttime,item.joinendtime)"  class="ripple"> -->
                         <!-- 关联同学 -->
-                        <img class="first-img" src="../../assets/img/ico_task.png" alt="" v-if="item.isRelateStu">
-                        <!-- 已完成 -->
-                        <img class="first-img" src="../../assets/img/yiwancheng.png" v-else-if="item.status == 4">
-                        <!-- <img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.statusName=='未完成'"> -->
-                        <!-- 待审核 -->
-                        <img class="first-img" src="../../assets/img/daishenhe_t.png" v-else-if="item.status == 2">
-                        <!-- 已驳回 -->
-                        <img class="first-img" src="../../assets/img/yibohui_t.png" v-else-if="item.status == 3">
-                        <!-- 已经结束 -->
-                        <img class="first-img" src="../../assets/img/yijieshu.png" v-else-if="item.status == 0">
-                        <!-- 未开始 -->
-                        <img class="first-img" src="../../assets/img/weikaiqi.png" v-else-if="item.status == -1">
-                        <!-- 进行中 -->
-                        <img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.status == 1">
+                        <!--<img class="first-img" src="../../assets/img/ico_task.png" alt="" v-if="item.isRelateStu">-->
+                        <!--&lt;!&ndash; 已完成 &ndash;&gt;-->
+                        <!--<img class="first-img" src="../../assets/img/yiwancheng.png" v-else-if="item.status == 4">-->
+                        <!--&lt;!&ndash; <img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.statusName=='未完成'"> &ndash;&gt;-->
+                        <!--&lt;!&ndash; 待审核 &ndash;&gt;-->
+                        <!--<img class="first-img" src="../../assets/img/daishenhe_t.png" v-else-if="item.status == 2">-->
+                        <!--&lt;!&ndash; 已驳回 &ndash;&gt;-->
+                        <!--<img class="first-img" src="../../assets/img/yibohui_t.png" v-else-if="item.status == 3">-->
+                        <!--&lt;!&ndash; 已经结束 &ndash;&gt;-->
+                        <!--<img class="first-img" src="../../assets/img/yijieshu.png" v-else-if="item.status == 0">-->
+                        <!--&lt;!&ndash; 未开始 &ndash;&gt;-->
+                        <!--<img class="first-img" src="../../assets/img/weikaiqi.png" v-else-if="item.status == -1">-->
+                        <!--&lt;!&ndash; 进行中 &ndash;&gt;-->
+                        <!--<img class="first-img" src="../../assets/img/jinxingzhong.png" v-else-if="item.status == 1">-->
+
+                        <!-- 关联同学 -->
+                        <img v-if="item.isRelateStu" class="first-img" src="static/icon/task/ico_task.png" alt="" >
+                        <!-- 任务状态 -->
+                        <img v-else class="first-img" :src="'static/icon/task/'+ item.status +'.png'">
 
                         <div class="ne-div">
                             <p>{{ item.title }}</p>

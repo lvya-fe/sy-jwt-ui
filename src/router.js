@@ -547,6 +547,22 @@ export default [
     }
   },
   {
+    name: 'task-router',
+    path: '/task',
+    meta: {
+      // title: '任务详情'
+    },
+    component: function (resolve) {
+      require(['./page/task-details/task-details.vue'], resolve)
+    },
+    children: [{
+      path: 'task-details/:uid/:id/:stuid/:schoolid',
+      component: function (resolve) {
+        require(['./page/task-details/details-stu.vue'], resolve)
+      },
+    }]
+  },
+  {
     name: 'task-cite-other',
     path: '/task-cite-other/:uid/:id/:stuid/:schoolid',
     meta: {

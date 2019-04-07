@@ -12,7 +12,6 @@ import uploadImg  from '@/components/uploadImg'
 import { mapState } from 'vuex'
 import VideoPlayerCommon from "@/components/common/video/video-player-common.vue"
 import FormCommon from "@/components/common/cite/cite-other/form-common.vue"
-import Cookies from 'js-cookie'
 import TaskConvert from "@/utils/TaskConvert"
 // import showcycle from '@/page/tea/SelectionPeriod'
 export default {

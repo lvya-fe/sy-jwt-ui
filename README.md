@@ -36,14 +36,15 @@
 
 ## src代码目录 说明
 - components 组件目录，主要存放 通用组件，指令 过滤器等
+- edu-common 公司业务沉淀 通用 工具类 组件等
 - less 存放公用less
 - pages 以页面形式存放 页面结构
 - api 主要存放 API
 - utils 通用工具类js
 - vuex 存放vuex全局状态管理
 - config.js 跟外界无关的程序配置文件
-- main.js js入口文件
 - router.js 路由文件
+- main.js js入口文件
 
 ##
 ======================
