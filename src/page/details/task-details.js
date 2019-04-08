@@ -21,7 +21,7 @@ export default {
       id:this.$route.params.id,
       // cycleid:this.$route.params.cycleid,
       // back:this.$route.params.back,
-      stuid:this.$route.params.stuid,
+      stuid: this.$route.query.stuid || this.$route.params.stuid,
       schoolId:this.$route.params.schoolid,
       title:'',
       formState:null,//表单状态
@@ -546,13 +546,15 @@ export default {
         stuId: this.stuid
       })
       let path = ''
+      let obj = {}
       if (Cookies.get('roleType') === 'stu') {
         path = 'app/stu/v1/addtask'
       } else {
+        obj.stuId = this.stuid
         path = 'app/tea/task/addtask'
       }
 
-      let obj = {}
+
       obj.uid = this.uid
       obj.taskid = this.id
       let convertObj = TaskConvert.covertResult(this.curFieldsLists)
