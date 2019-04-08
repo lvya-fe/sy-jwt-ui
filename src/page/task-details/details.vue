@@ -18,7 +18,7 @@
     },
     data() {
       return {
-
+        title: ''
       }
     },
     methods: {
