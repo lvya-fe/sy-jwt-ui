@@ -6,8 +6,8 @@ class TaskConvert {
   // 处理新旧数据
   doTaskData(data) {
     let newData = {
-      name: data.task.title,
-      taskState: data.task.status,
+      name: data.task ? data.task.title:data.name,
+      taskState: data.task ? data.task.status: 4, // TODO 教师填写 默认无状态未已完成
       formItemResps: [] // 表单
     }
 
@@ -33,6 +33,16 @@ class TaskConvert {
         })
       }
 
+      // 选人框
+      if(item.type == 10 && item.valex) {
+        let list = item.valex.split(',')
+        list.forEach((item)=> {
+          formSelectItemResps.push({
+            value: item
+          })
+        })
+      }
+
       newData.formItemResps.push({
         choiceLimitType: null,
         choiceType: null,
@@ -46,7 +56,6 @@ class TaskConvert {
         choiceType: item.choiceMap?item.choiceMap.type: '',
         formItemValue: citeData.toString(),
         formItemValueId: null,
-        formSelectItemResps: null,
         ctime: item.ctime,
         listCiteData: item.listCiteData,
         order: index,

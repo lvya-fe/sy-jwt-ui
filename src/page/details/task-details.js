@@ -162,10 +162,13 @@ export default {
         if (Cookies.get('roleType') === 'tea') {
           // teaTaskView taskView
           this.roleType = 'tea'
-          // 教师帮学生填写
-          if (this.$route.query.stuid) {
+
+          if (this.$route.query.stuid) { // 教师帮学生填写
             params.stuId = this.$route.query.stuid
             resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/taskView', qs.stringify(params))
+          }
+          else if( this.$route.query.teaDoType) { // 教师负责人
+            resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/' + this.$route.params.stuid+"/view", qs.stringify(params))
           } else {
             resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/teaTaskView', qs.stringify(params))
           }

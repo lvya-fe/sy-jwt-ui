@@ -136,17 +136,17 @@
           <!-- 整数 -->
           <div class="fieldsWrap disflex" v-if="item.formItemType == '19'">
             <span class="fieldname">{{item.formItemName}}</span>
-            <input type="number" max="99999999999999999999" v-model="item.formItemValue" oninput = "value=value.replace(/[^\d]/g,'')"  :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
+            <input type="tel" v-model="item.formItemValue" maxlength="15" oninput = "value=value.replace(/[^\d]/g,'')"  :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
           </div>
           <!-- 小数 -->
           <div class="fieldsWrap disflex" v-if="item.formItemType == '20'">
             <span class="fieldname">{{item.formItemName}}</span>
-            <input type="number" max="99999999999999999999" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @blur="verifyFix(item.formItemValue,index)">
+            <input type="number" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @input="maxLengthCheck(item.formItemValue,index)" >
           </div>
           <!-- 百分数 -->
           <div class="fieldsWrap disflex" v-if="item.formItemType == '21'">
             <span class="fieldname">{{item.formItemName}}</span>
-            <input type="number" max="99999999999999999999" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')"  @blur="verifyFix(item.formItemValue,index)">
+            <input type="number" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @input="maxLengthCheck(item.formItemValue,index)" >
             <span class="percent">%</span>
           </div>
           <!-- 日期 -->
