@@ -60,8 +60,21 @@
           resData = TaskConvert.doTaskData(resData.data)
         }
 
-        this.formList= resData.formItemResps;
+        this.$store.commit('taskInfo', {taskInfo: resData})
+
+        // 填写页面先用原来的，其他用新的
         this.taskState = resData.taskState
+
+        if(this.taskState == 1 || this.taskState == 3) {
+          this.$router.replace({path: '/task-details/'+params.uid+'/'+params.taskid+'/'+null+'/'+null, query: {
+              roleType: Cookies.get('roleType')
+            }
+          })
+          return false
+        }
+
+
+        this.formList= resData.formItemResps;
         console.log("this.taskState:", this.taskState)
         console.log("this.formList:", this.formList)
       }

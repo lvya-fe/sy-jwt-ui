@@ -11,7 +11,7 @@ event:
   <div class="form-common form-input">
     <div class="form-wrap">
       <span class="form-name">
-          <img :src="'static/icon/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
+          <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </span>
       <input type="text" class="form-inline" v-model="item.formItemValue"  @input="filterText" placeholder="请输入内容">

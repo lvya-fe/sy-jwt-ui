@@ -1,5 +1,5 @@
 <!--
-组件名称：InputQuery
+组件名称：imgUpload
 props:
   item
   iconType 图标类型，同表单名
@@ -11,7 +11,7 @@ event:
   <div class="form-common form-item">
     <div class="form-wrap">
       <span class="form-name">
-          <img :src="'static/icon/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
+          <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </span>
     </div>
@@ -38,7 +38,7 @@ event:
 
 <script>
   export default {
-    name: 'InputQuery',
+    name: 'imgUpload',
     props: {
       item: {type: Object, default: {}},
       iconType: {type: String, default: ''}
