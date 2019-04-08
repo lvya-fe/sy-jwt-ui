@@ -1,6 +1,6 @@
 <template>
   <div class="form-container">
-    <component :is="getFormType(formItem)" :item="formItem" v-for="formItem,index in formList" :key="index"></component>
+    <component :is="getFormType(formItem)" :item="formItem" v-for="formItem,index in formList" :key="index" :iconType="currentIconType(formItem)"></component>
   </div>
 </template>
 
@@ -309,6 +309,14 @@
 
       }
     },
+    computed: {
+      currentIconType () {
+        return function (formItem) {
+          let form = FormType.list[formItem.formItemType]
+          return form.icon ? form.type : false
+        }
+      }
+    },
     methods: {
       // FromType类型，参考 https://shimo.im/sheets/SbmJwF5ul5wmb4jO/
       // 动态组件，规则 表单类型 + 操作类型，如 Input + Add
@@ -317,14 +325,14 @@
         formType = FormType.list[formItem.formItemType] && FormType.list[formItem.formItemType].type
         // 组件首字母大写
         if(formType) formType = formType.substring(0,1).toUpperCase() + formType.substring(1);
-
+        // console.log("orginType:", formType)
         if((this.taskState == 1 || this.taskState == 3) && formItem.citeDataType == 0) {
           formType += 'Add'
         } else if(formItem.citeDataType == 0){
           formType += 'Query'
         } else if(formItem.citeDataType == 1 && formItem.dataRangeType == 0){
           formType += 'CiteSelf'
-        } else if(formItem.citeDataType == 1 && formItem.dataRangeType == 1){
+        } else if(formItem.citeDataType == 1 && (formItem.dataRangeType == 1 || formItem.dataRangeType == 2)){
           formType += 'CiteOther'
         }
         console.log("formType:", formType)

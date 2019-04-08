@@ -516,7 +516,7 @@ export default {
             if(this.isControl){
                 if(!task.isRelateStu){
                     // this.$router.push({path: '/studentTaskDetails/'+this.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
-                  this.$router.push({path: '/task-details/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid, query: {roleType: 'stu'}});
+                  this.$router.push({path: '/task/task-details/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid, query: {roleType: 'stu'}});
                 }else{
                     //列表式
                     if(task.showFlag == 1){

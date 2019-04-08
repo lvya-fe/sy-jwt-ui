@@ -184,7 +184,7 @@
       },
       to(stuId) {
         // this.$router.push({path: '/AuditOperation/' + this.uid + '/' + id});
-        this.$router.push({path: '/task-details/'+this.uid+'/'+this.taskid+'/'+stuId+'/'+null, query: {roleType: 'tea'}})
+        this.$router.push({path: '/task/task-details/'+this.uid+'/'+this.taskid+'/'+stuId+'/'+null, query: {roleType: 'tea'}})
       },
       changeTask(v) {
         var _self = this;

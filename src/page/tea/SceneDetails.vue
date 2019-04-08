@@ -554,7 +554,7 @@ export default {
           }else if(task.teaDoType==3){
             //可选参数：stuid，stuname 添加到path中，  目的：为了在单独url中添加去除返回按钮的参数
             // this.$router.push({path: '/studentTaskDetailsTea/'+_self.$route.params.uid+'/'+task.id+'/'+'null/'+task.joinstarttime+'/'+task.joinendtime+'/'+0+'/null'});
-            this.$router.push({path: '/task-details/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid, query: {roleType: 'tea'}});
+            this.$router.push({path: '/task/task-details/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid, query: {roleType: 'tea'}});
             // this.$router.push({path: '/studentTaskDetailsTea/'+_self.$route.params.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
           }
 

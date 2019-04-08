@@ -22,7 +22,8 @@ class FormType {
       },
       3: {
         name: '日期时间',
-        type: 'datetime'
+        type: 'datetime',
+        icon: true
       },
       4: {
         name: '单项选择',
@@ -34,7 +35,8 @@ class FormType {
       },
       6: {
         name: '图片上传',
-        type: 'imgUpload'
+        type: 'imgUpload',
+        icon: true
       },
       7: {
         name: '评分',
@@ -46,11 +48,13 @@ class FormType {
       },
       9: {
         name: '地理位置',
-        type: 'position'
+        type: 'position',
+        icon: true
       },
       10: {
         name: '选人插件',
-        type: 'selectMember'
+        type: 'selectMember',
+        icon: true
       },
       11: {
         name: '显示项',
@@ -66,11 +70,13 @@ class FormType {
       },
       14: {
         name: '邮箱',
-        type: 'email'
+        type: 'email',
+        icon: true
       },
       15: {
         name: '电话',
-        type: 'phone'
+        type: 'phone',
+        icon: true
       },
       16: {
         name: '选择列表',
@@ -98,7 +104,8 @@ class FormType {
       },
       22: {
         name: '日期',
-        type: 'date'
+        type: 'date',
+        icon: true
       },
       23: {
         name: '公式',
@@ -114,19 +121,23 @@ class FormType {
       },
       26: {
         name: '邮编',
-        type: 'postCode'
+        type: 'postCode',
+        icon: true
       },
       27: {
         name: '身份证',
-        type: 'ID' //identification card
+        type: 'ID', //identification card
+        icon: true
       },
       28: {
         name: '音频',
-        type: 'audio'
+        type: 'audio',
+        icon: true
       },
       29: {
         name: '视频',
-        type: 'video'
+        type: 'video',
+        icon: true
       },
     }
 
@@ -136,3 +147,5 @@ class FormType {
 }
 
 export default new FormType()
+// 暴露成全局，方便使用
+window.FormType = new FormType()
