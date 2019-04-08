@@ -18,6 +18,8 @@ event:
 
     <!--自己给自己填写，只显示-->
     <VideoPlayerCommon :options="options(item.formItemValue)"></VideoPlayerCommon>
+
+    <br>
   </div>
 </template>
 

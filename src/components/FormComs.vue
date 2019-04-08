@@ -1,6 +1,9 @@
 <template>
   <div class="form-container">
     <component :is="getFormType(formItem)" :item="formItem" v-for="formItem,index in formList" :key="index" :iconType="currentIconType(formItem)"></component>
+    <div class="btn-block-wrapper">
+      <button type="button" class="weui-btn weui-btn_default btn-block btn-back" @click="goBack()">返回</button>
+    </div>
   </div>
 </template>
 
@@ -315,7 +318,7 @@
           let form = FormType.list[formItem.formItemType]
           return form.icon ? form.type : false
         }
-      }
+      },
     },
     methods: {
       // FromType类型，参考 https://shimo.im/sheets/SbmJwF5ul5wmb4jO/
@@ -337,6 +340,10 @@
         }
         console.log("formType:", formType)
         return formType
+      },
+
+      goBack(){
+        this.$router.go(-1)
       }
     },
     mounted() {
