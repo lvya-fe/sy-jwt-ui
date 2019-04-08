@@ -136,17 +136,17 @@
                     <!-- 整数 -->
                     <div class="fieldsWrap disflex" v-if="item.formItemType == '19'">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <input type="number" max="99999999999999999999" v-model="item.formItemValue" oninput = "value=value.replace(/[^\d]/g,'')"  :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
+                        <input type="tel" v-model="item.formItemValue" maxlength="15" oninput = "value=value.replace(/[^\d]/g,'')"  :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
                     </div>
                     <!-- 小数 -->
                     <div class="fieldsWrap disflex" v-if="item.formItemType == '20'">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <input type="number" max="99999999999999999999" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @blur="verifyFix(item.formItemValue,index)">
+                        <input type="number" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @input="maxLengthCheck(item.formItemValue,index)" >
                     </div>
                     <!-- 百分数 -->
                     <div class="fieldsWrap disflex" v-if="item.formItemType == '21'">
                         <span class="fieldname">{{item.formItemName}}</span>
-                        <input type="number" max="99999999999999999999" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')"  @blur="verifyFix(item.formItemValue,index)">
+                        <input type="number" class="padr30" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" @input="maxLengthCheck(item.formItemValue,index)" >
                         <span class="percent">%</span>
                     </div>
                     <!-- 日期 -->
@@ -432,8 +432,7 @@ export default {
     methods:{
         goback(){
             // this.$router.go(-1);
-            // Cookies.set('cardPageNo',this.paramsData.pageNo);
-            // console.log(this.paramsData.taskId)
+            Cookies.set('cardPageNo',this.paramsData.pageNo);
             // if(this.paramsData.taskId === undefined){
                 this.$router.go(-1);
             // }else{
@@ -767,10 +766,22 @@ export default {
             }
         },
         //小数，百分数  校验小数点后最多两位
-        verifyFix(val,index){
-            if(val.indexOf('.') == -1) return;
-            if(val.split('.')[1].length > 2){
-                this.curFieldsLists[index].formItemValue = val.substring(0,val.indexOf(".")+3);
+        // verifyFix(val,index){
+        //     if(val.indexOf('.') == -1) return;
+        //     if(val.split('.')[1].length > 2){
+        //         this.curFieldsLists[index].formItemValue = val.substring(0,val.indexOf(".")+3);
+        //     }
+        // },
+        maxLengthCheck(val,index){
+            if(val.length == 0) return;
+            if(val.length >15){
+                if(val.toString().length > 15){
+                    this.curFieldsLists[index].formItemValue = Number(val.toString().substring(0,15));
+                }
+                if(val.indexOf('.') == -1) return;
+                if(val.split('.')[1].length > 2){
+                    this.curFieldsLists[index].formItemValue = val.substring(0,val.indexOf(".")+3);
+                }
             }
         },
         //表单提交
@@ -892,7 +903,7 @@ export default {
 }
 .dp-header .dp-item{
     font-size: 36px !important;
-    padding: 10px !important;
+    padding: 10px 20px !important;
     height: auto !important;
 }
 .vux-popup-picker .vux-popup-picker-container{
@@ -1183,7 +1194,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             padding: 0;
                             p{
                                 position: relative;
-                                padding: 30px 30px 30px 70px;
+                                padding: 30px 30px 30px 86px;
                                 img{
                                     position: absolute;
                                     left: 30px;
