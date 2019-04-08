@@ -14,6 +14,10 @@ event:
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </span>
+      <!--自己给自己填写，只显示-->
+      <div v-if="item.citeDataType == 0" class="form-inline">
+        <pre>{{item.formItemValue}}</pre>
+      </div>
     </div>
     <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
       <div class="user-avatar">
