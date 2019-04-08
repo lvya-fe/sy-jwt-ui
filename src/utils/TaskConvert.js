@@ -43,6 +43,7 @@ class TaskConvert {
         formItemName: item.name,
         formItemNotNull: "N",
         formItemType: item.type,
+        choiceType: item.choiceMap?item.choiceMap.type: '',
         formItemValue: citeData.toString(),
         formItemValueId: null,
         formSelectItemResps: null,
