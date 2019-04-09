@@ -15,33 +15,29 @@ event:
         {{item.formItemName}}
       </span>
     </div>
-    <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
-      <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
-      </div>
-
-      <div class="form-content form-user-custom">
-        <div class="user-name">
-          <img class="user-icon" src="static/img/user/user-icon.png">
-          <span class="text-ellipsis">{{cite.name}}</span>
-        </div>
-        <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
-        <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
-          <div class="result-content">
-            <pre>{{cite.val}}</pre>
-          </div>
-        </div>
-      </div>
+    <!-- 单条 多条 逐行显示-->
+    <CiteOtherCommon
+      :cite="cite"
+      v-for="(cite,index) in item.listCiteData"
+      :key='index'
+      v-if="item.listCiteData.length>0">
+    </CiteOtherCommon>
+    <!--无数据-->
+    <NoData v-if="item.listCiteData.length == 0"></NoData>
     </div>
   </div>
 </template>
 
 <script>
+  import CiteOtherCommon from "../../form-coms/cite-other-common"
   export default {
     name: 'InputQuery',
     props: {
       item: {type: Object, default: {}},
       iconType: {type: String, default: ''}
+    },
+    components: {
+      CiteOtherCommon,
     },
     data () {
       return {

@@ -8,7 +8,7 @@ event:
 -->
 
 <template>
-  <div class="form-wrap">
+  <div class="form-wrap form-cite-column">
     <div class="user-avatar">
       <img class="user-circle" src="static/img/user/avatar-default.jpg">
     </div>
@@ -21,7 +21,7 @@ event:
       <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
       <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
         <div class="result-content">
-          {{cite.val}}
+          <pre>{{cite.val}}</pre>
         </div>
       </div>
     </div>

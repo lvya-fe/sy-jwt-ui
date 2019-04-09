@@ -26,7 +26,7 @@ event:
         <div class="user-org">{{cite.orgNames}}</div>
       </div>
 
-      <div class="form-content form-user-custom">
+      <div class="form-content form-user-custom" v-if="cite.val">
         <div class="result-content cite-audio-content">
           <aplayer :autoplay="null" :music="{
                                     title: '数据来源自',
@@ -38,6 +38,8 @@ event:
           </aplayer>
         </div>
       </div>
+      <!--无数据-->
+      <NoData v-else></NoData>
 
     </div>
   </div>

@@ -21,9 +21,6 @@ event:
       <div class="result-content textarea-bg">
         <pre>{{cite.val}}</pre>
       </div>
-      <div class="result-content textarea-bg">
-        <pre>{{cite.val}}</pre>
-      </div>
     </div>
     <NoData v-else></NoData>
 
@@ -31,6 +28,7 @@ event:
 </template>
 
 <script>
+  import CiteOtherCommon from "../../form-coms/cite-other-common"
   export default {
     name: 'InputQuery',
     props: {
@@ -38,6 +36,7 @@ event:
       iconType: {type: String, default: ''}
     },
     components: {
+      CiteOtherCommon,
     },
     data () {
       return {

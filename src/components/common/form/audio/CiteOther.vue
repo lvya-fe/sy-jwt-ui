@@ -15,6 +15,7 @@ event:
         {{item.formItemName}}
       </span>
     </div>
+
     <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
       <div class="user-avatar">
         <img class="user-circle" src="static/img/user/avatar-default.jpg">
