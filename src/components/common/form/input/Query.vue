@@ -9,34 +9,14 @@ event:
 
 <template>
   <div class="form-common form-item">
-    <div class="form-wrap">
+    <div class="form-wrap" :class="{'hasIcon':iconType}">
+      <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
       <span class="form-name">
-          <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </span>
       <!--自己给自己填写，只显示-->
-      <div v-if="item.citeDataType == 0" class="form-inline">
-        <pre>{{item.formItemValue}}</pre>
-      </div>
-    </div>
-
-    <!--引用-->
-    <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
-      <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
-      </div>
-
-      <div class="form-content form-user-custom">
-        <div class="user-name">
-          <img class="user-icon" src="static/img/user/user-icon.png">
-          <span class="text-ellipsis">{{cite.name}}</span>
-        </div>
-        <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
-        <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
-          <div class="result-content">
-            <pre>{{cite.val}}</pre>
-          </div>
-        </div>
+      <div class="form-inline">
+        <p>{{item.formItemValue}}</p>
       </div>
     </div>
   </div>
@@ -61,6 +41,6 @@ event:
     }
   }
 </script>
-<style lang="less">
+<style lang="less" scope>
 
 </style>

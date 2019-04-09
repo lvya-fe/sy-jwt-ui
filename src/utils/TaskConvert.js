@@ -42,6 +42,15 @@ class TaskConvert {
           })
         })
       }
+      //图片
+      if (item.type == 6 && item.valex) {
+        let list = item.valex.split(',')
+        list.forEach((item) => {
+          formSelectItemResps.push({
+            value: item
+          })
+        })
+      }
 
       newData.formItemResps.push({
         choiceLimitType: null,

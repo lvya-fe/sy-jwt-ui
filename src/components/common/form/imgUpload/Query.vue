@@ -9,28 +9,18 @@ event:
 
 <template>
   <div class="form-common form-item">
-    <div class="form-wrap">
-      <span class="form-name">
-          <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
+    <div class="form-wrap field-block">
+      <p class="form-name-block vux-1px-b">
+        <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
-      </span>
-    </div>
-    <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
-      <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
-      </div>
-
-      <div class="form-content form-user-custom">
-        <div class="user-name">
-          <img class="user-icon" src="static/img/user/user-icon.png">
-          <span class="text-ellipsis">{{cite.name}}</span>
-        </div>
-        <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
-        <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
-          <div class="result-content">
-            <pre>{{cite.val}}</pre>
-          </div>
-        </div>
+      </p>
+      <ul v-if="item.formSelectItemResps.length > 0" class="img-items">
+        <li v-for="(url,i) in item.formSelectItemResps" :key="i">
+            <img :src="url.value" :preview="i" alt="">
+        </li>
+      </ul>
+      <div v-else class="nodata">
+        <img src="../../../../assets/img/noData.png" alt="">
       </div>
     </div>
   </div>
@@ -56,5 +46,22 @@ event:
   }
 </script>
 <style lang="less">
-
+  .img-items{
+      padding: 0 30px;
+      margin: 0;
+      font-size: 0;
+      li{
+          display: inline-block;
+          margin: 0 22px 22px 0;
+          width:215px;
+          height: 215px;
+          &:nth-child(3n+3){
+              margin-right: 0;
+          }
+          img{
+              width: 100%;
+              height: 100%;
+          }
+      }
+  }
 </style>

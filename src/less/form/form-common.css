@@ -1,0 +1,99 @@
+.form-common {
+  padding: 0 0.4rem;
+  margin-top: 0.533333rem;
+  background-color: #fff;
+}
+.form-common .form-wrap {
+  display: flex;
+  padding: 30px 0;
+  margin-left: 0.1rem;
+  align-items: center;
+  font-size: 30px;
+}
+.form-common .form-wrap.field-block {
+  display: block;
+  margin: 0 -30px;
+  padding: 0;
+}
+.form-common .form-wrap.field-block .form-name-block {
+  padding: 30px;
+  text-align: left;
+  font-size: 30px;
+}
+.form-common .form-wrap.field-block .form-name-block .icon_form {
+  position: relative;
+  top: 5px;
+}
+.form-common .form-wrap.field-block .itemsWrap {
+  box-sizing: border-box;
+  padding: 30px 30px 0 30px;
+  font-size: 0;
+}
+.form-common .form-wrap.field-block .itemsWrap li {
+  margin-bottom: 30px;
+  margin-right: 30px;
+  display: inline-block;
+  padding: 20px;
+  font-size: 28px;
+  border: 2px solid #ccc;
+  border-radius: 16px;
+  color: #656565;
+}
+.form-common .form-wrap.field-block .itemsWrap li:first-child {
+  margin-left: 0;
+}
+.form-common .form-wrap.field-block .nodata {
+  padding: 20px 0;
+  text-align: center;
+}
+.form-common .form-wrap.field-block .nodata img {
+  width: 230px;
+  height: 76px;
+}
+.form-common .form-name {
+  display: flex;
+  align-items: center;
+  font-size: 0.4rem;
+}
+.form-common .form-name .icon_form {
+  width: 0.48rem;
+  margin-right: 0.133333rem;
+}
+.form-common .user-name > span {
+  font-size: 0.4rem;
+}
+.form-common .form-content {
+  flex: 1;
+  margin-left: 0.2rem;
+}
+.form-common .form-user-custom .user-name,
+.form-common .form-user-custom .user-org,
+.form-common .form-user-custom .user-result {
+  justify-content: flex-start !important;
+}
+.form-common .form-user-custom .user-result {
+  align-items: flex-start !important;
+}
+.form-common .result-content {
+  color: #6f6f6f;
+  font-size: 0.35rem;
+}
+.form-common .form-inline {
+  flex: 1;
+  margin-left: 15px;
+  padding: 0 0.08rem;
+  font-size: 0.4rem;
+  line-height: 0.4rem;
+  border: none;
+  outline: none;
+  color: #656565;
+}
+.form-common .form-inline > * {
+  text-align: right;
+}
+.form-common .form-inline p {
+  line-height: 1.6;
+}
+.form-common .form-thumb {
+  align-items: flex-start;
+}

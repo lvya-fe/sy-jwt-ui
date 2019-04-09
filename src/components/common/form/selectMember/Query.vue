@@ -9,32 +9,17 @@ event:
 
 <template>
   <div class="form-common form-item">
-    <div class="form-wrap">
-      <span class="form-name">
-          <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
+    <div class="form-wrap field-block">
+      <p class="form-name-block vux-1px-b">
+        <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
-      </span>
+      </p>
       <!--自己给自己填写，只显示-->
-      <div v-if="item.citeDataType == 0" class="form-inline">
-        <pre>{{item.formItemValue}}</pre>
-      </div>
-    </div>
-    <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
-      <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
-      </div>
-
-      <div class="form-content form-user-custom">
-        <div class="user-name">
-          <img class="user-icon" src="static/img/user/user-icon.png">
-          <span class="text-ellipsis">{{cite.name}}</span>
-        </div>
-        <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
-        <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
-          <div class="result-content">
-            <pre>{{cite.val}}</pre>
-          </div>
-        </div>
+      <ul class="itemsWrap" v-if="item.formSelectItemResps.length > 0">
+          <li v-for="(person,index) in item.formSelectItemResps" :key="index">{{person.value}}</li>
+      </ul>
+      <div v-else class="nodata">
+        <img src="../../../../assets/img/noData.png" alt="">
       </div>
     </div>
   </div>
