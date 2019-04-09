@@ -555,10 +555,15 @@ export default [
     component: function (resolve) {
       require(['./page/task-details/details.vue'], resolve)
     },
-    children: [{
+    children: [{ // 老版接口
       path: 'task-details/:uid/:id/:stuid/:schoolid',
       component: function (resolve) {
         require(['./page/task-details/task-details.vue'], resolve)
+      }
+    },{ // 新版接口
+      path: 'task-details-new/:uid/:id/:stuid/:schoolid',
+      component: function (resolve) {
+        require(['./page/task-details/task-details-new.vue'], resolve)
       }
     }]
   },

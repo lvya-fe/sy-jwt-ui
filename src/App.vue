@@ -5,7 +5,8 @@
     <transition
       @after-enter="$vux.bus && $vux.bus.$emit('vux:after-view-enter')"
       :name="viewTransition" :css="!!direction">
-      <router-view v-wechat-title="$route.meta.title" class="router-view"></router-view>
+      <!--v-wechat-title="$route.meta.title"-->
+      <router-view class="router-view"></router-view>
     </transition>
   </div>
 </template>

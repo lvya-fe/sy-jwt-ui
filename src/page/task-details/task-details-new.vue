@@ -30,48 +30,38 @@
         // 学生数据
         let params = {
           uid: this.$route.params.uid,
-          taskid: Number(this.$route.params.id),
-          stime: '',
-          etime: ''
+          schoolId:Number(this.$route.params.schoolid),
+          stuId:Number(this.$route.params.stuid),
+          taskId: Number(this.$route.params.id),
         }
         let resData = {}
         // 角色判断
         if(this.$route.query.roleType) Cookies.set('roleType', this.$route.query.roleType)
         try{
-          if (Cookies.get('roleType') === 'tea') {
-            // teaTaskView taskView
-            this.roleType = 'tea'
-            // 教师帮学生填写
-            if (this.$route.query.stuid) {
-              params.stuId = this.$route.query.stuid
-              resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/taskView', qs.stringify(params))
-            } else {
-              resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/teaTaskView', qs.stringify(params))
-            }
+          if(this.$route.query.roleType == 'tea') {
+            resData = await this.$axios.get(process.env.API_ROOT + 'app/stu/v1/showTeaTaskDetail', {params})
           } else {
-            this.roleType = 'stu'
-            resData = await this.$axios.post(process.env.API_ROOT + 'app/stu/v1/taskview', qs.stringify(params))
+            resData = await this.$axios.get(process.env.API_ROOT + 'app/stu/v1/showStuTaskDetail', {params})
           }
+
         } catch (err) {
           this.errorUtil(err);
         }
         this.$vux.loading.hide()
-        if (resData.success) {
-          resData = TaskConvert.doTaskData(resData.data)
-        }
 
         this.$store.commit('taskInfo', {taskInfo: resData})
 
         // 填写页面 学生自己填的 先用原来的，其他用新的
         this.taskState = resData.taskState
 
-        if(this.taskState == 1 || this.taskState == 3 ) {
-          this.$router.replace({path: '/task-details/'+params.uid+'/'+params.taskid+'/'+null+'/'+null, query: {
-              roleType: Cookies.get('roleType')
-            }
-          })
-          return false
-        }
+        // if(this.taskState == 1 || this.taskState == 3 ) {
+        //   this.$router.replace({path: '/task-details/'+params.uid+'/'+params.taskid+'/'+null+'/'+null, query: {
+        //       roleType: Cookies.get('roleType')
+        //     }
+        //   })
+        //   return false
+        // }
+
 
         this.formList= resData.formItemResps;
         console.log("this.taskState:", this.taskState)

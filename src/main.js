@@ -1,7 +1,6 @@
-// import Vue from 'vue'
+import Vue from 'vue'
 
 import VueRouter from 'vue-router'
-import Vuex from 'vuex'
 
 import {ToastPlugin,AlertPlugin,LoadingPlugin } from 'vux'
 
@@ -71,7 +70,6 @@ Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
 Vue.use(VueRouter)
 Vue.use(axios)
-// Vue.use(Vuex)
 Vue.use(VueCookie)
 
 new Vue({
