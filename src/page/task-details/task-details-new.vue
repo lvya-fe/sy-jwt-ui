@@ -49,6 +49,8 @@
         }
         this.$vux.loading.hide()
 
+        resData = resData.data
+
         this.$store.commit('taskInfo', {taskInfo: resData})
 
         // 填写页面 学生自己填的 先用原来的，其他用新的

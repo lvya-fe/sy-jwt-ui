@@ -16,13 +16,15 @@
                 <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
                     <!-- 单行 -->
                     <div class="fieldsWrap disflex" v-if="item.formItemType == '1'">
-                        <span class="fieldInput fieldname">{{item.formItemName}}</span>
+                        <span class="fieldInput fieldname" v-if=" [1,3].includes(formState) && item.citeDataType ==0 ">{{item.formItemName}}</span>
                         <input v-if=" [1,3].includes(formState) && item.citeDataType ==0 " type="text" class="txtInput" v-model="item.formItemValue"  @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
-                        <p class="readOnly" v-else>{{item.formItemValue}}</p>
+                        <!--<p class="readOnly" v-else>{{item.formItemValue}}</p>-->
+
+                        <FormComsItem v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                     </div>
                     <!-- 多行 -->
                     <div class="fieldsWrap txtarea hookTxtarea" v-if="item.formItemType == '2'">
-                        <p :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>
+                        <p v-if=" [1,3].includes(formState) && item.citeDataType ==0 " :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>
                         <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
                         <div v-else>
                             <div v-if="item.formItemValue !=''" class="readOnly-block">
@@ -33,6 +35,7 @@
                                 <img src="../../assets/img/noData.png" alt="">
                             </div>
                         </div>
+                      <FormComsItem v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                     </div>
                     <!-- 日期时间 -->
                     <group class="fieldsDatetime hasIco" :class="{'readonly': ![1,3].includes(formState) || item.citeDataType !=0}" v-if="item.formItemType == '3'">
@@ -43,6 +46,7 @@
                     <div class="fieldsWrap radios" v-if="item.formItemType == '4'">
                         <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
                         <radioList :lists="item.formSelectItemResps" :disabled = '(![1,3].includes(formState) || item.citeDataType !=0) ? true :false' :checkVal="item.formItemValue" :index="index" @changeVal="changeRadio"></radioList>
+
                     </div>
                     <!-- 多项选择 -->
                     <div class="fieldsWrap radios" v-if="item.formItemType == '5'">
@@ -314,6 +318,7 @@ import VideoPlayerCommon from "@/components/common/video/video-player-common.vue
 import { setTimeout } from 'timers';
 import Cookies from 'js-cookie';
 // import showcycle from '@/page/tea/SelectionPeriod'
+import FormComsItem from '../../components/FormComsItem'
 export default {
     data(){
         return{
@@ -413,7 +418,8 @@ export default {
         FlexboxItem,
         select2,
       VideoPlayerCommon,
-      radioList
+      radioList,
+      FormComsItem
     },
     created(){
         wechatconfigInit(this,qs,this.uid,this._url_);
@@ -772,7 +778,7 @@ export default {
         //     if(val.split('.')[1].length > 2){
         //         this.curFieldsLists[index].formItemValue = val.substring(0,val.indexOf(".")+3);
         //     }
-            
+
         // },
         maxLengthCheck(val,index){
             if(val.length == 0) return;
@@ -898,7 +904,7 @@ export default {
         },
         testInput(value,index){
             // oninput = "value=value.replace(/[^\d]/g,'')"
-            
+
             console.log(value,index)
             value = value.replace(/[^\d]/g,'');
             this.curFieldsLists[index].formItemValue = value;
@@ -909,9 +915,9 @@ export default {
                     this.curFieldsLists[index].formItemValue = Number(value.toString().substring(0,15));
                     console.log(value.toString().substring(0,15),value,"111111111")
                 }
-                
+
             })
-            
+
         }
     }
 }
