@@ -7,6 +7,9 @@
     padding: 0.3rem 0;
     margin-left: 0.1rem;
     align-items: center;
+    .form-wrap{
+      flex: 1;
+    }
   }
   .form-name{
     display: flex;
@@ -53,9 +56,18 @@
       text-align: right;
     }
   }
+  .form-inline-right{
+    justify-content: flex-end;
+    flex: 1;
+
+  }
 
   // 图片缩略图
   .form-thumb{
     align-items: flex-start;
   }
+}
+
+.form-container{
+  min-height: calc(~'96vh');
 }

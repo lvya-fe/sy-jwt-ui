@@ -1,5 +1,5 @@
 <!--
-组件名称：InputQuery
+组件名称：CiteSelf
 props:
   item
   iconType 图标类型，同表单名
@@ -38,7 +38,7 @@ event:
 
 <script>
   export default {
-    name: 'InputQuery',
+    name: 'CiteSelf',
     props: {
       item: {type: Object, default: {}},
       iconType: {type: String, default: ''}

@@ -15,33 +15,23 @@ event:
         {{item.formItemName}}
       </span>
     </div>
-    <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
-      <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
-      </div>
 
-      <div class="form-content form-user-custom">
-        <div class="user-name">
-          <img class="user-icon" src="static/img/user/user-icon.png">
-          <span class="text-ellipsis">{{cite.name}}</span>
-        </div>
-        <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
-        <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
-          <div class="result-content">
-            <pre>{{cite.val}}</pre>
-          </div>
-        </div>
-      </div>
-    </div>
+    <CiteSelfCommon :cite="cite" v-for="(cite,index) in item.listCiteData" :key='index' v-if="item.listCiteData.length>0"></CiteSelfCommon>
+    <NoData v-else></NoData>
+
   </div>
 </template>
 
 <script>
+  import CiteSelfCommon from "../../form-coms/cite-self-common"
   export default {
     name: 'InputQuery',
     props: {
       item: {type: Object, default: {}},
       iconType: {type: String, default: ''}
+    },
+    components: {
+      CiteSelfCommon,
     },
     data () {
       return {

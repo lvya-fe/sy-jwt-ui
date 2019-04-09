@@ -1,5 +1,5 @@
 <!--
-组件名称：InputQuery
+组件名称：CiteSelf
 props:
   item
   iconType 图标类型，同表单名
@@ -14,34 +14,40 @@ event:
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </span>
+      <!--单条 通行显示-->
+      <CiteSelfCommon
+        :cite="cite"
+        v-for="(cite,index) in item.listCiteData"
+        :length="item.listCiteData.length"
+        :key='index'
+        v-if="item.listCiteData.length == 1">
+      </CiteSelfCommon>
     </div>
-    <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
-      <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
-      </div>
 
-      <div class="form-content form-user-custom">
-        <div class="user-name">
-          <img class="user-icon" src="static/img/user/user-icon.png">
-          <span class="text-ellipsis">{{cite.name}}</span>
-        </div>
-        <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
-        <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
-          <div class="result-content">
-            <pre>{{cite.val}}</pre>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- 多条 逐行显示-->
+    <CiteSelfCommon
+      :cite="cite"
+      class="cite-self-multi"
+      v-for="(cite,index) in item.listCiteData"
+      :length="item.listCiteData.length"
+      :key='index'
+      v-if="item.listCiteData.length>1">
+    </CiteSelfCommon>
+    <!--无数据-->
+    <NoData v-if="item.listCiteData.length == 0"></NoData>
   </div>
 </template>
 
 <script>
+  import CiteSelfCommon from "../../form-coms/cite-self-common"
   export default {
-    name: 'InputQuery',
+    name: 'CiteSelf',
     props: {
       item: {type: Object, default: {}},
       iconType: {type: String, default: ''}
+    },
+    components: {
+      CiteSelfCommon,
     },
     data () {
       return {
