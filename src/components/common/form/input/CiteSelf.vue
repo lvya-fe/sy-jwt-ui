@@ -27,12 +27,15 @@ event:
         </div>
         <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
         <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
+
           <div class="result-content">
             <pre>{{cite.val}}</pre>
           </div>
         </div>
       </div>
     </div>
+
+    <NoData></NoData>
   </div>
 </template>
 

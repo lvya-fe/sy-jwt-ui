@@ -38,6 +38,11 @@ const router = new VueRouter({
 
 // Vue.config.productionTip = false
 
+// 全局通用组件
+import EduComs from './edu-common/src/index.js'
+Vue.use(EduComs)
+
+// url处理
 import DoUrl from './utils/DoUrl'
 Vue.prototype.formatUrl= DoUrl
 
