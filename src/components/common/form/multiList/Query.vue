@@ -28,8 +28,8 @@ event:
   export default {
     name: 'InputQuery',
     props: {
-      item: {type: Object, default: {}},
-      iconType: {type: String, default: ''}
+      item: {default: {}},
+      iconType: {default: ''}
     },
     data () {
       return {
@@ -50,5 +50,5 @@ event:
   }
 </script>
 <style lang="less">
-  
+
 </style>

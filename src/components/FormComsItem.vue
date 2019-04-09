@@ -155,8 +155,8 @@
 
   export default {
     props: {
-      formItem: {type: Array, default: {}},
-      taskState: {type: String, default: ''}
+      formItem: {default: {}},
+      taskState: {default: ''}
     },
     components:{
       InputAdd,
@@ -330,9 +330,9 @@
           formType += 'Add'
         } else if(formItem.citeDataType == 0){
           formType += 'Query'
-        // } else if(formItem.citeDataType == 1 && formItem.dataRangeType == 0){
-        //   formType += 'CiteSelf'
-        } else if(formItem.citeDataType == 1){
+        } else if(formItem.citeDataType == 1 && formItem.dataRangeType == 0){
+          formType += 'CiteSelf'
+        } else if(formItem.citeDataType == 1 && (formItem.dataRangeType == 1 || formItem.dataRangeType == 2)){
           formType += 'CiteOther'
         }
         console.log("formType:", formType)

@@ -33,8 +33,8 @@ event:
   export default {
     name: 'CiteOther',
     props: {
-      item: {type: Object, default: {}},
-      iconType: {type: String, default: ''}
+      item: {default: {}},
+      iconType: {default: ''}
     },
     components: {
       CiteOtherCommon,

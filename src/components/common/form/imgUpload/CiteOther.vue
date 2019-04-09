@@ -15,23 +15,24 @@ event:
         {{item.formItemName}}
       </span>
     </div>
-    <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
+    <div class="form-wrap form-thumb" v-for="(cite,index) in item.listCiteData">
       <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
+        <img class="user-circle" :src="cite.imgUrl?cite.imgUrl:'static/img/user/avatar-default.jpg'">
+
+        <div class="user-name">
+          <span class="text-ellipsis">{{cite.name}}</span>
+        </div>
+        <div class="user-org">{{cite.orgNames}}</div>
       </div>
 
       <div class="form-content form-user-custom">
-        <div class="user-name">
-          <img class="user-icon" src="static/img/user/user-icon.png">
-          <span class="text-ellipsis">{{cite.name}}</span>
-        </div>
-        <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
-        <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
-          <div class="result-content">
-            <pre>{{cite.val}}</pre>
+        <div class="result-content cite-img-content">
+          <div class="img-thumb-item" v-for="img in uploadImgs(cite.val)">
+            <img :src="img">
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -40,7 +41,7 @@ event:
   export default {
     name: 'imgUpload',
     props: {
-      item: {type: Object, default: {}},
+      item: {default: {}},
     },
     data () {
       return {

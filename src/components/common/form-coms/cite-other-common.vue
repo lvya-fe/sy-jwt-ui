@@ -10,7 +10,7 @@ event:
 <template>
   <div class="form-wrap form-cite-column">
     <div class="user-avatar">
-      <img class="user-circle" src="static/img/user/avatar-default.jpg">
+      <img class="user-circle" :src="cite.imgUrl?cite.imgUrl:'static/img/user/avatar-default.jpg'">
     </div>
 
     <div class="form-content form-user-custom">

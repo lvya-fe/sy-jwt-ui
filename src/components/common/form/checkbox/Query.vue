@@ -27,8 +27,8 @@ event:
   export default {
     name: 'InputQuery',
     props: {
-      item: {type: Object, default: {}},
-      iconType: {type: String, default: ''}
+      item: {default: {}},
+      iconType: {default: ''}
     },
     data () {
       return {
@@ -53,7 +53,7 @@ event:
           background: url('../../../../assets/img/checked.png') no-repeat right center;
           background-size: 35px 31px;
         }
-        
+
       }
     }
   }

@@ -16,19 +16,20 @@ event:
       </span>
     </div>
     <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
-      <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
-      </div>
 
-      <div class="form-content form-user-custom">
-        <div class="user-name">
-          <img class="user-icon" src="static/img/user/user-icon.png">
-          <span class="text-ellipsis">{{cite.name}}</span>
+      <div class="form-wrap form-thumb" v-for="(cite,index) in item.listCiteData">
+        <div class="user-avatar">
+          <img class="user-circle" :src="cite.imgUrl?cite.imgUrl:'static/img/user/avatar-default.jpg'">
+
+          <div class="user-name">
+            <span class="text-ellipsis">{{cite.name}}</span>
+          </div>
+          <div class="user-org">{{cite.orgNames}}</div>
         </div>
-        <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
-        <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
-          <div class="result-content">
-            <pre>{{cite.val}}</pre>
+
+        <div class="form-content form-user-custom">
+          <div class="result-content cite-video-content">
+            <VideoPlayerCommon :options="options(cite.val)"></VideoPlayerCommon>
           </div>
         </div>
       </div>
@@ -37,11 +38,24 @@ event:
 </template>
 
 <script>
+  import VideoPlayerCommon from '../../../../components/common/video/video-player-common.vue'
   export default {
     name: 'InputQuery',
     props: {
-      item: {type: Object, default: {}},
-      iconType: {type: String, default: ''}
+      item: {default: {}},
+      iconType: {default: ''}
+    },
+    components: {
+      VideoPlayerCommon,
+    },
+    computed: {
+      options(){
+        return function (val) {
+          return {
+            valex: val
+          }
+        }
+      }
     },
     data () {
       return {

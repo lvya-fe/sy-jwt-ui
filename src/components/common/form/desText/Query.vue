@@ -31,8 +31,8 @@ import { XTextarea} from "vux";
   export default {
     name: 'InputQuery',
     props: {
-      item: {type: Object, default: {}},
-      iconType: {type: String, default: ''}
+      item: {default: {}},
+      iconType: {default: ''}
     },
     data () {
       return {

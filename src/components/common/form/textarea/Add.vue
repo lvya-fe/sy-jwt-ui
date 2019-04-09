@@ -23,8 +23,8 @@ event:
   export default {
     name: 'InputAdd',
     props: {
-      item: {type: Object, default: {}},
-      iconType: {type: String, default: ''}
+      item: {default: {}},
+      iconType: {default: ''}
     },
     data () {
       return {

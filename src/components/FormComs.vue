@@ -158,8 +158,8 @@
 
   export default {
     props: {
-      formList: {type: Array, default: []},
-      taskState: {type: String, default: ''}
+      formList: {default: []},
+      taskState: {default: ''}
     },
     components:{
       InputAdd,

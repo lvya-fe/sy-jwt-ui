@@ -17,15 +17,6 @@ event:
     </div>
 
     <div class="form-wrap form-thumb" v-for="(cite,index) in item.listCiteData">
-      <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
-
-        <div class="user-name">
-          <span class="text-ellipsis">{{cite.name}}</span>
-        </div>
-        <div class="user-org">{{cite.orgNames}}</div>
-      </div>
-
       <div class="form-content form-user-custom">
         <div class="result-content cite-video-content">
           <VideoPlayerCommon :options="options(cite.val)"></VideoPlayerCommon>
@@ -44,7 +35,7 @@ event:
       VideoPlayerCommon,
     },
     props: {
-      item: {type: Object, default: {}},
+      item: {default: {}},
     },
     data () {
       return {

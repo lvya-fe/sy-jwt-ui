@@ -21,7 +21,7 @@ event:
     </div>
     <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
       <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
+        <img class="user-circle" :src="cite.imgUrl?cite.imgUrl:'static/img/user/avatar-default.jpg'">
       </div>
 
       <div class="form-content form-user-custom">
@@ -44,8 +44,8 @@ event:
   export default {
     name: 'InputQuery',
     props: {
-      item: {type: Object, default: {}},
-      iconType: {type: String, default: ''}
+      item: {default: {}},
+      iconType: {default: ''}
     },
     data () {
       return {

@@ -43,8 +43,8 @@ event:
   export default {
     name: 'CiteSelf',
     props: {
-      item: {type: Object, default: {}},
-      iconType: {type: String, default: ''}
+      item: {default: {}},
+      iconType: {default: ''}
     },
     components: {
       CiteSelfCommon,

@@ -17,14 +17,6 @@ event:
     </div>
 
     <div class="form-wrap form-thumb" v-for="(cite,index) in item.listCiteData">
-      <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
-
-        <div class="user-name">
-          <span class="text-ellipsis">{{cite.name}}</span>
-        </div>
-        <div class="user-org">{{cite.orgNames}}</div>
-      </div>
 
       <div class="form-content form-user-custom" v-if="cite.val">
         <div class="result-content cite-audio-content">
@@ -50,7 +42,7 @@ event:
   export default {
     name: 'audio',
     props: {
-      item: {type: Object, default: {}},
+      item: {default: {}},
     },
     components: {
       aplayer,
