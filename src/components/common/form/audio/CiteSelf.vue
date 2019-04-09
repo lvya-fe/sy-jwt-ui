@@ -40,7 +40,7 @@ event:
 <script>
   import aplayer from "vue-aplayer"
   export default {
-    name: 'audio',
+    name: 'CiteSelf',
     props: {
       item: {default: {}},
     },
