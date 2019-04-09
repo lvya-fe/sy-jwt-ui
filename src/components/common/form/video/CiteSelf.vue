@@ -30,7 +30,7 @@ event:
 <script>
   import VideoPlayerCommon from '../../../../components/common/video/video-player-common.vue'
   export default {
-    name: 'video',
+    name: 'CiteSelf',
     components: {
       VideoPlayerCommon,
     },
