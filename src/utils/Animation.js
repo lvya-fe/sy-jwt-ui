@@ -10,7 +10,6 @@ function PageAnimation(router, store) {
   // history.setItem('/', 0)
 
   router.beforeEach(function (to, from, next) {
-    console.log(to, from, next)
 
     store.commit('updateLoadingStatus', {isLoading: true})
 

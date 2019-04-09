@@ -9,38 +9,25 @@ event:
 
 <template>
   <div class="form-common form-item">
-    <div class="form-wrap">
-      <span class="form-name">
-          <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
-        {{item.formItemName}}
-      </span>
-      <!--自己给自己填写，只显示-->
-      <div v-if="item.citeDataType == 0" class="form-inline">
-        <pre>{{item.formItemValue}}</pre>
+    <div class="form-wrap field-block">
+      <p class="form-name-block vux-1px-b">
+        <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
+        {{field.formItemName}}
+      </p>
+      <div class="textarea" v-if="field.formItemValue != ''">
+        <!-- <textarea disabled v-model="field.formItemValue" :class="{'readAll':field.readAll}" :autosize="field.readAll"></textarea> -->
+        <x-textarea disabled v-model="field.formItemValue" :class="{'readAll':field.readAll}" :autosize="field.readAll" :show-counter="false"></x-textarea>
+        <span class="moreTxt" @click="readAll" v-show="!field.showBtn">{{field.btntxt}}</span>
       </div>
-    </div>
-    <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
-      <div class="user-avatar">
-        <img class="user-circle" src="static/img/user/avatar-default.jpg">
-      </div>
-
-      <div class="form-content form-user-custom">
-        <div class="user-name">
-          <img class="user-icon" src="static/img/user/user-icon.png">
-          <span class="text-ellipsis">{{cite.name}}</span>
-        </div>
-        <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
-        <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
-          <div class="result-content">
-            <pre>{{cite.val}}</pre>
-          </div>
-        </div>
+      <div v-else class="nodata">
+        <img src="../../../../assets/img/noData.png" alt="">
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { XTextarea} from "vux";
   export default {
     name: 'InputQuery',
     props: {
@@ -49,16 +36,61 @@ event:
     },
     data () {
       return {
+        field:{}
       }
     },
-    watch: {
+    components:{
+      XTextarea
     },
     methods: {
+      //多行文本  查看全文
+      readAll(){
+        this.$nextTick(()=>{
+            this.field.readAll = !this.field.readAll;
+            this.field.btntxt = this.field.btntxt == '全文' ? '收起':'全文';
+        })
+      },
     },
     mounted () {
+        this.field = Object.assign({},this.item);
+        let bool = false;
+        bool = this.field.formItemValue.split(/\r?\n|\r/).length > 3 ? false : true;
+        this.$set(this.field, 'readAll', bool);
+        this.$set(this.field, 'showBtn', bool);
+        this.$set(this.field, 'btntxt', '全文');
     }
   }
 </script>
 <style lang="less">
-
+  .textarea{
+    position: relative;
+    textarea:disabled{
+      height: 150px;
+      overflow: hidden;
+      background-color: #fafafa;
+    }
+    .weui-cell{
+      padding: 30px;
+    }
+    .weui-cell__bd{
+      padding-right: 30px;
+    }
+    .readAll{
+      .weui-textarea{
+          padding-bottom: 0;
+          height: auto;
+          overflow: auto;
+      }
+    }
+    .weui-textarea{
+        padding: 15px;
+        padding-bottom: 0;
+    }
+    .moreTxt{
+        position: absolute;
+        right: 30px;
+        bottom: 30px;
+        color: #1abe7f;
+    }
+  }
 </style>
