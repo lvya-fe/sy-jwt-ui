@@ -49,11 +49,17 @@
                     </template>
                     
                     <!-- 单项选择 -->
-                    <div class="fieldsWrap radios" v-if="item.formItemType == '4'">
-                        <p v-if="item.citeDataType ==0" class="vux-1px-b"><span>{{item.formItemName}}</span></p>
-                        <radioList v-if="item.citeDataType ==0" :lists="item.formSelectItemResps" :disabled = '(![1,3].includes(formState) || item.citeDataType !=0) ? true :false' :checkVal="item.formItemValue" :index="index" @changeVal="changeRadio"></radioList>
-                        <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
-                    </div>
+                    <template v-if="item.formItemType == '4'">
+                        <div>
+                            <div class="fieldsWrap radios" v-if="item.citeDataType ==0">
+                                <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
+                                <radioList :lists="item.formSelectItemResps" :disabled = '(![1,3].includes(formState) || item.citeDataType !=0) ? true :false' :checkVal="item.formItemValue" :index="index" @changeVal="changeRadio"></radioList>
+                                
+                            </div>
+                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                        </div>
+                    </template>
+                    
                     <!-- 多项选择 -->
                     <div class="fieldsWrap radios" v-if="item.formItemType == '5'">
                         <p v-if="item.citeDataType ==0" class="vux-1px-b"><span>{{item.formItemName}}</span></p>

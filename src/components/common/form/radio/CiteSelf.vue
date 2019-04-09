@@ -18,9 +18,9 @@ event:
       <CiteSelfCommon
         :cite="cite"
         v-for="(cite,index) in item.listCiteData"
-        :length="item.listCiteData.length"
+        :length="item.listCiteData && item.listCiteData.length"
         :key='index'
-        v-if="item.listCiteData.length == 1">
+        v-if="item.listCiteData && item.listCiteData.length == 1">
       </CiteSelfCommon>
     </div>
 
@@ -29,12 +29,12 @@ event:
       :cite="cite"
       class="cite-self-multi"
       v-for="(cite,index) in item.listCiteData"
-      :length="item.listCiteData.length"
+      :length="item.listCiteData && item.listCiteData.length"
       :key='index'
-      v-if="item.listCiteData.length>1">
+      v-if="item.listCiteData && item.listCiteData.length>1">
     </CiteSelfCommon>
     <!--无数据-->
-    <NoData v-if="item.listCiteData.length == 0"></NoData>
+    <NoData v-if="item.listCiteData == null || item.listCiteData.length == 0"></NoData>
 
   </div>
 </template>
