@@ -20,7 +20,7 @@
                         <input v-if=" [1,3].includes(formState) && item.citeDataType ==0 " type="text" class="txtInput" v-model="item.formItemValue"  @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
                         <!--<p class="readOnly" v-else>{{item.formItemValue}}</p>-->
 
-                        <FormComsItem v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                        <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                     </div>
                     <!-- 多行 -->
                     <div class="fieldsWrap txtarea hookTxtarea" v-if="item.formItemType == '2'">
@@ -35,7 +35,7 @@
                                 <img src="../../assets/img/noData.png" alt="">
                             </div>
                         </div> -->
-                      <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                      <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                     </div>
                     <!-- 日期时间 -->
                     <template v-if="item.formItemType == '3'">
@@ -44,23 +44,29 @@
                                 <img src="../../assets/img/ico_datetime.png" alt="">
                                 <datetime v-model="item.formItemValue" format="YYYY-MM-DD HH:mm" :readonly="[1,3].includes(formState) && item.citeDataType ==0 ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
                             </group>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
                     <!-- 单项选择 -->
-                    <div class="fieldsWrap radios" v-if="item.formItemType == '4'">
-                        <p v-if="item.citeDataType ==0" class="vux-1px-b"><span>{{item.formItemName}}</span></p>
-                        <radioList v-if="item.citeDataType ==0" :lists="item.formSelectItemResps" :disabled = '(![1,3].includes(formState) || item.citeDataType !=0) ? true :false' :checkVal="item.formItemValue" :index="index" @changeVal="changeRadio"></radioList>
-                        <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
-                    </div>
+                    <template v-if="item.formItemType == '4'">
+                        <div>
+                            <div class="fieldsWrap radios" v-if="item.citeDataType ==0">
+                                <p class="vux-1px-b"><span>{{item.formItemName}}</span></p>
+                                <radioList :lists="item.formSelectItemResps" :disabled = '(![1,3].includes(formState) || item.citeDataType !=0) ? true :false' :checkVal="item.formItemValue" :index="index" @changeVal="changeRadio"></radioList>
+
+                            </div>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                        </div>
+                    </template>
+
                     <!-- 多项选择 -->
                     <div class="fieldsWrap radios" v-if="item.formItemType == '5'">
                         <p v-if="item.citeDataType ==0" class="vux-1px-b"><span>{{item.formItemName}}</span></p>
                         <group v-if="item.formSelectItemResps.length >0 && item.citeDataType ==0 ">
                             <checklist label-position="left" :options="item.formSelectItemResps" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" v-model="item.itemValArr" @on-change="checkListChange(item.itemValArr,index)"></checklist>
                         </group>
-                        <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                        <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                     </div>
                     <!-- 图片上传 -->
                     <template v-if="item.formItemType == '6'">
@@ -79,7 +85,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -103,7 +109,7 @@
                                 <span class="fieldname">{{item.formItemName}}</span>
                                 <p>{{geographic}}</p>
                             </div>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -130,7 +136,7 @@
                                 <img class="icon" src="../../assets/img/ico_email.png" alt="">
                                 <span class="fieldname">{{item.formItemName}}</span><input type="text" @blur="verifyField(item.formItemValue,item.formItemType)" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" >
                             </div>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -142,7 +148,7 @@
                                 <span class="fieldname">{{item.formItemName}}</span><input type="number" v-if="[1,3].includes(formState) && item.citeDataType ==0" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" oninput = "value=value.replace(/[^\d]/g,'')" @blur="verifyField(item.formItemValue,item.formItemType)" >
                                 <p class="readPhone" v-else>{{item.formItemValue.substring(0,3)}}  {{item.formItemValue.substring(3,7)}} {{item.formItemValue.substring(7)}}</p>
                             </div>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -154,7 +160,7 @@
                                 <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right" :class="{'hasVal':item.formItemValue != ''}">{{item.formItemValue == '' || item.formItemValue == null ? '请选择' :item.formItemValue}}</span>
                                 <span v-else class="ico-right readOnly">{{item.formItemValue}}</span>
                             </group>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -175,7 +181,7 @@
                                     </div>
                                 </div>
                             </group>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
                     <!-- 整数 -->
@@ -186,7 +192,7 @@
                                 <!-- <input type="number" v-model="item.formItemValue"   @input="testInput(item.formItemValue,index)" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''"> -->
                                 <input type="tel" v-model="item.formItemValue"  oninput = "value=value.replace(/[^\d]/g,'')" maxlength="15" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
                             </div>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -197,7 +203,7 @@
                                 <span class="fieldname">{{item.formItemName}}</span>
                                 <input type="number" v-model="item.formItemValue" @input="maxLengthCheck(item.formItemValue,index)" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" >
                             </div>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -209,7 +215,7 @@
                                 <input type="number" class="padr30" v-model="item.formItemValue" @input="maxLengthCheck(item.formItemValue,index)" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" >
                                 <span class="percent">%</span>
                             </div>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -220,7 +226,7 @@
                                 <img src="../../assets/img/ico_date.png" alt="">
                                 <datetime v-model="item.formItemValue" :readonly="[1,3].includes(formState) && item.citeDataType ==0 ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
                             </group>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -231,7 +237,7 @@
                                 <img class="ico_address" src="../../assets/img/ico_address.png" alt="">
                                 <x-address :title="item.formItemName" v-model="item.itemValArr" :raw-value='true' @on-hide="addressHide" @on-show="addressShow(index)" @on-shadow-change="changeAddress" :class="{'disabled': (![1,3].includes(formState) || item.citeDataType != 0)}" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :list="addressData" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请选择' :''"></x-address>
                             </group>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -242,7 +248,7 @@
                                 <img class="ico_postcode icon" src="../../assets/img/ico_postcode.png" alt="">
                                 <span class="fieldname">{{item.formItemName}}</span><input type="number" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" v-model="item.formItemValue" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" oninput = "value=value.replace(/[^\d]/g,'')" @blur="verifyField(item.formItemValue,item.formItemType)">
                             </div>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -254,7 +260,7 @@
                                 <span class="fieldname">{{item.formItemName}}</span>
                                 <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" @blur="verifyField(item.formItemValue,item.formItemType)" >
                             </div>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -293,7 +299,7 @@
                                     <img src="../../assets/img/noData.png" alt="">
                                 </div>
                             </div>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -327,7 +333,7 @@
                                     </div>
                                 </template>
                             </div>
-                            <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
 
@@ -1265,8 +1271,8 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         }
                     }
                 }
-                .padding30{
-                    padding: 30px;
+                .paddinglr30{
+                    padding: 0 30px;
                 }
                 .fieldsWrap{
                     position: relative;

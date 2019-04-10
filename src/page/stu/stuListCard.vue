@@ -38,10 +38,10 @@
                                 </template>
                                 <!-- 多行 -->
                                 <template v-if="field.formItemType == '2'">
-                                    <dt>
-                                        <span>{{field.formItemName}}</span>
-                                    </dt>
                                     <template v-if="field.citeDataType == 0">
+                                        <dt>
+                                            <span>{{field.formItemName}}</span>
+                                        </dt>
                                         <dd class="hasbgColor" v-if="[1,-1,3].includes(item.taskState)">
                                             <x-textarea disabled :max="200" v-model="field.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
                                         </dd>
@@ -108,7 +108,7 @@
                                         <dd class="fieldImg" v-if="[1,-1].includes(item.taskState) && field.formItemValue =='' ">
                                             <img src="../../assets/img/tj_big.png" alt="">
                                         </dd>
-                                        <dd class="imgWrapper" v-if="![1,-1].includes(item.taskState) && field.formItemValue !=''">
+                                        <dd class="imgWrapper" v-else-if="![1,-1].includes(item.taskState) || field.formItemValue !=''">
                                             <ul class="img-items">
                                                 <li v-for="(url,i) in field.itemValArr" :key="i">
                                                     <img :src="url" :preview="i" alt="">
