@@ -33,6 +33,7 @@ event:
       :key='index'
       v-if="item.listCiteData.length>1">
     </CiteSelfCommon>
+
     <!--无数据-->
     <NoData v-if="item.listCiteData.length == 0"></NoData>
 

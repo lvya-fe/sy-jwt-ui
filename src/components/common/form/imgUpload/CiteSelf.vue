@@ -16,17 +16,18 @@ event:
       </span>
     </div>
 
-    <div class="form-wrap form-thumb" v-for="(cite,index) in item.listCiteData">
+    <div class="form-wrap form-thumb" v-for="(cite,index) in item.listCiteData" v-if="item.listCiteData.length>0">
 
       <div class="form-content form-user-custom">
         <div class="result-content cite-img-content">
-          <div class="img-thumb-item" v-for="img in uploadImgs(cite.val)">
-            <img :src="img">
+          <div class="img-thumb-item">
+            <img :src="cite.imgUrl">
           </div>
         </div>
       </div>
-
     </div>
+    <!--无数据-->
+    <NoData v-else></NoData>
   </div>
 </template>
 
