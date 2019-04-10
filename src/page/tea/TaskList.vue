@@ -292,7 +292,7 @@
             _self.stime = cycles.stime;
             _self.etime = cycles.etime;
           }
-
+          _self.pageNo = 1;
           _self.QueryWrite();
 
         }).catch(function (err) {
