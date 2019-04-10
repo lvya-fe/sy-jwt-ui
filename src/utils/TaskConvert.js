@@ -5,8 +5,16 @@ class TaskConvert {
 
   // 处理新旧数据
   doTaskData(data) {
+    // 导航标题
+    let title = ''
+    if(data.stuInfo) {
+      title = data.stuInfo.name
+    } else {
+      title = data.task ? data.task.title: data.name
+    }
+    
     let newData = {
-      name: data.task ? data.task.title:data.name,
+      name: title,
       taskState: data.task ? data.task.status: 4, // TODO 教师填写 默认无状态未已完成
       formItemResps: [] // 表单
     }
