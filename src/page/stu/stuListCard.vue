@@ -29,11 +29,12 @@
                             <dl>
                                 <!-- 单行 -->
                                 <template v-if="field.formItemType == '1'">
-                                    <dt class="disflex">
+                                    <dt class="disflex" v-if="field.citeDataType == 0">
                                         <span class="fieldName">{{field.formItemName}}</span>
                                         <p v-if="[1,-1,3].includes(item.taskState)" :class="{'hasVal':field.formItemValue !=''}">{{field.formItemValue == ''? '请输入':field.formItemValue}}</p>
                                         <p v-else :class="{'hasVal':field.formItemValue !=''}">{{field.formItemValue}}</p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 多行 -->
                                 <template v-if="field.formItemType == '2'">
@@ -52,16 +53,11 @@
                                             <img v-else src="../../assets/img/noData.png" alt="">
                                         </dd>
                                     </template>
-                                    <template v-if="field.citeDataType != 0">
-                                        <dd class="textarea" :class="{'hasbgColor':field.formItemValue != '' && field.formItemValue != null}">
-                                            <p v-if="field.formItemValue != '' && field.formItemValue != null">{{field.formItemValue}}</p>
-                                            <img v-else src="../../assets/img/noData.png" alt="">
-                                        </dd>
-                                    </template>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 日期时间 -->
                                 <template v-if="field.formItemType == '3'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <img src="../../assets/img/ico_datetime.png" alt="">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
@@ -74,63 +70,78 @@
                                             </template>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 单选，多选 -->
                                 <template v-if="field.formItemType == '4'">
-                                    <dt>
-                                        <span>{{field.formItemName}}</span>
-                                    </dt>
-                                    <dd v-if="field.formSelectItemResps != null && field.formSelectItemResps.length>0">
-                                        <group >
-                                            <radio :options="field.formSelectItemResps" v-model="field.formItemValue" disabled ></radio>
-                                        </group>
-                                    </dd>
+                                    <template v-if="field.citeDataType == 0">
+                                        <dt>
+                                            <span>{{field.formItemName}}</span>
+                                        </dt>
+                                        <dd v-if="field.formSelectItemResps != null && field.formSelectItemResps.length>0">
+                                            <group >
+                                                <radio :options="field.formSelectItemResps" v-model="field.formItemValue" disabled ></radio>
+                                            </group>
+                                        </dd>
 
+                                    </template>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <template v-if="field.formItemType == '5'">
-                                    <dt>
-                                        <span>{{field.formItemName}}</span>
-                                    </dt>
-                                    <dd v-if="field.formSelectItemResps != null && field.formSelectItemResps.length>0">
-                                        <checklist disabled label-position="left" :options="field.formSelectItemResps" v-model="field.itemValArr" ></checklist>
-                                    </dd>
+                                    <template v-if="field.citeDataType == 0">
+                                        <dt>
+                                            <span>{{field.formItemName}}</span>
+                                        </dt>
+                                        <dd v-if="field.formSelectItemResps != null && field.formSelectItemResps.length>0">
+                                            <checklist disabled label-position="left" :options="field.formSelectItemResps" v-model="field.itemValArr" ></checklist>
+                                        </dd>
+                                    </template>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 图片上传未完成 -->
                                 <template v-if="field.formItemType == '6'">
-                                    <dt>
-                                        <img src="../../assets/img/ico_pic.png" alt="">
-                                        <span>{{field.formItemName}}</span>
-                                    </dt>
-                                    <dd class="fieldImg" v-if="[1,-1].includes(item.taskState) && field.formItemValue =='' ">
-                                        <img src="../../assets/img/tj_big.png" alt="">
-                                    </dd>
-                                    <dd class="imgWrapper" v-if="![1,-1].includes(item.taskState) && field.formItemValue !=''">
-                                        <ul class="img-items">
-                                            <li v-for="(url,i) in field.itemValArr" :key="i">
-                                                <img :src="url" :preview="i" alt="">
-                                            </li>
-                                        </ul>
-                                    </dd>
-                                    <dd v-else class="multiple">
-                                        <img src="../../assets/img/noData.png" alt="">
-                                    </dd>
+                                    <template v-if="field.citeDataType == 0">
+                                        <dt>
+                                            <img src="../../assets/img/ico_pic.png" alt="">
+                                            <span>{{field.formItemName}}</span>
+                                        </dt>
+                                        <dd class="fieldImg" v-if="[1,-1].includes(item.taskState) && field.formItemValue =='' ">
+                                            <img src="../../assets/img/tj_big.png" alt="">
+                                        </dd>
+                                        <dd class="imgWrapper" v-if="![1,-1].includes(item.taskState) && field.formItemValue !=''">
+                                            <ul class="img-items">
+                                                <li v-for="(url,i) in field.itemValArr" :key="i">
+                                                    <img :src="url" :preview="i" alt="">
+                                                </li>
+                                            </ul>
+                                        </dd>
+                                        <dd v-else class="multiple">
+                                            <img src="../../assets/img/noData.png" alt="">
+                                        </dd>
+                                    </template>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
+                                
                                 <!-- 文本描述 -->
                                 <template v-if="field.formItemType == '8'">
-                                    <dt>
-                                        <span>{{field.formItemName}}</span>
-                                    </dt>
-                                    <dd class="textarea readOnly" :class="{'hasbgColor':field.formItemValue != '' && field.formItemValue != null}">
-                                        <div v-if=" field.formItemValue != '' ">
-                                            <x-textarea  disabled v-model="field.formItemValue" :show-counter="false"></x-textarea>
-                                            <span class="moreTxt" v-show="!field.readAll">全文</span>
-                                        </div>
-                                        <img v-else src="../../assets/img/noData.png" alt="">
-                                    </dd>
+                                    <template v-if="field.citeDataType == 0">
+                                        <dt>
+                                            <span>{{field.formItemName}}</span>
+                                        </dt>
+                                        <dd class="textarea readOnly" :class="{'hasbgColor':field.formItemValue != '' && field.formItemValue != null}">
+                                            <div v-if=" field.formItemValue != '' ">
+                                                <x-textarea  disabled v-model="field.formItemValue" :show-counter="false"></x-textarea>
+                                                <span class="moreTxt" v-show="!field.readAll">全文</span>
+                                            </div>
+                                            <img v-else src="../../assets/img/noData.png" alt="">
+                                        </dd>
+                                    </template>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
+                                
                                 <!-- 地理位置 -->
                                 <template v-if="field.formItemType == '9'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <img src="../../assets/img/ico_position.png" alt="">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
@@ -143,8 +154,9 @@
                                             </template>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
-                                <!-- 选人插件未完成 -->
+                                <!-- 选人插件 -->
                                 <template v-if="field.formItemType == '10'">
                                     <dt>
                                         <img src="../../assets/img/ico_people.png" alt="">
@@ -171,7 +183,7 @@
                                 </template>
                                 <!-- 邮箱 -->
                                 <template v-if="field.formItemType == '14'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <img src="../../assets/img/ico_email.png" alt="">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
@@ -184,10 +196,11 @@
                                             </template>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 电话 -->
                                 <template v-if="field.formItemType == '15'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <img src="../../assets/img/ico_phone.png" alt="">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
@@ -200,10 +213,11 @@
                                             </template>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 单选列表，多选列表未完成 -->
                                 <template v-if="field.formItemType == '16'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
                                             {{field.formItemValue}}
@@ -215,44 +229,49 @@
                                             </template>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <template v-if="field.formItemType == '17'">
-                                    <dt>
-                                        <span>{{field.formItemName}}</span>
-                                        <p :class="{'hasVal':field.formItemValue !=''}">
-                                            <template v-if="field.formItemValue =='' &&  [1,-1,3].includes(item.taskState)">
-                                                <div class="noData">
-                                                    <span>请选择</span>
-                                                    <img src="../../assets/img/ico_right.png" alt="">
-                                                </div>
-                                            </template>
-                                        </p>
-                                    </dt>
-                                    <!-- 多选列表显示样式 ===field.citeDataType != 0 为数据引用-->
                                     <template v-if="field.citeDataType == 0">
-                                        <dd v-if="field.itemValArr.length >0">
-                                            <ul class="itemsWrap" >
-                                                <li class="vux-1px" v-for="val in field.itemValArr" :key="val">{{val}}</li>
-                                            </ul>
-                                        </dd>
-                                        <dd class="multiple" v-if="field.itemValArr.length ==0 && ![1,-1,3].includes(item.taskState)">
-                                            <img src="../../assets/img/noData.png" alt="">
-                                        </dd>
+                                        <dt>
+                                            <span>{{field.formItemName}}</span>
+                                            <p :class="{'hasVal':field.formItemValue !=''}">
+                                                <template v-if="field.formItemValue =='' &&  [1,-1,3].includes(item.taskState)">
+                                                    <div class="noData">
+                                                        <span>请选择</span>
+                                                        <img src="../../assets/img/ico_right.png" alt="">
+                                                    </div>
+                                                </template>
+                                            </p>
+                                        </dt>
+                                        <!-- 多选列表显示样式 ===field.citeDataType != 0 为数据引用-->
+                                        <template v-if="field.citeDataType == 0">
+                                            <dd v-if="field.itemValArr.length >0">
+                                                <ul class="itemsWrap" >
+                                                    <li class="vux-1px" v-for="val in field.itemValArr" :key="val">{{val}}</li>
+                                                </ul>
+                                            </dd>
+                                            <dd class="multiple" v-if="field.itemValArr.length ==0 && ![1,-1,3].includes(item.taskState)">
+                                                <img src="../../assets/img/noData.png" alt="">
+                                            </dd>
+                                        </template>
+                                        <template v-else>
+                                            <dd v-if="field.itemValArr.length >0 ">
+                                                <ul class="itemsWrap" >
+                                                    <li class="vux-1px" v-for="val in field.itemValArr" :key="val">{{val}}</li>
+                                                </ul>
+                                            </dd>
+                                            <dd class="multiple" v-if="field.itemValArr.length ==0 ">
+                                                <img src="../../assets/img/noData.png" alt="">
+                                            </dd>
+                                        </template>
                                     </template>
-                                    <template v-else>
-                                        <dd v-if="field.itemValArr.length >0 ">
-                                            <ul class="itemsWrap" >
-                                                <li class="vux-1px" v-for="val in field.itemValArr" :key="val">{{val}}</li>
-                                            </ul>
-                                        </dd>
-                                        <dd class="multiple" v-if="field.itemValArr.length ==0 ">
-                                            <img src="../../assets/img/noData.png" alt="">
-                                        </dd>
-                                    </template>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
+                                
                                 <!-- 整数 -->
                                 <template v-if="field.formItemType == '19'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
                                             {{field.formItemValue}}
@@ -264,10 +283,11 @@
                                             </template>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 小数 -->
                                 <template v-if="field.formItemType == '20'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
                                             {{field.formItemValue}}
@@ -279,20 +299,22 @@
                                             </template>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 百分数 -->
                                 <template v-if="field.formItemType == '21'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
                                             {{field.formItemValue == '' && [1,-1,3].includes(item.taskState)?'请输入百分数(如：62.23)':field.formItemValue}}
                                             <span class="percent">%</span>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 日期 -->
                                 <template v-if="field.formItemType == '22'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <img src="../../assets/img/ico_date.png" alt="">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
@@ -305,10 +327,11 @@
                                             </template>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 省市区 -->
                                 <template v-if="field.formItemType == '25'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <img class="ico_address" src="../../assets/img/ico_address.png" alt="">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
@@ -321,10 +344,11 @@
                                             </template>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 邮编 -->
                                 <template v-if="field.formItemType == '26'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <img class="ico_postcode" src="../../assets/img/ico_postcode.png" alt="">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
@@ -337,10 +361,11 @@
                                             </template>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 身份证 -->
                                 <template v-if="field.formItemType == '27'">
-                                    <dt>
+                                    <dt v-if="field.citeDataType == 0">
                                         <img class="ico_idcard" src="../../assets/img/ico_idcard.png" alt="">
                                         <span>{{field.formItemName}}</span>
                                         <p :class="{'hasVal':field.formItemValue !=''}">
@@ -353,15 +378,15 @@
                                             </template>
                                         </p>
                                     </dt>
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 音频 -->
                                 <template v-if="field.formItemType == '28'">
-                                    <dt>
-                                        <img src="../../assets/img/ico_audio.png" alt="">
-                                        <span>{{field.formItemName}}</span>
-                                    </dt>
-                                    <!-- 数据引用 -->
                                     <template v-if="field.citeDataType == 0">
+                                        <dt>
+                                            <img src="../../assets/img/ico_audio.png" alt="">
+                                            <span>{{field.formItemName}}</span>
+                                        </dt>
                                         <dd class="addAudio" v-if="[1,-1,3].includes(item.taskState) && field.formItemValue ==''">
                                             <span>添加音频</span>
                                             <span>大文件请点击</span>
@@ -371,22 +396,15 @@
                                             <img v-else class="noData" src="../../assets/img/noData.png" alt="">
                                         </dd>
                                     </template>
-                                    <template v-else>
-                                        <dd class="audioWrap">
-                                            <img class="audio" v-if="field.formItemValue != '' && field.formItemValue != null" src="../../assets/img/img_audio.png" alt="">
-                                            <img v-else class="noData" src="../../assets/img/noData.png" alt="">
-                                        </dd>
-                                    </template>
-
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                                 <!-- 视频 -->
                                 <template v-if="field.formItemType == '29'">
-                                    <dt>
-                                        <img src="../../assets/img/ico_video.png" alt="">
-                                        <span>{{field.formItemName}}</span>
-                                    </dt>
-                                    <!-- 数据引用 -->
                                     <template v-if="field.citeDataType == 0">
+                                        <dt>
+                                            <img src="../../assets/img/ico_video.png" alt="">
+                                            <span>{{field.formItemName}}</span>
+                                        </dt>
                                         <dd class="addVideo" v-if="[1,-1,3].includes(item.taskState) && field.formItemValue ==''">
                                             <img src="../../assets/img/addVideo.png" alt="">
                                             <span>大文件请点击</span>
@@ -396,13 +414,7 @@
                                             <img v-else class="noData" src="../../assets/img/noData.png" alt="">
                                         </dd>
                                     </template>
-                                    <template v-else>
-                                        <dd class="audioWrap">
-                                            <img v-if="field.formItemValue != '' && field.formItemValue != null" src="../../assets/img/img_video.jpg" alt="">
-                                            <img v-else class="noData" src="../../assets/img/noData.png" alt="">
-                                        </dd>
-                                    </template>
-
+                                    <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
                             </dl>
                         </li>
@@ -410,8 +422,8 @@
                     <div class="mask-bottom"></div>
                 </li>
             </ul>
-            <div class="loadMore" v-if="pullUpShow">
-                <!-- lgzhang 先注释下，分页加载统一优化写-->
+            <div class="loadMore" v-show="pullUpShow">
+              <!-- lgzhang 先注释下，分页加载统一优化写-->
                 <!--<load-more :show-loading="hasNextPage" :tip="hasNextPage?'正在加载':'暂无数据'"></load-more>-->
             </div>
             <div class="no-msg-div" v-if="stuLits.length==0">
@@ -438,6 +450,7 @@ import Bus from '@/plugins/eventBus.js'
 import BScroll from "better-scroll";
 import showcycle from '@/page/tea/SelectionPeriod'
 import Cookies from 'js-cookie';
+import FormComsItem from '../../components/FormComsItem'
 export default {
     data(){
         return{
@@ -458,7 +471,7 @@ export default {
             dropDown:false, //下拉状态
             dropDownShow:false,
             pullUp:false, //上拉状态
-            pullUpShow:false
+            pullUpShow:false,
         }
     },
     components:{
@@ -469,10 +482,11 @@ export default {
         Checklist,
         Loading,
         XTextarea,
-        LoadMore
+        LoadMore,
+        FormComsItem
     },
     created(){
-        this.pageNo = Cookies.get('cardPageNo') == 'undefined' ? 1 : Number(Cookies.get('cardPageNo'));
+        this.pageNo = Cookies.get('cardPageNo') == undefined ? 1 : Number(Cookies.get('cardPageNo'));
         console.log(this.pageNo,Cookies.get('cardPageNo'))
         this.getStuLists();
         // this.getCycleLists();
@@ -526,7 +540,6 @@ export default {
                             })
                         });
                     }
-
                     this.$nextTick(() => {
                         if (!this.scroll) {
                             this.scroll = new BScroll(this.$refs.bscroll, {
