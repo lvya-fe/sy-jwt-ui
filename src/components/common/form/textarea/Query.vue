@@ -54,7 +54,7 @@ import { XTextarea} from "vux";
     mounted () {
         this.field = Object.assign({},this.item);
         let bool = false;
-        bool = this.field.formItemValue.split(/\r?\n|\r/).length > 3 || item.val.length > 40 ? false : true;
+        bool = this.field.formItemValue.split(/\r?\n|\r/).length > 3 || this.item.val.length > 40 ? false : true;
         this.$set(this.field, 'readAll', bool);
         this.$set(this.field, 'showBtn', bool);
         this.$set(this.field, 'btntxt', '全文');
@@ -91,7 +91,7 @@ import { XTextarea} from "vux";
         padding-left: 50px;
         right: 30px;
         bottom: 30px;
-        background:linear-gradient(right,rgba(250,250,250,0),rgba(250,250,250,1)); 
+        background:linear-gradient(right,rgba(250,250,250,0),rgba(250,250,250,1));
         color: #1abe7f;
     }
   }
