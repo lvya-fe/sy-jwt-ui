@@ -43,11 +43,11 @@
                             <group class="fieldsDatetime hasIco" v-if="item.citeDataType ==0" :class="{'readonly': ![1,3].includes(formState) || item.citeDataType !=0}" >
                                 <img src="../../assets/img/ico_datetime.png" alt="">
                                 <datetime v-model="item.formItemValue" format="YYYY-MM-DD HH:mm" :readonly="[1,3].includes(formState) && item.citeDataType ==0 ? false :true"  @on-change="change" :title="item.formItemName"></datetime>
-                            </group>  
+                            </group>
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 单项选择 -->
                     <div class="fieldsWrap radios" v-if="item.formItemType == '4'">
                         <p v-if="item.citeDataType ==0" class="vux-1px-b"><span>{{item.formItemName}}</span></p>
@@ -82,7 +82,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 文本描述 -->
                     <div class="fieldsWrap wenben hookTxtarea" v-if="item.formItemType == '8'">
                         <p><span>{{item.formItemName}}</span></p>
@@ -106,7 +106,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 选人插件 -->
                     <div class="choosePeople hasIco" v-if="item.formItemType == '10'">
                         <p @click="selectionPlugin(item.formItemId,item.choiceType,index)">
@@ -133,7 +133,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 电话 -->
                     <template v-if="item.formItemType == '15'">
                         <div>
@@ -145,7 +145,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 选择列表 -->
                     <template v-if="item.formItemType == '16'">
                         <div>
@@ -157,7 +157,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 多选择列表 -->
                     <template v-if="item.formItemType == '17'">
                         <div>
@@ -189,7 +189,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 小数 -->
                     <template v-if="item.formItemType == '20'">
                         <div>
@@ -200,7 +200,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 百分数 -->
                     <template v-if="item.formItemType == '21'">
                         <div>
@@ -212,7 +212,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 日期 -->
                     <template v-if="item.formItemType == '22'">
                         <div>
@@ -223,7 +223,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 省市区 -->
                     <template v-if="item.formItemType == '25'">
                         <div>
@@ -234,7 +234,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 邮编 -->
                     <template v-if="item.formItemType == '26'">
                         <div>
@@ -245,7 +245,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 身份证 -->
                     <template v-if="item.formItemType == '27'">
                         <div>
@@ -257,7 +257,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 音频 -->
                     <template v-if="item.formItemType == '28'">
                         <div>
@@ -296,7 +296,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                     <!-- 视频 -->
                     <template v-if="item.formItemType == '29'">
                         <div>
@@ -330,7 +330,7 @@
                             <FormComsItem class="padding30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
-                    
+
                 </li>
             </ul>
             <div class="btnsWrap">

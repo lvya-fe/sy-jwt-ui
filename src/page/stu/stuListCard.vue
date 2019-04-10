@@ -121,7 +121,7 @@
                                     </template>
                                     <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
-                                
+
                                 <!-- 文本描述 -->
                                 <template v-if="field.formItemType == '8'">
                                     <template v-if="field.citeDataType == 0">
@@ -138,7 +138,7 @@
                                     </template>
                                     <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
-                                
+
                                 <!-- 地理位置 -->
                                 <template v-if="field.formItemType == '9'">
                                     <dt v-if="field.citeDataType == 0">
@@ -268,7 +268,7 @@
                                     </template>
                                     <FormComsItem v-else :formItem.sync="field" :taskState="field.formState"></FormComsItem>
                                 </template>
-                                
+
                                 <!-- 整数 -->
                                 <template v-if="field.formItemType == '19'">
                                     <dt v-if="field.citeDataType == 0">
