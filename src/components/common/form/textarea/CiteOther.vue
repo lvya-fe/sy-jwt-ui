@@ -18,6 +18,7 @@ event:
 
     <!-- 单条 多条 逐行显示-->
     <CiteOtherCommon
+      class="cite-self-multi"
       :cite="cite"
       v-for="(cite,index) in item.listCiteData"
       :key='index'
