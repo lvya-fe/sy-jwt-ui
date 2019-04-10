@@ -9,8 +9,8 @@ event:
 
 <template>
   <div class="form-common form-item">
-    <div class="form-wrap">
-      <span class="form-name">
+    <div class="form-wrap vux-1px-b">
+      <span class="form-name ">
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </span>

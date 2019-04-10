@@ -9,21 +9,23 @@ event:
 
 <template>
   <div class="form-common form-item">
-    <div class="form-wrap field-block">
+    <div class="form-wrap field-block form-thumb">
       <p class="form-name-block vux-1px-b">
         <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </p>
     </div>
     <br>
-    <aplayer :autoplay="null" :music="{
+    <div class="form-wrap-media">
+      <aplayer :autoplay="null" :music="{
                                     title: '数据来源自',
                                     author: '绿芽',
                                     url: item.formItemValue,
                                     pic: '',
                                     lrc: '[00:00.00]lrc here\n[00:01.00]aplayer'
                                     }">
-    </aplayer>
+      </aplayer>
+    </div>
     <br>
   </div>
 </template>

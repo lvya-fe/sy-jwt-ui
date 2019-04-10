@@ -16,7 +16,7 @@ event:
         </div>
     </div>
     <!--单条-->
-    <span v-else class="form-name form-inline-right">{{cite.val}}</span>
+    <span v-else class="form-inline-right">{{cite.val}}</span>
   </div>
 </template>
 

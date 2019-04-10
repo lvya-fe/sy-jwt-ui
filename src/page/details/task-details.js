@@ -544,16 +544,19 @@ export default {
           this.$vux.toast.show({type: 'warn', text: '请将信息填写完整'});
         }
       })
+      console.log(this.stuid, this.stuid != 'null'?this.stuid:'')
+      
       formValueJson.push({
         formItemValues: formItemValues,
-        stuId: this.stuid
+        stuId: this.stuid != 'null'?this.stuid:''
       })
+      
       let path = ''
       let obj = {}
       if (Cookies.get('roleType') === 'stu') {
         path = 'app/stu/v1/addtask'
       } else {
-        obj.stuId = this.stuid
+        obj.stuId = this.stuid != 'null'?this.stuid:''
         path = 'app/tea/task/addtask'
       }
 

@@ -9,7 +9,7 @@ event:
 
 <template>
   <div class="form-common form-item">
-    <div class="form-wrap field-block">
+    <div class="form-wrap field-block form-thumb">
       <p class="form-name-block vux-1px-b">
         <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
@@ -17,7 +17,9 @@ event:
     </div>
     <br>
     <!--自己给自己填写，只显示-->
-    <VideoPlayerCommon :options="options(item.formItemValue)"></VideoPlayerCommon>
+    <div class="form-wrap-media">
+      <VideoPlayerCommon :options="options(item.formItemValue)"></VideoPlayerCommon>
+    </div>
     <br>
   </div>
 </template>
