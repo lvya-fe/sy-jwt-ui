@@ -35,7 +35,7 @@
                                 <img src="../../assets/img/noData.png" alt="">
                             </div>
                         </div> -->
-                      <FormComsItem class="" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                      <FormComsItem v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                     </div>
                     <!-- 日期时间 -->
                     <template v-if="item.formItemType == '3'">
@@ -524,13 +524,6 @@ export default {
     created(){
         wechatconfigInit(this,qs,this.uid,this._url_);
         this.getStuInfos();
-        // this.getHistoryList();
-        Bus.$on('stuCardListsData',(data)=>{
-          this.stuListsData = data;
-        });
-        Bus.$on('cardListMsg',(data)=>{
-          this.paramsData = data;
-        });
     },
     computed: mapState({
       _url_: state => state.animation._url_
@@ -538,13 +531,7 @@ export default {
     }),
     methods:{
         goback(){
-            // this.$router.go(-1);
-            Cookies.set('cardPageNo',this.paramsData.pageNo);
-            // if(this.paramsData.taskId === undefined){
-                this.$router.go(-1);
-            // }else{
-            //     this.$router.replace({path: '/stuList2Card/'+this.uid+'/'+this.paramsData.taskId+'/'+this.paramsData.formId+'/'+this.paramsData.schoolid});
-            // }
+            this.$router.go(-1);
         },
         //获取学生表单信息
         getStuInfos(){
@@ -569,7 +556,7 @@ export default {
                         this.curFieldsLists.forEach(element => {
                             if(['2','8'].includes(element.formItemType)){
                                 let bool = false;
-                                bool = element.formItemValue.split(/\r?\n|\r/).length>3 ? false :true;
+                                bool = element.formItemValue.split(/\r?\n|\r/).length>3 || element.formItemValue.length >68 ? false :true;
                                 this.$set(element, 'readAll', bool);
                                 this.$set(element, 'showBtn', bool);
                                 this.$set(element, 'btntxt', '全文');
@@ -1380,7 +1367,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         padding-left: 0;
                         padding-right: 0;
                         .weui-textarea{
-                            padding: 0.15rem 0.2rem;
+                            padding: 0.15rem 0.2rem 0;
                         }
                     }
                     &.radios{
@@ -1470,8 +1457,11 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             }
                             .moreTxt{
                                 position: absolute;
-                                right: 20px;
+                                right: 15px;
                                 bottom: 15px;
+                                padding: 0 20px 0 200px;
+                                background: -webkit-linear-gradient(left, rgba(250,250,250,0),rgba(250,250,250,1));
+                                background:linear-gradient(to right,rgba(250,250,250,0),rgba(250,250,250,1)); 
                                 color: #1abe7f;
                             }
                         }

@@ -472,6 +472,7 @@ export default {
             dropDownShow:false,
             pullUp:false, //上拉状态
             pullUpShow:false,
+            //curIndex:0,//当前点击学生索引
         }
     },
     components:{
@@ -487,6 +488,7 @@ export default {
     },
     created(){
         this.pageNo = Cookies.get('cardPageNo') == undefined ? 1 : Number(Cookies.get('cardPageNo'));
+        // this.curIndex = Cookies.get('cardListIndex') == undefined ? null : Number(Cookies.get('cardListIndex')) % 10;
         console.log(this.pageNo,Cookies.get('cardPageNo'))
         this.getStuLists();
         // this.getCycleLists();
@@ -523,6 +525,18 @@ export default {
                     if(this.dropDown){
                         this.stuLits = resData.videoCardStuListRespList.concat(this.stuLits);
                     }
+                    // if(this.stuLits.length == 10){
+                    //     setTimeout(()=>{
+                    //         let refStu = this.$refs.stulistItem;
+                    //         if(this.curIndex !=0 && this.curIndex != null){
+                    //             refStu[this.curIndex].scrollIntoView({
+                    //                 block: 'start',
+                    //                 behavior: 'smooth'
+                    //             });
+                    //         }
+                    //     },100)
+                    // }
+
                     if(this.stuLits.length>0){
                         this.stuLits.forEach(element => {
                             if(element.formItemResps.length == 0) return;
@@ -616,15 +630,8 @@ export default {
         },
         //跳转至学生任务详情 - 需要区分-任务状态   展示，填写
         toStuDetail(stuid,pageNo){
-            setTimeout(() => {
-                Bus.$emit('stuCardListsData',this.stuLits);
-                 Bus.$emit('cardListMsg',{
-                    pageNo:pageNo,
-                    taskId: this.id,
-                    formId:this.formId,
-                    schoolid:this.schooId
-                });
-            }, 500)
+            //Cookies.set('cardPageNo',pageNo);
+            // Cookies.set('cardListIndex',index);
             this.$router.push({path: '/stuCardDetails/'+this.uid+'/'+this.id+'/'+stuid+'/'+this.schooId});
         },
         //批量操作学生表单
