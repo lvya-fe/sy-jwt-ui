@@ -9,33 +9,23 @@ event:
 
 <template>
   <div class="form-common form-item">
-    <div class="form-wrap">
-      <span class="form-name">
+    <div class="form-wrap field-block">
+      <p class="form-name-block vux-1px-b">
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
-      </span>
-      <!--单条 通行显示-->
-      <CiteSelfCommon
-        :cite="cite"
-        v-for="(cite,index) in item.listCiteData"
-        :length="item.listCiteData.length"
-        :key='index'
-        v-if="item.listCiteData.length == 1">
-      </CiteSelfCommon>
+      </p>
+
+      <!-- 单条 多条 逐行显示-->
+      <ul class="itemsWrap" v-if="item.listCiteData.length > 0">
+        <div v-for="cite in item.listCiteData">
+          <li v-for="text in doList(cite.val || cite.imgUrl)">
+            {{text}}
+          </li>
+        </div>
+      </ul>
+      <!--无数据-->
+      <NoData v-if="item.listCiteData.length == 0"></NoData>
     </div>
-
-    <!-- 多条 逐行显示-->
-    <CiteSelfCommon
-      :cite="cite"
-      class="cite-self-multi"
-      v-for="(cite,index) in item.listCiteData"
-      :length="item.listCiteData.length"
-      :key='index'
-      v-if="item.listCiteData.length>1">
-    </CiteSelfCommon>
-    <!--无数据-->
-    <NoData v-if="item.listCiteData.length == 0"></NoData>
-
   </div>
 </template>
 
@@ -49,6 +39,14 @@ event:
     },
     components: {
       CiteSelfCommon,
+    },
+    computed: {
+      doList(){
+        return function (imgs) {
+          // return "/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg".split(',')
+          return imgs.split(',')
+        }
+      }
     },
     data () {
       return {

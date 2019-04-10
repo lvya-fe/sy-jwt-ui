@@ -332,9 +332,9 @@
           formType += 'Add'
         } else if(formItem.citeDataType == 0){
           formType += 'Query'
-        } else if(formItem.citeDataType == 1 && formItem.dataRangeType == 0){
+        } else if(formItem.citeDataType == 1 && !formItem.showImgUrl){ // 通过 showImgUrl来判断
           formType += 'CiteSelf'
-        } else if(formItem.citeDataType == 1 && (formItem.dataRangeType == 1 || formItem.dataRangeType == 2)){
+        } else if(formItem.citeDataType == 1 && formItem.showImgUrl){
           formType += 'CiteOther'
         }
         console.log("formType:", formType)

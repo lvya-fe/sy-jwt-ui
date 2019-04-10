@@ -8,7 +8,7 @@ event:
 -->
 
 <template>
-  <div class="form-common form-item">
+  <div class="form-common form-item form-textarea">
     <div class="form-wrap field-block">
       <p class="form-name-block vux-1px-b">
         <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
@@ -54,7 +54,7 @@ import { XTextarea} from "vux";
     mounted () {
         this.field = Object.assign({},this.item);
         let bool = false;
-        bool = this.field.formItemValue.split(/\r?\n|\r/).length > 3 ? false : true;
+        bool = this.field.formItemValue.split(/\r?\n|\r/).length > 3 || item.val.length > 40 ? false : true;
         this.$set(this.field, 'readAll', bool);
         this.$set(this.field, 'showBtn', bool);
         this.$set(this.field, 'btntxt', '全文');

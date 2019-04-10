@@ -27,7 +27,7 @@ event:
 
       <div class="form-content form-user-custom">
         <div class="result-content cite-img-content">
-          <div class="img-thumb-item" v-for="img in uploadImgs(cite.val)">
+          <div class="img-thumb-item" v-for="img in uploadImgs(cite.val || cite.imgUrl)">
             <img :src="img">
           </div>
         </div>
@@ -46,6 +46,14 @@ event:
     data () {
       return {
         iconType: ''
+      }
+    },
+    computed: {
+      uploadImgs(){
+        return function (imgs) {
+          // return "/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg".split(',')
+          return imgs.split(',')
+        }
       }
     },
     watch: {

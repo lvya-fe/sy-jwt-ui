@@ -21,6 +21,7 @@ event:
       v-for="(cite,index) in item.listCiteData"
       :key='index'
       v-if="item.listCiteData.length>0">
+        <span slot="unit">%</span>
     </CiteOtherCommon>
     <!--无数据-->
     <NoData v-if="item.listCiteData.length == 0"></NoData>

@@ -14,6 +14,7 @@ import VideoPlayerCommon from "@/components/common/video/video-player-common.vue
 import FormCommon from "@/components/common/cite/cite-other/form-common.vue"
 import TaskConvert from "@/utils/TaskConvert"
 // import showcycle from '@/page/tea/SelectionPeriod'
+import FormComsItem from '../../components/FormComsItem'
 export default {
   data(){
     return{
@@ -117,6 +118,7 @@ export default {
     FormCommon,
     SelectStu,
     SelectTea,
+    FormComsItem,
   },
   created(){
     wechatconfigInit(this,qs,this.uid,this._url_);

@@ -9,7 +9,7 @@ event:
 
 <template>
   <div class="form-common form-item">
-    <div class="form-wrap">
+    <div class="form-wrap vux-1px-b">
       <span class="form-name">
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
@@ -28,7 +28,7 @@ event:
         </div>
 
         <div class="form-content form-user-custom">
-          <div class="result-content cite-video-content">
+          <div class="cite-video-content">
             <VideoPlayerCommon :options="options(cite.val)"></VideoPlayerCommon>
           </div>
         </div>

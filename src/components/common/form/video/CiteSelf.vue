@@ -18,7 +18,7 @@ event:
 
     <div class="form-wrap form-thumb" v-for="(cite,index) in item.listCiteData">
       <div class="form-content form-user-custom">
-        <div class="result-content cite-video-content">
+        <div class="cite-video-content">
           <VideoPlayerCommon :options="options(cite.val)"></VideoPlayerCommon>
         </div>
       </div>

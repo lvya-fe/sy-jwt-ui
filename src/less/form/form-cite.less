@@ -44,10 +44,9 @@
 .textarea-bg{
   background-color: #fafafa;
   width: 88%;
-  margin: 0.4rem;
   flex-wrap: wrap;
   padding: 0.2rem !important;
-  margin-bottom: 0.3rem;
+  margin-top: 0.3rem;
 
 }
 
@@ -55,4 +54,59 @@
 .fields-item .form-wrap, .fieldlist-item .form-wrap{
   padding-left: 0;
   padding-right: 0;
+}
+
+.fieldlist-item{
+  .form-common{
+    padding-bottom: 0.2rem !important;
+  }
+  .textarea-bg {
+    width: 94%;
+  }
+}
+
+.fieldsWrap.txtarea {
+  .textarea{
+    margin-top: 0.2rem;
+  }
+  .form-common{
+
+    padding-bottom: 0.2rem !important;
+  }
+  .form-wrap {
+    margin: 0.3rem;
+  }
+}
+
+// 重写任务详情 textarea
+.task-details{
+  .textarea-bg{
+    margin-left: 0.4rem;
+  }
+}
+
+// 重写input
+.input-line-custom{
+  .form-item-container{
+    flex: 1;
+  }
+  .form-common{
+    margin: -0.3rem !important;
+  }
+}
+
+.cite-other-multi{
+  padding: 0.4rem;
+}
+
+.cite-other-textarea{
+  .vux-x-textarea{
+    padding: 0 !important;
+  }
+  textarea{
+    padding: 0 !important;
+    background: #fff !important;
+    color: #6f6f6f;
+    font-size: 0.35rem;
+  }
 }

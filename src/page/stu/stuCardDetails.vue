@@ -15,7 +15,7 @@
                     21 百分数 22 日期  25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
                 <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
                     <!-- 单行 -->
-                    <div class="fieldsWrap disflex" v-if="item.formItemType == '1'">
+                    <div class="fieldsWrap disflex input-line-custom" v-if="item.formItemType == '1'">
                         <span class="fieldInput fieldname" v-if=" [1,3].includes(formState) && item.citeDataType ==0 ">{{item.formItemName}}</span>
                         <input v-if=" [1,3].includes(formState) && item.citeDataType ==0 " type="text" class="txtInput" v-model="item.formItemValue"  @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
                         <!--<p class="readOnly" v-else>{{item.formItemValue}}</p>-->
@@ -35,7 +35,7 @@
                                 <img src="../../assets/img/noData.png" alt="">
                             </div>
                         </div> -->
-                      <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                      <FormComsItem class="" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                     </div>
                     <!-- 日期时间 -->
                     <template v-if="item.formItemType == '3'">
@@ -1480,7 +1480,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         padding: 0;
                         p{padding: 30px;}
                         .weui-cell{
-                            padding: 0 60px 0 30px;
+                            padding: 0 30px 0 30px;
                             &:before{
                                 border: none;
                             }
