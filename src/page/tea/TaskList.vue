@@ -203,6 +203,7 @@
 
       },
       selectCycle(v) {
+        this.pageNo = 1;
         var cycles = this.taskCycles[v];
         this.isshow = true;
         this.write = [];
@@ -292,7 +293,6 @@
             _self.stime = cycles.stime;
             _self.etime = cycles.etime;
           }
-          _self.pageNo = 1;
           _self.QueryWrite();
 
         }).catch(function (err) {
