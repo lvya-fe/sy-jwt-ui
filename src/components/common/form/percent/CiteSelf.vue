@@ -21,6 +21,7 @@ event:
         :length="item.listCiteData.length"
         :key='index'
         v-if="item.listCiteData.length == 1">
+        <span slot="unit">%</span>
       </CiteSelfCommon>
     </div>
 
@@ -32,6 +33,7 @@ event:
       :length="item.listCiteData.length"
       :key='index'
       v-if="item.listCiteData.length>1">
+      <span slot="unit">%</span>
     </CiteSelfCommon>
 
     <!--无数据-->

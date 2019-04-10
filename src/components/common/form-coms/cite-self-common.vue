@@ -13,10 +13,11 @@ event:
     <div class="form-content form-user-custom" v-if="length>1">
         <div class="result-content">
           {{cite.val}}
+          <slot name="unit"></slot>
         </div>
     </div>
     <!--单条-->
-    <span v-else class="form-inline-right">{{cite.val}}</span>
+    <span v-else class="form-inline-right">{{cite.val}}<slot name="unit"></slot></span>
   </div>
 </template>
 

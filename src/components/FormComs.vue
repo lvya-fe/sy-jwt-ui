@@ -336,7 +336,7 @@
         } else if(formItem.citeDataType == 1 && formItem.dataRangeType == 0){
           formType += 'CiteSelf'
         } else if(formItem.citeDataType == 1 && (formItem.dataRangeType == 1 || formItem.dataRangeType == 2)){
-          formType += 'CiteOther'
+          formType += 'CiteSelf'
         }
         console.log("formType:", formType)
         return formType

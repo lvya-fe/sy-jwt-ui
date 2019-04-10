@@ -20,8 +20,8 @@ event:
 
       <div class="form-content form-user-custom">
         <div class="result-content cite-img-content">
-          <div class="img-thumb-item">
-            <img :src="cite.imgUrl">
+          <div class="img-thumb-item" v-for="img,i in uploadImgs(cite.val || cite.imgUrl)">
+            <img :src="img" :preview="i">
           </div>
         </div>
       </div>

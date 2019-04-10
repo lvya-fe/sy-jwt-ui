@@ -21,7 +21,7 @@ event:
       <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
       <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
         <div class="result-content">
-          <pre>{{cite.val}}</pre>
+          <pre>{{cite.val}}</pre><slot name="unit"></slot>
         </div>
       </div>
     </div>

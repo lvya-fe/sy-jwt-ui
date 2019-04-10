@@ -19,9 +19,8 @@ event:
             <img :src="url.value" :preview="i" alt="">
         </li>
       </ul>
-      <div v-else class="nodata">
-        <img src="../../../../assets/img/noData.png" alt="">
-      </div>
+      <!--无数据-->
+      <NoData v-else></NoData>
     </div>
   </div>
 </template>

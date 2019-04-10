@@ -1480,7 +1480,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         padding: 0;
                         p{padding: 30px;}
                         .weui-cell{
-                            padding: 0 60px 0 30px;
+                            padding: 0 30px 0 30px;
                             &:before{
                                 border: none;
                             }
