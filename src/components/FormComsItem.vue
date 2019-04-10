@@ -306,7 +306,6 @@
     },
     data() {
       return {
-
       }
     },
     computed: {
@@ -321,6 +320,9 @@
       // FromType类型，参考 https://shimo.im/sheets/SbmJwF5ul5wmb4jO/
       // 动态组件，规则 表单类型 + 操作类型，如 Input + Add
       getFormType(formItem) {
+        // 处理 listCiteData
+        if(!formItem.listCiteData) formItem.listCiteData = []
+
         let formType = ''
         formType = FormType.list[formItem.formItemType] && FormType.list[formItem.formItemType].type
         // 组件首字母大写
