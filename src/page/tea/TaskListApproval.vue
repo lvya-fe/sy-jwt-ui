@@ -20,7 +20,7 @@
                   <template  v-for="stu in write">
                     <!--<cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" >-->
                     <cell-box class="con-child"  @click.native="to(stu.id)" >
-                        <p>{{stu.type=='teaToStu'||stu.type=='stu' ||stu.type=='stuToStu'?stu.stuName:stu.teaName}}<br><span>{{stu.type=='tea'?stu.teaOrgName.split(',')[0]: ['stu','stuToStu'].includes(stu.type) ? stu.stuOrgName:stu.type=='teaToStu'?stu.stuOrgName+' 填写人：'+stu.teaName:''}}</span></p>
+                        <p>{{stu.type=='teaToStu'||stu.type=='stu' ||stu.type=='stuToStu'?stu.stuName:stu.teaName}}<br><span>{{stu.type=='tea'?stu.teaOrgName.split(',')[0]: stu.type=='stu' ? stu.stuOrgName:['teaToStu','stuToStu'].includes(stu.type)?stu.stuOrgName+' 填写人：'+stu.teaName:''}}</span></p>
                         <p><br><span>{{stu.ctime}}</span></p>
                         <img class="right-img" src="@/assets/img/you.png" alt="">
                     </cell-box>
@@ -162,24 +162,6 @@ export default {
     }
   },
 
-//  computed: {
-//    writeList:function() {
-//      var type = "Y";
-//      if(this.index==0){
-//         type ="O";
-//      }
-//      if(this.index==1){
-//         type ="N";
-//      }
-//      if(this.index==2){
-//         type ="Y";
-//      }
-
-//      return this.write.filter(function (item) {
-//         return item.state == type
-//       })
-//    }
-//   },
   mounted(){
         let _this=this;
         //事件委托
@@ -197,11 +179,12 @@ export default {
           this.isshow =true;
         },
         to(stuId) {
-          this.$router.push({path: '/AuditOperation/' + this.uid + '/' + stuId});
-          // this.$router.push({path: '/task-details-audit/'+this.uid+'/'+this.taskid+'/'+stuId+'/'+null, query: {
-          //     roleType: 'tea'
-          //   }
-          // })
+          // this.$router.push({path: '/AuditOperation/' + this.uid + '/' + stuId});
+          this.$router.push({path: '/task-details-audit/'+this.uid+'/'+this.taskid+'/'+stuId+'/'+null, query: {
+              roleType: 'tea',
+              teaDoType: true
+            }
+          })
         },
         changeTask(v){
           var _self = this;
