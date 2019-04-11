@@ -15,6 +15,9 @@ import FormCommon from "@/components/common/cite/cite-other/form-common.vue"
 import TaskConvert from "@/utils/TaskConvert"
 // import showcycle from '@/page/tea/SelectionPeriod'
 import FormComsItem from '../../components/FormComsItem'
+
+// 滚动条位置
+let bodyTop = 0
 export default {
   data(){
     return{
@@ -592,13 +595,15 @@ export default {
       this.hasbgColor = false;
       this.curIndex = index;
       // 隐藏body滚动条，记住body位置
-      $('body').toggleClass('overflow-ctrl')
+      bodyTop = window.scrollY
     },
     qx(){
       this.tsshow = false;
       this.formShow = true;
       this.hasbgColor = true;
-      $('body').toggleClass('overflow-ctrl')
+      setTimeout(()=>{
+        window.scrollTo(0, bodyTop) // 回到原先的top
+      }, 100)
     },
     qd(obj){
       if(obj.length == 0) return;
@@ -615,7 +620,10 @@ export default {
       this.formShow = true;
       this.hasbgColor = true;
       this.tsshow = false;
-      $('body').toggleClass('overflow-ctrl')
+      setTimeout(()=>{
+        window.scrollTo(0, bodyTop) // 回到原先的top
+      }, 100)
+     
     },
 
     deleteVideo(index) {

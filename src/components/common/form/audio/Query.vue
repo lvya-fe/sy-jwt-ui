@@ -10,12 +10,12 @@ event:
 <template>
   <div class="form-common form-item">
     <div class="form-wrap field-block form-thumb">
-      <p class="form-name-block vux-1px-b">
+      <p class="form-name-block">
         <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </p>
     </div>
-    <br>
+
     <div class="form-wrap-media">
       <aplayer :autoplay="null" :music="{
                                     title: '数据来源自',
