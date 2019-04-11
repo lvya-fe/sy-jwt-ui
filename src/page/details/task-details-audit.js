@@ -245,10 +245,9 @@ export default {
     },
     //驳回
     addRejected(msg) {
-      console.log("1111222222222222")
       this.$axios.post(process.env.API_ROOT + "app/tea/task/" + this.$route.params.id + "/decline",
         qs.stringify({
-          uid: this.$route.params.uid,
+          uid: this.uid,
           text: msg
         })
       ).then((res)=> {
