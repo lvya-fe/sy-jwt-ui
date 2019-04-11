@@ -198,7 +198,7 @@ export default {
         },
         to(stuId) {
           this.$router.push({path: '/AuditOperation/' + this.uid + '/' + stuId});
-          // this.$router.push({path: '/task-details/'+this.uid+'/'+this.taskid+'/'+stuId+'/'+null, query: {
+          // this.$router.push({path: '/task-details-audit/'+this.uid+'/'+this.taskid+'/'+stuId+'/'+null, query: {
           //     roleType: 'tea'
           //   }
           // })

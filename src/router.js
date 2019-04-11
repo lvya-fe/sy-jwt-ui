@@ -540,17 +540,27 @@ export default [
     name: 'task-details',
     path: '/task-details/:uid/:id/:stuid/:schoolid',
     meta: {
-      // title: '任务详情'
+      // title: '旧版填写 任务详情，用的卡片列表样式'
     },
     component: function (resolve) {
       require(['./page/details/task-details.vue'], resolve)
     }
   },
   {
+    name: 'task-details-audit',
+    path: '/task-details-audit/:uid/:id/:stuid/:schoolid',
+    meta: {
+      // title: '旧版填写 任务详情，教师负责人 查看，驳回 通过等操作'
+    },
+    component: function (resolve) {
+      require(['./page/details/task-details-audit.vue'], resolve)
+    }
+  },
+  {
     name: 'task-router',
     path: '/task',
     meta: {
-      // title: '任务详情'
+      // title: '引用 任务详情'
     },
     component: function (resolve) {
       require(['./page/task-details/details.vue'], resolve)
@@ -566,16 +576,6 @@ export default [
         require(['./page/task-details/task-details-new.vue'], resolve)
       }
     }]
-  },
-  {
-    name: 'task-cite-other',
-    path: '/task-cite-other/:uid/:id/:stuid/:schoolid',
-    meta: {
-      // title: '引用任务详情'
-    },
-    component: function (resolve) {
-      require(['./page/details/task-cite-other.vue'], resolve)
-    }
   },
   { //老师帮学生填写--卡片式列表
     name: 'stuListCard',
