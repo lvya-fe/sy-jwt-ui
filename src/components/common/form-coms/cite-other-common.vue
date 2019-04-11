@@ -18,7 +18,10 @@ event:
         <img class="user-icon" src="static/img/user/user-icon.png">
         <span class="text-ellipsis">{{cite.name}}</span>
       </div>
-      <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
+      <div class="user-org">
+        <img class="user-icon" src="static/img/user/org.png">
+        <span>{{cite.orgNames}}</span>
+      </div>
       <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
         <div class="result-content">
           <pre>{{cite.val}}</pre><slot name="unit"></slot>
