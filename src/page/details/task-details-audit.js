@@ -15,6 +15,7 @@ import FormCommon from "@/components/common/cite/cite-other/form-common.vue"
 import TaskConvert from "@/utils/TaskConvert"
 // import showcycle from '@/page/tea/SelectionPeriod'
 import FormComsItem from '../../components/FormComsItem'
+import reviewRejected from "@/components/tea/ReviewRejected";
 export default {
   data(){
     return{
@@ -92,6 +93,10 @@ export default {
       formShow:true,
       hasbgColor:true,
       roleType: '',
+      //表单提交审核等状态
+      formCommitState:'',
+      isRuleApproval:false, //是否设置了规则引擎
+      rejectedShow:false,//驳回弹框是否显示
     }
   },
   components:{
@@ -119,17 +124,11 @@ export default {
     SelectStu,
     SelectTea,
     FormComsItem,
+    reviewRejected,
   },
   created(){
     wechatconfigInit(this,qs,this.uid,this._url_);
     this.getStuInfos();
-    // this.getHistoryList();
-    Bus.$on('stuCardListsData',(data)=>{
-      this.stuListsData = data;
-    });
-    Bus.$on('cardListMsg',(data)=>{
-      this.paramsData = data;
-    });
   },
   computed: mapState({
     _url_: state => state.animation._url_
@@ -137,12 +136,7 @@ export default {
   }),
   methods: {
     goback() {
-      // this.$router.go(-1);
-      // if (this.paramsData.taskId === undefined) {
         this.$router.go(-1);
-      // } else {
-      //   this.$router.replace({path: '/stuList2Card/' + this.uid + '/' + this.paramsData.taskId + '/' + this.paramsData.formId + '/' + this.paramsData.schoolid});
-      // }
     },
     //获取学生表单信息
     async getStuInfos() {
@@ -165,12 +159,16 @@ export default {
           // teaTaskView taskView
           this.roleType = 'tea'
 
+          // /app/tea/task/16547/view
+
           if (this.$route.query.stuid) { // 教师帮学生填写
             params.stuId = this.$route.query.stuid
             resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/taskView', qs.stringify(params))
           }
           else if( this.$route.query.teaDoType) { // 教师负责人
+            
             resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/' + this.$route.params.stuid+"/view", qs.stringify(params))
+            this.formCommitState = resData.data.info.state;
           } else {
             resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/teaTaskView', qs.stringify(params))
           }
@@ -183,6 +181,7 @@ export default {
       }
       this.$vux.loading.hide()
       if (resData.success) {
+        this.isRuleApproval = resData.data.isRuleApproval;
         resData = TaskConvert.doTaskData(resData.data)
       }
 
@@ -217,6 +216,54 @@ export default {
         })
       }
       this.$previewRefresh();
+    },
+    //审核通过
+    pass() {
+      // isRuleApproval 是否设置有规则引擎
+      if (this.isRuleApproval) {
+        this.$router.push({
+          path: '/InputNutrients/' + this.uid + '/' + this.info.id
+        });
+      } else {
+        this.$axios.post(process.env.API_ROOT + "app/tea/task/" + this.id + "/dispass",
+          qs.stringify({
+            uid: this.uid
+          })
+        ).then( res=> {
+          this.$vux.toast.show({
+            type: 'success',
+            text: "成功"
+          });
+
+          this.$router.go(-1);
+
+        }).catch( err => {
+          this.errorUtil(err);
+        })
+      }
+
+    },
+    //驳回
+    addRejected(msg) {
+      this.$axios.post(process.env.API_ROOT + "app/tea/task/" + this.$route.params.id + "/decline",
+        qs.stringify({
+          uid: this.uid,
+          text: msg
+        })
+      ).then((res)=> {
+        this.$vux.toast.show({
+          type: 'success',
+          text: "成功"
+        });
+        this.rejectedShow = false;
+        this.$router.go(-1);
+
+      }).catch( err => {
+        this.errorUtil(err);
+      })
+    },
+    closeSelect(){
+      this.rejectedShow = false;
     },
     //获取学生填写记录
     getHistoryList() {
@@ -497,85 +544,6 @@ export default {
       if (val.split('.')[1].length > 2) {
         this.curFieldsLists[index].formItemValue = val.substring(0, val.indexOf(".") + 3);
       }
-    },
-    //表单提交
-    submit() {
-      //app/stu/v1/addStuTaskFormList
-      if (this.curFieldsLists.length == 0) return;
-      for (let i = 0; i < this.curFieldsLists.length; i++) {
-        if (this.curFieldsLists[i].formItemType == '14' && this.curFieldsLists[i].formItemValue != '') {
-          if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(this.curFieldsLists[i].formItemValue)) {
-            this.$vux.toast.show({type: 'warn', text: '邮箱填写不正确'});
-            return;
-          }
-        }
-        if (this.curFieldsLists[i].formItemType == '15' && this.curFieldsLists[i].formItemValue != '') {
-          if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.curFieldsLists[i].formItemValue)) {
-            this.$vux.toast.show({type: 'warn', text: '电话填写不正确'});
-            return;
-          }
-        }
-        if (this.curFieldsLists[i].formItemType == '26' && this.curFieldsLists[i].formItemValue != '') {
-          if (!/^[1-9]\d{5}(?!\d)$/.test(this.curFieldsLists[i].formItemValue)) {
-            this.$vux.toast.show({type: 'warn', text: '邮编填写不正确'});
-            return;
-          }
-        }
-        if (this.curFieldsLists[i].formItemType == '27' && this.curFieldsLists[i].formItemValue != '') {
-          if (!/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(this.curFieldsLists[i].formItemValue)) {
-            this.$vux.toast.show({type: 'warn', text: '身份证填写不正确'});
-            return;
-          }
-        }
-      }
-
-      this.$vux.loading.show({
-        text: '提交中...'
-      });
-      let formValueJson = [];
-      let formItemValues = [];
-      this.curFieldsLists.forEach(ele => {
-        ele.formItemValue = ele.formItemType == '9' ? this.geographic : ele.formItemValue;
-        formItemValues.push({
-          formItemType: ele.formItemType,
-          formItemValue: ele.formItemValue,
-          formItemName: ele.formItemDbName
-        })
-
-        if (ele.formItemNotNull == 'Y' && (ele.formItemValue == '' || ele.formItemValue == null)) {
-          this.$vux.toast.show({type: 'warn', text: '请将信息填写完整'});
-        }
-      })
-      console.log(this.stuid, this.stuid != 'null'?this.stuid:'')
-      
-      formValueJson.push({
-        formItemValues: formItemValues,
-        stuId: this.stuid != 'null'?this.stuid:''
-      })
-      
-      let path = ''
-      let obj = {}
-      if (Cookies.get('roleType') === 'stu') {
-        path = 'app/stu/v1/addtask'
-      } else {
-        obj.stuId = this.stuid != 'null'?this.stuid:''
-        path = 'app/tea/task/addtask'
-      }
-
-
-      obj.uid = this.uid
-      obj.taskid = this.id
-      let convertObj = TaskConvert.covertResult(this.curFieldsLists)
-      obj = {...convertObj, ...obj}
-      console.log('obj:', obj)
-      this.$axios.post(process.env.API_ROOT + path, qs.stringify(obj)).then(res => {
-        if (res.success) {
-          this.$vux.loading.hide();
-          this.goback();
-        }
-      }).catch(err => {
-        this.errorUtil(err)
-      })
     },
     //选人插件-相关方法
     selectionPlugin(id,type,index){

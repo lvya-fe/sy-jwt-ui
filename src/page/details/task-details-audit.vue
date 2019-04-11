@@ -339,10 +339,9 @@
 
         </li>
       </ul>
-      <div class="btnsWrap">
-        <x-button type="primary" v-if="[1,3].includes(formState)" action-type="button" @click.native="submit">提交</x-button>
-        <!-- <x-button type="primary" action-type="button">提交并切换学生</x-button> -->
-        <x-button action-type="button" @click.native="goback">返回</x-button>
+      <div class="btnsWrap" v-if="formCommitState=='O'">
+        <x-button type="primary" action-type="button" @click.native="pass">通过</x-button>
+        <x-button action-type="button" @click.native="rejectedShow = true">驳回</x-button>
       </div>
       <!-- 选择列表，多选择列表 -->
       <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'80%', overflow:'auto', 'background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" :class="{'vux-1px':showHideOnBlur}" hide-on-blur>
@@ -355,16 +354,9 @@
             <checklist title=""  label-position="left" :options="popData.formSelectItemResps" v-model="popData.itemValArr" @on-change="change"></checklist>
           </div>
         </div>
-        <flexbox>
-          <flexbox-item>
-            <x-button type="default cancel" action-type="button"  @click.native="showHideOnBlur = false">取消</x-button>
-          </flexbox-item>
-          <flexbox-item>
-            <x-button class="confirm" action-type="button" type="default" @click.native="checkListCommit">确定</x-button>
-          </flexbox-item>
-        </flexbox>
       </x-dialog>
     </form>
+    <reviewRejected class="rejectedPop" v-show="rejectedShow" @add="addRejected" @closeSelect = "closeSelect"></reviewRejected>
     <!--视频大文件上传弹框-->
     <div class="viedoPropParent" v-show="upDataShow">
       <div class="viedoProp">
@@ -409,7 +401,7 @@
 </style>
 
 <script>
-  import taskDetails from './task-details.js'
+  import taskDetails from './task-details-audit.js'
   export default taskDetails
 </script>
 
