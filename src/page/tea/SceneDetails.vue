@@ -223,7 +223,7 @@ import qs from 'qs';
 import {formatDate} from '@/plugins/formatDate.js';
 import Infinite from "@/components/vue-scroll";
 import { Scroller } from 'vux'
-import Cookies from 'js-cookie';
+import TaskConvert from "@/utils/TaskConvert"
 export default {
     directives: {
         TransferDom
@@ -536,7 +536,57 @@ export default {
           })
 
         },
-        toview(task){
+      // 任务列表数据判断
+      async initData(taskid) {
+        this.$vux.loading.show({
+          text: '加载中...'
+        });
+
+        // 学生数据
+        let params = {
+          uid: this.$route.params.uid,
+          taskid: taskid,
+          stime: '',
+          etime: ''
+        }
+        let resData = {}
+        // 角色判断
+        Cookies.set('roleType', 'tea')
+        try {
+          if (Cookies.get('roleType') === 'tea') {
+            // teaTaskView taskView
+            // 教师帮学生填写
+            if (this.$route.query.stuid) {
+              params.stuId = this.$route.query.stuid
+              resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/taskView', qs.stringify(params))
+            } else {
+              resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/teaTaskView', qs.stringify(params))
+            }
+          } else {
+            resData = await this.$axios.post(process.env.API_ROOT + 'app/stu/v1/taskview', qs.stringify(params))
+          }
+        } catch (err) {
+          this.errorUtil(err);
+        }
+        this.$vux.loading.hide()
+        if (resData.success) {
+          resData = TaskConvert.doTaskData(resData.data)
+        }
+
+        // 填写页面 学生自己填的 先用原来的，其他用新的
+        let taskState = resData.taskState
+
+        if (taskState == 1 || taskState == 3) {
+          this.$router.push({
+            path: '/task-details/' + params.uid + '/' + taskid + '/' + null + '/' + null, query: {
+              roleType: Cookies.get('roleType')
+            }
+          })
+          return false
+        }
+        return true
+      },
+      async toview(task){
           var _self = this;
           if(task.teaDoType==0){
             this.$router.push({path:'/taskList/'+this.uid+'/'+task.id+'/'+this.id});
@@ -552,9 +602,10 @@ export default {
               this.$router.push({path: '/stuListCard/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
             }
           }else if(task.teaDoType==3){
+            let bool = await this.initData(task.id)
             //可选参数：stuid，stuname 添加到path中，  目的：为了在单独url中添加去除返回按钮的参数
             // this.$router.push({path: '/studentTaskDetailsTea/'+_self.$route.params.uid+'/'+task.id+'/'+'null/'+task.joinstarttime+'/'+task.joinendtime+'/'+0+'/null'});
-            this.$router.push({path: '/task/task-details/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid, query: {roleType: 'tea'}});
+            if(bool) this.$router.push({path: '/task/task-details/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid, query: {roleType: 'tea'}});
             // this.$router.push({path: '/studentTaskDetailsTea/'+_self.$route.params.uid+'/'+task.id+'/'+task.joinstarttime+'/'+task.joinendtime+'/'+0});
           }
 

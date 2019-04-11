@@ -15,7 +15,7 @@ event:
         {{item.formItemName}}
       </p>
     </div>
-    <br>
+
     <div class="form-wrap-media">
       <aplayer :autoplay="null" :music="{
                                     title: '数据来源自',

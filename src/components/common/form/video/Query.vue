@@ -15,7 +15,7 @@ event:
         {{item.formItemName}}
       </p>
     </div>
-    <br>
+
     <!--自己给自己填写，只显示-->
     <div class="form-wrap-media">
       <VideoPlayerCommon :options="options(item.formItemValue)"></VideoPlayerCommon>
