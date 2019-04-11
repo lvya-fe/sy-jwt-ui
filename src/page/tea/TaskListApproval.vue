@@ -17,7 +17,7 @@
             </tab>
             <div class="tab-swiper vux-center" v-show="index != 3">
                 <group>
-                  <template  v-for="stu in write">
+                  <template  v-for="stu in writeList">
                     <!--<cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" >-->
                     <cell-box class="con-child"  @click.native="to(stu.id)" >
                         <p>{{stu.type=='teaToStu'||stu.type=='stu' ||stu.type=='stuToStu'?stu.stuName:stu.teaName}}<br><span>{{stu.type=='tea'?stu.teaOrgName.split(',')[0]: stu.type=='stu' ? stu.stuOrgName:['teaToStu','stuToStu'].includes(stu.type)?stu.stuOrgName+' 填写人：'+stu.teaName:''}}</span></p>
@@ -26,7 +26,7 @@
                     </cell-box>
                   </template>
                 </group>
-                <div class="no-msg-div" v-if="write==0">
+                <div class="no-msg-div" v-if="writeList.length==0">
                     <img src="@/assets/img/zanwushuju.png" alt="">
                     <span>暂无数据</span>
                 </div>
@@ -142,6 +142,25 @@ export default {
            ztSta:true,
            pageNo:0,
         }
+    },
+     computed: {
+      writeList() {
+        console.log(this.index)
+        let type = "Y";
+        if(this.index==0){
+            type ="O";
+        }
+        if(this.index==1){
+            type ="N";
+        }
+        if(this.index==2){
+            type ="Y";
+        }
+
+        return this.write.filter( item => {
+            return item.state == type
+          })
+      }
     },
   watch:{
     selectStuId(val, oldVal){//监听
