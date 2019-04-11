@@ -8,7 +8,7 @@
             </span>
     </div>
     <div class="empty-top"></div>
-    <div class="reject">
+    <div class="reject" v-if="commitInfo.state == 'N'">
       <ul>
         <li>
           <p>驳回原因</p>

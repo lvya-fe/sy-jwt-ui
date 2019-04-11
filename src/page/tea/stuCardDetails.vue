@@ -571,7 +571,7 @@ export default {
                                 if(element.formItemValue != ''){
                                     this.geographic = element.formItemValue;
                                 }else{
-                                    this.getMap();
+                                     setTimeout(this.getMap(),3000);
                                 }
                             }
                             if(element.formItemType == '10'){
