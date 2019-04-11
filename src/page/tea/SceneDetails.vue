@@ -59,7 +59,7 @@
         <div style="height:1.133333rem;">
           <sticky :check-sticky-support="false" :offset="0">
               <div class="tab-con-change">
-                  <tab :line-width=2 active-color='#16c7750' :scroll-threshold="countTab" class="footer-tab" >
+                  <tab :line-width="2" active-color='#16c7750' :scroll-threshold="countTab" class="footer-tab" >
                       <tab-item class="ripple" v-for="(items,ix) in tabTitle" :key="ix" @on-item-click="onItemClick" :selected="ix==index"
                         v-if="(ix==3&&nowsceneitem.sceneItemEnclosures.length>0)||(ix==2&&nowsceneitem.sceneItemCers.length>0)||(ix!=3&&ix!=2)">{{ items }}
                       </tab-item>
@@ -334,8 +334,7 @@ export default {
 
     // _this.active=localStorage.indexB
     // _this.index=localStorage.indexC
-
-       _this.active=0;
+       _this.active=_this.indexB;
        _this.index=0;
     this.loadData();
   },
@@ -549,6 +548,7 @@ export default {
             }
             if(task.showFlag == 2){
               Cookies.set('cardPageNo',1);
+              // Cookies.set('cardListIndex',0);
               this.$router.push({path: '/stuListCard/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
             }
           }else if(task.teaDoType==3){
