@@ -32,7 +32,7 @@ export function wechatconfigInit(self_,qs,cropId,httpUrl) {
 
       self_.$wechat.config({
         beta: true,
-        debug: true,
+        debug: false,
         appId: result.appId,
         timestamp: result.timestamp,
         nonceStr: result.nonceStr,
