@@ -9,7 +9,7 @@ event:
 
 <template>
   <div class="form-common form-item form-textarea cite-other-textarea">
-    <div class="form-wrap vux-1px-b">
+    <div class="form-wrap">
       <span class="form-name">
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
@@ -17,21 +17,23 @@ event:
     </div>
 
     <!-- 单条 多条 逐行显示-->
-    <div class="form-wrap form-cite-column" v-for="(cite,index) in item.listCiteData"  v-if="item.listCiteData.length>0">
-      <div class="user-avatar">
-        <img class="user-circle" :src="cite.imgUrl?cite.imgUrl:'static/img/user/avatar-default.jpg'">
-      </div>
-
-      <div class="form-content form-user-custom">
-        <div class="user-name">
-          <img class="user-icon" src="static/img/user/user-icon.png">
-          <span class="text-ellipsis">{{cite.name}}</span>
+    <div v-if="item.listCiteData.length>0">
+      <div class="form-wrap form-cite-column" v-for="(cite,index) in item.listCiteData">
+        <div class="user-avatar">
+          <img class="user-circle" :src="cite.imgUrl?cite.imgUrl:'static/img/user/avatar-default.jpg'">
         </div>
-        <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
-        <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
-          <div class="textarea">
-            <x-textarea disabled v-model="cite.val" :class="{'readAll':field[index] && field[index].readAll}" :autosize="field[index].readAll" :show-counter="false"></x-textarea>
-            <span class="moreTxt" @click="readAll(index)" v-show="!field[index].showBtn">{{field[index].btntxt}}</span>
+
+        <div class="form-content form-user-custom">
+          <div class="user-name">
+            <img class="user-icon" src="static/img/user/user-icon.png">
+            <span class="text-ellipsis">{{cite.name}}</span>
+          </div>
+          <div class="user-org"><img class="user-icon" src="static/img/user/org.png">{{cite.orgNames}}</div>
+          <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
+            <div class="textarea">
+              <x-textarea disabled v-model="cite.val" :class="{'readAll':field[index] && field[index].readAll}" :autosize="field[index].readAll" :show-counter="false"></x-textarea>
+              <span class="moreTxt" @click="readAll(index)" v-show="!field[index].showBtn">{{field[index].btntxt}}</span>
+            </div>
           </div>
         </div>
       </div>

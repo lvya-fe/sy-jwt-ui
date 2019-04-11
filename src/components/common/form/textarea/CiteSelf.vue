@@ -9,7 +9,7 @@ event:
 
 <template>
   <div class="form-common form-item form-textarea cite-other-textarea">
-    <div class="form-wrap vux-1px-b">
+    <div class="form-wrap">
       <span class="form-name">
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
@@ -17,7 +17,8 @@ event:
     </div>
 
     <!-- 单条 多条 逐行显示-->
-    <div class="form-wrap form-cite-column" v-for="(cite,index) in item.listCiteData"  v-if="item.listCiteData.length>0">
+    <div v-if="item.listCiteData && item.listCiteData.length>0">
+    <div class="form-wrap form-cite-column" v-for="(cite,index) in item.listCiteData">
 
       <div class="form-content form-user-custom">
         <div class="user-result">
@@ -27,6 +28,7 @@ event:
           </div>
         </div>
       </div>
+    </div>
     </div>
     <!--无数据-->
     <NoData v-else></NoData>
