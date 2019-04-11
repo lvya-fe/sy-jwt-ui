@@ -8,6 +8,21 @@
             </span>
     </div>
     <div class="empty-top"></div>
+    <div class="reject">
+      <ul>
+        <li>
+          <p>驳回原因</p>
+          <x-textarea disabled v-model="commitInfo.approvalbz"  :show-counter="false"></x-textarea>
+        </li>
+        <li>
+          <p class="disflex"><span class="name">审核时间</span><span class="val">{{commitInfo.ctime}}</span></p>
+        </li>
+        <li>
+          <p class="disflex"><span class="name">提交时间</span><span class="val">{{commitInfo.mtime}}</span></p>
+        </li>
+      </ul>
+      
+    </div>
     <form action="" class="stuInfo" v-show="formShow">
       <ul>
         <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传  8  描述文本 9 地理位置  10 选人插件,
