@@ -97,6 +97,7 @@ export default {
       formCommitState:'',
       isRuleApproval:false, //是否设置了规则引擎
       rejectedShow:false,//驳回弹框是否显示
+      commitID:null,//提交记录id
     }
   },
   components:{
@@ -182,6 +183,7 @@ export default {
       this.$vux.loading.hide()
       if (resData.success) {
         this.isRuleApproval = resData.data.isRuleApproval;
+        this.commitID = resData.data.info.id;
         resData = TaskConvert.doTaskData(resData.data)
       }
 
@@ -222,10 +224,10 @@ export default {
       // isRuleApproval 是否设置有规则引擎
       if (this.isRuleApproval) {
         this.$router.push({
-          path: '/InputNutrients/' + this.uid + '/' + this.info.id
+          path: '/InputNutrients/' + this.uid + '/' + this.commitID
         });
       } else {
-        this.$axios.post(process.env.API_ROOT + "app/tea/task/" + this.id + "/dispass",
+        this.$axios.post(process.env.API_ROOT + "app/tea/task/" + this.commitID + "/dispass",
           qs.stringify({
             uid: this.uid
           })
@@ -245,7 +247,7 @@ export default {
     },
     //驳回
     addRejected(msg) {
-      this.$axios.post(process.env.API_ROOT + "app/tea/task/" + this.$route.params.id + "/decline",
+      this.$axios.post(process.env.API_ROOT + "app/tea/task/" + this.commitID + "/decline",
         qs.stringify({
           uid: this.uid,
           text: msg
