@@ -523,7 +523,7 @@ export default {
       radioList,
       FormComsItem
     },
-    created(){
+    mounted(){
         wechatconfigInit(this,qs,this.uid,this._url_);
         this.getStuInfos();
     },

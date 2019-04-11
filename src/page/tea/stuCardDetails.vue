@@ -416,7 +416,6 @@ import uploadImg  from '@/components/uploadImg'
 import { mapState } from 'vuex'
 import VideoPlayerCommon from "@/components/common/video/video-player-common.vue"
 import { setTimeout } from 'timers';
-import Cookies from 'js-cookie';
 // import showcycle from '@/page/tea/SelectionPeriod'
 import FormComsItem from '../../components/FormComsItem'
 // 滚动条位置
@@ -523,7 +522,7 @@ export default {
       radioList,
       FormComsItem
     },
-    created(){
+    mounted(){
         wechatconfigInit(this,qs,this.uid,this._url_);
         this.getStuInfos();
     },
