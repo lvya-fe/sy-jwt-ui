@@ -17,7 +17,7 @@ event:
     </div>
 
     <!-- 单条 多条 逐行显示-->
-    <div v-if="item.listCiteData && item.listCiteData.length>0">
+    <div v-if="item.listCiteData && item.listCiteData.length>0"  class="form-wrap">
     <div class="form-wrap form-cite-column" v-for="(cite,index) in item.listCiteData">
 
       <div class="form-content form-user-custom">
