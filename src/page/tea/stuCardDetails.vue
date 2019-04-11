@@ -419,6 +419,8 @@ import { setTimeout } from 'timers';
 import Cookies from 'js-cookie';
 // import showcycle from '@/page/tea/SelectionPeriod'
 import FormComsItem from '../../components/FormComsItem'
+// 滚动条位置
+let bodyTop = 0
 export default {
     data(){
         return{
@@ -961,11 +963,16 @@ export default {
             this.formShow = false;
             this.hasbgColor = false;
             this.curIndex = index;
+            // 隐藏body滚动条，记住body位置
+            bodyTop = window.scrollY
         },
         qx(){
             this.tsshow = false;
             this.formShow = true;
             this.hasbgColor = true;
+            setTimeout(()=>{
+              window.scrollTo(0, bodyTop) // 回到原先的top
+            }, 100)
         },
         qd(obj){
             if(obj.length == 0) return;
@@ -982,6 +989,9 @@ export default {
             this.formShow = true;
             this.hasbgColor = true;
             this.tsshow = false;
+            setTimeout(()=>{
+              window.scrollTo(0, bodyTop) // 回到原先的top
+            }, 100)
         },
         deleteVideo(index) {
           this.curFieldsLists[index].formItemValue = ''
@@ -1461,7 +1471,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 bottom: 15px;
                                 padding: 0 20px 0 200px;
                                 background: -webkit-linear-gradient(left, rgba(250,250,250,0),rgba(250,250,250,1));
-                                background:linear-gradient(to right,rgba(250,250,250,0),rgba(250,250,250,1)); 
+                                background:linear-gradient(to right,rgba(250,250,250,0),rgba(250,250,250,1));
                                 color: #1abe7f;
                             }
                         }
