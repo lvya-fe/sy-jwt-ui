@@ -1,6 +1,6 @@
 <template>
 
-    <div class="whole">
+    <div class="whole stu-select">
         <div class="top-div">
             <div class="title">
                 <img class="left-img" src="../../assets/img/back_left_green.png" alt="" @click="qx"> 请选择

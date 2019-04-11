@@ -591,11 +591,14 @@ export default {
       this.formShow = false;
       this.hasbgColor = false;
       this.curIndex = index;
+      // 隐藏body滚动条，记住body位置
+      $('body').toggleClass('overflow-ctrl')
     },
     qx(){
       this.tsshow = false;
       this.formShow = true;
       this.hasbgColor = true;
+      $('body').toggleClass('overflow-ctrl')
     },
     qd(obj){
       if(obj.length == 0) return;
@@ -612,6 +615,7 @@ export default {
       this.formShow = true;
       this.hasbgColor = true;
       this.tsshow = false;
+      $('body').toggleClass('overflow-ctrl')
     },
 
     deleteVideo(index) {
