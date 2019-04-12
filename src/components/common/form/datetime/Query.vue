@@ -8,7 +8,7 @@ event:
 -->
 
 <template>
-  <div class="form-common form-item">
+  <div class="form-common form-item form-datetime-custom">
     <div class="form-wrap" :class="{'hasIcon':iconType}">
       <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
       <span class="form-name">
@@ -52,7 +52,7 @@ event:
       width: 300px !important;
     }
     .form-inline{
-      width: 424px !important;
+      width: 4.3rem !important;
     }
     &.hasIcon{
         .form-name{

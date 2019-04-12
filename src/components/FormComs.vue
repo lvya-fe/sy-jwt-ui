@@ -332,9 +332,9 @@
         if((this.taskState == 1 || this.taskState == 3) && formItem.citeDataType == 0) {
           formType += 'Add'
         } else if(formItem.citeDataType == 0){
-          formType += 'Query'
+          formType += 'CiteSelf'
         } else if(formItem.citeDataType == 1 && formItem.dataRangeType == 0){
-          formType += 'CiteOther'
+          formType += 'CiteSelf'
         } else if(formItem.citeDataType == 1 && (formItem.dataRangeType == 1 || formItem.dataRangeType == 2)){
           formType += 'CiteOther'
         }
