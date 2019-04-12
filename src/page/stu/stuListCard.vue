@@ -657,7 +657,7 @@ export default {
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;
-            height: 150px;
+            height: 141px;
             overflow-y: hidden;
         }
         .top-back {

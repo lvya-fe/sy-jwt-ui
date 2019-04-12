@@ -133,6 +133,7 @@ export default {
     Bus.$on('cardListMsg',(data)=>{
       this.paramsData = data;
     });
+
   },
   computed: mapState({
     _url_: state => state.animation._url_
@@ -152,11 +153,11 @@ export default {
       this.$vux.loading.show({
         text: '加载中...'
       });
-
       // 学生数据
       let params = {
         uid: this.uid,
         taskid: Number(this.id),
+        createId: this.$route.query.createId == undefined ? null : this.$route.query.createId,
         stime: '',
         etime: ''
       }

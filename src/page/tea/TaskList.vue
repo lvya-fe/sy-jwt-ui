@@ -23,7 +23,7 @@
               <Scroll ref="scroll" class="scroll-content" :dataList="write" @scrollToEnd="QueryWrite" :showLoad="showWriteLoading">
 
                 <!--<cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" v-for="(stu, index) in write" :key="index">-->
-                <cell-box class="con-child" @click.native="to(stu.id)" v-for="(stu, index) in write" :key="index">
+                <cell-box class="con-child" @click.native="to(stu)" v-for="(stu, index) in write" :key="index">
                   <p>{{stu.type=='teaToStu'||stu.type=='stu'?stu.stuName:stu.teaName}}<br><span>{{stu.type=='tea'?stu.teaOrgName&&stu.teaOrgName.split(',')[0]:stu.type=='stu'?stu.stuOrgName:stu.type=='teaToStu'?stu.stuOrgName+' 填写老师：'+stu.teaName:''}}</span>
                   </p>
                   <p><br><span>{{stu.ctime}}</span></p>
@@ -182,10 +182,12 @@
       closeSelect() {
         this.isshow = true;
       },
-      to(stuId) {
+      to(stu) {
         // this.$router.push({path: '/AuditOperation/' + this.uid + '/' + stuId});
+        console.log(stu.teaId,"45555555555555555555")
+        let teaid = stu.teaId;
         // 教师负责人
-        this.$router.push({path: '/task-details/'+this.uid+'/'+this.taskid+'/'+stuId+'/'+null, query: {roleType: 'tea', teaDoType: true}})
+        this.$router.push({path: '/task-details/'+this.uid+'/'+this.taskid+'/'+stu.stuId+'/'+null, query: {roleType: 'tea', teaDoType: true, createId: teaid}})
       },
       changeTask(v) {
         var _self = this;

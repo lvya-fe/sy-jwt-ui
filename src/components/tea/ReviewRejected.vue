@@ -44,7 +44,7 @@ export default {
 </script>
 <style>
 .cont-tex .weui-cells{height: 100%;}
-.cont-tex .weui-textarea {height: 250px;font-size: 26px;color: #444;}
+.cont-tex .weui-textarea {height: 250px;font-size: 30px;color: #444;}
 .weui-textarea-counter{height: 50px;}
 .cont-tex .weui-cells:before,.weui-cells:after{height:1px;/*no*/}
 

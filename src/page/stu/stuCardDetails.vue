@@ -15,7 +15,7 @@
                     21 百分数 22 日期  25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
                 <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
                     <!-- 单行 -->
-                    <div class="fieldsWrap disflex input-line-custom" v-if="item.formItemType == '1'">
+                    <div class="fieldsWrap input-line-custom" v-if="item.formItemType == '1'">
                         <template v-if=" [1,3].includes(formState) && item.citeDataType ==0 ">
                             <div>
                                 <span class="fieldInput fieldname" >{{item.formItemName}}</span>
@@ -101,7 +101,7 @@
                     <!-- 地理位置 -->
                     <template v-if="item.formItemType == '9'">
                         <div>
-                            <div class="fieldsWrap positionWrap hasIco disflex" v-if="item.citeDataType ==0">
+                            <div class="fieldsWrap positionWrap hasIco" v-if="item.citeDataType ==0">
                                 <img src="../../assets/img/ico_position.png" alt="">
                                 <span class="fieldname">{{item.formItemName}}</span>
                                 <p>{{geographic}}</p>
@@ -129,7 +129,7 @@
                     <!-- 邮箱 -->
                     <template v-if="item.formItemType == '14'">
                         <div>
-                            <div class="fieldsWrap hasIco disflex" v-if="item.citeDataType ==0">
+                            <div class="fieldsWrap hasIco" v-if="item.citeDataType ==0">
                                 <img class="icon" src="../../assets/img/ico_email.png" alt="">
                                 <span class="fieldname">{{item.formItemName}}</span><input type="text" @blur="verifyField(item.formItemValue,item.formItemType)" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" >
                             </div>
@@ -140,7 +140,7 @@
                     <!-- 电话 -->
                     <template v-if="item.formItemType == '15'">
                         <div>
-                            <div class="fieldsWrap hasIco disflex" v-if="item.citeDataType ==0">
+                            <div class="fieldsWrap hasIco " v-if="item.citeDataType ==0">
                                 <img class="icon" src="../../assets/img/ico_phone.png" alt="">
                                 <span class="fieldname">{{item.formItemName}}</span><input type="number" v-if="[1,3].includes(formState) && item.citeDataType ==0" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" oninput = "value=value.replace(/[^\d]/g,'')" @blur="verifyField(item.formItemValue,item.formItemType)" >
                                 <p class="readPhone" v-else>{{item.formItemValue.substring(0,3)}}  {{item.formItemValue.substring(3,7)}} {{item.formItemValue.substring(7)}}</p>
@@ -184,7 +184,7 @@
                     <!-- 整数 -->
                     <template v-if="item.formItemType == '19'">
                         <div>
-                            <div class="fieldsWrap disflex" v-if="item.citeDataType ==0">
+                            <div class="fieldsWrap" v-if="item.citeDataType ==0">
                                 <span class="fieldname">{{item.formItemName}}</span>
                                 <!-- <input type="number" v-model="item.formItemValue"   @input="testInput(item.formItemValue,index)" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''"> -->
                                 <input type="tel" v-model="item.formItemValue"  oninput = "value=value.replace(/[^\d]/g,'')" maxlength="15" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' : ''">
@@ -196,7 +196,7 @@
                     <!-- 小数 -->
                     <template v-if="item.formItemType == '20'">
                         <div>
-                            <div class="fieldsWrap disflex" v-if="item.citeDataType ==0">
+                            <div class="fieldsWrap" v-if="item.citeDataType ==0">
                                 <span class="fieldname">{{item.formItemName}}</span>
                                 <input type="number" v-model="item.formItemValue" @input="maxLengthCheck(item.formItemValue,index)" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" >
                             </div>
@@ -207,7 +207,7 @@
                     <!-- 百分数 -->
                     <template v-if="item.formItemType == '21'">
                         <div>
-                            <div class="fieldsWrap disflex" v-if="item.citeDataType ==0">
+                            <div class="fieldsWrap" v-if="item.citeDataType ==0">
                                 <span class="fieldname">{{item.formItemName}}</span>
                                 <input type="number" class="padr30" v-model="item.formItemValue" @input="maxLengthCheck(item.formItemValue,index)" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" >
                                 <span class="percent">%</span>
@@ -241,7 +241,7 @@
                     <!-- 邮编 -->
                     <template v-if="item.formItemType == '26'">
                         <div>
-                            <div class="fieldsWrap hasIco disflex" v-if="item.citeDataType ==0">
+                            <div class="fieldsWrap hasIco" v-if="item.citeDataType ==0">
                                 <img class="ico_postcode icon" src="../../assets/img/ico_postcode.png" alt="">
                                 <span class="fieldname">{{item.formItemName}}</span><input type="number" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" v-model="item.formItemValue" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" oninput = "value=value.replace(/[^\d]/g,'')" @blur="verifyField(item.formItemValue,item.formItemType)">
                             </div>
@@ -252,7 +252,7 @@
                     <!-- 身份证 -->
                     <template v-if="item.formItemType == '27'">
                         <div>
-                            <div class="fieldsWrap hasIco disflex" v-if="item.citeDataType ==0">
+                            <div class="fieldsWrap hasIco " v-if="item.citeDataType ==0">
                                 <img class="ico_idcard icon" src="../../assets/img/ico_idcard.png" alt="">
                                 <span class="fieldname">{{item.formItemName}}</span>
                                 <input type="text" v-model="item.formItemValue" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入' :''" @blur="verifyField(item.formItemValue,item.formItemType)" >
@@ -1035,7 +1035,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;
-            height: 150px;
+            height: 141px;
             overflow: hidden;
         }
          input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
