@@ -1464,7 +1464,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             .moreTxt{
                                 position: absolute;
                                 right: 15px;
-                                bottom: 15px;
+                                bottom: -5px;
                                 padding: 0 20px 0 200px;
                                 background: -webkit-linear-gradient(left, rgba(250,250,250,0),rgba(250,250,250,1));
                                 background:linear-gradient(to right,rgba(250,250,250,0),rgba(250,250,250,1));
@@ -1501,7 +1501,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             .moreTxt{
                                 position: absolute;
                                 right: 45px;
-                                bottom: 30px;
+                                bottom: -10px;
                                 color: #1abe7f;
                             }
                         }

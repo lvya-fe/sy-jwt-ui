@@ -826,6 +826,7 @@ export default {
                                     }
                                 }
                                 &.textarea,&.multiple{
+                                    padding-bottom: 30px;
                                     text-align: center;
                                     p{
                                         text-align: left;
@@ -839,7 +840,7 @@ export default {
                                         .moreTxt{
                                             position: absolute;
                                             right: 15px;
-                                            bottom: 10px;
+                                            bottom: 0px;
                                             color: #1abe7f;
                                         }
                                     }
