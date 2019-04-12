@@ -47,7 +47,7 @@ export default {
     }
 }
 </script>
-<style lang="less" >
+<style lang="less" scoped>
     .radioLists{
         padding: 0 30px;
         li{
@@ -82,7 +82,7 @@ export default {
                         background-size: 35px 31px;
                     }
                 }
-                
+
             }
         }
     }
