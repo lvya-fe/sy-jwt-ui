@@ -110,7 +110,7 @@
           <!-- 地理位置 -->
           <template v-if="item.formItemType == '9'">
             <div>
-              <div class="fieldsWrap positionWrap hasIco " v-if="[1,3].includes(formState) && item.citeDataType ==0 ">
+              <div class="positionWrap hasIco " v-if="[1,3].includes(formState) && item.citeDataType ==0 ">
                 <img src="../../assets/img/ico_position.png" alt="">
                 <span class="fieldname">{{item.formItemName}}</span>
                 <p>{{geographic}}</p>
@@ -216,7 +216,7 @@
           <!-- 百分数 -->
           <template v-if="item.formItemType == '21'">
             <div>
-              <div class="fieldsWrap " v-if="[1,3].includes(formState) && item.citeDataType ==0 ">
+              <div class="fieldsWrap disflex" v-if="[1,3].includes(formState) && item.citeDataType ==0 ">
                 <span class="fieldname">{{item.formItemName}}</span>
                 <input type="number" class="padr30" v-model="item.formItemValue" @input="maxLengthCheck(item.formItemValue,index)" :disabled="[1,3].includes(formState) && item.citeDataType == 0 ? false :true" :placeholder="[1,3].includes(formState) && item.citeDataType ==0 && item.formItemValue == '' ? '请输入百分数(如：60.23)' : ''" onkeyup="value=value.match(/\d+\.?\d{0,2}/,'')" >
                 <span class="percent">%</span>
@@ -305,7 +305,7 @@
                   <img src="../../assets/img/noData.png" alt="">
                 </div>
               </div>
-              <FormComsItem v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+              <FormComsItem v-else class="paddinglr30" :formItem.sync="item" :taskState="formState"></FormComsItem>
             </div>
           </template>
 

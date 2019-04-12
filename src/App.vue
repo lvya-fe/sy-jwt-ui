@@ -68,4 +68,7 @@ export default {
   opacity: 0;
   transform: translate3d(-100%, 0, 0);
 }
+.pswp__top-bar{
+  padding: .8rem .4rem 0;
+}
 </style>

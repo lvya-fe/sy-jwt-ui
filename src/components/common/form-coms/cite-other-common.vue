@@ -24,7 +24,7 @@ event:
       </div>
       <div class="user-result"><img class="user-icon" src="static/img/user/result.png">
         <div class="result-content">
-          <pre>{{cite.val}}</pre><slot name="unit"></slot>
+          <p>{{cite.val}}</p><slot name="unit"></slot>
         </div>
       </div>
     </div>
