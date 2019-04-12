@@ -174,7 +174,7 @@ export default {
             resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/taskView', qs.stringify(params))
           }
           else if( this.$route.query.teaDoType) { // 教师负责人
-            resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/' + this.$route.params.stuid+"/view", qs.stringify(params))
+            resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/' + this.$route.query.commitID + "/view", qs.stringify(params))
           } else {
             resData = await this.$axios.post(process.env.API_ROOT + 'app/tea/task/teaTaskView', qs.stringify(params))
           }

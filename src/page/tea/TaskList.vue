@@ -187,7 +187,7 @@
         console.log(stu.teaId,"45555555555555555555")
         let teaid = stu.teaId;
         // 教师负责人
-        this.$router.push({path: '/task-details/'+this.uid+'/'+this.taskid+'/'+stu.stuId+'/'+null, query: {roleType: 'tea', teaDoType: true, createId: teaid}})
+        this.$router.push({path: '/task-details/'+this.uid+'/'+this.taskid+'/'+stu.stuId+'/'+null, query: {roleType: 'tea', teaDoType: true, createId: teaid, commitID:stu.id}})
       },
       changeTask(v) {
         var _self = this;
