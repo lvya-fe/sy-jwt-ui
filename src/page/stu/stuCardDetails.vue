@@ -16,25 +16,22 @@
                 <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
                     <!-- 单行 -->
                     <div class="fieldsWrap disflex input-line-custom" v-if="item.formItemType == '1'">
-                        <span class="fieldInput fieldname" v-if=" [1,3].includes(formState) && item.citeDataType ==0 ">{{item.formItemName}}</span>
-                        <input v-if=" [1,3].includes(formState) && item.citeDataType ==0 " type="text" class="txtInput" v-model="item.formItemValue"  @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
-                        <!--<p class="readOnly" v-else>{{item.formItemValue}}</p>-->
-
+                        <template v-if=" [1,3].includes(formState) && item.citeDataType ==0 ">
+                            <div>
+                                <span class="fieldInput fieldname" >{{item.formItemName}}</span>
+                                <input v-if=" [1,3].includes(formState) && item.citeDataType ==0 " type="text" class="txtInput" v-model="item.formItemValue"  @input="item.formItemValue=item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')" placeholder="请输入">
+                            </div>
+                        </template>
                         <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                     </div>
                     <!-- 多行 -->
                     <div class="fieldsWrap txtarea hookTxtarea" v-if="item.formItemType == '2'">
-                        <p v-if=" [1,3].includes(formState) && item.citeDataType ==0 " :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>
-                        <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
-                        <!-- <div v-else>
-                            <div v-if="item.formItemValue !=''" class="readOnly-block">
-                                <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :autosize="item.readAll" :show-counter="false"></x-textarea>
-                                <span class="moreTxt" @click="readAll(index)" v-show="!item.showBtn">{{item.btntext}}</span>
+                        <template v-if=" [1,3].includes(formState) && item.citeDataType ==0 " >
+                            <div>
+                                <p :class="{'vux-1px-b': ([1,3].includes(formState) && item.citeDataType ==0)}"><span>{{item.formItemName}}</span></p>
+                                <x-textarea v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
                             </div>
-                            <div v-else class="nodata">
-                                <img src="../../assets/img/noData.png" alt="">
-                            </div>
-                        </div> -->
+                        </template>
                       <FormComsItem v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                     </div>
                     <!-- 日期时间 -->

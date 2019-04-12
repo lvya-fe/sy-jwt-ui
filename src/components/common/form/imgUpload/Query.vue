@@ -46,10 +46,11 @@ event:
 </script>
 <style lang="less">
   .img-items{
-      padding: 0 30px;
+      padding-top: 30px  !important;
       margin: 0;
       font-size: 0;
       li{
+          padding: 0 !important;
           display: inline-block;
           margin: 0 22px 22px 0;
           width:215px;

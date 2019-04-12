@@ -548,7 +548,7 @@ export default {
                                 }
                                 if(['2','8'].includes(ele.formItemType)){
                                     let bool = false;
-                                    bool = ele.formItemValue.split(/\r?\n|\r/).length>3 ? false :true;
+                                    bool = ele.formItemValue.split(/\r?\n|\r/).length>3 || ele.formItemValue.length > 56 ? false :true;
                                     this.$set(ele, 'readAll', bool)
                                 }
                             })
