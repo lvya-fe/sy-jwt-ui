@@ -33,11 +33,12 @@
         </div>
 
         <div class="con-area" v-show="tea2" title="tea2">
-            <!-- <div class="con-area-child">
-              <input class="checkBox" type="checkbox"  ref="all3"  @click="chooseStuAll"
-              v-model="checkstuCalculate">
-              <span>全选</span>
-            </div> -->
+
+            <!--v-model="checkstuCalculate"-->
+             <!--<div class="con-area-child">-->
+              <!--<input class="checkBox" type="checkbox"  ref="all3"  @click="chooseStuAll">-->
+              <!--<span>全选</span>-->
+            <!--</div>-->
 
             <div class="child-title" >
                 <span @click="teaOut">首页 /</span>
@@ -110,6 +111,11 @@
               v-model="checkstuCalculate">
               <span>全选</span>
             </div> -->
+
+            <div class="con-area-child">
+                <input class="checkBox" type="checkbox"  ref="all3"  @click="chooseStuAll">
+                <span>全选</span>
+            </div>
 
             <div class="child-title" >
                 <span @click="stuOut">首页 /</span>
@@ -527,7 +533,7 @@
                 var self_ = this;
                 var flg = event.currentTarget.checked;
                 this.stumap[this.orgid].forEach(function(stu) {
-                    stu.check = flg;
+                    self_.$set(stu, 'check', flg)
                 });
             },
             chooseOrgAll(event){

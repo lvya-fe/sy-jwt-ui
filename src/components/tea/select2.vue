@@ -105,11 +105,10 @@
         </div>
 
         <div class="con-area" v-show="stu2">
-            <!-- <div class="con-area-child">
-              <input class="checkBox" type="checkbox"  ref="all3"  @click="chooseStuAll"
-              v-model="checkstuCalculate">
+             <div class="con-area-child">
+              <input class="checkBox" type="checkbox"  ref="all3"  @click="chooseStuAll">
               <span>全选</span>
-            </div> -->
+            </div>
 
             <div class="child-title" >
                 <span @click="stuOut">首页 /</span>
@@ -527,7 +526,7 @@
                 var self_ = this;
                 var flg = event.currentTarget.checked;
                 this.stumap[this.orgid].forEach(function(stu) {
-                    stu.check = flg;
+                    self_.$set(stu, 'check', flg)
                 });
             },
             chooseOrgAll(event){
