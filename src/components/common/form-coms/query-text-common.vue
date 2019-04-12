@@ -55,7 +55,7 @@ event:
     mounted () {
       this.field = Object.assign({},this.item);
       let bool = false;
-      bool = this.field.formItemValue.split(/\r?\n|\r/).length > 1  || this.item.val.length > 40  ? false : true;
+      bool = this.field.formItemValue.split(/\r?\n|\r/).length > 1  || this.item.formItemValue.length > 40  ? false : true;
       this.$set(this.field, 'readAll', bool);
       this.$set(this.field, 'showBtn', bool);
       this.$set(this.field, 'btntxt', '全文');

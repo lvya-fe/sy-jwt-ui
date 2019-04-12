@@ -9,7 +9,7 @@
           </div>
           <div class="weui-uploader__bd" style="overflow:visible;">
             <ul class="weui-uploader__files" id="imgadd">
-                <li v-for="img in imgList" class="weui-uploader__file imgs"  :style="{backgroundImage: 'url(' + img + ')'}"  ><div></div><span class="delete_photo" @click="del(img)">_</span></li>
+                <li v-for="(img,index) in imgList" class="weui-uploader__file imgs"  :key="index" :style="{backgroundImage: 'url(' + img + ')'}"  ><div></div><span class="delete_photo" @click="del(index)">_</span></li>
             </ul>
             <div class="weui-uploader__input-box">
               <input id="uploaderInput" class="weui-uploader__input"   @click="chooseImage" type="button">
@@ -65,8 +65,9 @@ export default {
     }
   },
     methods: {
-      del: function (img) {
-        this.imgList.pop(img);
+      del: function (index) {
+        // this.imgList.pop(img);
+        this.imgList.splice(index,1); 
       },
       chooseImage: function() {
         var  self_ = this;
