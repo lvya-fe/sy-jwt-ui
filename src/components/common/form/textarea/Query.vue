@@ -9,25 +9,12 @@ event:
 
 <template>
   <div class="form-common form-item form-textarea">
-    <div class="form-wrap field-block">
-      <p class="form-name-block vux-1px-b">
-        <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
-        {{field.formItemName}}
-      </p>
-      <div class="textarea" v-if="field.formItemValue != ''">
-        <!-- <textarea disabled v-model="field.formItemValue" :class="{'readAll':field.readAll}" :autosize="field.readAll"></textarea> -->
-        <x-textarea disabled v-model="field.formItemValue" :class="{'readAll':field.readAll}" :autosize="field.readAll" :show-counter="false"></x-textarea>
-        <span class="moreTxt" @click="readAll" v-show="!field.showBtn">{{field.btntxt}}</span>
-      </div>
-      <div v-else class="nodata">
-        <img src="../../../../assets/img/noData.png" alt="">
-      </div>
-    </div>
+    <QueryTextCommon :item="item" ></QueryTextCommon>
   </div>
 </template>
 
 <script>
-import { XTextarea} from "vux";
+  import QueryTextCommon from "../../form-coms/query-text-common.vue"
   export default {
     name: 'InputQuery',
     props: {
@@ -36,28 +23,14 @@ import { XTextarea} from "vux";
     },
     data () {
       return {
-        field:{}
       }
     },
     components:{
-      XTextarea
+      QueryTextCommon
     },
     methods: {
-      //多行文本  查看全文
-      readAll(){
-        this.$nextTick(()=>{
-            this.field.readAll = !this.field.readAll;
-            this.field.btntxt = this.field.btntxt == '全文' ? '收起':'全文';
-        })
-      },
     },
     mounted () {
-        this.field = Object.assign({},this.item);
-        let bool = false;
-        bool = this.field.formItemValue.split(/\r?\n|\r/).length > 3 || this.item.val.length > 40 ? false : true;
-        this.$set(this.field, 'readAll', bool);
-        this.$set(this.field, 'showBtn', bool);
-        this.$set(this.field, 'btntxt', '全文');
     }
   }
 </script>

@@ -1,5 +1,5 @@
 <!--
-组件名称：InputQuery
+组件名称：CiteSelfText
 props:
   item
   iconType 图标类型，同表单名
@@ -8,45 +8,47 @@ event:
 -->
 
 <template>
-  <div class="form-common form-item">
-    <div class="form-wrap vux-1px-b">
+  <div class="form-common form-item form-textarea">
+    <div class="form-wrap">
       <span class="form-name">
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </span>
     </div>
 
-    <!--文本 单条 多条 显示一样-->
-    <div class="form-wrap-column" v-for="(cite,index) in item.listCiteData" :key='index' v-if="item.listCiteData.length>0">
-      <div class="result-content textarea-bg">
-        <pre>{{cite.val}}</pre>
+    <!-- 单条 多条 逐行显示-->
+    <div v-if="item.listCiteData && item.listCiteData.length>0" class="text-cite-item">
+      <div class="form-wrap form-cite-column-self">
+        <CiteSelfText :item="cite" v-for="(cite,index) in item.listCiteData" :key="index"></CiteSelfText>
       </div>
     </div>
+    <!--无数据-->
     <NoData v-else></NoData>
-
   </div>
 </template>
 
 <script>
-  import CiteOtherCommon from "../../form-coms/cite-other-common"
+  import { XTextarea} from "vux";
+  import CiteSelfText from "../../form-coms/cite-self-text.vue"
   export default {
-    name: 'InputQuery',
     props: {
       item: {default: {}},
       iconType: {default: ''}
     },
     components: {
-      CiteOtherCommon,
+      CiteSelfText,
+      XTextarea,
     },
     data () {
       return {
+        field:[]
       }
     },
     watch: {
     },
     methods: {
     },
-    mounted () {
+    created () {
     }
   }
 </script>
