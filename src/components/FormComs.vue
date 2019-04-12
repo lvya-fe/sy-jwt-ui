@@ -334,7 +334,7 @@
         } else if(formItem.citeDataType == 0){
           formType += 'Query'
         } else if(formItem.citeDataType == 1 && formItem.dataRangeType == 0){
-          formType += 'CiteOther'
+          formType += 'CiteSelf'
         } else if(formItem.citeDataType == 1 && (formItem.dataRangeType == 1 || formItem.dataRangeType == 2)){
           formType += 'CiteOther'
         }
