@@ -589,7 +589,7 @@ export default {
        var self_ = this;
        var flg = event.currentTarget.checked;
        this.stumap[this.orgid].forEach(function(stu) {
-           stu.check = flg;
+           self_.$set(stu, 'check', flg)
        });
     },
     chooseOrgAll(event){
