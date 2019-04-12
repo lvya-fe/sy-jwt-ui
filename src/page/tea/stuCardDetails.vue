@@ -15,7 +15,7 @@
                     21 百分数 22 日期  25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
                 <li class="fields-item" v-for="(item,index) in curFieldsLists" :key="item.order">
                     <!-- 单行 -->
-                    <div class="fieldsWrap disflex input-line-custom" v-if="item.formItemType == '1'">
+                    <div class="fieldsWrap input-line-custom" v-if="item.formItemType == '1'">
                         <template v-if=" [1,3].includes(formState) && item.citeDataType ==0 ">
                             <div>
                                 <span class="fieldInput fieldname" >{{item.formItemName}}</span>
@@ -1034,7 +1034,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
         textarea:disabled{
             background-color: #fafafa;
             color: #656565;
-            height: 150px;
+            height: 141px;
             overflow: hidden;
         }
          input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
@@ -1374,6 +1374,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         padding-right: 0;
                         .weui-textarea{
                             padding: 0.15rem 0.2rem 0;
+                            box-sizing: border-box;
                         }
                     }
                     &.radios{
@@ -1464,7 +1465,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             .moreTxt{
                                 position: absolute;
                                 right: 15px;
-                                bottom: -5px;
+                                bottom: 10px;
                                 padding: 0 20px 0 200px;
                                 background: -webkit-linear-gradient(left, rgba(250,250,250,0),rgba(250,250,250,1));
                                 background:linear-gradient(to right,rgba(250,250,250,0),rgba(250,250,250,1));
@@ -1501,7 +1502,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             .moreTxt{
                                 position: absolute;
                                 right: 45px;
-                                bottom: -10px;
+                                bottom: 30px;
                                 color: #1abe7f;
                             }
                         }
