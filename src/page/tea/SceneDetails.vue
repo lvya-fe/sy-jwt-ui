@@ -508,7 +508,7 @@ export default {
 
           this.$axios.post( process.env.API_ROOT+"app/tea/"+_self.nowsceneitem.id+"/sceneItemView",
             qs.stringify({
-              lastid:_self.nowsceneitem.listTask[_self.nowsceneitem.listTask.length-1].id,
+              lastid:_self.nowsceneitem.listTask && _self.nowsceneitem.listTask[_self.nowsceneitem.listTask.length-1].id,
               uid:_self.$route.params.uid
             })
           ).then(function(res){
