@@ -62,7 +62,7 @@
                 <radioList :lists="item.formSelectItemResps" :disabled = '(![1,3].includes(formState) || item.citeDataType !=0) ? true :false' :checkVal="item.formItemValue" :index="index" @changeVal="changeRadio"></radioList>
 
               </div>
-              <FormComsItem  v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+              <FormComsItem class="paddinglr30"  v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
             </div>
           </template>
 
