@@ -16,7 +16,7 @@
         <div class="bscroll"  ref="bscroll">
             <!-- <load-more v-if="stuLits.length == 0" :show-loading="false" :tip="'暂无数据'" background-color="#fbf9fe"></load-more> -->
             <ul class="stuLists">
-                <li class="stulist-item" v-for="item in stuLits" :key="item.stuId" @click="toStuDetail(item.stuId,item.pageNo)">
+                <li class="stulist-item" ref="stulistItem" v-for="(item,index) in stuLits" :key="item.stuId" @click="toStuDetail(item.stuId,item.pageNo,index)">
                     <div class="stuInfo">
                         <img src="../../assets/img/img_avatar.png" class="avatar" alt="">
                         <span class="name">{{item.stuName}}</span>
@@ -25,7 +25,7 @@
                     <ul class="fieldLists">
                         <!-- 1单行输出   2 多行输入  3 日期时间  4 单项选择 5 多项选择  6 图片上传   8 描述文本 9 地理位置  10 选人插件, 14 邮箱 15 电话
                         16选择列表 17 多选列表 19 整数 20 小数  21 百分数 22 日期   25 省市区  26 邮编  27 身份证 28 音频 29 视频 -->
-                        <li class="fieldlist-item" v-for="(field,index) in item.formItemResps" :key="index">
+                        <li class="fieldlist-item" v-for="(field,i) in item.formItemResps" :key="i">
                             <dl>
                                 <!-- 单行 -->
                                 <template v-if="field.formItemType == '1'">
@@ -472,7 +472,7 @@ export default {
             dropDownShow:false,
             pullUp:false, //上拉状态
             pullUpShow:false,
-            //curIndex:0,//当前点击学生索引
+            curIndex:0,//当前点击学生索引
         }
     },
     components:{
@@ -488,7 +488,7 @@ export default {
     },
     created(){
         this.pageNo = Cookies.get('cardPageNo') == undefined ? 1 : Number(Cookies.get('cardPageNo'));
-        // this.curIndex = Cookies.get('cardListIndex') == undefined ? null : Number(Cookies.get('cardListIndex')) % 10;
+        this.curIndex = Cookies.get('cardListIndex') == undefined ? null : Number(Cookies.get('cardListIndex')) % 10;
         console.log(this.pageNo,Cookies.get('cardPageNo'))
         this.getStuLists();
         // this.getCycleLists();
@@ -518,6 +518,8 @@ export default {
                     let resData = res.data;
                     this.title = resData.taskName;
                     if(resData.videoCardStuListRespList.length == 0) return;
+
+                    //判定是向前翻页还是向后分页  拼接数据
                     if(this.pullUp || (!this.pullUp && !this.dropDown)){
                         this.stuLits = this.stuLits.concat(resData.videoCardStuListRespList);
                         this.hasNextPage = resData.hasNextPage;
@@ -525,18 +527,8 @@ export default {
                     if(this.dropDown){
                         this.stuLits = resData.videoCardStuListRespList.concat(this.stuLits);
                     }
-                    // if(this.stuLits.length == 10){
-                    //     setTimeout(()=>{
-                    //         let refStu = this.$refs.stulistItem;
-                    //         if(this.curIndex !=0 && this.curIndex != null){
-                    //             refStu[this.curIndex].scrollIntoView({
-                    //                 block: 'start',
-                    //                 behavior: 'smooth'
-                    //             });
-                    //         }
-                    //     },100)
-                    // }
-
+                   
+                    //处理返回数据
                     if(this.stuLits.length>0){
                         this.stuLits.forEach(element => {
                             if(element.formItemResps.length == 0) return;
@@ -548,11 +540,21 @@ export default {
                                 }
                                 if(['2','8'].includes(ele.formItemType)){
                                     let bool = false;
-                                    bool = ele.formItemValue.split(/\r?\n|\r/).length>3 ? false :true;
+                                    bool = ele.formItemValue.split(/\r?\n|\r/).length>3 || ele.formItemValue.length > 56 ? false :true;
                                     this.$set(ele, 'readAll', bool)
                                 }
                             })
                         });
+                    }
+
+                    //详情返回定位滚动位置
+                    if(this.stuLits.length == 10){
+                        setTimeout(()=>{
+                            let refStu = this.$refs.stulistItem;
+                            if(this.curIndex !=0 && this.curIndex != null){
+                                this.scroll.scrollToElement(refStu[this.curIndex],10);
+                            }
+                        },100)
                     }
                     this.$nextTick(() => {
                         if (!this.scroll) {
@@ -629,9 +631,9 @@ export default {
             this.showHideOnBlur = !this.showHideOnBlur;
         },
         //跳转至学生任务详情 - 需要区分-任务状态   展示，填写
-        toStuDetail(stuid,pageNo){
-            //Cookies.set('cardPageNo',pageNo);
-            // Cookies.set('cardListIndex',index);
+        toStuDetail(stuid,pageNo,index){
+            Cookies.set('cardPageNo',pageNo);
+            Cookies.set('cardListIndex',index);
             this.$router.push({path: '/stuCardDetails/'+this.uid+'/'+this.id+'/'+stuid+'/'+this.schooId});
         },
         //批量操作学生表单

@@ -577,6 +577,7 @@ export default {
                     }
                     else if(task.showFlag == 2){
                         Cookies.set('cardPageNo',1);
+                        Cookies.set('cardListIndex',0);// 返回定位滚动需要
                         this.$router.push({path: '/stuList2Card/'+this.uid+'/'+task.id+'/'+task.formsid+'/'+task.schoolid});
                     }
                 }
