@@ -54,17 +54,22 @@
 
 ## 研发环境运行
 
+### 建议首次安装执行 install.sh脚本，更新提交代码 执行 update.sh (双击文件执行，需要安装git客户端)
+
 ``` bash
 # 安装依赖
 
 // 安装基本依赖，如果vue.js基本框架更新了，需要基于vue-cli的package.json重新 npm install一下
 1. npm install
 
-2. 修改配置文件
+2 .安装子模块
+git submodule update --init --recursive
+
+
+3. 修改配置文件
 复制webconfig/webconfig_example.js为webconfig.js,并修改对应的 后端地址
 
-
-3. 运行项目
+4. 运行项目
 npm run dev
 
 # 运行在 localhost:9999  （端口号可在config/index.js中更改）
