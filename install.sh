@@ -1,5 +1,7 @@
 #!/bin/bash
-npm install
+
+npm install --registry https://registry.npm.taobao.org
+
 cp -rf ./webconfig/webconfig_example.js  ./webconfig/webconfig.js
 git submodule update --init --recursive
 git submodule foreach git pull origin master
