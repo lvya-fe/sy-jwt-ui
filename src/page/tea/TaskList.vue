@@ -24,7 +24,7 @@
 
                 <!--<cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" v-for="(stu, index) in write" :key="index">-->
                 <cell-box class="con-child" @click.native="to(stu)" v-for="(stu, index) in write" :key="index">
-                  <p>{{stu.type=='teaToStu'||stu.type=='stu'?stu.stuName:stu.teaName}}<br><span>{{stu.type=='tea'?stu.teaOrgName&&stu.teaOrgName.split(',')[0]:stu.type=='stu'?stu.stuOrgName:stu.type=='teaToStu'?stu.stuOrgName+' 填写老师：'+stu.teaName:''}}</span>
+                  <p>{{stu.type=='teaToStu'||stu.type=='stu' || stu.type=='stuToStu'?stu.stuName:stu.teaName}}<br><span>{{stu.type=='tea'?stu.teaOrgName&&stu.teaOrgName.split(',')[0]:stu.type=='stu'?stu.stuOrgName:stu.type=='stuToStu'?stu.stuOrgName +' 填写人：'+stu.teaName :stu.type=='teaToStu'?stu.stuOrgName+' 填写人：'+stu.teaName:''}}</span>
                   </p>
                   <p><br><span>{{stu.ctime}}</span></p>
                   <img class="right-img" src="@/assets/img/you.png" alt="">
