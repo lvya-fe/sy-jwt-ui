@@ -8,7 +8,7 @@ event:
 -->
 
 <template>
-  <div class="form-common form-item">
+  <div class="form-common form-item readMult">
     <div class="form-wrap field-block">
       <p class="form-name-block vux-1px-b">
         {{item.formItemName}}
@@ -50,5 +50,7 @@ event:
   }
 </script>
 <style lang="less">
-
+  .readMult{
+    margin: 0 -30px;
+  }
 </style>

@@ -91,7 +91,7 @@
                   </ul>
                 </div>
               </div>
-              <FormComsItem v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+              <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
             </div>
           </template>
 
@@ -187,7 +187,7 @@
                   </div>
                 </div>
               </group>
-              <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+              <FormComsItem v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
             </div>
           </template>
           <!-- 整数 -->
