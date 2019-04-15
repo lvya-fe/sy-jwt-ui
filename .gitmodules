@@ -1,3 +1,6 @@
 [submodule "src/edu-common"]
 	path = src/edu-common
 	url = git@47.93.120.155:/home/data/git/frontend/edu-common.git
+[submodule "src/src/edu-common"]
+	path = src/src/edu-common
+	url = git@47.93.120.155:/home/data/git/frontend/edu-common.git

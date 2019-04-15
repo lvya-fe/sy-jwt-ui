@@ -16,9 +16,7 @@ event:
       </p>
     </div>
 
-    <div class="form-wrap" v-for="(cite,index) in item.listCiteData">
-
-      <div class="form-wrap form-thumb" v-for="(cite,index) in item.listCiteData">
+      <div class="form-wrap form-thumb" v-for="(cite,index) in item.listCiteData" :key="index">
         <div class="user-avatar">
           <img class="user-circle" :src="cite.imgUrl?cite.imgUrl:'static/img/user/avatar-default.jpg'">
 
@@ -34,7 +32,6 @@ event:
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
