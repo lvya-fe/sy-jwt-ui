@@ -26,11 +26,10 @@ import 'video.js/dist/video-js.css'
 import 'vue-video-player-lvya/src/custom-theme.css'
 
 import './config.js'
-import routes from './router'
+import routes from './router.js'
 import store from './vuex/store'
 
 import App from './App'
-
 const router = new VueRouter({
   routes
 })
