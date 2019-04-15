@@ -99,7 +99,7 @@
                 <img class="review" src="@/assets/img/shenhe.png" v-if="task.isCheck" alt="">
             </div>
           </template>
-          <Infinite v-if="index == 0" v-on:infinite="infiniteMore2" ></Infinite>
+          <!--<Infinite v-if="index == 0" v-on:infinite="infiniteMore2" ></Infinite>-->
           <div class="no-msg-div" v-if="nowsceneitem.listTask<=0 && !isLoading">
               <img src="@/assets/img/zanwushuju.png" alt="">
               <span>暂无数据</span>
@@ -146,7 +146,7 @@
                     </div>
                 </div>
             </div>
-            <Infinite v-if="index == 1" v-on:infinite="infiniteMore" ></Infinite>
+            <!--<Infinite v-if="index == 1" v-on:infinite="infiniteMore" ></Infinite>-->
           </template>
           <div class="no-msg-div" v-if="nowsceneitem.tws && nowsceneitem.tws.listMap<=0">
               <img src="@/assets/img/zanwushuju.png" alt="">
@@ -390,12 +390,6 @@ export default {
                   item.iszhan=res.data.iszhan
                 }
             });
-            // console.log(res)
-
-
-
-
-
           }).catch(function(err){
             _self.errorUtil(err);
           })
