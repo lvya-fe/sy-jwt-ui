@@ -1,5 +1,5 @@
 <template>
-  <div class="task-details">
+  <div class="task-details task-details-custom">
     <FormComs :formList.sync="formList" :taskState="taskState"></FormComs>
   </div>
 </template>
