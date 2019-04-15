@@ -61,7 +61,7 @@
               <div class="tab-con-change">
                   <tab :line-width="2" active-color='#16c7750' :scroll-threshold="countTab" class="footer-tab" >
                       <tab-item class="ripple" v-for="(items,ix) in tabTitle" :key="ix" @on-item-click="onItemClick" :selected="ix==index"
-                        v-if="(ix==3&&nowsceneitem.sceneItemEnclosures.length>0)||(ix==2&&nowsceneitem.sceneItemCers.length>0)||(ix!=3&&ix!=2)">{{ items }}
+                        v-if="(ix==3&& nowsceneitem.sceneItemEnclosures && nowsceneitem.sceneItemEnclosures.length>0)||(ix==2&&nowsceneitem.sceneItemCers && nowsceneitem.sceneItemCers.length>0)||(ix!=3&&ix!=2)">{{ items }}
                       </tab-item>
                   </tab>
               </div>
@@ -135,7 +135,7 @@
                         <template v-for="(zan_,index) in tw.zan">{{zan_.username}}<span v-if="index<(tw.zan.length-1)">,</span></template>
                         </span>
                     </div>
-                    <div class="display-body" v-if="tw.listComment.length>0">
+                    <div class="display-body" v-if="tw.listComment && tw.listComment.length>0">
                         <p v-for="comment in tw.listComment">
                           <span>{{comment.username}}:</span>{{comment.content}}
                           <i class="icon iconfont icon-shanchu1" @click="removepl(comment.id,tw.id)"></i>
@@ -148,7 +148,7 @@
             </div>
             <Infinite v-if="index == 1" v-on:infinite="infiniteMore" ></Infinite>
           </template>
-          <div class="no-msg-div" v-if="nowsceneitem.tws.listMap<=0">
+          <div class="no-msg-div" v-if="nowsceneitem.tws && nowsceneitem.tws.listMap<=0">
               <img src="@/assets/img/zanwushuju.png" alt="">
               <span>暂无数据</span>
           </div>
@@ -247,12 +247,12 @@ export default {
     countTab: function () {
 
       var count = 3;
-      if(this.nowsceneitem &&this.nowsceneitem.sceneItemEnclosures.length>0){
+      if(this.nowsceneitem && this.nowsceneitem.sceneItemEnclosures && this.nowsceneitem.sceneItemEnclosures.length>0){
 
           count =  count +1;
 
       }
-      if(this.nowsceneitem &&this.nowsceneitem.sceneItemCers.length>0){
+      if(this.nowsceneitem && this.nowsceneitem.sceneItemCers && this.nowsceneitem.sceneItemCers.length>0){
           count =  count +1;
       }
       return count;
@@ -384,7 +384,7 @@ export default {
               uid:_self.$route.params.uid
             })
           ).then(function(res){
-            _self.nowsceneitem.tws.listMap.forEach(function(item) {
+            _self.nowsceneitem.tws && _self.nowsceneitem.tws.listMap.forEach(function(item) {
                 if(item.id==id){
                   item.zan =  res.data.list;
                   item.iszhan=res.data.iszhan
@@ -472,7 +472,7 @@ export default {
             // console.log(res,'记录下拉')
             _self.nowsceneitem.tws.lastId_PW = res.data.lastId_PW;
 
-            res.data.listMap.forEach(function(item) {
+            res.data.listMap && res.data.listMap.forEach(function(item) {
               _self.nowsceneitem.tws.listMap.push(item);
             });
 
@@ -508,7 +508,7 @@ export default {
 
           this.$axios.post( process.env.API_ROOT+"app/tea/"+_self.nowsceneitem.id+"/sceneItemView",
             qs.stringify({
-              lastid:_self.nowsceneitem.listTask[_self.nowsceneitem.listTask.length-1].id,
+              lastid:_self.nowsceneitem.listTask && _self.nowsceneitem.listTask[_self.nowsceneitem.listTask.length-1].id,
               uid:_self.$route.params.uid
             })
           ).then(function(res){
@@ -703,7 +703,7 @@ export default {
             ).then(function(res){
               // console.log(res)
               _self.show10=!_self.show10;
-              _self.nowsceneitem.tws.listMap.forEach(function(item) {
+              _self.nowsceneitem.tws && _self.nowsceneitem.tws.listMap.forEach(function(item) {
                 if(item.id==_self.discussId){
                   item.listComment.push( res.data);
                 }
@@ -731,7 +731,7 @@ export default {
             ).then(function(res){
                 // console.log(res)
                 _self.$vux.toast.show({type: 'success',text:"删除成功" });
-                _self.nowsceneitem.tws.listMap.forEach(function(item) {
+              _self.nowsceneitem.tws && _self.nowsceneitem.tws.listMap.forEach(function(item) {
                   if(item.id==_self.discussId){
                     item.listComment.forEach(function(items,index){
                       if(items.id==id){
@@ -756,9 +756,9 @@ export default {
               scenefeelingid:_self.discussId
             })
           ).then(function(res){
-            _self.nowsceneitem.tws.listMap.forEach(function(item,index,array) {
+            _self.nowsceneitem.tws && _self.nowsceneitem.tws.listMap.forEach(function(item,index,array) {
               if(item.id==_self.discussId){
-                _self.nowsceneitem.tws.listMap.pop(index);
+                _self.nowsceneitem.tws && _self.nowsceneitem.tws.listMap.pop(index);
               }
             });
             _self.$vux.toast.show({type: 'success',text:"删除成功" });

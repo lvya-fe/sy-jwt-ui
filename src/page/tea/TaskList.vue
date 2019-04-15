@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <div v-show="isshow">
+  <div v-show="isshow" class="task-list">
       <div class="top-back">
         <img class="img-1" v-show="!noback" src="@/assets/img/back_left_green.png" alt="" @click="goback">
 
         <img src="@/assets/img/cishu.png" @click="isshow=!isshow" class="img-2" v-if="taskinfo.cycle!=0">
-
         {{ taskinfo.title }}
         <group class="right-btn" v-show="taskinfo.jointimetype==1">
           <x-switch title=" " v-model="taskinfo.islock" @on-change="changeTask"></x-switch>
@@ -20,7 +18,7 @@
         <div class="tab-swiper vux-center" v-show="index == 0">
           <group>
             <template>
-              <Scroll ref="scroll" class="scroll-content" :dataList="write" @scrollToEnd="QueryWrite" :showLoad="showWriteLoading">
+              <div ref="scroll" class="scroll-content" :dataList="write" @scrollToEnd="QueryWrite" :showLoad.sync="showWriteLoading">
 
                 <!--<cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" v-for="(stu, index) in write" :key="index">-->
                 <cell-box class="con-child" @click.native="to(stu)" v-for="(stu, index) in write" :key="index">
@@ -29,7 +27,7 @@
                   <p><br><span>{{stu.ctime}}</span></p>
                   <img class="right-img" src="@/assets/img/you.png" alt="">
                 </cell-box>
-              </Scroll>
+              </div>
             </template>
             <div class="no-msg-div" v-if="write<=0">
               <img src="@/assets/img/zanwushuju.png" alt="">
@@ -68,10 +66,11 @@
         </div>
 
       </div>
-    </div>
+
     <showcycle v-show="!isshow" v-bind:conData="taskCycles" v-bind:indexCycle="indexCycle" @closeSelect="closeSelect"
                @selectCycle="selectCycle"></showcycle>
-  </div>
+    </div>
+
 </template>
 
 <script>
@@ -139,7 +138,7 @@
         status: true,
         ztSta: true,
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 300, // Todo 先默认加载很多，当成全部，分页组件有问题，需要修改
         showWriteLoading: false,
       }
     },
@@ -423,222 +422,223 @@
     }
   }
 </script>
-<style>
-  .right-btn .weui-cells:after {
-    content: none;
+
+<style lang="less">
+  .task-list{
+    .right-btn .weui-cells:after {
+      content: none;
+    }
+
+    .tab-con .vux-tab {
+      height: 85px;
+      background-color: #f4f4f4
+    }
+
+    .tab-con .vux-tab-container, .tab-con .vux-tab-wrap {
+      height: 85px;
+      padding-top: 0;
+    }
+
+    .tab-con .vux-tab .vux-tab-item {
+      font-size: 28px;
+      line-height: 85px;
+    }
+
+    .tab-con .vux-slider {
+      border-bottom: 1px solid #e3e2e2; /*no*/
+      padding-bottom: 20px;
+    }
+
+    .weui-cells:before {
+      content: none !important;
+    }
+
+    .weui-cell_access.vux-cell-box:after {
+      content: none !important;
+    }
+
+    .tab-swiper .vux-no-group-title:after {
+      content: none !important;
+    }
+    .top-back {
+      text-align: center;
+      font-size: 36px;
+      color: #444;
+      position: fixed;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background-color: #fff;
+      z-index: 100;
+      top: 0;
+    }
+
+    .top-back .img-1 {
+      position: absolute;
+      width: 38px;
+      height: 38px;
+      left: 20px;
+      top: 25px
+    }
+
+    .top-back .img-2 {
+      position: absolute;
+      width: 38px;
+      height: 38px;
+      left: 120px;
+      top: 25px
+    }
+
+    .top-back .img-2 img {
+      width: 42px;
+      height: 42px;
+    }
+
+    .right-btn {
+      position: absolute;
+      right: 25px;
+      top: 0;
+    }
+
+    .tab-con {
+      position: relative !important;
+      padding-top: 1.34rem !important;
+      paddding-bottom: 100px;
+    }
+
+    .tab-swiper .con-child {
+      margin-right: 10px;
+      font-size: 28px;
+      color: #444;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 25px;
+    }
+
+    .con-child p:nth-child(2) span {
+      display: block;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .con-child p strong {
+      font-size: 28px;
+      color: #868383;
+      font-weight: 400;
+      margin-left: 10px;
+    }
+
+    .con-child p strong img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .con-child p {
+      width: 100%;
+      line-height: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left;
+      font-size: 28px;
+    }
+
+    .con-child p span {
+      font-size: 26px;
+      color: #868383;
+    }
+
+    .con-child .right-img {
+      position: absolute;
+      right: 30px;
+      width: 24px;
+      height: 24px;
+    }
+
+    .checkBox {
+      width: 25px;
+      height: 25px;
+      background-color: #fff;
+      -webkit-appearance: none;
+      border: 1px solid #c9c9c9; /*no*/
+      border-radius: 5px /*bo*/;
+      outline: none;
+      padding: 2px;
+    }
+
+    .checkBox:checked {
+      background: url("../../assets/img/duigou.png") no-repeat center;
+      background-size: cover;
+      border: 1px solid #04BE02; /*no*/
+      background-position: top left;
+    }
+
+    .pl-btn {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 100px;
+      line-height: 100px;
+      font-size: 30px;
+      background-color: #444;
+      outline: none;
+      color: #fff;
+      border: 1px solid #444;
+    }
+
+    .no-msg-div {
+      color: #999;
+      text-align: center;
+      line-height: 64px;
+      margin-top: 50px;
+    }
+
+    .no-msg-div img {
+      width: 70px;
+      height: 70px;
+      display: inline-block;
+      vertical-align: middle
+    }
+
+    .no-msg-div span {
+      height: 70px;
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 28px;
+    }
+
+    .task-con-div {
+      position: absolute;
+      bottom: 100px;
+      top: 190px;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+    }
+
+    .pareLvea {
+      position: relative;
+    }
+
+    .drop-down {
+      position: absolute;
+      top: 190px;
+      left: 0px;
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+    }
+
+    .drop-down img {
+      width: 50px;
+      height: 50px;
+    }
   }
 
-  .tab-con .vux-tab {
-    height: 85px;
-    background-color: #f4f4f4
-  }
-
-  .tab-con .vux-tab-container, .tab-con .vux-tab-wrap {
-    height: 85px;
-    padding-top: 0;
-  }
-
-  .tab-con .vux-tab .vux-tab-item {
-    font-size: 28px;
-    line-height: 85px;
-  }
-
-  .tab-con .vux-slider {
-    border-bottom: 1px solid #e3e2e2; /*no*/
-    padding-bottom: 20px;
-  }
-
-  .weui-cells:before {
-    content: none !important;
-  }
-
-  .weui-cell_access.vux-cell-box:after {
-    content: none !important;
-  }
-
-  .tab-swiper .vux-no-group-title:after {
-    content: none !important;
-  }
-</style>
-
-
-<style scoped>
-  .top-back {
-    text-align: center;
-    font-size: 36px;
-    color: #444;
-    position: fixed;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background-color: #fff;
-    z-index: 100;
-    top: 0;
-  }
-
-  .top-back .img-1 {
-    position: absolute;
-    width: 38px;
-    height: 38px;
-    left: 20px;
-    top: 25px
-  }
-
-  .top-back .img-2 {
-    position: absolute;
-    width: 38px;
-    height: 38px;
-    left: 120px;
-    top: 25px
-  }
-
-  .top-back .img-2 img {
-    width: 42px;
-    height: 42px;
-  }
-
-  .right-btn {
-    position: absolute;
-    right: 25px;
-    top: 0;
-  }
-
-  .tab-con {
-    margin-top: 100px;
-    margin-bottom: 100px;
-  }
-
-  .tab-swiper .con-child {
-    margin-right: 10px;
-    font-size: 28px;
-    color: #444;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 25px;
-  }
-
-  .con-child p:nth-child(2) span {
-    display: block;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .con-child p strong {
-    font-size: 28px;
-    color: #868383;
-    font-weight: 400;
-    margin-left: 10px;
-  }
-
-  .con-child p strong img {
-    width: 24px;
-    height: 24px;
-  }
-
-  .con-child p {
-    width: 100%;
-    line-height: 40px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: left;
-    font-size: 28px;
-  }
-
-  .con-child p span {
-    font-size: 26px;
-    color: #868383;
-  }
-
-  .con-child .right-img {
-    position: absolute;
-    right: 30px;
-    width: 24px;
-    height: 24px;
-  }
-
-  .checkBox {
-    width: 25px;
-    height: 25px;
-    background-color: #fff;
-    -webkit-appearance: none;
-    border: 1px solid #c9c9c9; /*no*/
-    border-radius: 5px /*bo*/;
-    outline: none;
-    padding: 2px;
-  }
-
-  .checkBox:checked {
-    background: url("../../assets/img/duigou.png") no-repeat center;
-    background-size: cover;
-    border: 1px solid #04BE02; /*no*/
-    background-position: top left;
-  }
-
-  .pl-btn {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100px;
-    line-height: 100px;
-    font-size: 30px;
-    background-color: #444;
-    outline: none;
-    color: #fff;
-    border: 1px solid #444;
-  }
-
-  .no-msg-div {
-    color: #999;
-    text-align: center;
-    line-height: 64px;
-    margin-top: 50px;
-  }
-
-  .no-msg-div img {
-    width: 70px;
-    height: 70px;
-    display: inline-block;
-    vertical-align: middle
-  }
-
-  .no-msg-div span {
-    height: 70px;
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 28px;
-  }
-
-  .task-con-div {
-    position: absolute;
-    bottom: 100px;
-    top: 190px;
-    left: 0;
-    right: 0;
-    overflow: hidden;
-  }
-
-  .pareLvea {
-    position: relative;
-  }
-
-  .drop-down {
-    position: absolute;
-    top: 190px;
-    left: 0px;
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-  }
-
-  .drop-down img {
-    width: 50px;
-    height: 50px;
-  }
 </style>
