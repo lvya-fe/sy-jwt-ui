@@ -1,75 +1,84 @@
 <template>
   <div v-show="isshow" class="task-list">
-      <div class="top-back">
-        <img class="img-1" v-show="!noback" src="@/assets/img/back_left_green.png" alt="" @click="goback">
+    <!--<HeaderBack title="任务列表"></HeaderBack>-->
 
-        <img src="@/assets/img/cishu.png" @click="isshow=!isshow" class="img-2" v-if="taskinfo.cycle!=0">
-        {{ taskinfo.title }}
-        <group class="right-btn" v-show="taskinfo.jointimetype==1">
-          <x-switch title=" " v-model="taskinfo.islock" @on-change="changeTask"></x-switch>
-        </group>
-      </div>
-      <div class="tab-con">
-        <tab :line-width=2 active-color='#16c775' v-model="index" class="footer-tab">
-          <tab-item class="vux-center" v-for="item in tarkName" :key="item.index" @on-item-click="tab">{{ item.name }}
-            ({{ item.num }})
-          </tab-item>
-        </tab>
-        <div class="tab-swiper vux-center" v-show="index == 0">
-          <group>
-            <template>
-              <div ref="scroll" class="scroll-content" :dataList="write" @scrollToEnd="QueryWrite" :showLoad.sync="showWriteLoading">
+    <HeaderBack title="任务列表"></HeaderBack>
 
-                <!--<cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" v-for="(stu, index) in write" :key="index">-->
-                <cell-box class="con-child" @click.native="to(stu)" v-for="(stu, index) in write" :key="index">
-                  <p>{{stu.type=='teaToStu'||stu.type=='stu'?stu.stuName:stu.teaName}}<br><span>{{stu.type=='tea'?stu.teaOrgName&&stu.teaOrgName.split(',')[0]:stu.type=='stu'?stu.stuOrgName:stu.type=='teaToStu'?stu.stuOrgName+' 填写老师：'+stu.teaName:''}}</span>
-                  </p>
-                  <p><br><span>{{stu.ctime}}</span></p>
-                  <img class="right-img" src="@/assets/img/you.png" alt="">
-                </cell-box>
-              </div>
-            </template>
-            <div class="no-msg-div" v-if="write<=0">
-              <img src="@/assets/img/zanwushuju.png" alt="">
-              <span>暂无数据</span>
+    <!--<div class="top-back">-->
+      <!--<img class="img-1" v-show="!noback" src="@/assets/img/back_left_green.png" alt="" @click="goback">-->
+
+      <!--<img src="@/assets/img/cishu.png" @click="isshow=!isshow" class="img-2" v-if="taskinfo.cycle!=0">-->
+      <!--{{ taskinfo.title }}-->
+      <!--<group class="right-btn" v-show="taskinfo.jointimetype==1">-->
+        <!--<x-switch title=" " v-model="taskinfo.islock" @on-change="changeTask"></x-switch>-->
+      <!--</group>-->
+    <!--</div>-->
+    <div class="tab-con">
+      <tab :line-width=2 active-color='#16c775' v-model="index" class="footer-tab">
+        <tab-item class="vux-center" v-for="item in tarkName" :key="item.index" @on-item-click="tab">{{ item.name }}
+          ({{ item.num }})
+        </tab-item>
+      </tab>
+      <div class="tab-swiper vux-center" v-show="index == 0">
+        <group>
+          <template>
+            <div ref="scroll" class="scroll-content" :dataList="write" @scrollToEnd="QueryWrite"
+                 :showLoad.sync="showWriteLoading">
+
+              <!--<cell-box class="con-child" :link="'/AuditOperation/'+uid+'/'+stu.id" v-for="(stu, index) in write" :key="index">-->
+              <cell-box class="con-child" @click.native="to(stu)" v-for="(stu, index) in write" :key="index">
+                <p>
+                  {{stu.type == 'teaToStu' || stu.type == 'stu' ? stu.stuName : stu.teaName}}<br><span>{{stu.type == 'tea' ? stu.teaOrgName && stu.teaOrgName.split(',')[0] : stu.type == 'stu' ? stu.stuOrgName : stu.type == 'teaToStu' ? stu.stuOrgName + ' 填写老师：' + stu.teaName : ''}}</span>
+                </p>
+                <p><br><span>{{stu.ctime}}</span></p>
+                <img class="right-img" src="@/assets/img/you.png" alt="">
+              </cell-box>
             </div>
-          </group>
-
-        </div>
-        <p class="drop-down" v-if="dropDown">
-          <img src="../../../assets/img/upgx.gif" alt="">
-        </p>
-        <div class="tab-swiper vux-center" v-show="index == 1">
-          <div class="task-con-div bscroll" ref="bscroll">
-            <div class="bscroll-container">
-              <group class="pareLvea">
-                <!--@change="btn($event)"-->
-                <template  v-for="stu in nowrite">
-                  <cell-box class="con-child">
-                    <p>{{stu.type=='stu'||stu.type=='teaToStu'?stu.stuName:stu.teaName}}<br><span>{{ stu.type=='stu'||stu.type=='teaToStu'?stu.stuOrgName:stu.teaOrgName&&stu.teaOrgName.split(',')[0] }} {{ stu.type=='teaToStu'?'数据填写人：'+stu.teaName:'' }}</span></p>
-                    <input type="checkbox" class="checkBox" :value="(stu.type=='tea')?stu.teaId:stu.stuId" v-model="selectStuId" >
-                  </cell-box>
-                </template>
-                <div class="no-msg-div" v-if="nowrite<=0">
-                  <img src="@/assets/img/zanwushuju.png" alt="">
-                  <span>暂无数据</span>
-                </div>
-                <load-more v-show="loadshow" :show-loading="loadStatus" :tip="loadStatus?'正在加载':'暂无数据'"></load-more>
-              </group>
-            </div>
+          </template>
+          <div class="no-msg-div" v-if="write<=0">
+            <img src="@/assets/img/zanwushuju.png" alt="">
+            <span>暂无数据</span>
           </div>
-
-
-          <button type="button" class="pl-btn" @click="sendNotice(nowrite[0].type)" ref="up_btn"
-                  :disabled="selectStuId.length==0">批量通知
-          </button>
-        </div>
+        </group>
 
       </div>
+      <p class="drop-down" v-if="dropDown">
+        <img src="../../../assets/img/upgx.gif" alt="">
+      </p>
+      <div class="tab-swiper vux-center" v-show="index == 1">
+        <div class="task-con-div bscroll" ref="bscroll">
+          <div class="bscroll-container">
+            <group class="pareLvea">
+              <!--@change="btn($event)"-->
+              <template v-for="stu in nowrite">
+                <cell-box class="con-child">
+                  <p>
+                    {{stu.type == 'stu' || stu.type == 'teaToStu' ? stu.stuName : stu.teaName}}<br><span>{{ stu.type == 'stu' || stu.type == 'teaToStu' ? stu.stuOrgName : stu.teaOrgName && stu.teaOrgName.split(',')[0]
+                    }} {{ stu.type == 'teaToStu' ? '数据填写人：' + stu.teaName : '' }}</span></p>
+                  <input type="checkbox" class="checkBox" :value="(stu.type=='tea')?stu.teaId:stu.stuId"
+                         v-model="selectStuId">
+                </cell-box>
+              </template>
+              <div class="no-msg-div" v-if="nowrite<=0">
+                <img src="@/assets/img/zanwushuju.png" alt="">
+                <span>暂无数据</span>
+              </div>
+              <load-more v-show="loadshow" :show-loading="loadStatus" :tip="loadStatus?'正在加载':'暂无数据'"></load-more>
+            </group>
+          </div>
+        </div>
+
+
+        <button type="button" class="pl-btn" @click="sendNotice(nowrite[0].type)" ref="up_btn"
+                :disabled="selectStuId.length==0">批量通知
+        </button>
+      </div>
+
+    </div>
 
     <showcycle v-show="!isshow" v-bind:conData="taskCycles" v-bind:indexCycle="indexCycle" @closeSelect="closeSelect"
                @selectCycle="selectCycle"></showcycle>
-    </div>
+  </div>
 
 </template>
 
@@ -185,7 +194,10 @@
         // this.$router.push({path: '/AuditOperation/' + this.uid + '/' + stuId});
         let teaid = stu.teaId;
         // 教师负责人
-        this.$router.push({path: '/task-details/'+this.uid+'/'+this.taskid+'/'+stu.stuId+'/'+null, query: {roleType: 'tea', teaDoType: true, createId: teaid, commitID:stu.id}})
+        this.$router.push({
+          path: '/task-details/' + this.uid + '/' + this.taskid + '/' + stu.stuId + '/' + null,
+          query: {roleType: 'tea', teaDoType: true, createId: teaid, commitID: stu.id}
+        })
       },
       changeTask(v) {
         var _self = this;
@@ -314,35 +326,35 @@
           })
         ).then(function (res) {
           _self.write = _self.write.concat(res.data)
-          if(res.data.length == 0) _self.showWriteLoading = false
+          if (res.data.length == 0) _self.showWriteLoading = false
         }).catch(function (err) {
           _self.errorUtil(err);
         })
       },
       QueryNoWrite() {
         var _self = this;
-        this.$axios.post( process.env.API_ROOT+"app/tea/task/queryNoWriteForms",
+        this.$axios.post(process.env.API_ROOT + "app/tea/task/queryNoWriteForms",
           qs.stringify({
-            uid:_self.uid,
-            lastid:_self.lastid_nowrite,
-            taskid:_self.taskid,
-            stime:_self.stime,
-            etime:_self.etime
+            uid: _self.uid,
+            lastid: _self.lastid_nowrite,
+            taskid: _self.taskid,
+            stime: _self.stime,
+            etime: _self.etime
           })
-        ).then(function(res){
-          console.log(res,'未填写人员')
-          if(_self.lastid_nowrite>0){
-            res.data.forEach(function(el){
+        ).then(function (res) {
+          console.log(res, '未填写人员')
+          if (_self.lastid_nowrite > 0) {
+            res.data.forEach(function (el) {
               _self.nowrite.push(el)
             })
-            if(res.data.length==0){
-              _self.status=false
-            }else{
-              _self.ztSta=true;
+            if (res.data.length == 0) {
+              _self.status = false
+            } else {
+              _self.ztSta = true;
             }
-          }else{
-            _self.status=true
-            _self.ztSta=true;
+          } else {
+            _self.status = true
+            _self.ztSta = true;
             _self.nowrite = res.data;
           }
           _self.$nextTick(() => {
@@ -355,60 +367,60 @@
               _self.scroll.on('scroll', (pos) => {
                 // console.log(pos.y,_self.dropDown)
                 //如果下拉超过50px 就显示下拉刷新的文字
-                if(pos.y>50){
+                if (pos.y > 50) {
                   _self.dropDown = true
-                }else{
+                } else {
                   _self.dropDown = false
                 }
               })
               // touchEnd（手指离开以后触发） 通过这个方法来监听下拉刷新
               _self.scroll.on('touchEnd', (pos) => {
                 // 下拉动作
-                if(pos.y > 50){
-                  _self.status=true;
-                  _self.ztSta=true;
-                  _self.loadStatus=true;
-                  _self.lastid_nowrite=0;
+                if (pos.y > 50) {
+                  _self.status = true;
+                  _self.ztSta = true;
+                  _self.loadStatus = true;
+                  _self.lastid_nowrite = 0;
                   _self.QueryNoWrite()
                   // console.log(111)
                   _self.dropDown = false
                 }
                 //上拉加载 总高度>下拉的高度+10 触发加载更多
-                if(_self.scroll.maxScrollY>pos.y+10){
-                  if(_self.status&&_self.ztSta){
-                    _self.ztSta=false;
-                    _self.loadStatus=true
-                    _self.loadshow=true
+                if (_self.scroll.maxScrollY > pos.y + 10) {
+                  if (_self.status && _self.ztSta) {
+                    _self.ztSta = false;
+                    _self.loadStatus = true
+                    _self.loadshow = true
                     console.log("加载更多")
                     // _self.pageNo+=1
-                    if(_self.nowrite[_self.nowrite.length-1].type=='tea'){
-                      _self.lastid_nowrite=_self.nowrite[_self.nowrite.length-1].teaId
-                    }else{
-                      _self.lastid_nowrite=_self.nowrite[_self.nowrite.length-1].stuId
+                    if (_self.nowrite[_self.nowrite.length - 1].type == 'tea') {
+                      _self.lastid_nowrite = _self.nowrite[_self.nowrite.length - 1].teaId
+                    } else {
+                      _self.lastid_nowrite = _self.nowrite[_self.nowrite.length - 1].stuId
                     }
-                    setTimeout(function(){
+                    setTimeout(function () {
                       _self.QueryNoWrite();
                       _self.scroll.refresh()
-                      _self.loadshow=false
-                    },1000);
+                      _self.loadshow = false
+                    }, 1000);
                     //使用refresh 方法 来更新scroll  解决无法滚动的问题
                     console.log('refresh了啊')
                   }
-                  if(!_self.status){
-                    _self.loadStatus=false
+                  if (!_self.status) {
+                    _self.loadStatus = false
                     console.log("暂无更多数据")
                   }
 
                 }
                 // console.log(_self.scroll.maxScrollY+"总距离----下拉的距离"+pos.y)
               })
-            }else{
+            } else {
               _self.scroll.refresh();
             }
             // console.log(_self.scroll.maxScrollY)
           });
 
-        }).catch(function(err){
+        }).catch(function (err) {
           _self.errorUtil(err);
         })
       },
@@ -424,7 +436,7 @@
 </script>
 
 <style lang="less">
-  .task-list{
+  .task-list {
     .right-btn .weui-cells:after {
       content: none;
     }
