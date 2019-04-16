@@ -8,7 +8,7 @@ event:
 -->
 
 <template>
-  <div class="form-common form-item readVideo">
+  <div class="form-common form-item">
     <div class="form-wrap field-block form-thumb">
       <p class="form-name-block">
         <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
@@ -57,7 +57,4 @@ event:
   }
 </script>
 <style lang="less">
-  .readVideo{
-    margin: 0 -30px;
-  }
 </style>

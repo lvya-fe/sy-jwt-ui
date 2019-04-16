@@ -87,5 +87,7 @@ event:
   }
 </script>
 <style lang="less">
-
+  .form-common.cite-other-textarea{
+    padding: 0 30px !important;
+  }
 </style>

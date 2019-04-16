@@ -52,7 +52,7 @@ event:
       uploadImgs(){
         return function (imgs) {
           // return "/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg".split(',')
-          return imgs.split(',')
+          return imgs? imgs.split(','):[]
         }
       }
     },

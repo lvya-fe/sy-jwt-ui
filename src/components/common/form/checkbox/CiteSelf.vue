@@ -18,7 +18,7 @@ event:
       <!-- 单条 多条 逐行显示-->
       <ul class="itemsWrap" v-if="item.listCiteData.length > 0">
         <div v-for="cite in item.listCiteData">
-          <li v-for="text in doList(cite.val || cite.imgUrl)">
+          <li v-for="text in doList(cite.val)" :key="text">
             {{text}}
           </li>
         </div>
@@ -44,7 +44,7 @@ event:
       doList(){
         return function (imgs) {
           // return "/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg".split(',')
-          return imgs.split(',')
+          return imgs?imgs.split(','):[]
         }
       }
     },
@@ -53,6 +53,7 @@ event:
     methods: {
     },
     mounted () {
+      console.log(this.item,"复选框")
     }
   }
 </script>

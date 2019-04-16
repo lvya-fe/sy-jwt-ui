@@ -8,14 +8,14 @@ event:
 -->
 
 <template>
-  <div class="form-common form-item readMult">
+  <div class="form-common form-item">
     <div class="form-wrap field-block">
       <p class="form-name-block vux-1px-b">
         {{item.formItemName}}
       </p>
       <!--自己给自己填写，只显示-->
-      <ul class="itemsWrap" v-if="item.formSelectItemResps.length > 0">
-          <li v-for="select in item.formSelectItemResps" :key="select.id">{{select.value}}</li>
+      <ul class="itemsWrap" v-if="itemValArr.length > 0">
+          <li v-for="select in itemValArr" :key="select">{{select}}</li>
       </ul>
       <div v-else class="nodata">
         <img src="../../../../assets/img/noData.png" alt="">
@@ -33,12 +33,12 @@ event:
     },
     data () {
       return {
-        itemValArr:[]
+        // itemValArr:[]
       }
     },
     computed:{
       itemValArr(){
-        return this.itemValArr = this.item.formItemValue.length>0 ? this.item.formItemValue.split(',') : [];
+        return this.item.formItemValue.length>0 ? this.item.formItemValue.split(',') : [];
       }
     },
     watch: {
@@ -50,7 +50,4 @@ event:
   }
 </script>
 <style lang="less">
-  .readMult{
-    margin: 0 -30px;
-  }
 </style>
