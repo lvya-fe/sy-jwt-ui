@@ -12,9 +12,6 @@
 
 <script>
   export default {
-    components: {
-      Header,
-    },
     data() {
       return {
         title: ''

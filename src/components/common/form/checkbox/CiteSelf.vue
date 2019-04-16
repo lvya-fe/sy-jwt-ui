@@ -53,7 +53,7 @@ event:
     methods: {
     },
     mounted () {
-      console.log(this.item,"复选框")
+      // console.log(this.item,"复选框")
     }
   }
 </script>

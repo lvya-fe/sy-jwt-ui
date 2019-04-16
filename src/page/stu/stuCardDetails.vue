@@ -63,7 +63,7 @@
                         <group v-if="item.formSelectItemResps.length >0 && item.citeDataType ==0 ">
                             <checklist label-position="left" :options="item.formSelectItemResps" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" v-model="item.itemValArr" @on-change="checkListChange(item.itemValArr,index)"></checklist>
                         </group>
-                        <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                        <FormComsItem :class="{'paddinglr30': item.citeDataType == 0}" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                     </div>
                     <!-- 图片上传 -->
                     <template v-if="item.formItemType == '6'">
@@ -178,7 +178,7 @@
                                     </div>
                                 </div>
                             </group>
-                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem :class="{'paddinglr30': item.citeDataType == 0}" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
                     <!-- 整数 -->
@@ -569,7 +569,7 @@ export default {
                                 if(element.formItemValue != ''){
                                     this.geographic = element.formItemValue;
                                 }else{
-                                    setTimeout(this.getMap(),3000);
+                                     setTimeout(this.getMap(),3000);
                                 }
                             }
                             if(element.formItemType == '10'){
@@ -960,7 +960,7 @@ export default {
             this.formShow = false;
             this.hasbgColor = false;
             this.curIndex = index;
-             // 隐藏body滚动条，记住body位置
+            // 隐藏body滚动条，记住body位置
             bodyTop = window.scrollY
         },
         qx(){
@@ -1375,6 +1375,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                         padding-right: 0;
                         .weui-textarea{
                             padding: 0.15rem 0.2rem 0;
+                            box-sizing: border-box;
                         }
                     }
                     &.radios{
