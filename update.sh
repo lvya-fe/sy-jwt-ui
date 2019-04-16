@@ -12,7 +12,6 @@ cd ../../
 git add --all
 git commit -m "$commitInfo"
 git pull
-git submodule update --init --recursive
 git submodule foreach git pull origin master
 git push origin test
 
