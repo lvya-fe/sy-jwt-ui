@@ -63,7 +63,7 @@
                         <group v-if="item.formSelectItemResps.length >0 && item.citeDataType ==0 ">
                             <checklist label-position="left" :options="item.formSelectItemResps" :disabled="[1,3].includes(formState) && item.citeDataType ==0 ? false :true" v-model="item.itemValArr" @on-change="checkListChange(item.itemValArr,index)"></checklist>
                         </group>
-                        <FormComsItem v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                        <FormComsItem :class="{'paddinglr30': item.citeDataType == 0}" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                     </div>
                     <!-- 图片上传 -->
                     <template v-if="item.formItemType == '6'">
@@ -178,7 +178,7 @@
                                     </div>
                                 </div>
                             </group>
-                            <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+                            <FormComsItem :class="{'paddinglr30': item.citeDataType == 0}" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
                         </div>
                     </template>
                     <!-- 整数 -->

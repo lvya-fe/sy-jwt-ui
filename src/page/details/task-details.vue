@@ -32,15 +32,6 @@
                   <x-textarea v-if=" [1,3].includes(formState) && item.citeDataType ==0 " v-model="item.formItemValue"  placeholder="请输入" :show-counter="false"></x-textarea>
               </div>
             </template>
-            <!-- <div v-else>
-                <div v-if="item.formItemValue !=''" class="readOnly-block">
-                    <x-textarea disabled v-model="item.formItemValue" :class="{'readAll':item.readAll}" :autosize="item.readAll" :show-counter="false"></x-textarea>
-                    <span class="moreTxt" @click="readAll(index)" v-show="!item.showBtn">{{item.btntext}}</span>
-                </div>
-                <div v-else class="nodata">
-                    <img src="../../assets/img/noData.png" alt="">
-                </div>
-            </div> -->
             <FormComsItem  v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
           </div>
           <!-- 日期时间 -->
@@ -91,7 +82,7 @@
                   </ul>
                 </div>
               </div>
-              <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+              <FormComsItem :class="{'paddinglr30': item.citeDataType != 0}" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
             </div>
           </template>
 
@@ -305,7 +296,7 @@
                   <img src="../../assets/img/noData.png" alt="">
                 </div>
               </div>
-              <FormComsItem v-else class="paddinglr30" :formItem.sync="item" :taskState="formState"></FormComsItem>
+              <FormComsItem :class="{'paddinglr30': item.citeDataType != 0}" v-else  :formItem.sync="item" :taskState="formState"></FormComsItem>
             </div>
           </template>
 
@@ -339,7 +330,7 @@
                   </div>
                 </template>
               </div>
-              <FormComsItem class="paddinglr30" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
+              <FormComsItem :class="{'paddinglr30': item.citeDataType != 0}" v-else :formItem.sync="item" :taskState="formState"></FormComsItem>
             </div>
           </template>
 

@@ -31,10 +31,6 @@ event:
         field:{}
       }
     },
-    watch: {
-      item () {
-      }
-    },
     methods: {
       //多行文本  查看全文
       readAll(){
@@ -46,8 +42,10 @@ event:
     },
     mounted () {
       this.field = Object.assign({},this.item);
+      
       let bool = false;
-      bool = this.field.val.split(/\r?\n|\r/).length > 3  || this.item.val.length > 40  ? false : true;
+      if(this.field.val == undefined) this.field.val = '' ;
+      bool = this.field.val.split(/\r?\n|\r/).length > 3  || this.field.val.length > 40  ? false : true;
       this.$set(this.field, 'readAll', bool);
       this.$set(this.field, 'showBtn', bool);
       this.$set(this.field, 'btntxt', '全文');

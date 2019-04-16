@@ -8,7 +8,7 @@ event:
 -->
 
 <template>
-  <div class="form-common form-item readImgs">
+  <div class="form-common form-item">
     <div class="form-wrap field-block">
       <p class="form-name-block vux-1px-b">
         <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
@@ -45,9 +45,6 @@ event:
   }
 </script>
 <style lang="less">
-  .readImgs{
-    margin: 0 -30px;
-  }
   .img-items{
       padding: 30px 30px 0 30px  !important;
       margin: 0;

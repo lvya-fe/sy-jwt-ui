@@ -8,7 +8,7 @@ event:
 -->
 
 <template>
-  <div class="form-common form-item">
+  <div class="form-common form-item cite-other-checkbox">
     <div class="form-wrap field-block">
       <p class="form-name-block vux-1px-b">
         <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
@@ -76,5 +76,7 @@ event:
   }
 </script>
 <style lang="less">
-
+  .form-common.cite-other-checkbox{
+    padding: 0 30px !important;
+  }
 </style>

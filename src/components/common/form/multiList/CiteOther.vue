@@ -8,7 +8,7 @@ event:
 -->
 
 <template>
-  <div class="form-common form-item">
+  <div class="form-common form-item cite-other-mulit">
     <div class="form-wrap field-block">
       <p class="form-name-block vux-1px-b">
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
@@ -60,7 +60,7 @@ event:
       doList(){
         return function (imgs) {
           // return "/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg,/upImg/1554196932366.jpg,/upImg/1554196941753.jpg".split(',')
-          return imgs.split(',')
+          return imgs?imgs.split(','):[]
         }
       }
     },
@@ -77,5 +77,7 @@ event:
   }
 </script>
 <style lang="less">
-
+.form-common.cite-other-mulit{
+    padding: 0 30px !important;
+  }
 </style>
