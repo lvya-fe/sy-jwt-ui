@@ -15,7 +15,7 @@ event:
         {{item.formItemName}}
       </span>
     </div>
-    <div class="form-wrap form-thumb" v-for="(cite,index) in item.listCiteData">
+    <div class="form-wrap form-thumb" v-for="(cite,index) in item.listCiteData" :key="index">
       <div class="user-avatar">
         <img class="user-circle" :src="cite.imgUrl?cite.imgUrl:'static/img/user/avatar-default.jpg'">
 
@@ -27,8 +27,8 @@ event:
 
       <div class="form-content form-user-custom">
         <div class="result-content cite-img-content">
-          <div class="img-thumb-item" v-for="img in uploadImgs(cite.val || cite.imgUrl)">
-            <img :src="img">
+          <div class="img-thumb-item" v-for="(img,i) in uploadImgs(cite.val || cite.imgUrl)" :key="i">
+            <img :src="img" :preview="i">
           </div>
         </div>
       </div>
