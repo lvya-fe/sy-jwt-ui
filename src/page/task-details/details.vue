@@ -1,6 +1,6 @@
 <template>
   <div class="task-details full-page-bg">
-    <Header></Header>
+    <HeaderBack></HeaderBack>
     <div class="empty-top"></div>
     <router-view></router-view>
   </div>
@@ -11,7 +11,6 @@
 </style>
 
 <script>
-  import Header from "../../components/common/layout/header"
   export default {
     components: {
       Header,
