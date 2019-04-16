@@ -1,8 +1,8 @@
 <template>
   <div v-show="isshow" class="task-list">
-    <HeaderBack title="任务列表"></HeaderBack>
+    <!--<HeaderBack title="任务列表"></HeaderBack>-->
 
-    <HeaderCommon title="任务列表"></HeaderCommon>
+    <HeaderBack title="任务列表"></HeaderBack>
 
     <!--<div class="top-back">-->
       <!--<img class="img-1" v-show="!noback" src="@/assets/img/back_left_green.png" alt="" @click="goback">-->
