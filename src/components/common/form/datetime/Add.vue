@@ -8,23 +8,27 @@ event:
 -->
 
 <template>
-  <div class="form-common form-input">
+  <div class="form-common form-datetime form-datetime-add">
     <div class="form-wrap">
-      <span class="form-name">
+      <span class="form-name form-name-block">
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
-        {{item.formItemName}}
+          <Datetime v-model="item.formItemValue" class="date" format="YYYY-MM-DD HH:mm" @on-change="change" :title="item.formItemName"></Datetime>
       </span>
-      <input type="text" class="form-inline" v-model="item.formItemValue"  @input="filterText" placeholder="请输入内容">
+
     </div>
   </div>
 </template>
 
 <script>
+  import {Datetime} from "vux";
   export default {
     name: 'InputAdd',
     props: {
       item: {default: {}},
       iconType: {default: ''}
+    },
+    components: {
+      Datetime,
     },
     data () {
       return {

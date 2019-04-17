@@ -1,18 +1,7 @@
 <template>
   <div v-show="isshow" class="task-list">
-    <!--<HeaderBack title="任务列表"></HeaderBack>-->
-
     <HeaderBack title="任务列表"></HeaderBack>
 
-    <!--<div class="top-back">-->
-      <!--<img class="img-1" v-show="!noback" src="@/assets/img/back_left_green.png" alt="" @click="goback">-->
-
-      <!--<img src="@/assets/img/cishu.png" @click="isshow=!isshow" class="img-2" v-if="taskinfo.cycle!=0">-->
-      <!--{{ taskinfo.title }}-->
-      <!--<group class="right-btn" v-show="taskinfo.jointimetype==1">-->
-        <!--<x-switch title=" " v-model="taskinfo.islock" @on-change="changeTask"></x-switch>-->
-      <!--</group>-->
-    <!--</div>-->
     <div class="tab-con">
       <tab :line-width=2 active-color='#16c775' v-model="index" class="footer-tab">
         <tab-item class="vux-center" v-for="item in tarkName" :key="item.index" @on-item-click="tab">{{ item.name }}
@@ -94,6 +83,8 @@
 
   import Scroll from "@/components/common/scroll.vue";
 
+  import SceneTeaApp from "@/edu-common/src/api/app/SceneTeaApp.js"
+
   export default {
     components: {
       XSwitch,
@@ -171,11 +162,8 @@
     },
     mounted() {
       let _this = this;
-      //事件委托
-      document.querySelector(".footer-tab").addEventListener("click", function (e) {
-        let target = e.target;//事件发生的元素
-        let nodeList = e.target.parentNode.children;//同级元素集合
-      })
+
+      this.testApi()
     },
     created() {
       this.loadData();
@@ -187,6 +175,35 @@
       }
     },
     methods: {
+      // 普通post
+      async testApi() {
+        let params = {
+          uid: this.uid,
+          taskid: this.taskid,
+          stuId: '16039'
+        }
+        let resData = await SceneTeaApp.taskView(params)
+        console.log("resData:", resData)
+      },
+
+      // 路径post
+      async testPathApi() {
+
+        axios.post( process.env.API_ROOT+"app/tea/"+this.uid+"/sceneView",
+          qs.stringify({
+            uid:_self.$route.params.uid
+          })
+        ).then(function(res) {
+
+        })
+        let params = {
+          uid: this.uid,
+          taskid: this.taskid,
+          stuId: '16039'
+        }
+        let resData = await SceneTeaApp.taskView(params)
+        console.log("resData:", resData)
+      },
       closeSelect() {
         this.isshow = true;
       },

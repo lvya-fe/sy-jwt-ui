@@ -1,5 +1,5 @@
 <!--
-组件名称：inputadd
+组件名称：teaxaadd
 props:
   item
   iconType 图标类型，同表单名
@@ -8,23 +8,29 @@ event:
 -->
 
 <template>
-  <div class="form-common form-input">
+  <div class="form-common form-textarea-add">
     <div class="form-wrap">
-      <span class="form-name">
+      <span class="form-name form-name-block vux-1px-b">
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </span>
-      <input type="text" class="form-inline" v-model="item.formItemValue"  @input="filterText" placeholder="请输入内容">
+    </div>
+    <div class="form-wrap">
+      <x-textarea v-model="item.formItemValue" placeholder="请输入内容" :show-counter="false"></x-textarea>
     </div>
   </div>
 </template>
 
 <script>
+  import {XTextarea} from "vux";
   export default {
-    name: 'InputAdd',
+    name: 'TextAreaAdd',
     props: {
       item: {default: {}},
       iconType: {default: ''}
+    },
+    components: {
+      XTextarea,
     },
     data () {
       return {
