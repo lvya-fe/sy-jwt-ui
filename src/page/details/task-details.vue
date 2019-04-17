@@ -118,7 +118,7 @@
               <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right">请选择</span>
             </p>
             <ul class="itemsWrap" v-if="item.formSelectItemResps.length >0">
-              <li v-for="val in item.formSelectItemResps" :key="val.id">{{val.value}}</li>
+                <li v-for="val in item.formSelectItemResps" :key="val.id"><i class="delChoose" v-if="[1,3].includes(formState) && item.citeDataType ==0" @click.stop="delXr(val.id,index)"></i>{{val.value}}</li>
             </ul>
             <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
               <div v-if="item.formSelectItemResps.length == 0" class="nodata">

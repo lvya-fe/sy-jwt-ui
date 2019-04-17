@@ -273,7 +273,7 @@
 
 
 
-            tabs(){
+            tabs:function(){
                 var self_ = this;
                 var pid_ =this.pid;
                 if(pid_==0){
@@ -298,7 +298,7 @@
                 return arr;
             },
 
-            stulist() {
+            stulist:function() {
                 var self_ = this;
                 self_.stus.forEach(function (stu) {
                     if(stu.check==undefined){
@@ -309,7 +309,7 @@
                     return item.orgids == self_.orgid
                 })
             },
-            orgsStulist() {
+            orgsStulist:function() {
                 var self_ = this;
                 this.listOrg.forEach(function(item) {
                     item.dian2 = false;
@@ -326,7 +326,7 @@
                     return item
                 })
             },
-            orgsTealist() {
+            orgsTealist:function() {
                 var self_ = this;
                 this.listOrg.forEach(function(item) {
                     item.dian2 = false;
@@ -342,7 +342,7 @@
                     return item.type != '-1'
                 })
             },
-            listOrgToCalculate() {
+            listOrgToCalculate:function() {
                 var self_ = this;
                 var flg = true;
                 this.listOrg.forEach(function(item) {
@@ -364,13 +364,13 @@
                 })
             },
 
-            listOrgToQuery() {
+            listOrgToQuery:function() {
                 var self_ = this;
                 return this.listOrg.filter(function (item) {
                     return item.title.indexOf(self_.query)!=-1;
                 })
             },
-            checkorgCalculate() {
+            checkorgCalculate:function() {
                 var self_ = this;
                 var flg = true;
                 this.listOrg.forEach(function(item) {
@@ -383,7 +383,7 @@
                 return flg;
             },
 
-            checkStuCalculate() {
+            checkStuCalculate:function() {
                 var self_ = this;
                 var flg = true;
                 this.stumap[this.orgid].forEach(function(item) {
@@ -399,7 +399,7 @@
             },
 
 
-            selectstu(){
+            selectstu:function(){
                 var text = "";
                 this.stus.forEach(function(item) {
                     if(item.check){
@@ -411,7 +411,7 @@
                 }
                 return text;
             },
-            selecttea(){
+            selecttea:function(){
                 var text = "";
                 this.teas.forEach(function(item) {
                     if(item.check){
@@ -424,7 +424,7 @@
                 return text;
             },
 
-            selectorg(){
+            selectorg:function(){
                 var text = "";
                 this.listOrg.forEach(function(item) {
                     if(item.check){
