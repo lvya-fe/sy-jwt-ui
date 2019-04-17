@@ -118,7 +118,7 @@
                             <span v-if="[1,3].includes(formState) && item.citeDataType ==0" class="ico-right">请选择</span>
                         </p>
                         <ul class="itemsWrap" v-if="item.formSelectItemResps.length >0">
-                            <li v-for="val in item.formSelectItemResps" :key="val.id">{{val.value}}</li>
+                            <li v-for="val in item.formSelectItemResps" :key="val.id"><i class="delChoose" v-if="[1,3].includes(formState) && item.citeDataType ==0" @click.stop="delXr(val.id,index)"></i>{{val.value}}</li>
                         </ul>
                         <div v-if="![1,3].includes(formState) || item.citeDataType !=0">
                             <div v-if="item.formSelectItemResps.length == 0" class="nodata">
@@ -973,22 +973,36 @@ export default {
         },
         qd(obj){
             if(obj.length == 0) return;
-            this.curFieldsLists[this.curIndex].formSelectItemResps = [];
-            let pids = [];
+            let Resps = this.curFieldsLists[this.curIndex].formSelectItemResps;
+            let ids= [];
+            Resps.forEach(item =>{
+                ids.push(item.id)
+            });
             obj.forEach( (a) => {
-                this.curFieldsLists[this.curIndex].formSelectItemResps.push({
-                    'id': a.id,
-                    'value': a.name
-                });
-                pids.push(a.id);
+                if(!ids.includes(a.id)){
+                    this.curFieldsLists[this.curIndex].formSelectItemResps.push({
+                        'id': a.id,
+                        'value': a.name
+                    });
+                    ids.push(a.id);
+                }
             })
-            this.curFieldsLists[this.curIndex].formItemValue = pids.join(',');
+            this.curFieldsLists[this.curIndex].formItemValue = ids.join(',');
             this.formShow = true;
             this.hasbgColor = true;
             this.tsshow = false;
             setTimeout(()=>{
               window.scrollTo(0, bodyTop) // 回到原先的top
             }, 100)
+        },
+        delXr(id,index){
+            this.curFieldsLists[index].formSelectItemResps = this.curFieldsLists[index].formSelectItemResps.filter(item => item.id != id );
+            if(this.curFieldsLists[index].formSelectItemResps.length == 0) return;
+            let ids = [];
+            this.curFieldsLists[index].formSelectItemResps.forEach( item =>{
+                ids.push(item.id);
+            })
+            this.curFieldsLists[index].formItemValue = ids.join(',');
         },
         deleteVideo(index) {
           this.curFieldsLists[index].formItemValue = ''
@@ -1168,6 +1182,7 @@ textarea:disabled, input:disabled{background-color: #fff;}
                             padding: 30px 30px 0 30px;
                             font-size: 0;
                             li{
+                                position: relative;
                                 margin-bottom: 30px;
                                 margin-right: 30px;
                                 display: inline-block;
@@ -1178,6 +1193,16 @@ textarea:disabled, input:disabled{background-color: #fff;}
                                 color: #656565;
                                 &:first-child{
                                     margin-left: 0;
+                                }
+                                .delChoose{
+                                    display: block;
+                                    position:absolute;
+                                    right: -1px;
+                                    top:0;
+                                    width: 22px;
+                                    height:22px;
+                                    background: url('../../assets/img/shanchub.png') no-repeat center center;
+                                    background-size: 22px 22px;
                                 }
                             }
                         }

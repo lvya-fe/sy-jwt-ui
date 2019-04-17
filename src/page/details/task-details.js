@@ -626,7 +626,15 @@ export default {
       }, 100)
      
     },
-
+    delXr(id, index) {
+      this.curFieldsLists[index].formSelectItemResps = this.curFieldsLists[index].formSelectItemResps.filter(item => item.id != id);
+      if (this.curFieldsLists[index].formSelectItemResps.length == 0) return;
+      let ids = [];
+      this.curFieldsLists[index].formSelectItemResps.forEach(item => {
+        ids.push(item.id);
+      })
+      this.curFieldsLists[index].formItemValue = ids.join(',');
+    },
     deleteVideo(index) {
       this.curFieldsLists[index].formItemValue = ''
     }
