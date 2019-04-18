@@ -17,6 +17,7 @@
   import TaskConvert from "@/utils/TaskConvert"
   import FormComs from "../../../components/FormComs"
   import {wechatconfigInit} from '@/plugins/wechat.js';
+  import { mapState } from 'vuex'
   export default {
     components: {
       FormComs,
