@@ -32,7 +32,7 @@ event:
     },
     data () {
       return {
-        count: 0,
+        count: 9,
         uid: this.$route.params.uid
       }
     },
