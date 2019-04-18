@@ -22,9 +22,10 @@ export function wechatconfigInit(self_,qs,cropId,httpUrl) {
  //   //  alert(httpUrl);
  // }
 
-  console.log("httpUrl", httpUrl, cropId)
   //延迟 提高页面初始化加载速度 异步签名处理
   setTimeout(()=>{
+    httpUrl = window.location.href
+    console.log("httpUrl", httpUrl, cropId)
     self_.$axios.post( process.env.API_ROOT+"getWeixinSign",
       qs.stringify({
         uid:cropId,
@@ -52,7 +53,7 @@ export function wechatconfigInit(self_,qs,cropId,httpUrl) {
     }).catch(function(err){
       self_.$vux.toast.show({type: 'warn',text:err.message})
     })
-  }, 2000)
+  }, 1000)
 };
 
 export function wechatopenimg(self_,adess,imgs) {
