@@ -15,6 +15,13 @@ export default [
     }
   },
   {
+    path: '/LF/task-add/:uid/:id/:stuid/:schoolid',
+    meta: {title: '招领信息填写'},
+    component: (resolve) => {
+      require(['../page/LF/task-details/TaskAdd.vue'], resolve)
+    }
+  },
+  {
     path: '/LF/task-details/:uid/:id/:stuid/:schoolid',
     meta: {title: '招领信息详情'},
     component: (resolve) => {

@@ -32,6 +32,8 @@ event:
     },
     data () {
       return {
+        count: 0,
+        uid: this.$route.params.uid
       }
     },
     watch: {

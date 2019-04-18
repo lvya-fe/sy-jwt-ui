@@ -2,7 +2,9 @@
   <div class="form-refactor full-page-bg">
     <HeaderBack></HeaderBack>
     <div class="form-list-wrapper empty-top">
-      <FormComs class="form-item-outter" :formList.sync="formList" :taskState="taskState"></FormComs>
+      <FormComs class="form-item-outter" :formList.sync="formList" :taskState="taskState">
+        <button type="button" class="weui-btn weui-btn_default btn-block btn-main" @click="submit()" slot="submit">提交</button>
+      </FormComs>
     </div>
   </div>
 </template>
@@ -46,8 +48,7 @@
         this.$store.commit('taskInfo', {taskInfo: resData})
 
         // 填写页面 学生自己填的 先用原来的，其他用新的
-        // 查看到结束页
-        this.taskState = 4
+        this.taskState = resData.taskState
         this.formList= resData.formItemResps;
         console.log("this.taskState:", this.taskState)
         console.log("this.formList:", this.formList)
@@ -62,7 +63,13 @@
         params = {...convertObj, ...params}
         await ApiApp.TaskStuApp.addtask(params)
 
-
+        params = {
+          uid: '6552' ,
+          id: '14321',
+          stuid: '',
+          schoolid: '',
+        }
+        this.$router.replace({path: '/Lf/task-details/' + params.uid + '/' + params.id + '/null/null'})
       }
     },
     mounted() {

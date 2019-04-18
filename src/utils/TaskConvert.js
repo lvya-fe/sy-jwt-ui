@@ -12,7 +12,7 @@ class TaskConvert {
     } else {
       title = data.task ? data.task.title: data.name
     }
-    
+
     let newData = {
       name: title,
       taskState: data.task ? data.task.status: 4, // TODO 教师填写 默认无状态未已完成
@@ -107,7 +107,39 @@ class TaskConvert {
         obj[vKey] = el.formItemValue.join(',')
 
       } else if (el.type == 9) {
-        // obj[vKey] = _self.geographic
+        obj[vKey] = ''
+      } else {
+        obj[vKey] = el.formItemValue
+      }
+    })
+    return obj
+  }
+
+  // 处理 新提交数据
+  covertNewResult(data) {
+    let obj = {}
+    data.forEach(function (el) {
+      var vKey = el.formItemName
+      if (el.formItemType == 22) {
+        if (el.formItemValue == null || el.formItemValue == '') {
+          obj[vKey] = null
+        } else if (el.formItemValue.length <= 10) {
+          obj[vKey] = el.formItemValue + ' 00:00:00'
+        } else if (el.formItemValue.length > 10) {
+          obj[vKey] = el.formItemValue
+        }
+      } else if (el.formItemType == 3) {
+        if (el.formItemValue == null || el.formItemValue == '') {
+          obj[vKey] = null
+        } else if (el.formItemValue.length <= 16) {
+          obj[vKey] = el.formItemValue + ':00'
+        } else if (el.formItemValue.length > 16) {
+          obj[vKey] = el.formItemValue
+        }
+      } else if (el.formItemType == 5 || el.formItemType == 17 || el.formItemType == 25) {
+        obj[vKey] = el.formItemValue.join(',')
+
+      } else if (el.formItemType == 9) {
         obj[vKey] = ''
       } else {
         obj[vKey] = el.formItemValue

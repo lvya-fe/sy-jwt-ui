@@ -29,12 +29,13 @@
     },
     methods:{
       goToDetails() {
-        this.$router.push({path: '/Lf/task-details', params: {
-          uid: '' ,
-          id: '',
+        let  params = {
+          uid: '6552' ,
+          id: '14321',
           stuid: '',
           schoolid: '',
-        }})
+        }
+        this.$router.push({path: '/Lf/task-add/' + params.uid + '/' + params.id + '/null/null'})
       }
     },
     mounted(){

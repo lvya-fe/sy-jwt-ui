@@ -40,6 +40,14 @@ const router = new VueRouter({
 import EduComs from './edu-common/src/coms-m/index.js'
 Vue.use(EduComs)
 
+// 移动 全局 Api
+// api统一成全局 访问
+import ApiApp from './edu-common/src/api/app/index'
+window.ApiApp = ApiApp
+
+
+
+
 // url处理
 import DoUrl from './utils/DoUrl'
 Vue.prototype.formatUrl= DoUrl
