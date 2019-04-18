@@ -67,7 +67,7 @@ export default {
     methods: {
       del: function (index) {
         // this.imgList.pop(img);
-        this.imgList.splice(index,1); 
+        this.imgList.splice(index,1);
       },
       chooseImage: function() {
         var  self_ = this;
@@ -82,6 +82,7 @@ export default {
 
           },
           fail: function (res) {
+            console.log("img choose:", res)
             alert("微信上传发生错误,请刷新页面重试");
           }
         });
@@ -95,7 +96,6 @@ export default {
         this.$vux.loading.show({
           text: "上传第" + (index + 1) + "张图片"
         })
-
 
         var  self_ = this;
         self_.$wechat.uploadImage({
