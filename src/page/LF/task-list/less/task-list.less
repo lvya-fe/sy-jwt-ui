@@ -24,7 +24,7 @@
     top: 1.2rem;
     left: 0px;
     width: 100%;
-    z-index: 9999;
+    z-index: 999999;
     padding-top: 0px !important;
   }
   .weui-cells:before {
@@ -103,22 +103,28 @@
   }
 
   .search{
-    padding:10px;
-    padding-top:2.1rem;
+    position: fixed !important;
+    top: 2rem;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    padding-top: 0 !important;
+    background:#fff;
     .search-input{
       border:1px solid #F3F3F3;
       height: 0.7rem;
       font-size: 0.4rem;
-      padding-left:0.7rem;
+      padding-left:0.8rem;
     }
     .search-icon{
       position: absolute;
-      top: 2.7rem;
+      top: 0.6rem;
       left: 0.3rem;
     }
   }
   .all-list{
     padding:10px;
+    padding-top:3.6rem;
     .list{
       height:2.48rem;
       display:flex;
