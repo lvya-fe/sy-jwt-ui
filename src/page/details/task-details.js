@@ -137,7 +137,6 @@ export default {
   },
   computed: mapState({
     _url_: state => state.animation._url_
-
   }),
   computed: {
     noback: function () {
@@ -556,12 +555,12 @@ export default {
         }
       })
       console.log(this.stuid, this.stuid != 'null'?this.stuid:'')
-      
+
       formValueJson.push({
         formItemValues: formItemValues,
         stuId: this.stuid != 'null'?this.stuid:''
       })
-      
+
       let path = ''
       let obj = {}
       if (Cookies.get('roleType') === 'stu') {
@@ -591,7 +590,7 @@ export default {
           }else{
             this.goback();
           }
-          
+
         }
       }).catch(err => {
         this.errorUtil(err)
@@ -640,7 +639,7 @@ export default {
       setTimeout(()=>{
         window.scrollTo(0, bodyTop) // 回到原先的top
       }, 100)
-     
+
     },
     delXr(id, index) {
       this.curFieldsLists[index].formSelectItemResps = this.curFieldsLists[index].formSelectItemResps.filter(item => item.id != id);

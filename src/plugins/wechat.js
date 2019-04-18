@@ -10,20 +10,20 @@ export function wechatconfigInit(self_,qs,cropId,httpUrl) {
   var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
   var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
    // alert(httpUrl+"-"+window.location.href);
- if (!isiOS) {
-    httpUrl = window.location.href;
- }else {
-     if (httpUrl == undefined || httpUrl == "") {
-         httpUrl = window.location.href;
-      //   httpUrl = Cookies.get('iosurl');
-     }
-   //  alert(httpUrl);
- }
+ // if (!isiOS) {
+ //    httpUrl = window.location.href;
+ // }else {
+ //     if (httpUrl == undefined || httpUrl == "") {
+ //         httpUrl = window.location.href;
+ //      //   httpUrl = Cookies.get('iosurl');
+ //     }
+ //   //  alert(httpUrl);
+ // }
 
+  console.log("httpUrl", httpUrl, cropId)
   //延迟 提高页面初始化加载速度 异步签名处理
   setTimeout(()=>{
     self_.$axios.post( process.env.API_ROOT+"getWeixinSign",
-
       qs.stringify({
         uid:cropId,
         url:httpUrl

@@ -16,7 +16,7 @@
   import qs from 'qs';
   import TaskConvert from "@/utils/TaskConvert"
   import FormComs from "../../../components/FormComs"
-
+  import {wechatconfigInit} from '@/plugins/wechat.js';
   export default {
     components: {
       FormComs,
@@ -27,6 +27,9 @@
         taskState: {}, // 任务
       }
     },
+    computed: mapState({
+      _url_: state => state.animation._url_
+    }),
     methods: {
       async initData(){
         // 学生数据
@@ -73,6 +76,7 @@
       }
     },
     mounted() {
+      wechatconfigInit(this, qs, this.$route.params.uid, this._url_);
       this.initData()
     }
   }
