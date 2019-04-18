@@ -19,7 +19,14 @@
     border-bottom: 1px solid #e3e2e2;
     padding-bottom: 20px;
   }
-
+  #tab-con{
+    position: fixed !important;
+    top: 1.2rem;
+    left: 0px;
+    width: 100%;
+    z-index: 9999;
+    padding-top: 0px !important;
+  }
   .weui-cells:before {
     content: none !important;
   }
@@ -97,10 +104,17 @@
 
   .search{
     padding:10px;
+    padding-top:2.1rem;
     .search-input{
-      border:1px solid #A9A9A9;
+      border:1px solid #F3F3F3;
       height: 0.7rem;
       font-size: 0.4rem;
+      padding-left:0.7rem;
+    }
+    .search-icon{
+      position: absolute;
+      top: 2.7rem;
+      left: 0.3rem;
     }
   }
   .all-list{
@@ -115,14 +129,18 @@
       .list-img{
         width: 2.72rem;
         height: 2.48rem;
+        img{
+          width:100%;
+        }
       }
       .list-info {
         flex: 1;
         padding-left: 0.1rem;
         position: relative;
-        padding-left: 0.3rem;
+        padding-left: 0.4rem;
         .title{
-          font-size:0.4rem;
+          font-size:0.35rem;
+          height: 1.28rem;
         }
         .info{
           position:absolute;
@@ -137,5 +155,8 @@
       }
     }
   }
-
+  .vux-x-icon {
+    fill: #6D6E72;
+  }
 }
+
