@@ -69,7 +69,7 @@
                     <template v-if="item.formItemType == '6'">
                         <div>
                             <div class="fieldsWrap imgUpload" v-if="item.citeDataType ==0">
-                                <p><img src="../../assets/img/ico_position.png" alt=""><span>{{item.formItemName}}</span></p>
+                                <p><img src="../../assets/img/ico_pic.png" alt=""><span>{{item.formItemName}}</span></p>
                                 <uploadImg v-if="[1,3].includes(formState) && item.citeDataType ==0" :imgs.sync="item.formItemValue" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
                                 <div v-else>
                                     <div v-if="item.formItemValue == ''" class="nodata">

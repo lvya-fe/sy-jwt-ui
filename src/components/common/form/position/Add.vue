@@ -1,5 +1,5 @@
 <!--
-组件名称：inputadd
+组件名称：positontadd
 props:
   item
   iconType 图标类型，同表单名
@@ -14,31 +14,41 @@ event:
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </span>
-      <input type="text" class="form-inline" v-model="item.formItemValue"  @input="filterText" placeholder="请输入内容">
+      <div class="form-inline">
+        <p>{{geographic?geographic:'暂无数据'}}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'InputAdd',
+    name: 'PositionAdd',
     props: {
       item: {default: {}},
       iconType: {default: ''}
     },
     data () {
       return {
+        geographic: '',
       }
     },
     watch: {
     },
     methods: {
-      filterText () {
-        this.item.formItemValue = this.item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')
-      }
+      getPosition(lat,lng){
+        var self=this;
+        var myGeo = new BMap.Geocoder();
+        myGeo.getLocation(new BMap.Point(lng,lat),function (result) {
+          console.log("position:", result)
+          if(result){
+            self.geographic = result.address
+          }
+        })
+      },
     },
     mounted () {
-
+      this.getPosition()
     }
   }
 </script>

@@ -8,23 +8,27 @@ event:
 -->
 
 <template>
-  <div class="form-common form-input">
+  <div class="form-common form-imgupload">
     <div class="form-wrap">
-      <span class="form-name">
+      <span class="form-name form-name-block">
           <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </span>
-      <input type="text" class="form-inline" v-model="item.formItemValue"  @input="filterText" placeholder="请输入内容">
     </div>
+    <uploadImg :imgs.sync="item.formItemValue" v-bind:uid.sync="uid" v-bind:count.sync="count"></uploadImg>
   </div>
 </template>
 
 <script>
+  import uploadImg  from '@/components/uploadImg'
   export default {
     name: 'imgUpload',
     props: {
       item: {default: {}},
       iconType: {default: ''}
+    },
+    components:{
+      uploadImg,
     },
     data () {
       return {
@@ -33,9 +37,7 @@ event:
     watch: {
     },
     methods: {
-      filterText () {
-        this.item.formItemValue = this.item.formItemValue.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g,'')
-      }
+
     },
     mounted () {
 
