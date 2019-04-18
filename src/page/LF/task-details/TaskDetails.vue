@@ -2,7 +2,9 @@
   <div class="form-refactor full-page-bg">
     <HeaderBack></HeaderBack>
     <div class="form-list-wrapper empty-top">
-      <FormComs class="form-item-outter" :formList.sync="formList" :taskState="taskState"></FormComs>
+      <FormComs class="form-item-outter" :formList.sync="formList" :taskState="taskState">
+        <button type="button" class="weui-btn weui-btn_default btn-block btn-back" @click="goBack()" slot="submit">提交</button>
+      </FormComs>
     </div>
   </div>
 </template>

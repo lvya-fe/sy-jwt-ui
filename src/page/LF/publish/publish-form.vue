@@ -12,7 +12,11 @@
       <div class="title">物品分类</div>
       <div class="goods-btn">
         <ul class="btn-list">
-          <li v-for="item in 5" @click="goToDetails(item)"><span>通用</span></li>
+          <li><span>通用</span></li>
+          <li><span>通用</span></li>
+          <li><span>通用</span></li>
+          <li><span>通用</span></li>
+          <li><span>通用</span></li>
         </ul>
       </div>
     </div>
@@ -27,17 +31,9 @@
     components: {
 
     },
-    methods:{
-      goToDetails() {
-        this.$router.push({path: '/Lf/task-details', params: {
-          uid: '' ,
-          id: '',
-          stuid: '',
-          schoolid: '',
-        }})
-      }
+    created(){
     },
-    mounted(){
+    methods:{
 
     }
   }
