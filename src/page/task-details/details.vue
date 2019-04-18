@@ -1,6 +1,6 @@
 <template>
   <div class="task-details full-page-bg">
-    <HeaderBack></HeaderBack>
+    <HeaderBack :showBack="!noback"></HeaderBack>
     <div class="empty-top"></div>
     <router-view></router-view>
   </div>
@@ -14,8 +14,12 @@
   export default {
     data() {
       return {
-        title: ''
+        title: '',
+        noback: false
       }
+    },
+    created() {
+      this.noback = this.$route.query.noback;
     },
     methods: {
 
