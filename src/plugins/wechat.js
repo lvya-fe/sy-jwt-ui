@@ -32,6 +32,8 @@ export function wechatconfigInit(self_,qs,cropId,httpUrl) {
       })
     ).then(function(result){
 
+      console.log("sign result:", result)
+
       self_.$wechat.config({
         beta: true,
         debug: false,
