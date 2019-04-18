@@ -83,7 +83,7 @@ export default {
           },
           fail: function (res) {
             console.log("img choose:", res)
-            alert("微信上传发生错误,请刷新页面重试");
+            alert("微信上传发生错误,请刷新页面重试" + JSON.stringify(res));
           }
         });
 
