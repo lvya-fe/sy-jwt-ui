@@ -1,7 +1,7 @@
 <template>
     <div class="stuListCard">
         <div class="top-back">
-            <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
+            <img class="img-1" v-show="!noback" src="../../assets/img/back_left_green.png" alt="" @click="goback">
             <div class="n_title">{{ title }}</div>
             <span class="img-2" style="display:none;" @click="openCycle">
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
@@ -457,7 +457,7 @@ export default {
             uid:this.$route.params.uid,
             id:this.$route.params.id,
             // cycleid:this.$route.params.cycleid,
-            // back:this.$route.params.back,
+            back:this.$route.params.back,
             formId:this.$route.params.formId,
             schooId:this.$route.params.schoolid,
             title:'',
@@ -489,9 +489,13 @@ export default {
     created(){
         this.pageNo = Cookies.get('cardPageNo') == undefined ? 1 : Number(Cookies.get('cardPageNo'));
         this.curIndex = Cookies.get('cardListIndex') == undefined ? null : Number(Cookies.get('cardListIndex')) % 10;
-        console.log(this.pageNo,Cookies.get('cardPageNo'))
         this.getStuLists();
         // this.getCycleLists();
+    },
+    computed: {
+        noback:function(){
+        return this.back == 1 ? true : false;
+        }
     },
     methods:{
         goback(){
@@ -499,7 +503,7 @@ export default {
         },
         //获取学生列表
         getStuLists(){
-            console.log(this.uid,this.id,this.formId,this.schooId)
+            // console.log(this.uid,this.id,this.formId,this.schooId)
             this.$vux.loading.show({
                 text: '加载中...'
             });

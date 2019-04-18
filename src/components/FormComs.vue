@@ -1,9 +1,8 @@
 <template>
   <div class="form-container">
     <component :is="getFormType(formItem)" :item="formItem" v-for="(formItem,index) in formList" :key="index" :iconType="currentIconType(formItem)"></component>
-    <div class="btn-block-wrapper" v-if="formList.length > 0">
-      <!--提交按钮slot-->
-      <slot name="submit"></slot>
+
+    <div class="btn-block-wrapper" v-if="formList.length > 0 && !noback">
       <button type="button" class="weui-btn weui-btn_default btn-block btn-back" @click="goBack()">返回</button>
     </div>
   </div>
@@ -311,7 +310,7 @@
     },
     data() {
       return {
-
+        noback:false
       }
     },
     computed: {
@@ -349,7 +348,7 @@
       }
     },
     mounted() {
-
+      this.noback = this.$route.query.noback;
     }
   }
 </script>

@@ -9,23 +9,35 @@
         </tab-item>
       </tab>
     </div>
-  </div>
 
+    <div class="search">
+        <group>
+          <x-input placeholder="搜索你丢的物品" show-clear="false" class="search-input"></x-input>
+        </group>
+    </div>
+    <!--<unclaimed></unclaimed>-->
+    <claim></claim>
+  </div>
 </template>
 
 <script>
 
 
-  import {XSwitch, Tab, TabItem, Swiper, SwiperItem, CellBox, Group, Checker, CheckerItem, LoadMore} from "vux";
+  import {XSwitch, Tab, TabItem, Swiper, SwiperItem, CellBox, Group, Checker, CheckerItem, LoadMore,XInput} from "vux";
   import BScroll from 'better-scroll'
   import Scroll from "@/components/common/scroll.vue";
+  import Unclaimed from './unclaimed.vue'
+  import Claim from './claim.vue'
 
   export default {
     components: {
       XSwitch,
       Tab,
       TabItem,
-      Scroll
+      Scroll,
+      XInput,
+      Unclaimed,
+      Claim
     },
     data() {
       return {
@@ -42,6 +54,7 @@
             type: 1
           }
         ],
+        value:'a'
       }
     },
     computed: {

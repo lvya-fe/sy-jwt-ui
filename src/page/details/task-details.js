@@ -24,7 +24,7 @@ export default {
       uid:this.$route.params.uid,
       id:this.$route.params.id,
       // cycleid:this.$route.params.cycleid,
-      // back:this.$route.params.back,
+      back:this.$route.params.back,
       stuid: this.$route.query.stuid || this.$route.params.stuid,
       schoolId:this.$route.params.schoolid,
       title:'',
@@ -139,6 +139,11 @@ export default {
     _url_: state => state.animation._url_
 
   }),
+  computed: {
+    noback: function () {
+      return this.back == 1 ? true : false;
+    }
+  },
   methods: {
     goback() {
       // this.$router.go(-1);
@@ -575,7 +580,18 @@ export default {
       this.$axios.post(process.env.API_ROOT + path, qs.stringify(obj)).then(res => {
         if (res.success) {
           this.$vux.loading.hide();
-          this.goback();
+          if (this.back == 1) {
+            this.$router.push({
+              path: '/task/task-details/' + this.uid + '/' + this.id + '/' + this.$route.params.stuid + '/' + this.schoolId,
+              query: {
+                roleType: this.$route.query.roleType,
+                noback:true
+              }
+            })
+          }else{
+            this.goback();
+          }
+          
         }
       }).catch(err => {
         this.errorUtil(err)

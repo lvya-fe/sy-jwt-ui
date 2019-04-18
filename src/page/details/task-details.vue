@@ -1,7 +1,7 @@
 <template>
   <div class="task-details" :class="{'hasbgColor': hasbgColor}">
     <div class="top-back">
-      <img class="img-1" src="../../assets/img/back_left_green.png" alt="" @click="goback">
+      <img class="img-1" v-show="!noback" src="../../assets/img/back_left_green.png" alt="" @click="goback">
       <div class="n_title">{{ title }}</div>
       <span class="img-2" style="display:none;">
                 <i class="icon iconfont icon-shiyongcishu ripple"></i>
@@ -339,7 +339,7 @@
       <div class="btnsWrap">
         <x-button type="primary" v-if="[1,3].includes(formState)" action-type="button" @click.native="submit">提交</x-button>
         <!-- <x-button type="primary" action-type="button">提交并切换学生</x-button> -->
-        <x-button action-type="button" @click.native="goback">返回</x-button>
+        <x-button action-type="button" v-show="!noback" @click.native="goback">返回</x-button>
       </div>
       <!-- 选择列表，多选择列表 -->
       <x-dialog v-model="showHideOnBlur" :dialog-style="{'max-width': '100%',width:'80%', overflow:'auto', 'background-color':'#fff',color:'#696969','border-radius':'6px','box-shadow': '0 0 4px #ccc'}" :class="{'vux-1px':showHideOnBlur}" hide-on-blur>

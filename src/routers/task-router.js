@@ -518,7 +518,7 @@ export default [
   },
   { //学生帮学生填写--卡片式列表
     name: 'stuList2Card',
-    path: '/stuList2Card/:uid/:id/:formId/:schoolid',
+    path: '/stuList2Card/:uid/:id/:formId/:schoolid/:back?/:roles?',
     meta: {
       // title: '学生卡片式列表'
     },
@@ -538,7 +538,7 @@ export default [
   },
   {
     name: 'task-details',
-    path: '/task-details/:uid/:id/:stuid/:schoolid',
+    path: '/task-details/:uid/:id/:stuid/:schoolid/:back?/:roles?',
     meta: {
       // title: '旧版填写 任务详情，用的卡片列表样式'
     },
@@ -580,7 +580,7 @@ export default [
   { //老师帮学生填写--卡片式列表
     name: 'stuListCard',
     // path: '/stuListCard/:uid/:id/:cycleid',
-    path: '/stuListCard/:uid/:id/:formId/:schoolid',
+    path: '/stuListCard/:uid/:id/:formId/:schoolid/:back?/:roles?',
     meta: {
       // title: '老师填写卡片式列表'
     },
