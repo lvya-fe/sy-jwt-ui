@@ -22,6 +22,13 @@ export default [
     }
   },
   {
+    path: '/LF/task-commit/:uid/:id/:stuid/:schoolid',
+    meta: {title: '认领招领信息'},
+    component: (resolve) => {
+      require(['../page/LF/task-details/TaskCommit.vue'], resolve)
+    }
+  },
+  {
     path: '/LF/task-details/:uid/:id/:stuid/:schoolid',
     meta: {title: '招领信息详情'},
     component: (resolve) => {
