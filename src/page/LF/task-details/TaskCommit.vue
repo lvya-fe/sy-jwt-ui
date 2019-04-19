@@ -58,7 +58,6 @@
         this.formList = formList
         console.log("this.taskState:", this.taskState)
         console.log("this.formList:", this.formList)
-        this.$router.go(-1)
       },
 
       async submit() {
@@ -75,15 +74,7 @@
           }]),
         }
         await ApiApp.TaskDetailStuApp.addLostFoundStuTaskFormList(params)
-
-        params = {
-          uid: '6552' ,
-          id: '14326',
-          stuid: '',
-          schoolid: '',
-        }
         this.$router.go(-1)
-
       }
     },
     mounted() {
