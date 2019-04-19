@@ -37,7 +37,6 @@
     },
     computed: {
       isImgUrl () {
-        debugger;
          for(var i= 0;i<this.stuRespList.length;i++){
            return this.stuRespList[i].imgUrl==""? "static/img/header/claim.png" : this.stuRespList.imgUrl
          }
@@ -47,7 +46,18 @@
     },
     methods: {
       goToDetails() {
-
+        debugger;
+          let params = {
+            uid:this.$route.params.uid,
+            taskid:this.$route.query.taskId,
+            stuid:1,
+            schoolid:1
+          };
+          this.$router.push({path: '/LF/task-details/' + params.uid + '/' + params.taskid + '/' + params.stuid,query: {
+              createUserId:this.$route.query.sceneId,
+              formValueId:this.$route.query.sceneId,
+              taskId:this.$route.query.sceneId
+          }})
       }
 
     },

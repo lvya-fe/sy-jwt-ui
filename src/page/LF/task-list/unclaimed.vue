@@ -1,6 +1,6 @@
 <template>
   <div class="all-list">
-    <div class="list" v-for="item in stuRespList">
+    <div class="list" v-for="item in stuRespList" @click="toDetail(item)">
       <div class="list-img">
         <img :src='isImgUrl' alt="">
       </div>
@@ -33,7 +33,6 @@
     },
     computed: {
       isImgUrl () {
-        debugger;
         for(var i= 0;i<this.stuRespList.length;i++){
           return this.stuRespList[i].imgUrl==""? "static/img/header/claim.png" : this.stuRespList.imgUrl
         }
@@ -42,6 +41,20 @@
     watch: {
     },
     methods: {
+      toDetail(item){
+          debugger;
+          let params = {
+            uid:this.$route.params.uid,
+            taskid: '',
+            stuid:null,
+            schoolid:null
+          };
+          this.$router.push({path: '/Lf/task-commit/' + params.uid + '/null/null/null' ,query: {
+              createUserId: item.createUserId,
+              formValueId: item.formValueId,
+              taskId: item.taskId
+          }})
+      }
     },
     mounted () {
     }
