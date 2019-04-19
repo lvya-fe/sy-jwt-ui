@@ -45,18 +45,18 @@
     watch: {
     },
     methods: {
-      goToDetails() {
+      goToDetails(item) {
         debugger;
           let params = {
             uid:this.$route.params.uid,
-            taskid:this.$route.query.taskId,
-            stuid:1,
-            schoolid:1
+            taskid: '',
+            stuid:null,
+            schoolid:null
           };
-          this.$router.push({path: '/LF/task-details/' + params.uid + '/' + params.taskid + '/' + params.stuid,query: {
-              createUserId:this.$route.query.sceneId,
-              formValueId:this.$route.query.sceneId,
-              taskId:this.$route.query.sceneId
+          this.$router.push({path: '/LF/task-details/' + params.uid + '/null/null/null',query: {
+              createUserId:item.createUserId,
+              formValueId:item.formValueId,
+              taskId:item.taskId
           }})
       }
 
