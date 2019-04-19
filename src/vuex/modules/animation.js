@@ -2,7 +2,7 @@
 
 const state = {
   isLoading: false,
-  _url_: '',
+  _url_: window.location.href,
   direction: 'forward'
 }
 
