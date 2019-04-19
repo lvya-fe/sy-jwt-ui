@@ -66,9 +66,9 @@
           taskId: this.$route.query.taskId,
           formValueJson: JSON.stringify([{
             stuId: this.$route.query.createUserId,
-            refFormValueIdStr: this.$route.query.formValueId,
+            refFormValueIdStr: this.$route.query.refFormValueId,
             formItemValues:[{
-              formItemName: this.formList[this.formList.length-1].formItemValue,
+              formItemName: this.formList[this.formList.length-1].formItemDbName,
               formValue: this.formList[this.formList.length-1].formItemValue
             }]
           }]),
