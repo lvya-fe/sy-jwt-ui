@@ -42,7 +42,6 @@
     },
     methods: {
       toDetail(item){
-          debugger;
           let params = {
             uid:this.$route.params.uid,
             taskid: '',
