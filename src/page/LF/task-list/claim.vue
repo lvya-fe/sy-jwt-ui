@@ -1,6 +1,6 @@
 <template>
   <div class="all-list">
-    <div class="list"  v-for="item in stuRespList">
+    <div class="list"  v-for="item in stuRespList" @click="goToDetails(item)">
       <div class="list-img">
         <img :src='isImgUrl' alt="">
         <!--'item.imgUrl == "" ? "static/img/header/claim.png" : item.imgUrl'-->
@@ -46,6 +46,10 @@
     watch: {
     },
     methods: {
+      goToDetails() {
+
+      }
+
     },
     mounted () {
     }

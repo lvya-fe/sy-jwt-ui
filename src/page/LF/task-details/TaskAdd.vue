@@ -36,13 +36,13 @@
         // 学生数据
         let params = {
           uid: this.$route.params.uid,
-          taskid: Number(this.$route.params.id),
-        }
+          taskid: this.$route.params.id,
+          stime:'',
+          etime:'',
+      }
         let resData = {}
         // 角色判断
-        if(this.$route.query.roleType) Cookies.set('roleType', this.$route.query.roleType)
-
-        if(this.$route.query.roleType == 'tea') {
+        if(Cookies.get('roleType') == 'tea') {
           resData = await ApiApp.TaskTeaApp.teaTaskView(params)
         } else {
           resData = await ApiApp.TaskStuApp.taskView(params)
@@ -68,12 +68,12 @@
         await ApiApp.TaskStuApp.addtask(params)
 
         params = {
-          uid: '6552' ,
-          id: '14321',
-          stuid: '',
-          schoolid: '',
+          uid: this.$route.params.uid ,
+          taskid: this.$route.params.id,
         }
-        this.$router.replace({path: '/Lf/task-details/' + params.uid + '/' + params.id + '/null/null'})
+        this.$router.replace({path: '/Lf/task-list/' + params.uid, query: {
+          sceneId: this.$route.query.sceneId
+        }})
       }
     },
     mounted() {

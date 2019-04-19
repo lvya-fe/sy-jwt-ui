@@ -35,10 +35,10 @@
         }
         let resData = {}
         // 角色判断
-        if(Cookies.get('roleType') == 'stu') {
-          resData = await ApiApp.TaskDetailStuApp.showLostFoundStuTaskDetail(params)
-        } else {
+        if(Cookies.get('roleType') == 'tea') {
           resData = await ApiApp.TaskDetailTeaApp.showLostFoundTeaToStuTaskDetail(params)
+        } else {
+          resData = await ApiApp.TaskDetailStuApp.showLostFoundStuTaskDetail(params)
         }
 
         this.$store.commit('taskInfo', {taskInfo: resData})

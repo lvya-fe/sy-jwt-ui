@@ -30,12 +30,12 @@
     methods:{
       goToDetails() {
         let  params = {
-          uid: '6552' ,
-          id: '14321',
-          stuid: '',
-          schoolid: '',
+          uid: this.$route.query.uid ,
+          taskid: this.$route.query.taskId,
         }
-        this.$router.push({path: '/Lf/task-add/' + params.uid + '/' + params.id + '/null/null'})
+        this.$router.push({path: '/Lf/task-add/' + params.uid + '/' + params.taskid,query: {
+          sceneId: this.$route.query.sceneId,
+        }})
       }
     },
     mounted(){
