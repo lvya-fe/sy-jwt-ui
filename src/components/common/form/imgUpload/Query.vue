@@ -14,7 +14,7 @@ event:
         <img :src="'static/icon/form/ico_'+ iconType +'.png'" class='icon_form' v-if="iconType">
         {{item.formItemName}}
       </p>
-      <ul v-if="item.formSelectItemResps.length > 0" class="img-items">
+      <ul v-if="item.formSelectItemResps && item.formSelectItemResps.length > 0" class="img-items">
         <li v-for="(url,i) in item.formSelectItemResps" :key="i">
             <img :src="url.value" :preview="i" alt="">
         </li>
