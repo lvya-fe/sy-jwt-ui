@@ -2,7 +2,7 @@
   <div class="all-list">
     <div class="list"  v-for="i in 8">
       <div class="list-img">
-        <img src="https://d2i72ju5buk5xz.cloudfront.net/gsc/S7711I/b3/70/78/b3707836418446a39791bf03da889819/images/招领信息列表--未认领/u70.png?token=ee275a2c6bae5eb3f8d98d8ac7f20f7f" alt="">
+        <img src="static/img/header/claim.png" alt="">
       </div>
       <div class="list-info">
         <div class="title">

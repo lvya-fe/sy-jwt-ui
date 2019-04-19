@@ -59,7 +59,8 @@
           }
         ],
         value:'a',
-        toogleTask:0
+        toogleTask:1,
+        stuData:[]
       }
     },
     computed: {
@@ -74,20 +75,39 @@
       tab(index) {
           this.toogleTask = index;
       },
-      throttleScroll(){
-      /*  debugger;
-        this.scroll  = document.documentElement.scrollTop || document.body.scrollTop;
-        let menuTop = document.querySelector('.task-list').offsetTop;
-        console.log(menuTop)
-        if (_self.scroll > menuTop) {
-          this.searchBarFixed = true
-        } else {
-          this.searchBarFixed = false
-        }*/
+      //角色判断
+      roleJudgment(){
+        debugger;
+        if(this.$route.query.roleType) Cookies.set('roleType', this.$route.query.roleType);
+
+        if(this.$route.query.roleType == 'tea'){
+          this.teaClaimInitData();
+        }else{
+          this.stuClaimInitData();
+        }
+      },
+      //老师查询未认领或已认领信息列表
+      async teaClaimInitData(){
+          let params = {
+            uid: this.$route.params.uid,
+            sceneId: this.$route.query.sceneId,
+            selectType:this.toogleTask == 1 ? "UNCOMMIT" : "COMMIT"
+          }
+          await ApiApp.TaskTeaApp.teaQueryInfo(params);
+      },
+      //学生查询未认领信息列表
+      async stuClaimInitData(){
+          let params = {
+            uid: this.$route.params.uid,
+            sceneId:this.$route.query.sceneId,
+            selectType:this.toogleTask == 1 ? "UNCOMMIT" : "COMMIT"
+          };
+          this.stuData = await  ApiApp.TaskStuApp.stuQueryUnclaimedInfo(params);
+
       }
     },
     mounted() {
-     // window.addEventListener('scroll', this.throttleScroll, false);
+      this.roleJudgment();
     },
   }
 </script>

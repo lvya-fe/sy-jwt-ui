@@ -8,7 +8,7 @@ export default [
     }
   },
   {
-    path: '/LF/task-list/:uid/:taskid/:id/',
+    path: '/LF/task-list/:uid/:taskid/:id',
     meta: {title: '招领列表'},
     component: (resolve) => {
       require(['../page/LF/task-list/TaskList.vue'], resolve)
