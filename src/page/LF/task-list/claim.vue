@@ -55,7 +55,8 @@
           this.$router.push({path: '/LF/task-details/' + params.uid + '/null/null/null',query: {
               createUserId:item.createUserId,
               formValueId:item.formValueId,
-              taskId:item.taskId
+              taskId:item.taskId,
+              refFormValueId:item.refFormValueId
           }})
       }
 
