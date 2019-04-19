@@ -29,7 +29,7 @@
         // 学生数据
         let params = {
           uid: this.$route.params.uid,
-          taskId: this.$route.params.taskid,
+          taskId: this.$route.query.taskId,
           formValueId: this.$route.query.formValueId,
           stuId: this.$route.query.createUserId
         }
