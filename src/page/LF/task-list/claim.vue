@@ -1,19 +1,20 @@
 <template>
   <div class="all-list">
-    <div class="list"  v-for="i in 8">
+    <div class="list"  v-for="item in stuRespList">
       <div class="list-img">
-        <img src="static/img/header/claim.png" alt="">
+        <img :src='isImgUrl' alt="">
+        <!--'item.imgUrl == "" ? "static/img/header/claim.png" : item.imgUrl'-->
       </div>
       <div class="list-info">
         <div class="title">
-          失物招领的标题失物招领的标题失物招领的标题
+          {{item.title}}
         </div>
         <div class="publisher-info">
-          <span>发布人: <span>张晓峰 </span></span>
+          <span>发布人: <span>{{item.createUserName}}</span></span>
         </div>
         <div class="info ">
           <span>认领人: <span>小明 </span></span>
-          <span class="time"> 2019-01-02 12:12:34</span>
+          <span class="time"> {{item.createTime}}</span>
         </div>
       </div>
     </div>
@@ -25,6 +26,7 @@
 
   export default {
     props: {
+      stuRespList:Array
     },
     components: {
       XInput
@@ -34,6 +36,12 @@
       }
     },
     computed: {
+      isImgUrl () {
+        debugger;
+         for(var i= 0;i<this.stuRespList.length;i++){
+           return this.stuRespList[i].imgUrl==""? "static/img/header/claim.png" : this.stuRespList.imgUrl
+         }
+      }
     },
     watch: {
     },
