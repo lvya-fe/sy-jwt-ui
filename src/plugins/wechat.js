@@ -10,17 +10,17 @@ export function wechatconfigInit(self_,qs,cropId,httpUrl) {
   var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
   var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
-  httpUrl = window.location.href
    // alert(httpUrl+"-"+window.location.href);
- // if (!isiOS) {
- //    httpUrl = window.location.href;
- // }else {
- //     if (httpUrl == undefined || httpUrl == "") {
- //         httpUrl = window.location.href;
- //      //   httpUrl = Cookies.get('iosurl');
- //     }
- //   //  alert(httpUrl);
- // }
+
+ if (!isiOS) {
+    httpUrl = window.location.href;
+ }else { // IOS仅可使用第一次进入应用的URL来签名
+     if (httpUrl == undefined || httpUrl == "") {
+         httpUrl = window.location.href;
+      //   httpUrl = Cookies.get('iosurl');
+     }
+   //  alert(httpUrl);
+ }
 
   //延迟 提高页面初始化加载速度 异步签名处理
   setTimeout(()=>{
