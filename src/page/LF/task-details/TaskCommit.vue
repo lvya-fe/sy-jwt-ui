@@ -2,9 +2,9 @@
   <div class="form-refactor full-page-bg">
     <HeaderBack title="认领招领信息"></HeaderBack>
     <div class="form-list-wrapper empty-top">
-      <FormComs class="form-item-outter" :formList.sync="formList" :taskState="taskState">
+      <FormComsCustom class="form-item-outter" :formList.sync="formList" :taskState="taskState">
         <button type="button" class="weui-btn weui-btn_default btn-block btn-main" @click="submit()" slot="submit">认领</button>
-      </FormComs>
+      </FormComsCustom>
     </div>
   </div>
 </template>
@@ -15,12 +15,12 @@
 <script>
   import qs from 'qs';
   import TaskConvert from "@/utils/TaskConvert"
-  import FormComs from "../../../components/FormComs"
+  import FormComsCustom from "../../../components/FormComsCustom.vue"
   import {wechatconfigInit} from '@/plugins/wechat.js';
   import { mapState } from 'vuex'
   export default {
     components: {
-      FormComs,
+      FormComsCustom,
     },
     data() {
       return {
@@ -36,8 +36,8 @@
         // 学生数据
         let params = {
           uid: this.$route.params.uid,
-          taskId: this.$route.params.id,
-          formValueId: '16629',
+          taskId: '14326',
+          formValueId: '16632',
           stuId: this.$route.params.stuid
         }
         let resData = resData = await ApiApp.TaskDetailStuApp.showLostFoundStuTaskDetail(params)
@@ -48,6 +48,12 @@
         let formList = resData.lostFoundStuListFormItemResps || resData.formItemResps;
         formList.forEach((item,index)=>{
           item.citeDataType = 0
+          // 默认查询
+          item.customType = 'Query'
+          // 最后一个是感谢信，需要提交
+          if(index == formList.length-1) {
+            item.customType = 'Add'
+          }
         })
         this.formList = formList
         console.log("this.taskState:", this.taskState)
@@ -57,19 +63,25 @@
       async submit() {
         let params = {
           uid: this.$route.params.uid,
-          taskid: this.$route.params.id,
+          taskId: this.$route.params.id,
+          formValueJson: {
+
+          },
+
+          stuId: this.$route.params.stuid,
+          refFormValueIdStr: '',
         }
         let convertObj = TaskConvert.covertResult(this.formList)
         params = {...convertObj, ...params}
-        await ApiApp.TaskStuApp.addtask(params)
+        await ApiApp.TaskStuApp.addLostFoundStuTaskFormList(params)
 
         params = {
           uid: '6552' ,
-          id: '14321',
+          id: '14326',
           stuid: '',
           schoolid: '',
         }
-        this.$router.replace({path: '/Lf/task-details/' + params.uid + '/' + params.id + '/null/null'})
+        this.$router.replace({path: '/Lf/task-list/' + params.uid + '/' + params.id + '/null/null'})
       }
     },
     mounted() {
