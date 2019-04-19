@@ -17,8 +17,8 @@
         </group>
         <x-icon type="ios-search-strong" class="search-icon" size="20"></x-icon>
     </div>
-    <unclaimed v-show="toogleTask==1"></unclaimed>
-    <claim v-show="toogleTask==0"></claim>
+    <unclaimed v-show="toogleTask==0" :stuRespList="stuRespList"></unclaimed>
+    <claim v-show="toogleTask==1" :stuRespList="stuRespList"></claim>
   </div>
 </template>
 
@@ -50,17 +50,17 @@
         type: 0,
         typeList: [
           {
-            name: '已认领',
+            name: '未认领',
             type: 0
           },
           {
-            name: '未认领',
+            name: '已认领',
             type: 1
           }
         ],
         value:'a',
-        toogleTask:1,
-        stuData:[]
+        toogleTask:0,
+        stuRespList:[]
       }
     },
     computed: {
@@ -88,22 +88,24 @@
       },
       //老师查询未认领或已认领信息列表
       async teaClaimInitData(){
+        debugger;
           let params = {
             uid: this.$route.params.uid,
             sceneId: this.$route.query.sceneId,
-            selectType:this.toogleTask == 1 ? "UNCOMMIT" : "COMMIT"
+            selectType:this.toogleTask == 1 ? "COMMIT" : "UNCOMMIT"
           }
-          await ApiApp.TaskTeaApp.teaQueryInfo(params);
+          let data = await ApiApp.TaskTeaApp.showLostFoundTeaToStuTaskList(params);
+          this.stuRespList = data.stuRespList;
       },
       //学生查询未认领信息列表
       async stuClaimInitData(){
           let params = {
             uid: this.$route.params.uid,
             sceneId:this.$route.query.sceneId,
-            selectType:this.toogleTask == 1 ? "UNCOMMIT" : "COMMIT"
+            selectType:this.toogleTask == 1 ? "COMMIT" : "UNCOMMIT"
           };
-          this.stuData = await  ApiApp.TaskStuApp.stuQueryUnclaimedInfo(params);
-
+          let data = await  ApiApp.TaskStuApp.showLostFoundStuTaskList(params);
+          this.stuRespList = data.stuRespList;
       }
     },
     mounted() {

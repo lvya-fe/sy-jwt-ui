@@ -1,16 +1,16 @@
 <template>
   <div class="all-list">
-    <div class="list" v-for="i in 8">
+    <div class="list" v-for="item in stuRespList">
       <div class="list-img">
-        <img src="static/img/header/claim.png" alt="">
+        <img :src='isImgUrl' alt="">
       </div>
       <div class="list-info">
         <div class="title">
-          捡到一辆自行车
+          {{item.title}}
         </div>
         <div class="info">
-          <span>发布人: <span>袁雯 </span></span>
-          <span class="time"> 2019-01-02 12:12:34</span>
+          <span>发布人: <span>{{item.createUserName}} </span></span>
+          <span class="time"> {{item.createTime}}</span>
         </div>
       </div>
     </div>
@@ -22,6 +22,7 @@
 
   export default {
     props: {
+      stuRespList:Array
     },
     components: {
       XInput
@@ -31,6 +32,12 @@
       }
     },
     computed: {
+      isImgUrl () {
+        debugger;
+        for(var i= 0;i<this.stuRespList.length;i++){
+          return this.stuRespList[i].imgUrl==""? "static/img/header/claim.png" : this.stuRespList.imgUrl
+        }
+      }
     },
     watch: {
     },
