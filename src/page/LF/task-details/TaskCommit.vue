@@ -64,16 +64,16 @@
         let params = {
           uid: this.$route.params.uid,
           taskId: this.$route.params.id,
-          formValueJson: {
-
-          },
-
-          stuId: this.$route.params.stuid,
-          refFormValueIdStr: '',
+          formValueJson: JSON.stringify([{
+            stuId: this.$route.params.stuid,
+            refFormValueIdStr: '16632',
+            formItemValues:[{
+              formItemName: 'val5',
+              formValue: this.formList[this.formList.length-1].formItemValue
+            }]
+          }]),
         }
-        let convertObj = TaskConvert.covertResult(this.formList)
-        params = {...convertObj, ...params}
-        await ApiApp.TaskStuApp.addLostFoundStuTaskFormList(params)
+        await ApiApp.TaskDetailStuApp.addLostFoundStuTaskFormList(params)
 
         params = {
           uid: '6552' ,
