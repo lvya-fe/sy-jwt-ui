@@ -17,8 +17,8 @@
         </group>
         <x-icon type="ios-search-strong" class="search-icon" size="20"></x-icon>
     </div>
-    <unclaimed v-show="toogleTask==0"></unclaimed>
-    <claim v-show="toogleTask==1"></claim>
+    <unclaimed v-show="toogleTask==1"></unclaimed>
+    <claim v-show="toogleTask==0"></claim>
   </div>
 </template>
 
@@ -50,12 +50,12 @@
         type: 0,
         typeList: [
           {
-            name: '未认领',
-            type: 1
-          },
-          {
             name: '已认领',
             type: 0
+          },
+          {
+            name: '未认领',
+            type: 1
           }
         ],
         value:'a',
