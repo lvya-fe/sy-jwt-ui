@@ -29,9 +29,9 @@
         // 学生数据
         let params = {
           uid: this.$route.params.uid,
-          taskId: this.$route.params.id,
-          formValueId: '16629',
-          stuId: this.$route.params.stuid
+          taskId: this.$route.params.taskid,
+          formValueId: this.$route.query.formValueId,
+          stuId: this.$route.query.createUserId
         }
         let resData = {}
         // 角色判断
@@ -53,16 +53,6 @@
         console.log("this.taskState:", this.taskState)
         console.log("this.formList:", this.formList)
       },
-
-      async submit() {
-        let params = {
-          uid: this.$route.params.uid,
-          taskid: this.$route.params.id,
-        }
-        let convertObj = TaskConvert.covertResult(this.formList)
-        params = {...convertObj, ...params}
-        await ApiApp.TaskStuApp.addtask(params)
-      }
     },
     mounted() {
       this.initData()
