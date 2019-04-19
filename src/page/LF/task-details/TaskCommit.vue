@@ -36,9 +36,9 @@
         // 学生数据
         let params = {
           uid: this.$route.params.uid,
-          taskId: '14326',
-          formValueId: '16632',
-          stuId: this.$route.params.stuid
+          taskId:this.$route.query.taskId,
+          formValueId: this.$route.query.formValueId,
+          stuId: this.$route.query.createUserId
         }
         let resData = resData = await ApiApp.TaskDetailStuApp.showLostFoundStuTaskDetail(params)
         this.$store.commit('taskInfo', {taskInfo: resData})
@@ -58,17 +58,18 @@
         this.formList = formList
         console.log("this.taskState:", this.taskState)
         console.log("this.formList:", this.formList)
+        this.$router.go(-1)
       },
 
       async submit() {
         let params = {
           uid: this.$route.params.uid,
-          taskId: this.$route.params.id,
+          taskId: this.$route.query.taskId,
           formValueJson: JSON.stringify([{
-            stuId: this.$route.params.stuid,
-            refFormValueIdStr: '16632',
+            stuId: this.$route.query.createUserId,
+            refFormValueIdStr: this.$route.query.formValueId,
             formItemValues:[{
-              formItemName: 'val5',
+              formItemName: this.formList[this.formList.length-1].formItemValue,
               formValue: this.formList[this.formList.length-1].formItemValue
             }]
           }]),
@@ -81,7 +82,8 @@
           stuid: '',
           schoolid: '',
         }
-        this.$router.replace({path: '/Lf/task-list/' + params.uid + '/' + params.id + '/null/null'})
+        this.$router.go(-1)
+
       }
     },
     mounted() {

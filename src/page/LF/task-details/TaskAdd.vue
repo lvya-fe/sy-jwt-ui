@@ -36,7 +36,7 @@
         // 学生数据
         let params = {
           uid: this.$route.params.uid,
-          taskid: this.$route.params.id,
+          taskid: this.$route.params.taskid,
           stime:'',
           etime:'',
       }
@@ -61,7 +61,7 @@
       async submit() {
         let params = {
           uid: this.$route.params.uid,
-          taskid: this.$route.params.id,
+          taskid: this.$route.params.taskid,
         }
         let convertObj = TaskConvert.covertResult(this.formList)
         params = {...convertObj, ...params}
