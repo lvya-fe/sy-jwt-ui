@@ -52,6 +52,7 @@
               createUserId: item.createUserId,
               formValueId: item.formValueId,
               taskId: item.taskId,
+              selectType: this.$route.query.selectType,
               refFormValueId:item.refFormValueId
           }})
       }

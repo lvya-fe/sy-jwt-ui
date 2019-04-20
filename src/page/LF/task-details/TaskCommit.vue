@@ -38,7 +38,9 @@
           uid: this.$route.params.uid,
           taskId:this.$route.query.taskId,
           formValueId: this.$route.query.formValueId,
-          stuId: this.$route.query.createUserId
+          refFormValueId: this.$route.query.refFormValueId,
+          stuId: this.$route.query.createUserId,
+          selectType: this.$route.query.formValueId,
         }
         let resData = resData = await ApiApp.TaskDetailStuApp.showLostFoundStuTaskDetail(params)
         this.$store.commit('taskInfo', {taskInfo: resData})

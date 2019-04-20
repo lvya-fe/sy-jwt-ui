@@ -2,23 +2,23 @@
   <div class="task-list">
     <HeaderBack title="任务列表"></HeaderBack>
 
-    <div class="tab-con" id="tab-con" :class="{fixTitle:whether}">
-      <tab :line-width=2 active-color='#16c775' v-model="type" class="footer-tab">
-        <tab-item class="vux-center" v-for="item in typeList" :key="item.type" @on-item-click="tab">{{ item.name }}
-          ({{ item.bars}})
+    <div class="tab-con" id="tab-con">
+      <tab :line-width=2 active-color="#16c775" v-model="type">
+        <tab-item class="vux-center" v-for="item,index in typeList" :key="index" @on-item-click="tab">{{ item.name }}
+          ({{ item.num}})
         </tab-item>
       </tab>
     </div>
 
     <div class="search">
         <group>
-          <x-input placeholder="搜索你丢的物品" show-clear="false" class="search-input">
+          <x-input placeholder="搜索你丢的物品" :show-clear="true" class="search-input">
           </x-input>
         </group>
         <x-icon type="ios-search-strong" class="search-icon" size="20"></x-icon>
     </div>
-    <unclaimed v-show="toogleTask==0" :stuRespList="stuRespList"></unclaimed>
-    <claim v-show="toogleTask==1" :stuRespList="stuRespList"></claim>
+    <unclaimed v-show="type==0" :stuRespList="stuRespList"></unclaimed>
+    <claim v-show="type==1" :stuRespList="stuRespList"></claim>
 
   </div>
 </template>
@@ -31,6 +31,8 @@
   import Scroll from "@/components/common/scroll.vue";
   import Unclaimed from './unclaimed.vue'
   import Claim from './claim.vue'
+
+  const pageSize = 100
 
   export default {
     components: {
@@ -52,71 +54,85 @@
         typeList: [
           {
             name: '未认领',
-            type: 0,
-            bars:0
+            type: "UNCOMMIT",
+            num:0
           },
           {
             name: '已认领',
-            type: 1,
-            bars:0
+            type: "COMMIT",
+            num:0
           }
         ],
-        value:'a',
-        toogleTask:0,
-        stuRespList:[]
+        stuRespList:[],
       }
     },
     computed: {
 
     },
     watch: {
-    },
 
-    filters: {
     },
     methods: {
       tab(index) {
-          this.toogleTask = index;
+          // tab选项
+          let query = {
+            ...this.$route.query,
+            selectType:this.typeList[index].type
+          }
+          this.$router.replace({path: '/LF/task-list/' + this.uid, query})
+          this.roleJudgment(this.typeList[this.type].type)
       },
       //角色判断
-      roleJudgment(){
+      roleJudgment(selectType){
         if(this.$route.query.roleType) Cookies.set('roleType', this.$route.query.roleType);
-
         if(this.$route.query.roleType == 'tea'){
-          this.teaClaimInitData();
+          this.teaClaimInitData(selectType);
         }else{
-          this.stuClaimInitData();
+          this.stuClaimInitData(selectType);
         }
       },
+      // tab bar处理
+      doTabNum(selectType, num) {
+        if(selectType == 'UNCOMMIT') {
+          this.typeList[0].num = num
+        } else {
+          this.typeList[1].num = num
+        }
+      },
+
       //老师查询未认领或已认领信息列表
-      async teaClaimInitData(){
+      async teaClaimInitData(selectType){
           let params = {
             uid: this.$route.params.uid,
             sceneId: this.$route.query.sceneId,
-            selectType:this.toogleTask == 1 ? "COMMIT" : "UNCOMMIT",
-            pageSize:100
+            selectType: selectType,
+            pageSize: pageSize
           }
-          let data = await ApiApp.TaskTeaApp.showLostFoundTeaToStuTaskList(params);
+          let data = await ApiApp.TaskTeaApp.showLostFoundTeaToStuTaskList(params)
           this.stuRespList = data.stuRespList;
-          this.typeList[0].bars = data.stuRespList.length
-          this.typeList[1].bars = data.stuRespList.length
+
+          this.doTabNum(selectType, data.stuRespList.length)
       },
       //学生查询未认领信息列表
-      async stuClaimInitData(){
+      async stuClaimInitData(selectType){
           let params = {
             uid: this.$route.params.uid,
             sceneId:this.$route.query.sceneId,
-            selectType:this.toogleTask == 1 ? "COMMIT" : "UNCOMMIT",
-            pageSize:100
+            selectType: selectType,
+            pageSize: pageSize
           };
-          let data = await  ApiApp.TaskStuApp.showLostFoundStuTaskList(params);
-          this.stuRespList = data.stuRespList;
-          this.typeList[0].bars = data.stuRespList.length
-          this.typeList[1].bars = data.stuRespList.length
+          let data = await  ApiApp.TaskStuApp.showLostFoundStuTaskList(params)
+          this.stuRespList = data.stuRespList
+
+          this.doTabNum(selectType, data.stuRespList.length)
       }
     },
     mounted() {
-      this.roleJudgment();
+      // 初始化 未认领
+      this.type = this.$route.query.selectType == "COMMIT" ? 1: 0
+      // 同时加载两个tab
+      this.roleJudgment("UNCOMMIT")
+      this.roleJudgment("COMMIT");
     },
   }
 </script>
