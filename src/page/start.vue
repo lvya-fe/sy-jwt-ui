@@ -30,7 +30,6 @@
         var lasturl = Cookies.get('lasturl');
         Cookies.set('wxtoken_', token);
         location.replace("/app/auth/wx?uid=" + localStorage.uid + "&code=" + token + "&url=" + encodeURIComponent(lasturl));
-
       }
     }
   }

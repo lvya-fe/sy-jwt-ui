@@ -79,7 +79,8 @@ Vue.use(VueRouter)
 Vue.use(axios)
 Vue.use(VueCookie)
 
-new Vue({
+// VueInstance可以全局使用
+window.VueInstance = new Vue({
   router,
   store,
   render: h => h(App)
